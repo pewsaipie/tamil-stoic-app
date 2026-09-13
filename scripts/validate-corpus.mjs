@@ -19,7 +19,7 @@ for (const [index, q] of quotes.entries()) {
   if (!q.tamil?.text?.trim()) errors.push(`${index}: missing Tamil text`);
   if (!q.english?.text?.trim()) errors.push(`${index}: missing English translation`);
   if (!q.provenance?.url || !q.provenance?.locator) errors.push(`${index}: missing provenance URL or locator`);
-  const allowedLicences = ['Public Domain Mark 1.0', 'CC0', 'CC BY', 'CC BY-SA'];
+  const allowedLicences = ['Public Domain Mark 1.0', 'CC0', 'CC BY', 'CC BY-SA', 'MIT'];
   if (!allowedLicences.includes(q.provenance?.license)) errors.push(`${index}: licence is not on the approved allowlist`);
   if (!q.provenance?.citation) errors.push(`${index}: missing human-readable citation`);
   if (q.review?.status !== 'published') errors.push(`${index}: only published quotes may be shipped`);

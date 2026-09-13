@@ -1,6 +1,6 @@
 {
   "policy": "Only records from an approved source with a documented reuse licence may enter the production corpus.",
-  "allowed_licences": ["Public Domain Mark 1.0", "CC0", "CC BY", "CC BY-SA"],
+  "allowed_licences": ["Public Domain Mark 1.0", "CC0", "CC BY", "CC BY-SA", "MIT"],
   "sources": [
     {
       "source_id": "ia-tirukkural-km-balasu",
@@ -34,6 +34,17 @@
       "reuse_status": "approved-pending-file-level-verification",
       "citation_required": true,
       "notes": "Verify the scanned edition and page-level text before import."
+    },
+    {
+      "source_id": "npm-crrajaguru-thirukkural",
+      "provider": "npm / GitHub",
+      "title": "@crrajaguru/thirukkural dataset cross-check",
+      "author_or_translator": "Rajaguru R; translation credited to Kaviyogi Maharishi Shuddhananda Bharatiyar in the Project Madurai bilingual etext",
+      "url": "https://github.com/crrajaguru/thirukkural",
+      "license": "MIT",
+      "reuse_status": "approved-with-MIT-attribution; verify embedded source attribution",
+      "citation_required": true,
+      "notes": "Used only as a machine-readable cross-check. The canonical source citation remains the Project Madurai bilingual etext. Retain the MIT notice."
     },
     {
       "source_id": "ia-history-tamil-literature",

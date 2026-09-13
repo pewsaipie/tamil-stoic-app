@@ -1,0 +1,4402 @@
+[
+  {
+    "id": "pm-tk-0001",
+    "tamil": {
+      "text": "அகர முதல எழுத்தெல்லாம் ஆதி\nபகவன் முதற்றே உலகு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "'A' leads letters; the Ancient Lord Leads and lords the entire world",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 1",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 1",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0002",
+    "tamil": {
+      "text": "கற்றதனால் ஆய பயனென்கொல் வாலறிவன்\nநற்றாள் தொழாஅர் எனின்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "That lore is vain which does not fall At His good feet who knoweth all",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 2",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 2",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0003",
+    "tamil": {
+      "text": "மலர்மிசை ஏகினான் மாணடி சேர்ந்தார்\nநிலமிசை நீடுவாழ் வார்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Long they live on earth who gain The feet of God in florid brain",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 3",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 3",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0004",
+    "tamil": {
+      "text": "வேண்டுதல் வேண்டாமை இலானடி சேர்ந்தார்க்கு\nயாண்டும் இடும்பை இல.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Who hold His feet who likes nor loathes Are free from woes of human births",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 4",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 4",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0005",
+    "tamil": {
+      "text": "இருள்சேர் இருவினையும் சேரா இறைவன்\nபொருள்சேர் புகழ்புரிந்தார் மாட்டு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "God's praise who tell, are free from right And wrong, the twins of dreaming night",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 5",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 5",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0006",
+    "tamil": {
+      "text": "பொறிவாயில் ஐந்தவித்தான் பொய்தீர் ஒழுக்க\nநெறிநின்றார் நீடுவாழ் வார்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "They prosper long who walk His way Who has the senses signed away",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 6",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 6",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0007",
+    "tamil": {
+      "text": "தனக்குவமை இல்லாதான் தாள்சேர்ந்தார்க் கல்லால்\nமனக்கவலை மாற்றல் அரிது.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "His feet, whose likeness none can find, Alone can ease the anxious mind",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 7",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 7",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0008",
+    "tamil": {
+      "text": "அறவாழி அந்தணன் தாள்சேர்ந்தார்க் கல்லால்\nபிறவாழி நீந்தல் அரிது.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Who swims the sea of vice is he Who clasps the feet of Virtue's sea",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 8",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 8",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0009",
+    "tamil": {
+      "text": "கோளில் பொறியின் குணமிலவே எண்குணத்தான்\nதாளை வணங்காத் தலை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Like senses stale that head is vain Which bows not to Eight-Virtued Divine",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 9",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 9",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0010",
+    "tamil": {
+      "text": "பிறவிப் பெருங்கடல் நீந்துவர் நீந்தார்\nஇறைவன் அடிசேரா தார்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The sea of births they alone swim Who clench His feet and cleave to Him",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "self-knowledge"
+    ],
+    "source_locator": "Kural 10",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 10",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0011",
+    "tamil": {
+      "text": "வான்நின்று உலகம் வழங்கி வருதலால்\nதான்அமிழ்தம் என்றுணரற் பாற்று.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The genial rain ambrosia call: The world but lasts while rain shall fall",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 11",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 11",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0012",
+    "tamil": {
+      "text": "துப்பார்க்குத் துப்பாய துப்பாக்கித் துப்பார்க்குத்\nதுப்பாய தூஉம் மழை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The rain begets the food we eat",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 12",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 12",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0013",
+    "tamil": {
+      "text": "விண்இன்று பொய்ப்பின் விரிநீர் வியனுலகத்து\nஉள்நின்று உடற்றும் பசி.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Let clouds their visits stay, and dearth Distresses all the sea-girt earth",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 13",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 13",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0014",
+    "tamil": {
+      "text": "ஏரின் உழாஅர் உழவர் புயல்என்னும்\nவாரி வளங்குன்றிக் கால்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Unless the fruitful shower descend, The ploughman's sacred toil must end",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 14",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 14",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0015",
+    "tamil": {
+      "text": "கெடுப்பதூஉம் கெட்டார்க்குச் சார்வாய்மற் றாங்கே\nஎடுப்பதூஉம் எல்லாம் மழை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Destruction it may sometimes pour But only rain can life restore",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 15",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 15",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0016",
+    "tamil": {
+      "text": "விசும்பின் துளிவீழின் அல்லால்மற் றாங்கே\nபசும்புல் தலைகாண்பு அரிது.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "No grassy blade its head will rear, If from the cloud no drop appear",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 16",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 16",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0017",
+    "tamil": {
+      "text": "நெடுங்கடலும் தன்நீர்மை குன்றும் தடிந்தெழிலி\nதான்நல்கா தாகி விடின்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The ocean's wealth will waste away, Except the cloud its stores repay",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 17",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 17",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0018",
+    "tamil": {
+      "text": "சிறப்பொடு பூசனை செல்லாது வானம்\nவறக்குமேல் வானோர்க்கும் ஈண்டு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The earth, beneath a barren sky, Would offerings for the gods deny",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 18",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 18",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0019",
+    "tamil": {
+      "text": "தானம் தவம்இரண்டும் தங்கா வியன்உலகம்\nவானம் வழங்கா தெனின்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Were heaven above to fail below Nor alms nor penance earth would show",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 19",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 19",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0020",
+    "tamil": {
+      "text": "நீர்இன்று அமையாது உலகெனின் யார்யார்க்கும்\nவான்இன்று அமையாது ஒழுக்கு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Water is life that comes from rain Sans rain our duties go in vain",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "learning-and-wisdom"
+    ],
+    "source_locator": "Kural 20",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 20",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0021",
+    "tamil": {
+      "text": "ஒழுக்கத்து நீத்தார் பெருமை விழுப்பத்து\nவேண்டும் பனுவல் துணிவு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "No merit can be held so high As theirs who sense and self deny",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 21",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 21",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0022",
+    "tamil": {
+      "text": "துறந்தார் பெருமை துணைக்கூறின் வையத்து\nஇறந்தாரை எண்ணிக்கொண் டற்று.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "To con ascetic glory here Is to count the dead upon the sphere",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 22",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 22",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0023",
+    "tamil": {
+      "text": "இருமை வகைதெரிந்து ஈண்டுஅறம் பூண்டார்\nபெருமை பிறங்கிற்று உலகு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "No lustre can with theirs compare Who know the right and virtue wear",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 23",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 23",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0024",
+    "tamil": {
+      "text": "உரனென்னும் தோட்டியான் ஓரைந்தும் காப்பான்\nவரனென்னும் வைப்பிற்கோர் வித்து.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "With hook of firmness to restrain The senses five, is heaven to gain",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 24",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 24",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0025",
+    "tamil": {
+      "text": "ஐந்தவித்தான் ஆற்றல் அகல்விசும்பு ளார்கோமான்\nஇந்திரனே சாலுங் கரி.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Indra himself has cause to say How great the power ascetics' sway",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 25",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 25",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0026",
+    "tamil": {
+      "text": "செயற்கரிய செய்வார் பெரியர் சிறியர்\nசெயற்கரிய செய்கலா தார்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The small the paths of ease pursue The great achieve things rare to do",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 26",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 26",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0027",
+    "tamil": {
+      "text": "சுவைஒளி ஊறுஓசை நாற்றமென ஐந்தின்\nவகைதெரிவான் கட்டே உலகு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "They gain the world, who grasp and tell Of taste, sight, hearing, touch and smell",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 27",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 27",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0028",
+    "tamil": {
+      "text": "நிறைமொழி மாந்தர் பெருமை நிலத்து\nமறைமொழி காட்டி விடும்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Full-worded men by what they say, Their greatness to the world display",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 28",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 28",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0029",
+    "tamil": {
+      "text": "குணமென்னும் குன்றேறி நின்றார் வெகுளி\nகணமேயும் காத்தல் அரிது.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Their wrath, who've climb'd the mount of good, Though transient, cannot be withstood",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 29",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 29",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0030",
+    "tamil": {
+      "text": "அந்தணர் என்போர் அறவோர்மற் றெவ்வுயிர்க்கும்\nசெந்தண்மை பூண்டொழுக லான்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "With gentle mercy towards all, The sage fulfils the vitue's call",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "truth-and-integrity"
+    ],
+    "source_locator": "Kural 30",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 30",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0031",
+    "tamil": {
+      "text": "சிறப்புஈனும் செல்வமும் ஈனும் அறத்தினூஉங்கு\nஆக்கம் எவனோ உயிர்க்கு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "From virtue weal and wealth outflow; What greater good can mankind know?",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 31",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 31",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0032",
+    "tamil": {
+      "text": "அறத்தினூஉங்கு ஆக்கமும் இல்லை அதனை\nமறத்தலின் ஊங்கில்லை கேடு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Virtue enhances joy and gain; Forsaking it is fall and pain",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 32",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 32",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0033",
+    "tamil": {
+      "text": "ஒல்லும் வகையான் அறவினை ஓவாதே\nசெல்லும்வாய் எல்லாஞ் செயல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Perform good deeds as much you can Always and everywhere, o man!",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 33",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 33",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0034",
+    "tamil": {
+      "text": "மனத்துக்கண் மாசிலன் ஆதல் அனைத்தறன்\nஆகுல நீர பிற.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "In spotless mind virtue is found And not in show and swelling sound",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 34",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 34",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0035",
+    "tamil": {
+      "text": "அழுக்காறு அவாவெகுளி இன்னாச்சொல் நான்கும்\nஇழுக்கா இயன்றது அறம்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Four ills eschew and virtue reach, Lust, anger, envy, evil-speech",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 35",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 35",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0036",
+    "tamil": {
+      "text": "அன்றறிவாம் என்னாது அறஞ்செய்க மற்றது\nபொன்றுங்கால் பொன்றாத் துணை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Do good enow; defer it not A deathless aid in death if sought",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 36",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 36",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0037",
+    "tamil": {
+      "text": "அறத்தாறு இதுவென வேண்டா சிவிகை\nபொறுத்தானோடு ஊர்ந்தான் இடை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Litter-bearer and rider say Without a word, the fortune's way",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 37",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 37",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0038",
+    "tamil": {
+      "text": "வீழ்நாள் படாஅமை நன்றாற்றின் அஃதொருவன்\nவாழ்நாள் வழியடைக்கும் கல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Like stones that block rebirth and pain Are doing good and good again",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 38",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 38",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0039",
+    "tamil": {
+      "text": "அறத்தான் வருவதே இன்பம் மற்றெல்லாம்\nபுறத்த புகழும் இல.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Weal flows only from virtue done The rest is rue and renown gone",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 39",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 39",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0040",
+    "tamil": {
+      "text": "செயற்பால தோரும் அறனே ஒருவற்கு\nஉயற்பால தோரும் பழி.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Worthy act is virtue done Vice is what we ought to shun",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "discipline-and-restraint"
+    ],
+    "source_locator": "Kural 40",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 40",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0041",
+    "tamil": {
+      "text": "இல்வாழ்வான் என்பான் இயல்புடைய மூவர்க்கும்\nநல்லாற்றின் நின்ற துணை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The ideal householder is he Who aids the natural orders there",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 41",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 41",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0042",
+    "tamil": {
+      "text": "துறந்தார்க்கும் துவ்வாதவர்க்கும் இறந்தார்க்கும்\nஇல்வாழ்வான் என்பான் துணை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "His help the monk and retired share, And celibate students are his care",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 42",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 42",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0043",
+    "tamil": {
+      "text": "தென்புலத்தார் தெய்வம் விருந்தொக்கல் தானென்றாங்கு\nஐம்புலத்தாறு ஓம்பல் தலை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "By dutiful householder's aid God, manes, kin, self and guests are served",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 43",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 43",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0044",
+    "tamil": {
+      "text": "பழியஞ்சிப் பாத்தூண் உடைத்தாயின் வாழ்க்கை\nவழியெஞ்சல் எஞ்ஞான்றும் இல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Sin he shuns and food he shares His home is bright and brighter fares",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 44",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 44",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0045",
+    "tamil": {
+      "text": "அன்பும் அறனும் உடைத்தாயின் இல்வாழ்க்கை\nபண்பும் பயனும் அது.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "In grace and gain the home excels, Where love with virtue sweetly dwells",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 45",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 45",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0046",
+    "tamil": {
+      "text": "அறத்தாற்றின் இல்வாழ்க்கை ஆற்றின் புறத்தாற்றில்\nபோஒய்ப் பெறுவ தெவன்?",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Who turns from righteous family To be a monk, what profits he?",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 46",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 46",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0047",
+    "tamil": {
+      "text": "இயல்பினான் இல்வாழ்க்கை வாழ்பவன் என்பான்\nமுயல்வாருள் எல்லாம் தலை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Of all who strive for bliss, the great Is he who leads the married state",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 47",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 47",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0048",
+    "tamil": {
+      "text": "ஆற்றின் ஒழுக்கி அறனிழுக்கா இல்வாழ்க்கை\nநோற்பாரின் நோன்மை உடைத்து.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Straight in virtue, right in living Make men brighter than monks praying",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 48",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 48",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0049",
+    "tamil": {
+      "text": "அறனெனப் பட்டதே இல்வாழ்க்கை அஃதும்\nபிறன்பழிப்ப தில்லாயின் நன்று.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Home-life and virtue, are the same; Which spotless monkhood too can claim",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 49",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 49",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0050",
+    "tamil": {
+      "text": "வையத்துள் வாழ்வாங்கு வாழ்பவன் வான்உறையும்\nதெய்வத்துள் வைக்கப் படும்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "He is a man of divine worth Who lives in ideal home on earth",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "compassion-and-kindness"
+    ],
+    "source_locator": "Kural 50",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 50",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0051",
+    "tamil": {
+      "text": "மனைக்தக்க மாண்புடையள் ஆகித்தற் கொண்டான்\nவளத்தக்காள் வாழ்க்கைத் துணை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "A good housewife befits the house, Spending with thrift the mate's resource",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 51",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 51",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0052",
+    "tamil": {
+      "text": "மனைமாட்சி இல்லாள்கண் இல்லாயின் வாழ்க்கை\nஎனைமாட்சித் தாயினும் இல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Bright is home when wife is chaste If not all greatness is but waste",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 52",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 52",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0053",
+    "tamil": {
+      "text": "இல்லதென் இல்லவள் மாண்பானால் உள்ளதென்\nஇல்லவள் மாணாக் கடை?",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "What is rare when wife is good What can be there when she is bad?",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 53",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 53",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0054",
+    "tamil": {
+      "text": "பெண்ணின் பெருந்தக்க யாவுள கற்பென்னும்\nதிண்மைஉண் டாகப் பெறின்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "What greater fortune is for men Than a constant chaste woman?",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 54",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 54",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0055",
+    "tamil": {
+      "text": "தெய்வம் தொழாஅள் கொழுநன் தொழுதெழுவாள்\nபெய்யெனப் பெய்யும் மழை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Her spouse before God who adores, Is like rain that at request pours",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 55",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 55",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0056",
+    "tamil": {
+      "text": "தற்காத்துத் தற்கொண்டாற் பேணித் தகைசான்ற\nசொற்காத்துச் சோர்விலாள் பெண்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The good wife guards herself from blame, She tends her spouse and brings him fame",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 56",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 56",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0057",
+    "tamil": {
+      "text": "சிறைகாக்கும் காப்பெவன் செய்யும் மகளிர்\nநிறைகாக்கும் காப்பே தலை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Of what avail are watch and ward? Their purity is women's guard",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 57",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 57",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0058",
+    "tamil": {
+      "text": "பெற்றாற் பெறின்பெறுவர் பெண்டிர் பெருஞ்சிறப்புப்\nபுத்தேளிர் வாழும் உலகு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Women who win their husbands' heart Shall flourish where the gods resort",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 58",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 58",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0059",
+    "tamil": {
+      "text": "புகழ்புரிந்த இல்லிலோர்க்கு இல்லை இகழ்வார்முன்\nஏறுபோல் பீடு நடை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "A cuckold has not the lion-like gait Before his detractors aright",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 59",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 59",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0060",
+    "tamil": {
+      "text": "மங்கலம் என்ப மனைமாட்சி மற்று அதன்\nநன்கலம் நன்மக்கட் பேறு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "An honest wife is home's delight And children good are jewels abright",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "courage-and-fear"
+    ],
+    "source_locator": "Kural 60",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 60",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0061",
+    "tamil": {
+      "text": "பெறுமவற்றுள் யாமறிவது இல்லை அறிவறிந்த\nமக்கட்பேறு அல்ல பிற.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The world no higher bliss bestows Than children virtuous and wise",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 61",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 61",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0062",
+    "tamil": {
+      "text": "எழுபிறப்பும் தீயவை தீண்டா பழிபிறங்காப்\nபண்புடை மக்கட் பெறின்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "No evil comes and no blemish; Noble sons bring all we wish",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 62",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 62",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0063",
+    "tamil": {
+      "text": "தம்பொருள் என்பதம் மக்கள் அவர்பொருள்\nதம்தம் வினையான் வரும்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Children are one's wealth indeed Their wealth is measured by their deed",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 63",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 63",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0064",
+    "tamil": {
+      "text": "அமிழ்தினும் ஆற்ற இனிதேதம் மக்கள்\nசிறுகை அளாவிய கூழ்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The food is more than nectar sweet In which one's children hands insert",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 64",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 64",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0065",
+    "tamil": {
+      "text": "மக்கள்மெய் தீண்டல் உடற்கின்பம் மற்றுஅவர்\nசொற்கேட்டல் இன்பம் செவிக்கு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Children's touch delights the body Sweet to ears are their words lovely",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 65",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 65",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0066",
+    "tamil": {
+      "text": "குழல்இனிது யாழ்இனிது என்பதம் மக்கள்\nமழலைச்சொல் கேளா தவர்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The flute and lute are sweet they say Deaf to baby's babble's lay!",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 66",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 66",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0067",
+    "tamil": {
+      "text": "தந்தை மகற்காற்றும் நன்றி அவையத்து\nமுந்தி இருப்பச் செயல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "A father's duty to his son is To seat him in front of the wise",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 67",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 67",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0068",
+    "tamil": {
+      "text": "தம்மின்தம் மக்கள் அறிவுடைமை மாநிலத்து\nமன்னுயிர்க் கெல்லாம் இனிது.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "With joy the hearts of parents swell To see their children themselves excel",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 68",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 68",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0069",
+    "tamil": {
+      "text": "ஈன்ற பொழுதின் பெரிதுவக்கும் தன்மகனைச்\nசான்றோன் எனக்கேட்ட தாய்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The mother, hearing her son's merit Delights more than when she begot",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 69",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 69",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0070",
+    "tamil": {
+      "text": "மகன்தந்தைக்கு ஆற்றும் உதவி இவன்தந்தை\nஎன்நோற்றான் கொல் எனும் சொல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The son to sire this word is debt \\\"What penance such a son begot!\\\"",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "patience-and-endurance"
+    ],
+    "source_locator": "Kural 70",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 70",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0071",
+    "tamil": {
+      "text": "அன்பிற்கும் உண்டோ அடைக்குந்தாழ் ஆர்வலர்\nபுன்கணீர் பூசல் தரும்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "What bolt can bar true love in fact The tricking tears reveal the heart",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 71",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 71",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0072",
+    "tamil": {
+      "text": "அன்பிலார் எல்லாம் தமக்குரியர் அன்புடையார்\nஎன்பும் உரியர் பிறர்க்கு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "To selves belong the loveless ones; To oth'rs the loving e'en to bones",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 72",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 72",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0073",
+    "tamil": {
+      "text": "அன்போடு இயைந்த வழக்கென்ப ஆருயிர்க்கு\nஎன்போடு இயைந்த தொடர்பு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Soul is encased in frame of bone To taste the life of love alone",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 73",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 73",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0074",
+    "tamil": {
+      "text": "அன்புஈனும் ஆர்வம் உடைமை அதுஈனும்\nநண்பு என்னும் நாடாச் சிறப்பு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Love yields aspiration and thence Friendship springs up in excellence",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 74",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 74",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0075",
+    "tamil": {
+      "text": "அன்புற்று அமர்ந்த வழக்கென்ப வையகத்து\nஇன்புற்றார் எய்தும் சிறப்பு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The crowning joy of home life flows From peaceful psychic love always",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 75",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 75",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0076",
+    "tamil": {
+      "text": "அறத்திற்கே அன்புசார் பென்ப அறியார்\nமறத்திற்கும் அஃதே துணை.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "\\\"Love is virtue's friend\\\" say know-nots It helps us against evil plots",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 76",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 76",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0077",
+    "tamil": {
+      "text": "என்பி லதனை வெயில்போலக் காயுமே\nஅன்பி லதனை அறம்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Justice burns the loveless form Like solar blaze the boneless worm",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 77",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 77",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0078",
+    "tamil": {
+      "text": "அன்பகத் தில்லா உயிர்வாழ்க்கை வன்பாற்கண்\nவற்றல் மரந்தளிர்த் தற்று.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Life bereft of love is gloom Can sapless tree in desert bloom?",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 78",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 78",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0079",
+    "tamil": {
+      "text": "புறத்துறுப் பெல்லாம் எவன்செய்யும் யாக்கை\nஅகத்துறுப்பு அன்பி லவர்க்கு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Love is the heart which limbs must move, Or vain the outer parts will prove",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 79",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 79",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0080",
+    "tamil": {
+      "text": "அன்பின் வழியது உயிர்நிலை அஃதிலார்க்கு\nஎன்புதோல் போர்த்த உடம்பு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The seat of life is love alone; Or beings are but skin and bone!",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "friendship-and-community"
+    ],
+    "source_locator": "Kural 80",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 80",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0081",
+    "tamil": {
+      "text": "இருந்தோம்பி இல்வாழ்வ தெல்லாம் விருந்தோம்பி\nவேளாண்மை செய்தற் பொருட்டு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Men set up home, toil and earn To tend the guests and do good turn",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 81",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 81",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0082",
+    "tamil": {
+      "text": "விருந்து புறத்ததாத் தானுண்டல் சாவா\nமருந்தெனினும் வேண் டற்பாற் றன்று.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "To keep out guests cannot be good Albeit you eat nector-like food",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 82",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 82",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0083",
+    "tamil": {
+      "text": "வருவிருந்து வைகலும் ஓம்புவான் வாழ்க்கை\nபருவந்து பாழ்படுதல் இன்று.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Who tends his guests day in and out His life in want never wears out",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 83",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 83",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0084",
+    "tamil": {
+      "text": "அகனமர்ந்து செய்யாள் உறையும் முகனமர்ந்து\nநல்விருந்து ஓம்புவான் இல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The goddess of wealth will gladly rest Where smiles welcome the worthy guest",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 84",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 84",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0085",
+    "tamil": {
+      "text": "வித்தும் இடல்வேண்டும் கொல்லோ விருந்தோம்பி\nமிச்சில் மிசைவான் புலம்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Should his field be sown who first Feeds the guests and eats the rest?",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 85",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 85",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0086",
+    "tamil": {
+      "text": "செல்விருந்து ஓம்பி வருவிருந்து பார்த்திருப்பான்\nநல்வருந்து வானத் தவர்க்கு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Who tends a guest and looks for next Is a welcome guest in heaven's feast",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 86",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 86",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0087",
+    "tamil": {
+      "text": "இனைத்துணைத் தென்பதொன் றில்லை விருந்தின்\nதுணைத்துணை வேள்விப் பயன்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Worth of the guest of quality Is worth of hospitality",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 87",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 87",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0088",
+    "tamil": {
+      "text": "பரிந்தோம்பிப் பற்றற்றேம் என்பர் விருந்தோம்பி\nவேள்வி தலைப்படா தார்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Who loathe guest-service one day cry: \\\"We toil and store; but life is dry\\\"",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 88",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 88",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0089",
+    "tamil": {
+      "text": "உடைமையுள் இன்மை விருந்தோம்பல் ஓம்பா\nமடமை மடவார்கண் உண்டு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The man of wealth is poor indeed Whose folly fails the guest to feed",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 89",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 89",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0090",
+    "tamil": {
+      "text": "மோப்பக் குழையும் அனிச்சம் முகந்திரிந்து\nநோக்கக் குநழ்யும் விருந்து.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Anicham smelt withers: like that A wry-faced look withers the guest",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "work-craft-and-duty"
+    ],
+    "source_locator": "Kural 90",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 90",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0091",
+    "tamil": {
+      "text": "இன்சொலால் ஈரம் அளைஇப் படிறுஇலவாம்\nசெம்பொருள் கண்டார்வாய்ச் சொல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The words of Seers are lovely sweet Merciful and free from deceit",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 91",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 91",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0092",
+    "tamil": {
+      "text": "அகன்அமர்ந்து ஈதலின் நன்றே முகனமர்ந்து\nஇன்சொலன் ஆகப் பெறின்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Sweet words from smiling lips dispense More joys than heart's beneficence",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 92",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 92",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0093",
+    "tamil": {
+      "text": "முகத்தான் அமர்ந்து இனிதுநோக்கி அகத்தானாம்\nஇன்சொ லினதே அறம்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Calm face, sweet look, kind words from heart Such is the gracious virtue's part",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 93",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 93",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0094",
+    "tamil": {
+      "text": "துன்புறூஉம் துவ்வாமை இல்லாகும் யார்மாட்டும்\nஇன்புறூஉம் இன்சொ லவர்க்கு.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Whose loving words delight each one The woe of want from them is gone",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 94",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 94",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0095",
+    "tamil": {
+      "text": "பணிவுடையன் இன்சொலன் ஆதல் ஒருவற்கு\nஅணியல்ல மற்றுப் பிற.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "To be humble and sweet words speak No other jewel do wise men seek",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 95",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 95",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0096",
+    "tamil": {
+      "text": "அல்லவை தேய அறம்பெருகும் நல்லவை\nநாடி இனிய சொலின்",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "His sins vanish, his virtues grow Whose fruitful words with sweetness flow",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 96",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 96",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0097",
+    "tamil": {
+      "text": "நயன்ஈன்று நன்றி பயக்கும் பயன்ஈன்று\nபண்பின் தலைப்பிரியாச் சொல்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "The fruitful courteous kindly words Lead to goodness and graceful deeds",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 97",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 97",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0098",
+    "tamil": {
+      "text": "சிறுமையுவு நீங்கிய இன்சொல் மறுமையும்\nஇம்மையும் இன்பம் தரும்.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Kind words free from meanness delight This life on earth and life the next",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 98",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 98",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0099",
+    "tamil": {
+      "text": "இன்சொல் இனிதீன்றல் காண்பான் எவன்கொலோ\nவன்சொல் வழங்கு வது?",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Who sees the sweets of sweetness here To use harsh words how can he dare?",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 99",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 99",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  },
+  {
+    "id": "pm-tk-0100",
+    "tamil": {
+      "text": "இனிய உளவாக இன்னாத கூறல்\nகனிஇருப்பக் காய்கவர்ந் தற்று.",
+      "script": "Tamil"
+    },
+    "english": {
+      "text": "Leaving ripe fruits the raw he eats Who speaks harsh words when sweet word suits",
+      "type": "source-published",
+      "translator": "Kaviyogi Maharishi Shuddhananda Bharatiyar (credited in the Project Madurai bilingual etext)"
+    },
+    "work": {
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "era": "Classical Tamil",
+      "genre": "Ethical literature"
+    },
+    "themes": [
+      "desire-and-non-attachment"
+    ],
+    "source_locator": "Kural 100",
+    "editorial_summary": "Source-published bilingual quote; editorial interpretation pending human review.",
+    "provenance": {
+      "provider": "Project Madurai bilingual etext",
+      "locator": "Thirukkural, Kural 100",
+      "url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "translation_source_url": "https://github.com/crrajaguru/thirukkural/blob/master/lib/es5/thirukkural/data/thirukkural.json",
+      "license": "MIT (source dataset package; retain copyright and licence)",
+      "citation": "Project Madurai, Thirukkural bilingual etext; dataset cross-check: @crrajaguru/thirukkural, MIT licence.",
+      "last_verified_at": "2026-09-13T00:00:00Z"
+    },
+    "review": {
+      "status": "draft",
+      "confidence": "medium",
+      "version": 1
+    },
+    "translation_review": {
+      "status": "source-published-pending-human-review",
+      "ai_assisted": false,
+      "human_tamil_reviewer": null,
+      "human_english_reviewer": null,
+      "production_approved": false
+    }
+  }
+]
