@@ -2,7 +2,7 @@
 
 ## @crrajaguru/thirukkural dataset
 
-The 1,330 quote records in `data/quotes-1330.json` were normalised from the machine-readable data in [`@crrajaguru/thirukkural`](https://github.com/crrajaguru/thirukkural), which is published under the MIT License. The dataset credits the English translation to Kaviyogi Maharishi Shuddhananda Bharatiyar and cross-references the Project Madurai bilingual etext.
+The 1,330 quote records in `data/quotes-1330.json` were normalised from the machine-readable data in [`@crrajaguru/thirukkural`](https://github.com/crrajaguru/thirukkural), which is published under the MIT License. The dataset credits the English translation to Kaviyogi Maharishi Shuddhananda Bharatiyar and cross-references the Project Madurai bilingual etext. Its `explanation` field is used as the easier English view; it is kept separate from the source-published wording so readers can switch between them.
 
 Repository: https://github.com/crrajaguru/thirukkural
 Canonical literary source: https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html
