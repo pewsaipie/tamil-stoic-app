@@ -9,7 +9,7 @@ const quotes = JSON.parse(fs.readFileSync(path.join(root, 'data/quotes-1330.json
 const port = Number(process.env.PORT || 8888);
 const mime = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.webmanifest':'application/manifest+json', '.png':'image/png', '.jpg':'image/jpeg', '.svg':'image/svg+xml' };
 const headers = { 'Access-Control-Allow-Origin':'*', 'Access-Control-Allow-Methods':'GET, OPTIONS', 'Access-Control-Allow-Headers':'Content-Type', 'Cache-Control':'no-store' };
-const send = (res, status, body, type='application/json; charset=utf-8') => { res.writeHead(status, {...headers, 'Content-Type':type}); res.end(typeof body === 'string' ? body : JSON.stringify(body)); };
+const send = (res, status, body, type='application/json; charset=utf-8') => { res.writeHead(status, {...headers, 'Content-Type':type}); if (Buffer.isBuffer(body)) return res.end(body); res.end(typeof body === 'string' ? body : JSON.stringify(body)); };
 const serialize = quote => ({...quote, translation_rights:{owner:'Original translator credited in the cited source', status:'source-published-pending-rights-review', human_reviewed:false, ai_assisted:false}});
 function api(res, url) {
   if (url.pathname === '/api/health') return send(res, 200, {status:'ok', service:'tamil-stoic-local-api', version:'1.0'});
