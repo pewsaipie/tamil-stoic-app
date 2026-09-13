@@ -32,13 +32,14 @@ function rankedQuotes() { return [...quotes].sort((a,b) => scoreQuote(b) - score
 function setApiStatus(kind, text) { const status = $('.api-status'); status.className = `api-status ${kind}`; $('#status-text').textContent = text; }
 async function loadQuotes() {
   try {
-    const response = await fetch('/api/quotes?limit=50');
-    if (!response.ok) throw new Error(`API ${response.status}`);
-    const payload = await response.json();
-    quotes = Array.isArray(payload.data) ? payload.data : [];
+    const responses = await Promise.all([fetch('/api/quotes?limit=50&offset=0'), fetch('/api/quotes?limit=50&offset=50')]);
+    if (responses.some(response => !response.ok)) throw new Error(`API ${responses.find(response => !response.ok)?.status}`);
+    const payloads = await Promise.all(responses.map(response => response.json()));
+    quotes = payloads.flatMap(payload => Array.isArray(payload.data) ? payload.data : []);
     if (!quotes.length) throw new Error('No published quotes');
-    setApiStatus('ok', payload.meta?.corpus_status === 'draft-seed' ? 'Draft quote library connected' : 'Quote library connected');
-    $('#feed-count').textContent = quotes.length;
+    const corpusStatus = payloads[0].meta?.corpus_status || '';
+    setApiStatus('ok', corpusStatus.includes('pending') ? 'Cited draft library connected' : 'Quote library connected');
+    $('#feed-count').textContent = payloads[0].meta?.total ?? quotes.length;
     $('#result-count').textContent = `${quotes.length} passages`;
     renderRecommendation(true);
     renderResults();
