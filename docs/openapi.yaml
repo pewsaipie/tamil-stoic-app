@@ -1,0 +1,220 @@
+openapi: 3.1.0
+info:
+  title: Tamil Stoic Quote API
+  version: 1.0.0
+  description: >-
+    Read-only, curated bilingual quote catalogue. Published records retain
+    Project Madurai provenance and translation credits. This contract does not
+    grant rights to source texts or translations.
+servers:
+  - url: https://api.tamilstoic.app/v1
+    description: Production (planned)
+tags:
+  - name: Quotes
+  - name: Catalogue
+paths:
+  /quotes:
+    get:
+      tags: [Quotes]
+      summary: Discover published quotes
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+        - in: query
+          name: category
+          schema: { type: string, pattern: '^[a-z0-9-]+$' }
+        - in: query
+          name: work
+          schema: { type: string }
+        - in: query
+          name: author
+          schema: { type: string }
+        - in: query
+          name: q
+          description: Full-text search in Tamil and English.
+          schema: { type: string, minLength: 2, maxLength: 160 }
+        - in: query
+          name: language
+          schema: { type: string, enum: [ta, en, ta,en] }
+      responses:
+        '200':
+          description: A cursor-paginated list of published quotes.
+          headers:
+            ETag: { $ref: '#/components/headers/ETag' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/QuoteListResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /quotes/{quoteId}:
+    get:
+      tags: [Quotes]
+      summary: Get one published quote and provenance
+      parameters:
+        - $ref: '#/components/parameters/QuoteId'
+      responses:
+        '200':
+          description: Quote detail.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data: { $ref: '#/components/schemas/Quote' }
+                  meta: { $ref: '#/components/schemas/Meta' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /works:
+    get:
+      tags: [Catalogue]
+      summary: List works represented in the published catalogue
+      responses:
+        '200':
+          description: Works.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Work' }
+                  meta: { $ref: '#/components/schemas/Meta' }
+  /categories:
+    get:
+      tags: [Catalogue]
+      summary: List the versioned editorial taxonomy
+      responses:
+        '200':
+          description: Categories.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Category' }
+                  meta: { $ref: '#/components/schemas/Meta' }
+components:
+  parameters:
+    QuoteId:
+      in: path
+      name: quoteId
+      required: true
+      schema: { type: string, pattern: '^pm-[0-9]{6}$' }
+    Limit:
+      in: query
+      name: limit
+      schema: { type: integer, minimum: 1, maximum: 50, default: 20 }
+    Cursor:
+      in: query
+      name: cursor
+      schema: { type: string, maxLength: 512 }
+  headers:
+    ETag:
+      schema: { type: string }
+      description: Use with If-None-Match for cache validation.
+  responses:
+    BadRequest:
+      description: Invalid query.
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+    NotFound:
+      description: Resource not found or not published.
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+    RateLimited:
+      description: Too many requests.
+      headers:
+        Retry-After: { schema: { type: integer } }
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+  schemas:
+    Quote:
+      type: object
+      required: [id, tamil, english, work, themes, provenance, review]
+      properties:
+        id: { type: string, example: pm-000184 }
+        slug: { type: string }
+        tamil:
+          type: object
+          required: [text, script]
+          properties:
+            text: { type: string, minLength: 1 }
+            script: { type: string, const: Tamil }
+            transliteration: { type: [string, 'null'] }
+        english:
+          type: object
+          required: [text, type, translator]
+          properties:
+            text: { type: string, minLength: 1 }
+            type: { type: string, enum: [literal, literary, explanatory] }
+            translator: { type: string }
+        work: { $ref: '#/components/schemas/Work' }
+        themes:
+          type: array
+          minItems: 1
+          items: { type: string }
+        editorial_summary: { type: string }
+        reflection_prompt: { type: string }
+        provenance:
+          type: object
+          required: [provider, locator, url, license, last_verified_at]
+          properties:
+            provider: { type: string, const: Project Madurai }
+            locator: { type: string }
+            url: { type: string, format: uri }
+            license: { type: string }
+            last_verified_at: { type: string, format: date-time }
+        review:
+          type: object
+          required: [status, confidence, version]
+          properties:
+            status: { type: string, const: published }
+            confidence: { type: string, enum: [high, medium] }
+            version: { type: integer, minimum: 1 }
+    QuoteListResponse:
+      type: object
+      required: [data, page, meta]
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Quote' } }
+        page:
+          type: object
+          required: [has_more]
+          properties:
+            next_cursor: { type: [string, 'null'] }
+            has_more: { type: boolean }
+        meta: { $ref: '#/components/schemas/Meta' }
+    Work:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string }
+        author: { type: [string, 'null'] }
+        era: { type: [string, 'null'] }
+        genre: { type: [string, 'null'] }
+    Category:
+      type: object
+      required: [id, name, description]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        quote_count: { type: integer, minimum: 0 }
+    Meta:
+      type: object
+      required: [api_version, generated_at]
+      properties:
+        api_version: { type: string }
+        generated_at: { type: string, format: date-time }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, request_id]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            request_id: { type: string }
