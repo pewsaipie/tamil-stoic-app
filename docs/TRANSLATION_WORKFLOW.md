@@ -45,6 +45,17 @@ A draft is not a production quote. It must not be presented as an approved trans
 }
 ```
 
+## Private 500-draft batch
+
+The repository includes `scripts/translate-drafts.mjs` for a private batch run. It requires a source JSON file with at least 500 records containing `id` and `tamil_text`, plus an OpenAI-compatible API key. It writes to the ignored `data/drafts/` directory and never changes the public API:
+
+```bash
+OPENAI_API_KEY=... OPENAI_MODEL=gpt-4o-mini \
+  npm run translate:drafts -- source-passages.json data/drafts/quotes-draft-500.json
+```
+
+The output is explicitly marked `status: draft`, `ai_assisted: true`, and `production_approved: false`. API keys must be supplied through the environment and must never be committed. The script does not download or copy third-party English translations; it translates the supplied Tamil source passage itself. A verified Project Madurai source export must be supplied before running it.
+
 ## Human review gate
 
 1. A Tamil reviewer checks segmentation, spelling, grammar, cultural meaning, ambiguity, and omissions against the source.

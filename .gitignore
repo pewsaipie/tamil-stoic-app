@@ -1,2 +1,6 @@
 # Local Netlify folder
 .netlify
+
+# Private AI translation drafts; never publish these directly
+data/drafts/
+*.draft.json
