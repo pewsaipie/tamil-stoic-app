@@ -75,6 +75,16 @@ const headers = {
   'Cache-Control': 'public, max-age=60, stale-while-revalidate=300'
 };
 const response = (statusCode, body) => ({ statusCode, headers, body: JSON.stringify(body) });
+const serializeQuote = (quote) => ({
+  ...quote,
+  translation_rights: {
+    owner: 'Tamil Stoic editorial team',
+    status: 'seed-demo',
+    human_reviewed: false,
+    ai_assisted: false,
+    note: 'Replace with a separately licensed, human-proofread translation before production corpus release.'
+  }
+});
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
@@ -83,7 +93,7 @@ exports.handler = async (event) => {
   const id = params.id || event.path.split('/').pop();
   if (id && id !== 'quotes') {
     const quote = QUOTES.find((item) => item.id === id);
-    return quote ? response(200, { data: quote, meta: { api_version: '1.0', generated_at: new Date().toISOString() } }) : response(404, { error: { code: 'NOT_FOUND', message: 'Published quote not found.', request_id: event.headers?.['x-nf-request-id'] || 'local' } });
+    return quote ? response(200, { data: serializeQuote(quote), meta: { api_version: '1.0', generated_at: new Date().toISOString() } }) : response(404, { error: { code: 'NOT_FOUND', message: 'Published quote not found.', request_id: event.headers?.['x-nf-request-id'] || 'local' } });
   }
   const query = String(params.q || '').toLowerCase().trim();
   const category = String(params.category || '').toLowerCase().trim();
@@ -96,5 +106,5 @@ exports.handler = async (event) => {
   const offset = Math.max(Number(params.offset) || 0, 0);
   const page = filtered.slice(offset, offset + limit);
   const nextOffset = offset + limit < filtered.length ? offset + limit : null;
-  return response(200, { data: page, page: { next_cursor: nextOffset === null ? null : String(nextOffset), has_more: nextOffset !== null }, meta: { api_version: '1.0', total: filtered.length, generated_at: new Date().toISOString() } });
+  return response(200, { data: page.map(serializeQuote), page: { next_cursor: nextOffset === null ? null : String(nextOffset), has_more: nextOffset !== null }, meta: { api_version: '1.0', total: filtered.length, generated_at: new Date().toISOString() } });
 };
