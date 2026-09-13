@@ -1,0 +1,36 @@
+{
+  "corpus_id": "tamil-stoic-v1-draft",
+  "status": "source-selection-approved-translation-pending",
+  "target_count": 1730,
+  "language": {"source": "ta", "translation": "en"},
+  "source_provider": "Project Madurai",
+  "translation_owner": "Tamil Stoic editorial team",
+  "works": [
+    {
+      "work_id": "thirukkural",
+      "title": "திருக்குறள் / Thirukkural",
+      "author": "Thiruvalluvar",
+      "expected_passages": 1330,
+      "source_url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0017.html",
+      "source_locator": "Kural 1–1330",
+      "source_notes": "Tamil source selection only. Existing English text at this URL is not being copied into Tamil Stoic."
+    },
+    {
+      "work_id": "naladiyar",
+      "title": "நாலடியார் / Naladiyar",
+      "author": "Jain and Tamil poet tradition",
+      "expected_passages": 400,
+      "source_url": "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0711.html",
+      "source_locator": "Verses 1–400",
+      "source_notes": "Tamil source selection only. Any English translation in the source file requires separate rights review and will not be treated as the Tamil Stoic translation."
+    }
+  ],
+  "translation_policy": {
+    "drafts_allowed": true,
+    "production_allowed": false,
+    "ai_assistance_allowed": true,
+    "human_tamil_review_required": true,
+    "human_english_review_required": true,
+    "required_status_for_api_release": "approved"
+  }
+}

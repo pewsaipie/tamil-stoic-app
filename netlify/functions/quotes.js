@@ -8,7 +8,7 @@ const QUOTES = [
     editorial_summary: 'A reflection on meeting pleasure and pain with an even mind.',
     reflection_prompt: 'Where could you practice steadiness today?',
     provenance: { provider: 'Project Madurai', locator: 'Thirukkural, Kural 629', url: 'https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html', license: 'Verify source and translation terms before production use', last_verified_at: '2026-09-13T00:00:00Z' },
-    review: { status: 'published', confidence: 'medium', version: 1 }
+    review: { status: 'draft', confidence: 'medium', version: 1 }
   },
   {
     id: 'pm-000621',
@@ -19,7 +19,7 @@ const QUOTES = [
     editorial_summary: 'Courage can change our relationship with difficulty before it changes the difficulty itself.',
     reflection_prompt: 'What would a brave response look like in one small moment?',
     provenance: { provider: 'Project Madurai', locator: 'Thirukkural, Kural 621', url: 'https://www.projectmadurai.org/', license: 'Verify source and translation terms before production use', last_verified_at: '2026-09-13T00:00:00Z' },
-    review: { status: 'published', confidence: 'medium', version: 1 }
+    review: { status: 'draft', confidence: 'medium', version: 1 }
   },
   {
     id: 'pm-000467',
@@ -30,7 +30,7 @@ const QUOTES = [
     editorial_summary: 'Deliberation belongs before action, not as regret after it.',
     reflection_prompt: 'What deserves ten quiet seconds of thought before you act?',
     provenance: { provider: 'Project Madurai', locator: 'Thirukkural, Kural 467', url: 'https://www.projectmadurai.org/', license: 'Verify source and translation terms before production use', last_verified_at: '2026-09-13T00:00:00Z' },
-    review: { status: 'published', confidence: 'medium', version: 1 }
+    review: { status: 'draft', confidence: 'medium', version: 1 }
   },
   {
     id: 'pm-000039',
@@ -41,7 +41,7 @@ const QUOTES = [
     editorial_summary: 'A good life is measured by the character behind an action, not its applause.',
     reflection_prompt: 'Which good action would still matter if nobody saw it?',
     provenance: { provider: 'Project Madurai', locator: 'Thirukkural, Kural 39', url: 'https://www.projectmadurai.org/', license: 'Verify source and translation terms before production use', last_verified_at: '2026-09-13T00:00:00Z' },
-    review: { status: 'published', confidence: 'medium', version: 1 }
+    review: { status: 'draft', confidence: 'medium', version: 1 }
   },
   {
     id: 'pm-000192',
@@ -52,7 +52,7 @@ const QUOTES = [
     editorial_summary: 'A radical widening of belonging beyond one home or one group.',
     reflection_prompt: 'Where can you make someone feel they belong today?',
     provenance: { provider: 'Project Madurai', locator: 'Purananuru, poem 192', url: 'https://www.projectmadurai.org/', license: 'Verify source and translation terms before production use', last_verified_at: '2026-09-13T00:00:00Z' },
-    review: { status: 'published', confidence: 'medium', version: 1 }
+    review: { status: 'draft', confidence: 'medium', version: 1 }
   },
   {
     id: 'pm-000428',
@@ -63,7 +63,7 @@ const QUOTES = [
     editorial_summary: 'Wisdom distinguishes courage from carelessness.',
     reflection_prompt: 'What deserves your attention, and what only borrows it?',
     provenance: { provider: 'Project Madurai', locator: 'Thirukkural, Kural 428', url: 'https://www.projectmadurai.org/', license: 'Verify source and translation terms before production use', last_verified_at: '2026-09-13T00:00:00Z' },
-    review: { status: 'published', confidence: 'medium', version: 1 }
+    review: { status: 'draft', confidence: 'medium', version: 1 }
   }
 ];
 
@@ -93,7 +93,7 @@ exports.handler = async (event) => {
   const id = params.id || event.path.split('/').pop();
   if (id && id !== 'quotes') {
     const quote = QUOTES.find((item) => item.id === id);
-    return quote ? response(200, { data: serializeQuote(quote), meta: { api_version: '1.0', generated_at: new Date().toISOString() } }) : response(404, { error: { code: 'NOT_FOUND', message: 'Published quote not found.', request_id: event.headers?.['x-nf-request-id'] || 'local' } });
+    return quote ? response(200, { data: serializeQuote(quote), meta: { api_version: '1.0', corpus_status: 'draft-seed', generated_at: new Date().toISOString() } }) : response(404, { error: { code: 'NOT_FOUND', message: 'Published quote not found.', request_id: event.headers?.['x-nf-request-id'] || 'local' } });
   }
   const query = String(params.q || '').toLowerCase().trim();
   const category = String(params.category || '').toLowerCase().trim();
@@ -106,5 +106,5 @@ exports.handler = async (event) => {
   const offset = Math.max(Number(params.offset) || 0, 0);
   const page = filtered.slice(offset, offset + limit);
   const nextOffset = offset + limit < filtered.length ? offset + limit : null;
-  return response(200, { data: page.map(serializeQuote), page: { next_cursor: nextOffset === null ? null : String(nextOffset), has_more: nextOffset !== null }, meta: { api_version: '1.0', total: filtered.length, generated_at: new Date().toISOString() } });
+  return response(200, { data: page.map(serializeQuote), page: { next_cursor: nextOffset === null ? null : String(nextOffset), has_more: nextOffset !== null }, meta: { api_version: '1.0', corpus_status: 'draft-seed', total: filtered.length, generated_at: new Date().toISOString() } });
 };

@@ -37,7 +37,7 @@ async function loadQuotes() {
     const payload = await response.json();
     quotes = Array.isArray(payload.data) ? payload.data : [];
     if (!quotes.length) throw new Error('No published quotes');
-    setApiStatus('ok', 'Quote library connected');
+    setApiStatus('ok', payload.meta?.corpus_status === 'draft-seed' ? 'Draft quote library connected' : 'Quote library connected');
     $('#feed-count').textContent = quotes.length;
     $('#result-count').textContent = `${quotes.length} passages`;
     renderRecommendation(true);
