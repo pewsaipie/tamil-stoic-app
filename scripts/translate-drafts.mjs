@@ -12,12 +12,14 @@ if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is required. Th
 const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 const base = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
 const source = JSON.parse(await fs.readFile(inputPath, 'utf8'));
-if (!Array.isArray(source) || source.length < 500) throw new Error(`Input must contain at least 500 Tamil passages; received ${source?.length ?? 0}.`);
+if (!Array.isArray(source) || source.length < 500) throw new Error(`Input must contain at least 500 bounded Tamil quote records; received ${source?.length ?? 0}.`);
 const passages = source.slice(0, 500);
 const output = [];
 
 async function translate(item, attempt = 0) {
-  const prompt = `Translate this Tamil literary passage into clear, faithful English. This is a private draft for human review, not a final translation. Preserve ambiguity and imagery; do not add commentary. Return JSON with only an english_text string and a short translator_note string.\n\nTamil source:\n${item.tamil_text}`;
+  const tamil = item.tamil_text || item.quote_text;
+  if (!tamil) throw new Error(`Missing tamil_text or quote_text for ${item.id}`);
+  const prompt = `Translate this bounded Tamil literary quote into clear, faithful English. This is a private draft for human review, not a final translation. Preserve ambiguity, imagery, register, and line meaning; do not add commentary to the translation. Return JSON with only an english_text string and a short translator_note string.\n\nTamil quote:\n${tamil}`;
   const res = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` }, body: JSON.stringify({ model, temperature: 0.2, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You are a careful Tamil-to-English literary translation assistant. Never claim human approval.' }, { role: 'user', content: prompt }] }) });
   if (!res.ok) { if (attempt < 3) { await new Promise(r => setTimeout(r, 1000 * (attempt + 1))); return translate(item, attempt + 1); } throw new Error(`Translation request failed for ${item.id}: ${res.status} ${await res.text()}`); }
   const body = await res.json();

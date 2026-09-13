@@ -2,7 +2,7 @@
 
 ## Approved v1 scope
 
-The first corpus target is **1,730 passages**:
+The first corpus target is **1,730 quote records**, created by selecting bounded passages from Project Madurai:
 
 - 1,330 Thirukkural couplets
 - 400 Naladiyar verses
@@ -10,6 +10,22 @@ The first corpus target is **1,730 passages**:
 The Tamil source is selected from Project Madurai. Existing English text found on Project Madurai pages is **not automatically reused**. Tamil Stoic translations are a separate editorial layer.
 
 See `data/corpus-manifest.json` for the source URLs, locators, count, and status.
+
+## Passage → quote → translation
+
+The content pipeline is explicitly:
+
+```text
+Project Madurai Tamil passage
+→ bounded quote (couplet/verse with stable locator)
+→ Tamil quote record with source attribution
+→ AI-assisted English draft
+→ human Tamil review
+→ human English review
+→ production approval
+```
+
+A passage is not automatically a quote. Editors must choose a complete, meaningful unit and preserve its original line breaks. Each quote receives its own stable ID and source locator so that the English draft can always be checked against the exact Tamil text.
 
 ## Draft status
 
@@ -47,7 +63,7 @@ A draft is not a production quote. It must not be presented as an approved trans
 
 ## Private 500-draft batch
 
-The repository includes `scripts/translate-drafts.mjs` for a private batch run. It requires a source JSON file with at least 500 records containing `id` and `tamil_text`, plus an OpenAI-compatible API key. It writes to the ignored `data/drafts/` directory and never changes the public API:
+The repository includes `scripts/translate-drafts.mjs` for a private batch run. It requires a source JSON file with at least 500 bounded quote records containing `id` and `tamil_text`, plus an OpenAI-compatible API key. It writes to the ignored `data/drafts/` directory and never changes the public API:
 
 ```bash
 OPENAI_API_KEY=... OPENAI_MODEL=gpt-4o-mini \
