@@ -1,0 +1,16 @@
+{
+  "name": "Tamil Stoic",
+  "short_name": "Tamil Stoic",
+  "description": "A calm, bilingual reader for Tamil wisdom and its English translations.",
+  "start_url": "/#feed",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f2eb",
+  "theme_color": "#516a57",
+  "lang": "en-IN",
+  "categories": ["education", "books", "lifestyle"],
+  "icons": [
+    {"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
