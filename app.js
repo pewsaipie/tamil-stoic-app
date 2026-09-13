@@ -51,3 +51,27 @@ $('#download-library').addEventListener('click',()=>{const blob=new Blob(['BEGIN
 
 // Set a human-readable current date while preserving the designed Chennai header tone.
 const now=new Date();if(!Number.isNaN(now.getTime()))$('#date-greeting').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+// Production data path: Netlify serves this from /api/quotes. The static card remains
+// useful during local Python previews, while a deployed site hydrates from the API.
+async function hydrateTodayFromApi(){
+  try{
+    const result=await fetch('/api/quotes?limit=1');
+    if(!result.ok)return;
+    const payload=await result.json();
+    const quote=payload.data?.[0];
+    if(!quote)return;
+    const card=$('#main-quote');
+    const tamil=card.querySelector('.tamil-line');
+    const english=card.querySelector('.english-line');
+    const source=card.querySelector('.source-pill');
+    const author=card.querySelector('.quote-meta>span:first-child');
+    const locator=card.querySelector('.quote-meta>span:nth-child(2)');
+    tamil.textContent=quote.tamil.text;
+    english.textContent=`“${quote.english.text}”`;
+    source.textContent=`${quote.work.title} · ${quote.provenance.locator.split(', ').pop()}`;
+    author.innerHTML=`<i class="tiny-avatar">க</i> ${quote.work.author}`;
+    locator.textContent=quote.work.genre;
+  }catch(error){ console.info('Using the bundled preview quote until the API is available.',error.message); }
+}
+hydrateTodayFromApi();
