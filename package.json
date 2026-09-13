@@ -5,6 +5,7 @@
   "description": "Tamil Stoic bilingual wisdom app and Project Madurai quote API",
   "scripts": {
     "dev": "netlify dev",
+    "dev:local": "node local-server.mjs",
     "serve": "python3 -m http.server 4173 --bind 0.0.0.0",
     "validate:corpus": "node scripts/validate-corpus.mjs"
   },
