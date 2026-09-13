@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f0e8" />
+  <title>Tamil Stoic — Begin with one true thing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Tamil Stoic home"><span class="brand-mark">✦</span><span>Tamil<br><i>Stoic</i></span></a>
+      <div class="sidebar-section-label">Your practice</div>
+      <nav>
+        <button class="nav-item active" data-target="home"><span>◉</span> Today <b class="nav-dot">1</b></button>
+        <button class="nav-item" data-target="discover"><span>⌕</span> Discover</button>
+        <button class="nav-item" data-target="library"><span>♡</span> My library</button>
+        <button class="nav-item" data-target="analytics"><span>◌</span> Insights</button>
+      </nav>
+      <div class="sidebar-section-label lower">Explore wisdom</div>
+      <nav>
+        <button class="nav-item" data-target="bridges"><span>∞</span> Bridges</button>
+        <button class="nav-item" data-target="valluvar"><span>✧</span> Ask Valluvar</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-profile"><span class="avatar">அ</span><div><strong>Vanakkam, Ananya</strong><small>7 day practice</small></div><span>⌄</span></div>
+        <button class="settings-btn">⚙ Settings</button>
+      </div>
+    </aside>
+
+    <main id="top" class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">✦</span> Tamil <i>Stoic</i></div>
+        <div class="breadcrumb"><span id="date-greeting">Thursday, September 13</span><span class="slash">/</span><strong id="page-label">Your morning ritual</strong></div>
+        <div class="top-actions"><button class="icon-button" id="ambient-toggle" aria-label="Toggle ambient sound">♬</button><button class="icon-button" aria-label="Notifications">♢<i class="notification-dot"></i></button><button class="avatar top-avatar">அ</button></div>
+      </header>
+
+      <section class="page-section active-section" id="home">
+        <div class="hero-intro"><div><p class="eyebrow">THURSDAY · 06:42 AM · CHENNAI</p><h1>Begin with<br><em>one true thing.</em></h1><p class="intro-copy">A small ritual for a steadier mind.<br>Take what serves you today.</p></div><div class="sun-orbit" aria-hidden="true"><span class="orbit-dot"></span><span class="sun">☼</span></div></div>
+        <div class="ritual-card">
+          <div class="ritual-progress"><span class="ritual-label">MORNING RITUAL</span><div class="progress-track"><span id="ritual-progress-bar"></span></div><span id="ritual-step-label">1 of 4</span><button class="ritual-menu">···</button></div>
+          <div class="ritual-body" id="ritual-body">
+            <div class="breath-visual"><div class="breath-ring"><span>inhale</span></div><span class="breath-caption">Follow your breath</span></div>
+            <div class="ritual-copy"><span class="step-kicker">01 · ARRIVE</span><h2>Before the world<br>asks anything of you.</h2><p>Let your shoulders soften. Breathe in for four, hold for four, and release for six.</p><button class="primary-button" id="ritual-next">I’m here <span>→</span></button></div>
+          </div>
+          <div class="ritual-footer"><span>~ 2 minutes</span><span>⟲ &nbsp;Your ritual, your pace</span></div>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">A THOUGHT TO CARRY</p><h2>Today’s wisdom</h2></div><button class="text-button" id="open-canvas">Make a canvas <span>↗</span></button></div>
+        <article class="quote-card" id="main-quote">
+          <div class="quote-top"><span class="source-pill">திருக்குறள் &nbsp;·&nbsp; 629</span><div class="card-actions"><button class="card-icon save-quote" aria-label="Save quote">♡</button><button class="card-icon share-quote" aria-label="Share quote">↗</button></div></div>
+          <blockquote class="tamil-line" lang="ta">இன்பம் விழையான் இடும்பை இயல்பென்பான்<br>துன்பம் உறுதல் இலன்.</blockquote>
+          <div class="quote-divider"></div>
+          <blockquote class="english-line">“He who does not chase after pleasure,<br>will not be shaken by the arrival of pain.”</blockquote>
+          <div class="quote-meta"><span><i class="tiny-avatar">க</i> Thiruvalluvar</span><span>Book of Virtue · Chapter 63</span><button class="more-link" id="quote-detail">Read context →</button></div>
+        </article>
+        <div class="home-grid"><div class="practice-prompt"><span class="prompt-icon">✦</span><div><strong>Make it yours</strong><p>Where could you practice steadiness today?</p></div><button class="round-arrow" id="reflect-button">→</button></div><div class="streak-card"><div class="streak-number">7</div><div><strong>days of showing up</strong><p>Keep the quiet momentum.</p></div><span class="streak-spark">✺</span></div></div>
+      </section>
+
+      <section class="page-section" id="discover"><div class="section-title-row"><div><p class="eyebrow">THE RIGHT WORD, RIGHT NOW</p><h1>How are you feeling?</h1><p class="muted">Let your inner weather guide the way.</p></div><span class="large-spark">✦</span></div><div class="mood-grid" id="mood-grid"><button data-mood="restless"><span>〰</span><strong>Restless</strong><small>I need to settle</small></button><button data-mood="heavy"><span>◒</span><strong>Heavy</strong><small>I need perspective</small></button><button data-mood="uncertain"><span>⌁</span><strong>Uncertain</strong><small>I need a north star</small></button><button data-mood="grateful"><span>✺</span><strong>Grateful</strong><small>I want to savour this</small><button data-mood="brave"><span>↗</span><strong>Brave</strong><small>I'm ready to act</small></button><button data-mood="curious"><span>✧</span><strong>Curious</strong><small>Show me a new path</small></div><div id="mood-result" class="mood-result hidden"></div><div class="explore-lower"><div><p class="eyebrow">BROWSE BY IDEA</p><div class="tag-list"><button>Impermanence</button><button>Discipline</button><button>Compassion</button><button>Friendship</button><button>Truth</button><button>Contentment</button></div></div><div class="quote-count"><strong>1,842</strong><span>passages<br>to wander through</span></div></div></section>
+
+      <section class="page-section" id="bridges"><div class="section-title-row"><div><p class="eyebrow">THE HUMAN THREAD</p><h1>Same sky, different stars.</h1><p class="muted">When Tamil wisdom meets the Stoic tradition, a wider truth appears.</p></div><span class="large-spark">∞</span></div><div class="bridge-card"><div class="bridge-side tamil-side"><span class="bridge-label">TAMIL WISDOM · THIRUVALLUVAR</span><p lang="ta">அறத்தான் வருவதே இன்பம்<br>மற்றெல்லாம் புறத்த புகழும் இல.</p><small>“Joy flows from virtue; all else is only praise from without.”</small></div><div class="bridge-line"><span>≈</span><small>2,000 years<br>apart</small></div><div class="bridge-side stoic-side"><span class="bridge-label">STOIC WISDOM · EPICTETUS</span><p>“The essence of philosophy is that a man should so live that his happiness shall depend as little as possible on external things.”</p><small>— Epictetus, Discourses</small></div></div><div class="bridge-insight"><span>✦</span><div><strong>The shared insight</strong><p>Both ask us to locate a good life in the quality of our character, not the weather of our circumstances.</p></div><button class="text-button">Explore this thread →</button></div></section>
+
+      <section class="page-section" id="valluvar"><div class="section-title-row"><div><p class="eyebrow">A CONVERSATION WITH THE SOURCE</p><h1>Ask Valluvar</h1><p class="muted">A thoughtful guide grounded in the words of the Kural.</p></div><span class="valluvar-mark">கு</span></div><div class="chat-window"><div class="source-note"><span>✦</span> Answers draw only from the reviewed Tamil Stoic library <button>How it works</button></div><div class="chat-messages" id="chat-messages"><div class="chat-message assistant"><span class="chat-avatar">கு</span><div><p>Vanakkam. Bring me a question you are carrying. I will look for a passage, not a prescription.</p><small>Ask about patience, fear, work, love...</small></div></div></div><div class="suggestion-row"><button>How do I face uncertainty?</button><button>What is a good life?</button><button>Help me let go</button></div><form class="chat-form" id="chat-form"><input id="chat-input" aria-label="Ask Valluvar a question" placeholder="Ask your question in English or Tamil..." autocomplete="off"><button type="submit">Send <span>↑</span></button></form></div></section>
+
+      <section class="page-section" id="analytics"><div class="section-title-row"><div><p class="eyebrow">YOUR INNER WEATHER</p><h1>Wisdom, taking root.</h1><p class="muted">A reflection of your practice — not a score.</p></div><select class="period-select"><option>Last 30 days</option><option>Last 90 days</option></select></div><div class="analytics-grid"><div class="radar-card"><div class="radar-heading"><strong>Philosophical compass</strong><span>↗ +12%</span></div><svg class="radar" viewBox="0 0 360 300" role="img" aria-label="Radar chart showing growth in attention, courage, compassion, discipline and perspective"><g transform="translate(180 145)"><polygon class="radar-grid" points="0,-110 105,-34 65,89 -65,89 -105,-34"/><polygon class="radar-grid inner" points="0,-70 67,-22 41,56 -41,56 -67,-22"/><polygon class="radar-grid inner" points="0,-35 33,-11 20,28 -20,28 -33,-11"/><polygon class="radar-fill" points="0,-91 76,-25 58,79 -50,68 -80,-26"/><polygon class="radar-line" points="0,-91 76,-25 58,79 -50,68 -80,-26"/><circle class="radar-point" cx="0" cy="-91" r="4"/><circle class="radar-point" cx="76" cy="-25" r="4"/><circle class="radar-point" cx="58" cy="79" r="4"/><circle class="radar-point" cx="-50" cy="68" r="4"/><circle class="radar-point" cx="-80" cy="-26" r="4"/></g><text x="180" y="16">Attention</text><text x="316" y="112">Courage</text><text x="275" y="266">Compassion</text><text x="55" y="266">Discipline</text><text x="5" y="112">Perspective</text></svg><p class="chart-caption">“The mind adapts and converts to its purposes the obstacle to our acting.” <span>— Marcus Aurelius</span></p></div><div class="stats-column"><div class="stat-card"><span class="stat-symbol">◷</span><strong>18 min</strong><small>of intentional reading</small><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="stat-card"><span class="stat-symbol">♡</span><strong>24</strong><small>passages returned to</small><div class="stat-link">See your library →</div></div><div class="stat-card warm"><span class="stat-symbol">✺</span><strong>7 days</strong><small>of gentle consistency</small><div class="stat-link">Keep going →</div></div></div></div></section>
+
+      <section class="page-section" id="library"><div class="section-title-row"><div><p class="eyebrow">THE PASSAGES THAT STAYED</p><h1>Your library</h1><p class="muted">Keep a few close. Return when you need them.</p></div><button class="primary-button small" id="download-library">Export library ↓</button></div><div class="library-tabs"><button class="active">Saved <span>12</span></button><button>Reflections <span>4</span></button><button>Collections <span>3</span></button></div><div class="library-list" id="library-list"><article><span class="library-num">01</span><div><span class="source-pill">திருக்குறள் · 629</span><p lang="ta">இன்பம் விழையான் இடும்பை இயல்பென்பான்...</p><small>“He who does not chase after pleasure...”</small></div><button class="card-icon">⋮</button></article><article><span class="library-num">02</span><div><span class="source-pill">நாலடியார் · 12</span><p lang="ta">யாதும் ஊரே யாவரும் கேளிர்...</p><small>“Every place is my town, everyone my kin...”</small></div><button class="card-icon">⋮</button></article><article><span class="library-num">03</span><div><span class="source-pill">Purananuru · 192</span><p lang="ta">யாதும் ஊரே யாவரும் கேளிர்...</p><small>“Every place is my town, everyone my kin...”</small></div><button class="card-icon">⋮</button></article></div></section>
+      <div class="toast" id="toast" role="status"></div>
+    </main>
+  </div>
+  <div class="canvas-modal hidden" id="canvas-modal"><div class="modal-backdrop"></div><div class="canvas-dialog"><button class="close-modal">×</button><p class="eyebrow">QUOTE CANVAS</p><h2>Carry this with you.</h2><div class="canvas-preview" id="canvas-preview"><span class="canvas-star">✦</span><p lang="ta">இன்பம் விழையான்<br>இடும்பை இயல்பென்பான்</p><small>He who does not chase after pleasure,<br>will not be shaken by pain.</small><i>திருக்குறள் · 629</i></div><div class="canvas-controls"><button id="download-canvas" class="primary-button">Download image ↓</button><button id="share-canvas" class="secondary-button">Share ↗</button></div><p class="modal-footnote">A quiet card, made for your corner of the internet.</p></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
