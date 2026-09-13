@@ -1,74 +1,93 @@
-const $ = (s, root=document) => root.querySelector(s);
-const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-const toast = (message) => { const el=$('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>el.classList.remove('show'),2600); };
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const profileKey = 'tamilStoicProfile';
+const savedKey = 'tamilStoicSavedQuotes';
+const feedbackKey = 'tamilStoicFeedback';
+let quotes = [];
+let currentQuote = null;
+let feedIndex = 0;
+let activeFilter = 'all';
+let profile = JSON.parse(localStorage.getItem(profileKey) || '{"themes":[],"mood":"","language":"both"}');
+let savedIds = new Set(JSON.parse(localStorage.getItem(savedKey) || '[]'));
+let feedback = JSON.parse(localStorage.getItem(feedbackKey) || '{}');
 
-// Section navigation keeps the experience feeling like one calm app without a router dependency.
-const labels={home:'Your morning ritual',discover:'Mood-based discovery',library:'Your library',bridges:'Cross-philosophy bridges'};
-function showSection(id){ $$('.page-section').forEach(s=>s.classList.toggle('active-section',s.id===id)); $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.target===id)); $('#page-label').textContent=labels[id]||''; window.scrollTo({top:0,behavior:'smooth'}); }
-$$('.nav-item').forEach(btn=>btn.addEventListener('click',()=>showSection(btn.dataset.target)));
+const toast = (message) => { const node = $('#toast'); node.textContent = message; node.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => node.classList.remove('show'), 2600); };
+const saveProfile = () => localStorage.setItem(profileKey, JSON.stringify(profile));
+const saveSaved = () => { savedIds = new Set(savedIds); localStorage.setItem(savedKey, JSON.stringify([...savedIds])); updateSavedCount(); renderSaved(); };
+const updateSavedCount = () => { $('#saved-count').textContent = savedIds.size; };
+const escapeText = (value) => String(value ?? '');
 
-// Ritual: a four-step daily practice with progress persisted locally.
-const ritualDay=new Date().toISOString().slice(0,10); const ritualKey='tamilStoicRitual:'+ritualDay; let ritualStep=Number(localStorage.getItem(ritualKey)||1);
-const ritualSteps=[
- {kicker:'01 · ARRIVE',title:'Before the world<br>asks anything of you.',copy:'Let your shoulders soften. Breathe in for four, hold for four, and release for six.',button:"I’m here"},
- {kicker:'02 · RECEIVE',title:'Let a wise voice<br>meet you here.',copy:'Read slowly. Notice the line that catches. There is no need to understand everything at once.',button:'I have read it'},
- {kicker:'03 · REFLECT',title:'What is this asking<br>of you today?',copy:'A small question can change the shape of a day. Name one place where you can practice this wisdom.',button:'I see it'},
- {kicker:'04 · INTEND',title:'Carry one thing<br>into the day.',copy:'Choose your intention: steady, kind, or clear. Return to it whenever the day becomes noisy.',button:'Set my intention'}
-];
-function renderRitual(){const s=ritualSteps[ritualStep-1]; $('#ritual-step-label').textContent=`${ritualStep} of 4`; $('#ritual-progress-bar').style.width=`${ritualStep*25}%`; $('.step-kicker').textContent=s.kicker; $('.ritual-copy h2').innerHTML=s.title; $('.ritual-copy p').textContent=s.copy; $('#ritual-next').innerHTML=`${s.button} <span>→</span>`; if(ritualStep===4) $('.breath-ring span').textContent='steady';}
-$('#ritual-next').addEventListener('click',()=>{if(ritualStep<4){ritualStep++;localStorage.setItem(ritualKey,ritualStep);renderRitual();toast(ritualStep===4?'Your intention is set. Have a gentle day.':'A little deeper.');}else{ritualStep=1;localStorage.setItem(ritualKey,1);renderRitual();toast('Morning ritual complete — see you tomorrow.');}}); renderRitual();
-
-// Save and reflection actions.
-let saved=JSON.parse(localStorage.getItem('tamilStoicSaved')||'false');
-$('.save-quote').addEventListener('click',e=>{saved=!saved;e.currentTarget.textContent=saved?'♥':'♡';localStorage.setItem('tamilStoicSaved',saved);toast(saved?'Saved to your library.':'Removed from your library.');});
-$('.share-quote').addEventListener('click',async()=>{const text='“He who does not chase after pleasure, will not be shaken by the arrival of pain.” — Thirukkural 629'; try{await navigator.clipboard.writeText(text);toast('Quote copied to your clipboard.')}catch{toast('A quiet thought, ready to share.')}});
-$('#reflect-button').addEventListener('click',()=>{showSection('home');toast('Take a breath. What would steadiness look like today?');});
-$('#quote-detail').addEventListener('click',()=>toast('Context: Thirukkural Book of Virtue, chapter 63 — on freedom from attachment.'));
-
-// Mood discovery maps feelings to reviewed passages (demo catalogue data).
-const moodQuotes={restless:['அடக்கம் அமரருள் உய்க்கும் அடங்காமை ஆரிருள் உய்த்து விடும்.','Self-control raises one among the immortals; its absence leads into darkness.','Thirukkural · 121'],heavy:['இடுக்கண் வருங்கால் நகுக அதனை அடுத்தூர்வது அஃதொப்பது இல்.','When adversity arrives, smile; there is nothing like it to overcome it.','Thirukkural · 621'],uncertain:['எண்ணித் துணிக கருமம் துணிந்தபின் எண்ணுவம் என்பது இழுக்கு.','Act after thinking; to think after acting is a mistake.','Thirukkural · 467'],grateful:['உற்றநோய் நோன்றல் உயிர்க்குறுகண் செய்யாமை அற்றே தவத்திற்கு உரு.','To endure pain and cause no pain to living things — this is the shape of true practice.','Thirukkural · 312'],brave:['அஞ்சுவது அஞ்சாமை பேதைமை அஞ்சுவது அஞ்சல் அறிவார் தொழில்.','Not fearing what ought to be feared is foolishness; to fear what is worthy is wisdom.','Thirukkural · 428'],curious:['யாதும் ஊரே யாவரும் கேளிர்.','Every place is my town; everyone is my kin.','Purananuru · 192']};
-$$('#mood-grid button').forEach(btn=>btn.addEventListener('click',()=>{ $$('#mood-grid button').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');const [ta,en,src]=moodQuotes[btn.dataset.mood];const r=$('#mood-result');r.classList.remove('hidden');r.innerHTML=`<div><small>${src}</small><p lang="ta">${ta}</p><small>“${en}”</small></div><button class="text-button" onclick="toast('Passage saved for your return.')">Save ♡</button>`;r.scrollIntoView({behavior:'smooth',block:'center'});}));
-$$('.tag-list button').forEach(b=>b.addEventListener('click',()=>toast(`Opening ${b.textContent.toLowerCase()} passages…`)));
-
-// Ambient sound: a gentle synthesized rain-like layer, entirely local and stoppable.
-let audioCtx, noiseSource, ambientGain;
-$('#ambient-toggle').addEventListener('click',()=>{if(noiseSource){noiseSource.stop();noiseSource=null;$('#ambient-toggle').style.color='';toast('Ambient sound off.')}else{audioCtx=new (window.AudioContext||window.webkitAudioContext)();const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.12;noiseSource=audioCtx.createBufferSource();noiseSource.buffer=buffer;noiseSource.loop=true;ambientGain=audioCtx.createGain();ambientGain.gain.value=.035;noiseSource.connect(ambientGain).connect(audioCtx.destination);noiseSource.start();$('#ambient-toggle').style.color='var(--coral)';toast('A soft rain layer is playing.');}});
-
-// Quote canvas: renders a shareable card without uploading user content anywhere.
-$('#open-canvas').addEventListener('click',()=>$('#canvas-modal').classList.remove('hidden'));
-$('.close-modal').addEventListener('click',()=>$('#canvas-modal').classList.add('hidden'));
-$('.modal-backdrop').addEventListener('click',()=>$('#canvas-modal').classList.add('hidden'));
-$('#share-canvas').addEventListener('click',async()=>{try{await navigator.clipboard.writeText('இன்பம் விழையான் இடும்பை இயல்பென்பான் — திருக்குறள் 629');toast('Canvas words copied to clipboard.')}catch{toast('Your canvas is ready to share.')}});
-$('#download-canvas').addEventListener('click',()=>{const c=document.createElement('canvas');c.width=900;c.height=1100;const x=c.getContext('2d');x.fillStyle='#596e5c';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#dfba76';x.lineWidth=4;x.strokeRect(28,28,c.width-56,c.height-56);x.fillStyle='#e8c376';x.font='38px serif';x.textAlign='center';x.fillText('✦',450,150);x.fillStyle='#f5f1e7';x.font='52px Noto Serif Tamil, serif';x.fillText('இன்பம் விழையான்',450,390);x.fillText('இடும்பை இயல்பென்பான்',450,475);x.font='italic 29px Georgia';x.fillText('He who does not chase after pleasure,',450,620);x.fillText('will not be shaken by pain.',450,665);x.fillStyle='#d0d7cb';x.font='18px Manrope';x.fillText('திருக்குறள் · 629',450,820);x.fillStyle='#dfba76';x.font='24px serif';x.fillText('✦  ◇  ✦  ◇  ✦  ◇  ✦',450,1010);const a=document.createElement('a');a.download='tamil-stoic-629.png';a.href=c.toDataURL('image/png');a.click();toast('Your quote canvas has downloaded.');});
-
-// Physical integration affordances.
-$('#download-library').addEventListener('click',()=>{const content='Tamil Stoic — saved passages\n\nThirukkural 629\nஇன்பம் விழையான் இடும்பை இயல்பென்பான்\n“He who does not chase after pleasure, will not be shaken by the arrival of pain.”\n\nPurananuru 192\nயாதும் ஊரே யாவரும் கேளிர்.\n“Every place is my town; everyone is my kin.”\n';const blob=new Blob([content],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tamil-stoic-saved-quotes.txt';a.click();URL.revokeObjectURL(a.href);toast('Your saved quotes have downloaded.');});
-
-// Set a human-readable current date while preserving the designed Chennai header tone.
-const now=new Date();if(!Number.isNaN(now.getTime()))$('#date-greeting').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-
-// Production data path: Netlify serves this from /api/quotes. The static card remains
-// useful during local Python previews, while a deployed site hydrates from the API.
-async function hydrateTodayFromApi(){
-  try{
-    const result=await fetch('/api/quotes?limit=1');
-    if(!result.ok)return;
-    const payload=await result.json();
-    const quote=payload.data?.[0];
-    if(!quote)return;
-    const card=$('#main-quote');
-    const tamil=card.querySelector('.tamil-line');
-    const english=card.querySelector('.english-line');
-    const source=card.querySelector('.source-pill');
-    const author=card.querySelector('.quote-meta>span:first-child');
-    const locator=card.querySelector('.quote-meta>span:nth-child(2)');
-    tamil.textContent=quote.tamil.text;
-    english.textContent=`“${quote.english.text}”`;
-    source.textContent=`${quote.work.title} · ${quote.provenance.locator.split(', ').pop()}`;
-    author.innerHTML=`<i class="tiny-avatar">க</i> ${quote.work.author}`;
-    locator.textContent=quote.work.genre;
-  }catch(error){ console.info('Using the bundled preview quote until the API is available.',error.message); }
+function scoreQuote(quote) {
+  const themes = [...(profile.themes || [])];
+  let score = 0;
+  quote.themes.forEach(theme => { if (themes.includes(theme)) score += 10; });
+  if (profile.mood && quote.themes.includes(profile.mood)) score += 8;
+  if (feedback[quote.id] === 'helpful') score += 3;
+  if (feedback[quote.id] === 'not-for-me') score -= 8;
+  if (savedIds.has(quote.id)) score += 1;
+  return score;
 }
-hydrateTodayFromApi();
+function rankedQuotes() { return [...quotes].sort((a,b) => scoreQuote(b) - scoreQuote(a)); }
 
-$$('.bridge-insight .text-button').forEach(b=>b.addEventListener('click',()=>{showSection('discover');toast('Explore patience, courage, and contentment in Discover.');}));
+function setApiStatus(kind, text) { const status = $('.api-status'); status.className = `api-status ${kind}`; $('#status-text').textContent = text; }
+async function loadQuotes() {
+  try {
+    const response = await fetch('/api/quotes?limit=50');
+    if (!response.ok) throw new Error(`API ${response.status}`);
+    const payload = await response.json();
+    quotes = Array.isArray(payload.data) ? payload.data : [];
+    if (!quotes.length) throw new Error('No published quotes');
+    setApiStatus('ok', 'Quote library connected');
+    $('#feed-count').textContent = quotes.length;
+    $('#result-count').textContent = `${quotes.length} passages`;
+    renderRecommendation(true);
+    renderResults();
+    renderSaved();
+  } catch (error) {
+    setApiStatus('error', 'Quote library unavailable');
+    $('#quote-card').innerHTML = `<div class="empty-state"><strong>We could not reach the quote API.</strong><br>Check your connection or run this site with <code>npm run dev</code> so Netlify Functions are available.</div>`;
+    $('#feed-count').textContent = '—';
+    console.error(error);
+  }
+}
+
+function quoteCard(quote, compact = false) {
+  const item = document.createElement('article');
+  item.className = compact ? 'result-card' : 'quote-card';
+  const header = document.createElement('div'); header.className = 'quote-header';
+  const source = document.createElement('span'); source.className = 'source'; source.textContent = `${quote.work.title} · ${quote.provenance.locator.split(', ').pop()}`;
+  const actions = document.createElement('div'); actions.className = 'quote-actions';
+  const save = document.createElement('button'); save.className = `icon-button ${savedIds.has(quote.id) ? 'saved' : ''}`; save.setAttribute('aria-label', savedIds.has(quote.id) ? 'Remove saved passage' : 'Save passage'); save.textContent = savedIds.has(quote.id) ? '♥' : '♡'; save.addEventListener('click', (event) => { event.stopPropagation(); toggleSaved(quote); });
+  actions.append(save); header.append(source, actions); item.append(header);
+  const tamil = document.createElement('p'); tamil.className = 'quote-tamil'; tamil.lang = 'ta'; tamil.textContent = quote.tamil.text; tamil.hidden = profile.language === 'en'; item.append(tamil);
+  const rule = document.createElement('div'); rule.className = 'quote-rule'; item.append(rule);
+  const english = document.createElement('p'); english.className = 'quote-english'; english.textContent = `“${quote.english.text}”`; english.hidden = profile.language === 'ta'; item.append(english);
+  if (!compact) {
+    const context = document.createElement('div'); context.className = 'quote-context'; context.textContent = quote.editorial_summary || 'A reviewed passage from the Tamil Stoic source library.'; item.append(context);
+    const footer = document.createElement('div'); footer.className = 'quote-footer';
+    const author = document.createElement('span'); author.textContent = `${quote.work.author} · ${quote.english.translator}`;
+    const sourceLink = document.createElement('a'); sourceLink.href = quote.provenance.url; sourceLink.target = '_blank'; sourceLink.rel = 'noreferrer'; sourceLink.textContent = 'View source ↗'; footer.append(author, sourceLink); item.append(footer);
+  } else { const small = document.createElement('small'); small.textContent = `${quote.work.author} · ${quote.themes.slice(0,2).join(' · ')}`; item.append(small); item.addEventListener('click', () => { showQuote(quote); window.location.hash = 'feed'; }); }
+  return item;
+}
+function showQuote(quote) { currentQuote = quote; $('#quote-card').replaceChildren(quoteCard(quote)); $('#recommendation-heading').textContent = profile.themes.length || profile.mood ? 'Selected for your practice' : 'A place to begin'; }
+function renderRecommendation(reset = false) { if (!quotes.length) return; const list = rankedQuotes(); if (reset) feedIndex = 0; const quote = list[feedIndex % list.length]; showQuote(quote); }
+function toggleSaved(quote) { if (savedIds.has(quote.id)) { savedIds.delete(quote.id); toast('Removed from your saved passages.'); } else { savedIds.add(quote.id); toast('Saved for your return.'); } saveSaved(); if (currentQuote?.id === quote.id) showQuote(quote); }
+function renderSaved() { const container = $('#saved-list'); if (!quotes.length) return; const saved = quotes.filter(q => savedIds.has(q.id)); container.replaceChildren(); if (!saved.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'Save a passage and it will appear here.'; container.append(empty); return; } saved.forEach(quote => { const item = quoteCard(quote, true); const remove = document.createElement('button'); remove.className = 'remove-save'; remove.textContent = '×'; remove.setAttribute('aria-label', 'Remove passage'); remove.addEventListener('click', () => toggleSaved(quote)); item.append(remove); container.append(item); }); }
+function renderResults() { const query = ($('#search').value || '').toLowerCase().trim(); const filtered = quotes.filter(q => { const haystack = [q.tamil.text, q.english.text, q.work.title, q.work.author, q.themes.join(' ')].join(' ').toLowerCase(); return (!query || haystack.includes(query)) && (activeFilter === 'all' || q.themes.includes(activeFilter)); }); $('#result-count').textContent = `${filtered.length} passage${filtered.length === 1 ? '' : 's'}`; const container = $('#results'); container.replaceChildren(); if (!filtered.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'No reviewed passage matches that search yet.'; container.append(empty); return; } filtered.forEach(q => container.append(quoteCard(q, true))); }
+
+function loadPreferences() { $$('#theme-chips button').forEach(button => button.classList.toggle('selected', profile.themes.includes(button.dataset.theme))); $('#mood').value = profile.mood || ''; $('#language').value = profile.language || 'both'; }
+function applyPreferences() { profile.themes = $$('#theme-chips button.selected').map(button => button.dataset.theme); profile.mood = $('#mood').value; profile.language = $('#language').value; saveProfile(); $('#preference-message').textContent = profile.themes.length ? `Prioritising ${profile.themes.length} theme${profile.themes.length > 1 ? 's' : ''} for you.` : 'Your feed is open to the full library.'; feedIndex = 0; renderRecommendation(true); renderResults(); toast('Your feed has been updated.'); }
+$$('#theme-chips button').forEach(button => button.addEventListener('click', () => button.classList.toggle('selected')));
+$('#apply-preferences').addEventListener('click', applyPreferences);
+$('#clear-preferences').addEventListener('click', () => { profile = { themes: [], mood: '', language: 'both' }; saveProfile(); loadPreferences(); applyPreferences(); });
+$('#mood').addEventListener('change', applyPreferences);
+$('#language').addEventListener('change', applyPreferences);
+$('#next-quote').addEventListener('click', () => { feedIndex += 1; renderRecommendation(); toast('Here is another passage from your library.'); });
+$$('[data-feedback]').forEach(button => button.addEventListener('click', () => { if (!currentQuote) return; feedback[currentQuote.id] = button.dataset.feedback; localStorage.setItem(feedbackKey, JSON.stringify(feedback)); $('#feedback-note').textContent = button.dataset.feedback === 'helpful' ? 'We will show more like this.' : 'We will adjust your feed.'; if (button.dataset.feedback === 'not-for-me') { feedIndex += 1; setTimeout(() => renderRecommendation(), 180); } }));
+$('#search-button').addEventListener('click', renderResults);
+$('#search').addEventListener('input', renderResults);
+$('#search').addEventListener('keydown', event => { if (event.key === 'Enter') renderResults(); });
+$$('.filter').forEach(button => button.addEventListener('click', () => { $$('.filter').forEach(b => b.classList.remove('active')); button.classList.add('active'); activeFilter = button.dataset.filter; renderResults(); }));
+$('#export-saved').addEventListener('click', () => { const saved = quotes.filter(q => savedIds.has(q.id)); if (!saved.length) { toast('Save a passage before exporting.'); return; } const text = saved.map(q => `${q.work.title} · ${q.provenance.locator}\n${q.tamil.text}\n“${q.english.text}”\nSource: ${q.provenance.url}`).join('\n\n'); const url = URL.createObjectURL(new Blob([`Tamil Stoic — saved passages\n\n${text}`], { type: 'text/plain;charset=utf-8' })); const link = document.createElement('a'); link.href = url; link.download = 'tamil-stoic-saved-passages.txt'; link.click(); URL.revokeObjectURL(url); toast('Your saved passages were exported.'); });
+loadPreferences(); updateSavedCount(); loadQuotes();

@@ -1,74 +1,30 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f5f0e8" />
-  <title>Tamil Stoic — Begin with one true thing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f2eb">
+  <title>Tamil Stoic — Personalised Tamil wisdom</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Noto+Serif+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="Tamil Stoic home"><span class="brand-mark">✦</span><span>Tamil<br><i>Stoic</i></span></a>
-      <div class="sidebar-section-label">Your practice</div>
-      <nav>
-        <button class="nav-item active" data-target="home"><span>◉</span> Today <b class="nav-dot">1</b></button>
-        <button class="nav-item" data-target="discover"><span>⌕</span> Discover</button>
-        <button class="nav-item" data-target="library"><span>♡</span> My library</button>
-      </nav>
-      <div class="sidebar-section-label lower">Explore wisdom</div>
-      <nav>
-        <button class="nav-item" data-target="bridges"><span>∞</span> Bridges</button>
-      </nav>
-      <div class="sidebar-bottom">
-        <div class="mini-profile"><span class="avatar">அ</span><div><strong>Your practice</strong><small>Saved on this device</small></div><span>⌄</span></div>
-        <button class="settings-btn">⚙ Settings</button>
-      </div>
-    </aside>
+  <header class="site-header"><a class="logo" href="#top"><span>✦</span> Tamil <i>Stoic</i></a><nav><a href="#feed">For you</a><a href="#explore">Explore</a><a href="#saved">Saved <b id="saved-count">0</b></a></nav><div class="api-status"><span id="status-dot"></span><span id="status-text">Connecting to quote library…</span></div></header>
+  <main id="top">
+    <section class="intro" id="feed"><div><p class="kicker">A PERSONAL TAMIL WISDOM READER</p><h1>One passage,<br><em>chosen for you.</em></h1><p class="lede">Tamil literature in the original, with a clear English translation and context. Your choices shape what comes next.</p></div><div class="intro-note"><span>✦</span><strong id="feed-count">—</strong><small>reviewed passages<br>in this feed</small></div></section>
 
-    <main id="top" class="main-content">
-      <header class="topbar">
-        <div class="mobile-brand"><span class="brand-mark">✦</span> Tamil <i>Stoic</i></div>
-        <div class="breadcrumb"><span id="date-greeting">Thursday, September 13</span><span class="slash">/</span><strong id="page-label">Your morning ritual</strong></div>
-        <div class="top-actions"><button class="icon-button" id="ambient-toggle" aria-label="Toggle ambient sound">♬</button><button class="icon-button" aria-label="Notifications">♢<i class="notification-dot"></i></button><button class="avatar top-avatar">அ</button></div>
-      </header>
+    <section class="preferences panel" aria-labelledby="preferences-title"><div class="panel-heading"><div><p class="kicker">MAKE IT YOURS</p><h2 id="preferences-title">What would help you today?</h2><p class="subtle">We use this only on this device to personalise your feed.</p></div><button class="link-button" id="clear-preferences">Reset</button></div><div class="preference-row"><div><label class="field-label">Choose themes</label><div class="chips" id="theme-chips"><button data-theme="patience-and-endurance">Patience</button><button data-theme="courage-and-fear">Courage</button><button data-theme="self-knowledge">Self-knowledge</button><button data-theme="discipline-and-restraint">Discipline</button><button data-theme="friendship-and-community">Belonging</button><button data-theme="truth-and-integrity">Integrity</button><button data-theme="desire-and-non-attachment">Letting go</button><button data-theme="joy-gratitude-and-celebration">Joy</button></div></div><div class="preference-control"><label class="field-label" for="mood">Today I feel</label><select id="mood"><option value="">Open to anything</option><option value="patience-and-endurance">I need steadiness</option><option value="courage-and-fear">I need courage</option><option value="self-knowledge">I need clarity</option><option value="friendship-and-community">I need connection</option><option value="desire-and-non-attachment">I need to let go</option></select></div><div class="preference-control"><label class="field-label" for="language">Show first</label><select id="language"><option value="both">Tamil + English</option><option value="ta">Tamil original</option><option value="en">English translation</option></select></div></div><div class="preferences-footer"><span id="preference-message">Select a theme to improve your feed.</span><button class="primary-button" id="apply-preferences">Update my feed <span>→</span></button></div></section>
 
-      <section class="page-section active-section" id="home">
-        <div class="hero-intro"><div><p class="eyebrow">THURSDAY · 06:42 AM · CHENNAI</p><h1>Begin with<br><em>one true thing.</em></h1><p class="intro-copy">A small ritual for a steadier mind.<br>Take what serves you today.</p></div><div class="sun-orbit" aria-hidden="true"><span class="orbit-dot"></span><span class="sun">☼</span></div></div>
-        <div class="ritual-card">
-          <div class="ritual-progress"><span class="ritual-label">MORNING RITUAL</span><div class="progress-track"><span id="ritual-progress-bar"></span></div><span id="ritual-step-label">1 of 4</span><button class="ritual-menu">···</button></div>
-          <div class="ritual-body" id="ritual-body">
-            <div class="breath-visual"><div class="breath-ring"><span>inhale</span></div><span class="breath-caption">Follow your breath</span></div>
-            <div class="ritual-copy"><span class="step-kicker">01 · ARRIVE</span><h2>Before the world<br>asks anything of you.</h2><p>Let your shoulders soften. Breathe in for four, hold for four, and release for six.</p><button class="primary-button" id="ritual-next">I’m here <span>→</span></button></div>
-          </div>
-          <div class="ritual-footer"><span>~ 2 minutes</span><span>⟲ &nbsp;Your ritual, your pace</span></div>
-        </div>
-        <div class="section-heading"><div><p class="eyebrow">A THOUGHT TO CARRY</p><h2>Today’s wisdom</h2></div><button class="text-button" id="open-canvas">Make a canvas <span>↗</span></button></div>
-        <article class="quote-card" id="main-quote">
-          <div class="quote-top"><span class="source-pill">திருக்குறள் &nbsp;·&nbsp; 629</span><div class="card-actions"><button class="card-icon save-quote" aria-label="Save quote">♡</button><button class="card-icon share-quote" aria-label="Share quote">↗</button></div></div>
-          <blockquote class="tamil-line" lang="ta">இன்பம் விழையான் இடும்பை இயல்பென்பான்<br>துன்பம் உறுதல் இலன்.</blockquote>
-          <div class="quote-divider"></div>
-          <blockquote class="english-line">“He who does not chase after pleasure,<br>will not be shaken by the arrival of pain.”</blockquote>
-          <div class="quote-meta"><span><i class="tiny-avatar">க</i> Thiruvalluvar</span><span>Book of Virtue · Chapter 63</span><button class="more-link" id="quote-detail">Read context →</button></div>
-        </article>
-        <div class="home-grid"><div class="practice-prompt"><span class="prompt-icon">✦</span><div><strong>Make it yours</strong><p>Where could you practice steadiness today?</p></div><button class="round-arrow" id="reflect-button">→</button></div><div class="streak-card"><div class="streak-number">7</div><div><strong>days of showing up</strong><p>Keep the quiet momentum.</p></div><span class="streak-spark">✺</span></div></div>
-      </section>
+    <section class="feed-layout"><div class="feed-main"><div class="feed-heading"><div><p class="kicker">YOUR NEXT PASSAGE</p><h2 id="recommendation-heading">A place to begin</h2></div><button class="secondary-button" id="next-quote">Show another <span>↗</span></button></div><article class="quote-card" id="quote-card"><div class="loading"><span></span><span></span><span></span>Loading the library…</div></article><div class="feedback-row"><span>Was this useful?</span><button data-feedback="helpful">Yes, keep this direction</button><button data-feedback="not-for-me">Not for me</button><span id="feedback-note"></span></div></div><aside class="how-it-works panel"><p class="kicker">HOW PERSONALISATION WORKS</p><h3>Your feed learns from your choices, not from assumptions.</h3><ol><li><b>Choose themes</b><span>You tell us what matters today.</span></li><li><b>Read and respond</b><span>Save, skip, or ask for another passage.</span></li><li><b>See more of what helps</b><span>We rank related source texts on this device.</span></li></ol><p class="privacy-note">No account. No personal profile leaves this browser.</p></aside></section>
 
-      <section class="page-section" id="discover"><div class="section-title-row"><div><p class="eyebrow">THE RIGHT WORD, RIGHT NOW</p><h1>How are you feeling?</h1><p class="muted">Let your inner weather guide the way.</p></div><span class="large-spark">✦</span></div><div class="mood-grid" id="mood-grid"><button data-mood="restless"><span>〰</span><strong>Restless</strong><small>I need to settle</small></button><button data-mood="heavy"><span>◒</span><strong>Heavy</strong><small>I need perspective</small></button><button data-mood="uncertain"><span>⌁</span><strong>Uncertain</strong><small>I need a north star</small></button><button data-mood="grateful"><span>✺</span><strong>Grateful</strong><small>I want to savour this</small></button><button data-mood="brave"><span>↗</span><strong>Brave</strong><small>I'm ready to act</small></button><button data-mood="curious"><span>✧</span><strong>Curious</strong><small>Show me a new path</small></div><div id="mood-result" class="mood-result hidden"></div><div class="explore-lower"><div><p class="eyebrow">BROWSE BY IDEA</p><div class="tag-list"><button>Impermanence</button><button>Discipline</button><button>Compassion</button><button>Friendship</button><button>Truth</button><button>Contentment</button></div></div><div class="quote-count"><strong>6</strong><span>reviewed seed<br>passages available</span></div></div></section>
+    <section class="explore panel" id="explore"><div class="panel-heading"><div><p class="kicker">THE SOURCE LIBRARY</p><h2>Find a passage</h2><p class="subtle">Search Tamil, English, author, work, or theme.</p></div><span class="result-count" id="result-count"></span></div><div class="search-row"><input id="search" type="search" placeholder="Try “courage”, “திருக்குறள்”, or “belonging”"><button class="primary-button" id="search-button">Search</button></div><div class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="patience-and-endurance">Patience</button><button class="filter" data-filter="courage-and-fear">Courage</button><button class="filter" data-filter="self-knowledge">Clarity</button><button class="filter" data-filter="friendship-and-community">Belonging</button></div><div class="results" id="results"></div></section>
 
-      <section class="page-section" id="bridges"><div class="section-title-row"><div><p class="eyebrow">THE HUMAN THREAD</p><h1>Same sky, different stars.</h1><p class="muted">When Tamil wisdom meets the Stoic tradition, a wider truth appears.</p></div><span class="large-spark">∞</span></div><div class="bridge-card"><div class="bridge-side tamil-side"><span class="bridge-label">TAMIL WISDOM · THIRUVALLUVAR</span><p lang="ta">அறத்தான் வருவதே இன்பம்<br>மற்றெல்லாம் புறத்த புகழும் இல.</p><small>“Joy flows from virtue; all else is only praise from without.”</small></div><div class="bridge-line"><span>≈</span><small>2,000 years<br>apart</small></div><div class="bridge-side stoic-side"><span class="bridge-label">STOIC WISDOM · EPICTETUS</span><p>“The essence of philosophy is that a man should so live that his happiness shall depend as little as possible on external things.”</p><small>— Epictetus, Discourses</small></div></div><div class="bridge-insight"><span>✦</span><div><strong>The shared insight</strong><p>Both ask us to locate a good life in the quality of our character, not the weather of our circumstances.</p></div><button class="text-button">Explore this thread →</button></div></section>
-
-
-
-      <section class="page-section" id="library"><div class="section-title-row"><div><p class="eyebrow">THE PASSAGES THAT STAYED</p><h1>Your library</h1><p class="muted">Keep a few close. Return when you need them.</p></div><button class="primary-button small" id="download-library">Download saved quotes ↓</button></div><div class="library-tabs"><button class="active">Saved passages <span>3</span></button></div><div class="library-list" id="library-list"><article><span class="library-num">01</span><div><span class="source-pill">திருக்குறள் · 629</span><p lang="ta">இன்பம் விழையான் இடும்பை இயல்பென்பான்...</p><small>“He who does not chase after pleasure...”</small></div><button class="card-icon">⋮</button></article><article><span class="library-num">02</span><div><span class="source-pill">நாலடியார் · 12</span><p lang="ta">யாதும் ஊரே யாவரும் கேளிர்...</p><small>“Every place is my town, everyone my kin...”</small></div><button class="card-icon">⋮</button></article><article><span class="library-num">03</span><div><span class="source-pill">Purananuru · 192</span><p lang="ta">யாதும் ஊரே யாவரும் கேளிர்...</p><small>“Every place is my town, everyone my kin...”</small></div><button class="card-icon">⋮</button></article></div></section>
-      <div class="toast" id="toast" role="status"></div>
-    </main>
-  </div>
-  <div class="canvas-modal hidden" id="canvas-modal"><div class="modal-backdrop"></div><div class="canvas-dialog"><button class="close-modal">×</button><p class="eyebrow">QUOTE CANVAS</p><h2>Carry this with you.</h2><div class="canvas-preview" id="canvas-preview"><span class="canvas-star">✦</span><p lang="ta">இன்பம் விழையான்<br>இடும்பை இயல்பென்பான்</p><small>He who does not chase after pleasure,<br>will not be shaken by pain.</small><i>திருக்குறள் · 629</i></div><div class="canvas-controls"><button id="download-canvas" class="primary-button">Download image ↓</button><button id="share-canvas" class="secondary-button">Share ↗</button></div><p class="modal-footnote">A quiet card, made for your corner of the internet.</p></div></div>
+    <section class="saved panel" id="saved"><div class="panel-heading"><div><p class="kicker">YOUR LIBRARY</p><h2>Saved passages</h2><p class="subtle">A small collection to return to.</p></div><button class="secondary-button" id="export-saved">Export text ↓</button></div><div id="saved-list" class="saved-list"><p class="empty-state">Save a passage and it will appear here.</p></div></section>
+  </main>
+  <footer><span> Tamil Stoic</span><span>Sources and translations are shown with every passage. <a href="https://www.projectmadurai.org/" target="_blank" rel="noreferrer">Project Madurai ↗</a></span></footer>
+  <div class="toast" id="toast" role="status"></div>
   <script src="app.js"></script>
 </body>
 </html>
