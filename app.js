@@ -32,14 +32,19 @@ function rankedQuotes() { return [...quotes].sort((a,b) => scoreQuote(b) - score
 function setApiStatus(kind, text) { const status = $('.api-status'); status.className = `api-status ${kind}`; $('#status-text').textContent = text; }
 async function loadQuotes() {
   try {
-    const responses = await Promise.all([fetch('/api/quotes?limit=50&offset=0'), fetch('/api/quotes?limit=50&offset=50')]);
-    if (responses.some(response => !response.ok)) throw new Error(`API ${responses.find(response => !response.ok)?.status}`);
-    const payloads = await Promise.all(responses.map(response => response.json()));
+    const firstResponse = await fetch('/api/quotes?limit=100&offset=0');
+    if (!firstResponse.ok) throw new Error(`API ${firstResponse.status}`);
+    const firstPayload = await firstResponse.json();
+    const total = firstPayload.meta?.total || firstPayload.data?.length || 0;
+    const offsets = Array.from({length: Math.ceil(total / 100)}, (_, index) => index * 100).slice(1);
+    const remaining = await Promise.all(offsets.map(offset => fetch(`/api/quotes?limit=100&offset=${offset}`)));
+    if (remaining.some(response => !response.ok)) throw new Error('Unable to load all quote pages');
+    const payloads = [firstPayload, ...await Promise.all(remaining.map(response => response.json()))];
     quotes = payloads.flatMap(payload => Array.isArray(payload.data) ? payload.data : []);
     if (!quotes.length) throw new Error('No published quotes');
-    const corpusStatus = payloads[0].meta?.corpus_status || '';
+    const corpusStatus = firstPayload.meta?.corpus_status || '';
     setApiStatus('ok', corpusStatus.includes('pending') ? 'Cited draft library connected' : 'Quote library connected');
-    $('#feed-count').textContent = payloads[0].meta?.total ?? quotes.length;
+    $('#feed-count').textContent = total;
     $('#result-count').textContent = `${quotes.length} passages`;
     renderRecommendation(true);
     renderResults();
@@ -71,7 +76,13 @@ function quoteCard(quote, compact = false) {
   } else { const small = document.createElement('small'); small.textContent = `${quote.work.author} · ${quote.themes.slice(0,2).join(' · ')}`; item.append(small); item.addEventListener('click', () => { showQuote(quote); window.location.hash = 'feed'; }); }
   return item;
 }
-function showQuote(quote) { currentQuote = quote; $('#quote-card').replaceChildren(quoteCard(quote)); $('#recommendation-heading').textContent = profile.themes.length || profile.mood ? 'Selected for your practice' : 'A place to begin'; }
+function enableQuoteSwipe(card) {
+  let startX = 0;
+  card.addEventListener('touchstart', event => { startX = event.changedTouches[0].clientX; }, { passive: true });
+  card.addEventListener('touchend', event => { const delta = event.changedTouches[0].clientX - startX; if (Math.abs(delta) < 55) return; feedIndex += delta < 0 ? 1 : -1; if (feedIndex < 0) feedIndex = rankedQuotes().length - 1; renderRecommendation(); toast(delta < 0 ? 'Next passage' : 'Previous passage'); }, { passive: true });
+  card.addEventListener('keydown', event => { if (event.key === 'ArrowRight') { feedIndex += 1; renderRecommendation(); } if (event.key === 'ArrowLeft') { feedIndex = Math.max(0, feedIndex - 1); renderRecommendation(); } });
+}
+function showQuote(quote) { currentQuote = quote; const card = quoteCard(quote); card.tabIndex = 0; card.setAttribute('aria-label', 'Quote card. Swipe left or right for another passage.'); enableQuoteSwipe(card); $('#quote-card').replaceChildren(card); $('#recommendation-heading').textContent = profile.themes.length || profile.mood ? 'Selected for your practice' : 'A place to begin'; }
 function renderRecommendation(reset = false) { if (!quotes.length) return; const list = rankedQuotes(); if (reset) feedIndex = 0; const quote = list[feedIndex % list.length]; showQuote(quote); }
 function toggleSaved(quote) { if (savedIds.has(quote.id)) { savedIds.delete(quote.id); toast('Removed from your saved passages.'); } else { savedIds.add(quote.id); toast('Saved for your return.'); } saveSaved(); if (currentQuote?.id === quote.id) showQuote(quote); }
 function renderSaved() { const container = $('#saved-list'); if (!quotes.length) return; const saved = quotes.filter(q => savedIds.has(q.id)); container.replaceChildren(); if (!saved.length) { const empty = document.createElement('p'); empty.className = 'empty-state'; empty.textContent = 'Save a passage and it will appear here.'; container.append(empty); return; } saved.forEach(quote => { const item = quoteCard(quote, true); const remove = document.createElement('button'); remove.className = 'remove-save'; remove.textContent = '×'; remove.setAttribute('aria-label', 'Remove passage'); remove.addEventListener('click', () => toggleSaved(quote)); item.append(remove); container.append(item); }); }

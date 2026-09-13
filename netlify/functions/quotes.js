@@ -1,4 +1,4 @@
-const QUOTES = require('../../data/quotes-100.json');
+const QUOTES = require('../../data/quotes-1330.json');
 
 const headers = {
   'Content-Type': 'application/json; charset=utf-8',
@@ -36,7 +36,7 @@ exports.handler = async (event) => {
     const haystack = [quote.tamil.text, quote.english.text, quote.work.title, quote.work.author, quote.themes.join(' ')].join(' ').toLowerCase();
     return (!query || haystack.includes(query)) && (!category || quote.themes.includes(category)) && (!work || quote.work.title.toLowerCase().includes(work));
   });
-  const limit = Math.min(Math.max(Number(params.limit) || 20, 1), 50);
+  const limit = Math.min(Math.max(Number(params.limit) || 20, 1), 100);
   const offset = Math.max(Number(params.offset) || 0, 0);
   const page = filtered.slice(offset, offset + limit);
   const nextOffset = offset + limit < filtered.length ? offset + limit : null;
