@@ -1,10 +1,13 @@
 {
-  "corpus_id": "tamil-stoic-v1-draft",
-  "status": "source-selection-approved-translation-pending",
+  "corpus_id": "tamil-stoic-project-madurai-bilingual",
+  "status": "bilingual-project-madurai-sources-only",
   "target_count": 1730,
-  "language": {"source": "ta", "translation": "en"},
+  "language": {
+    "source": "ta",
+    "translation": "en"
+  },
   "source_provider": "Project Madurai",
-  "translation_owner": "Tamil Stoic editorial team",
+  "translation_owner": "Original translators credited in each Project Madurai etext",
   "works": [
     {
       "work_id": "thirukkural",
@@ -26,11 +29,9 @@
     }
   ],
   "translation_policy": {
-    "drafts_allowed": true,
-    "production_allowed": false,
-    "ai_assistance_allowed": true,
-    "human_tamil_review_required": true,
-    "human_english_review_required": true,
-    "required_status_for_api_release": "approved"
+    "use_ai_translation": false,
+    "use_only_bilingual_project_madurai_etexts": true,
+    "human_rights_review_required": true,
+    "production_allowed": "only after per-file rights review"
   }
 }

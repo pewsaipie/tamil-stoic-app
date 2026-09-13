@@ -7,7 +7,7 @@ The first corpus target is **1,730 quote records**, created by selecting bounded
 - 1,330 Thirukkural couplets
 - 400 Naladiyar verses
 
-The Tamil source is selected from Project Madurai. Existing English text found on Project Madurai pages is **not automatically reused**. Tamil Stoic translations are a separate editorial layer.
+The Tamil source and English translation must come from the same Project Madurai bilingual etext. Tamil Stoic does not create or alter the translation in this mode; it presents the cited source with the original translator credit.
 
 See `data/corpus-manifest.json` for the source URLs, locators, count, and status.
 
@@ -19,26 +19,24 @@ The content pipeline is explicitly:
 Project Madurai Tamil passage
 → bounded quote (couplet/verse with stable locator)
 → Tamil quote record with source attribution
-→ AI-assisted English draft
-→ human Tamil review
-→ human English review
+→ cited Project Madurai English translation
+→ human rights/context review
 → production approval
 ```
 
 A passage is not automatically a quote. Editors must choose a complete, meaningful unit and preserve its original line breaks. Each quote receives its own stable ID and source locator so that the English draft can always be checked against the exact Tamil text.
 
-## Draft status
+## Source review status
 
-Draft translations may be created with AI assistance, but every draft must remain visibly marked:
+The imported bilingual records are not presented as Tamil Stoic translations. Until rights and attribution are checked, each record remains marked:
 
 ```text
-translation_status: draft
-human_tamil_reviewed: false
-human_english_reviewed: false
+translation_status: source-published-pending-rights-review
+translation_source: Project Madurai bilingual etext
 production_approved: false
 ```
 
-A draft is not a production quote. It must not be presented as an approved translation or used in marketing.
+The original English wording and translator credit must remain intact. Tamil Stoic may add themes or editorial context only as clearly labelled metadata.
 
 ## Required record format
 
@@ -61,16 +59,19 @@ A draft is not a production quote. It must not be presented as an approved trans
 }
 ```
 
-## Private 500-draft batch
+## Project Madurai bilingual source policy
 
-The repository includes `scripts/translate-drafts.mjs` for a private batch run. It requires a source JSON file with at least 500 bounded quote records containing `id` and `tamil_text`, plus an OpenAI-compatible API key. It writes to the ignored `data/drafts/` directory and never changes the public API:
+Tamil Stoic will use only quotes where the Tamil text and English translation are already present in the same Project Madurai bilingual etext. The English text will be displayed with the translator named in that etext and a direct citation to the exact page or PDF. No AI-generated translation is used in this mode.
 
-```bash
-OPENAI_API_KEY=... OPENAI_MODEL=gpt-4o-mini \
-  npm run translate:drafts -- source-passages.json data/drafts/quotes-draft-500.json
-```
+Each imported record must preserve:
 
-The output is explicitly marked `status: draft`, `ai_assisted: true`, and `production_approved: false`. API keys must be supplied through the environment and must never be committed. The script does not download or copy third-party English translations; it translates the supplied Tamil source passage itself. A verified Project Madurai source export must be supplied before running it.
+- Project Madurai source URL and header attribution;
+- the exact Tamil quote and stable locator;
+- the exact English translation as published;
+- credited translator and translation copyright notice;
+- a `translation_status` of `source-published-pending-rights-review` until reuse terms are checked.
+
+The API must not label these translations as Tamil Stoic translations or Project Madurai-owned translations. It should identify Tamil Stoic as the application presenting a cited bilingual source.
 
 ## Human review gate
 

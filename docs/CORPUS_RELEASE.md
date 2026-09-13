@@ -1,6 +1,6 @@
 # 1,500–2,000 quote corpus release gate
 
-The deployed API currently contains a six-record seed corpus. It is intentionally not labelled as the requested 1,500–2,000 corpus. The Tamil source layer will come from Project Madurai's free electronic texts, with the required Project Madurai attribution/header and coordinator confirmation for bulk online distribution. The English layer is a separate Tamil Stoic editorial work: it will not be presented as a Project Madurai translation, and it must have its own copyright/licence record. Shipping fabricated translations or copying modern translations without permission would make the app unreliable and could violate translation rights.
+The deployed API currently contains a small bilingual Project Madurai seed corpus. It is intentionally not labelled as a 1,500–2,000 corpus. Both Tamil and English are taken from cited Project Madurai bilingual etexts, with the original translator credit retained. The source file and the translation rights must still be checked per work before production distribution.
 
 A production corpus must be assembled as a reviewed JSON export with one record per passage. Every record needs:
 

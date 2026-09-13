@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "netlify dev",
     "serve": "python3 -m http.server 4173 --bind 0.0.0.0",
-    "validate:corpus": "node scripts/validate-corpus.mjs",
-    "translate:drafts": "node scripts/translate-drafts.mjs"
+    "validate:corpus": "node scripts/validate-corpus.mjs"
   },
   "engines": {
     "node": ">=20"
