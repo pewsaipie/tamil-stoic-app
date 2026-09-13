@@ -1,0 +1,57 @@
+{
+  "policy": "Only records from an approved source with a documented reuse licence may enter the production corpus.",
+  "allowed_licences": ["Public Domain Mark 1.0", "CC0", "CC BY", "CC BY-SA"],
+  "sources": [
+    {
+      "source_id": "ia-tirukkural-km-balasu",
+      "provider": "Internet Archive",
+      "title": "Tirukkural Of Tiruvalluvar Tamil Text And English Translation",
+      "author_or_translator": "Tiruvachakamani K. M. Balasubramaniam",
+      "url": "https://archive.org/details/TirukkuralOfTiruvalluvarTamilTextAndEnglishTranslation",
+      "license": "Public Domain Mark 1.0",
+      "reuse_status": "approved-pending-file-level-verification",
+      "citation_required": true,
+      "notes": "Verify the item-level rights and edition metadata before importing any page."
+    },
+    {
+      "source_id": "ia-primer-tamil-literature",
+      "provider": "Internet Archive",
+      "title": "A Primer of Tamil Literature",
+      "author_or_translator": "M. S. Purnalingam Pillai",
+      "url": "https://archive.org/details/APrimerOfTamilLiterature",
+      "license": "Public Domain Mark 1.0",
+      "reuse_status": "approved-pending-file-level-verification",
+      "citation_required": true,
+      "notes": "Use only quoted Tamil/English material actually present in the item; this is primarily a literary history."
+    },
+    {
+      "source_id": "ia-two-thousand-years-tamil",
+      "provider": "Internet Archive",
+      "title": "Two Thousand Years Of Tamil Literature",
+      "author_or_translator": "J. M. Somasundaram Pillai",
+      "url": "https://archive.org/details/TwoThousandYearsOfTamilLiterature_201903",
+      "license": "Public Domain Mark 1.0",
+      "reuse_status": "approved-pending-file-level-verification",
+      "citation_required": true,
+      "notes": "Verify the scanned edition and page-level text before import."
+    },
+    {
+      "source_id": "ia-history-tamil-literature",
+      "provider": "Internet Archive",
+      "title": "A History of Tamil Literature",
+      "author_or_translator": "J. M. Somasundaram Pillai",
+      "url": "https://archive.org/details/ahistoryoftamilliterature1968",
+      "license": "Public Domain Mark 1.0",
+      "reuse_status": "approved-pending-file-level-verification",
+      "citation_required": true,
+      "notes": "Use only source passages and translations that can be tied to the item and page."
+    }
+  ],
+  "excluded_by_default": [
+    "Search-result snippets",
+    "Wikipedia text",
+    "Unlicensed blogs and quote sites",
+    "Modern translations without an explicit reuse licence",
+    "Project Madurai files whose individual translation rights have not been verified"
+  ]
+}

@@ -2,7 +2,7 @@
 
 The deployed API currently contains a small bilingual Project Madurai seed corpus. It is intentionally not labelled as a 1,500–2,000 corpus. Both Tamil and English are taken from cited Project Madurai bilingual etexts, with the original translator credit retained. The source file and the translation rights must still be checked per work before production distribution.
 
-A production corpus must be assembled as a reviewed JSON export with one record per passage. Every record needs:
+A production corpus must be assembled as a reviewed JSON export with one record per quote. Only sources in `data/source-registry.json` and only records with an allowlisted licence may enter the production API. Every record needs:
 
 - exact Tamil source text and stable Project Madurai work/verse locator;
 - English translation, translator, translation type, and separate translation licence;
