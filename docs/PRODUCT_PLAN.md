@@ -218,4 +218,10 @@ Add community annotations, semantic search, audio packs, scholar API keys, nativ
 6. [Tamil Virtual Academy, Government of Tamil Nadu](https://it.tn.gov.in/en/node/47) — complementary institutional digital-library resource; verify terms per item.
 7. [W3C Web Content Accessibility Guidelines 2.2](https://www.w3.org/TR/WCAG22/) — accessibility target.
 
+### Rights finding (verified 2026-09-13)
+
+Project Madurai does not present a single OSI-style open-source licence for the whole collection. Its official site says its etexts are free to read and that third-party distribution is permitted **provided the header page containing the Project Logo and credit acknowledgements is kept intact**, and it asks distributors to contact the Project Coordinators before online distribution. Its proofreading guidance also says target works must be public domain or supplied with permission from the author/legal heirs. Treat this as a conditional distribution permission, not blanket CC0/public-domain permission for every file.
+
+The Tamil source, Project Madurai's digitisation/etext, and any English translation must be rights-tracked separately. Individual Project Madurai files can contain stricter translation terms: for example, one English release grants non-commercial use only and directs other users to contact the translator. Therefore Tamil Stoic may use a particular record only after retaining that file's header, attribution, source URL, and written permission/compatible licence for the translation and the proposed commercial/non-commercial use. Contact the Project Madurai coordinators before bulk online distribution.
+
 **Legal note:** this plan is not legal advice. Before ingestion or publication, obtain a rights review for each source and translation, preserve required Project Madurai headers/credits, and honor takedown requests.
