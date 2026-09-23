@@ -2,22 +2,25 @@
 
 creating a tamil content stoic app.
 
-## திருக்குறள் · Thirukkural page
+## திருக்குறள் · Thirukkural — complete edition
 
-A calm, readable page of Thirukkural couplets. Every kural card shows three layers:
+The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
+(அறத்துப்பால் · பொருட்பால் · காமத்துப்பால்), every one in the same three-layer format:
 
 1. **தமிழ்** — the couplet in Tamil, with transliteration
 2. **English translation** — the classic G. U. Pope translation (1886, public domain)
-3. **Simple meaning** — a very easy plain-English gloss written for this app
+3. **Simple meaning** — a plain-English explanation that is easy to understand
 
 ### Features
 
-- Search by kural number (e.g. `151`), Tamil words (e.g. `பொறுத்தல்`), transliteration,
-  or English words (e.g. `patience`, `anger`)
-- Theme filters: Wisdom, Learning, Gratitude, Patience, Anger, Truth, Calm,
-  Impermanence, Compassion, Fate & Effort, Equality
-- Sticky filter bar, mobile-friendly, no build step and no dependencies
-- Deep-linkable cards (`#kural-151`)
+- **All 1,330 kurals**, lazily rendered 24 at a time (smooth infinite scroll, fast searches)
+- **Chapter browser** — every one of the 133 அதிகாரங்கள், grouped by பால் (section)
+- **Theme filters** with counts: Wisdom, Learning, Gratitude, Patience, Anger, Truth,
+  Calm, Impermanence, Compassion, Fate & Effort, Equality, Family, Friendship,
+  Governance, Wealth, Love
+- **Search** by kural number (`151`), Tamil (`பொறுத்தல்`), transliteration, or English
+  (`patience`) — across couplets, translations, meanings and chapter names
+- Deep-linkable cards (`#kural-151`), mobile-friendly, no build step, no runtime dependencies
 
 ### Run it
 
@@ -31,20 +34,29 @@ python3 -m http.server 8000
 ### Structure
 
 ```
-index.html        # the Thirukkural page
-css/styles.css    # styling (parchment + palm-leaf palette)
-js/app.js         # rendering, search, theme filters
-data/kurals.js    # curated kurals (Tamil + Pope translation + simple gloss)
+index.html                     # the Thirukkural page
+css/styles.css                 # styling (parchment + palm-leaf palette)
+js/app.js                      # rendering, search, filters, lazy loading
+data/kurals.js                 # ALL 1,330 kurals + chapters + themes (generated)
+scripts/build-kurals.mjs       # regenerates data/kurals.js from source datasets
+scripts/curated-overrides.json # hand-written text layers for the original 29 kurals
 ```
 
-### Content notes
+### Content pipeline
 
-- Tamil text follows the standard Parimelalagar recension.
-- English translations are by G. U. Pope with Drew, Lazarus & Ellis (1886) — public domain.
-- Simple-English glosses are original to this project.
-- 29 kurals are curated so far across 14 chapters (பாயிரம், வான்சிறப்பு, அறன் வலியுறுத்தல்,
-  செய்ந்நன்றியறிதல், பொறையுடைமை, வாய்மை, வெகுளாமை, இன்னா செய்யாமை, நிலையாமை,
-  அவா அறுத்தல், ஊழ், கல்வி, ஆள்வினையுடைமை, பெருமை). More can be added to `data/kurals.js`.
+`data/kurals.js` is generated — do not edit by hand:
+
+```bash
+git clone --depth 1 https://github.com/tk120404/thirukkural.git ../datasets/tk120404_thirukkural
+node scripts/build-kurals.mjs
+```
+
+- **Tamil text**: standard (Parimelalagar-based) recension, via the tk120404/thirukkural dataset
+- **English verse translations & prose explanations**: G. U. Pope with Drew, Lazarus & Ellis
+  (1886) — public domain
+- **Simple meanings**: Pope's prose explanations; the originally curated 29 kurals keep their
+  hand-written app-original glosses (`scripts/curated-overrides.json`)
+- **Themes** are assigned per chapter in `scripts/build-kurals.mjs` (`CHAPTER_THEMES`)
 
 ## License
 

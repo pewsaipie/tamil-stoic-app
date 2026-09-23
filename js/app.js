@@ -1,23 +1,45 @@
 /* Tamil Stoic — Thirukkural page behaviour
- * Renders the curated kural collection with:
+ * Renders the complete Thirukkural (1,330 couplets) with:
  *   1. Tamil couplet (+ transliteration)
- *   2. Classic English translation (G. U. Pope)
+ *   2. Classic English translation (G. U. Pope, 1886)
  *   3. Simple-English meaning
- * Supports search (number / Tamil / English) and theme filters.
+ * Features: search (number / Tamil / English), theme filters, chapter browser,
+ * lazy rendering (24 cards per batch) for smooth scrolling, deep links (#kural-151).
  */
 (function () {
   "use strict";
 
   var KURALS = window.KURALS || [];
+  var CHAPTERS = window.CHAPTERS || [];
+  var SECTIONS = window.SECTIONS || [];
   var THEMES = window.THEMES || [];
+
+  var PAGE_SIZE = 24;
 
   var listEl = document.getElementById("kural-list");
   var chipsEl = document.getElementById("chips");
   var searchEl = document.getElementById("search");
+  var chapterEl = document.getElementById("chapter");
   var countEl = document.getElementById("result-count");
   var rangeEl = document.getElementById("result-range");
+  var sentinelEl = document.getElementById("sentinel");
 
-  var state = { theme: "all", query: "" };
+  var state = { theme: "all", chapter: "all", query: "", shown: PAGE_SIZE };
+
+  /* ---------- lookups ---------- */
+
+  var chById = {};
+  CHAPTERS.forEach(function (c) { chById[c.n] = c; });
+
+  var secById = {};
+  SECTIONS.forEach(function (s) { secById[s.id] = s; });
+
+  var themeById = {};
+  THEMES.forEach(function (t) { themeById[t.id] = t; });
+
+  function themeLabel(id) {
+    return themeById[id] ? themeById[id].en : id;
+  }
 
   /* ---------- helpers ---------- */
 
@@ -44,38 +66,42 @@
     }
   }
 
-  function themeLabel(id) {
-    for (var i = 0; i < THEMES.length; i++) {
-      if (THEMES[i].id === id) return THEMES[i].en;
-    }
-    return id;
-  }
-
   function countForTheme(id) {
     if (id === "all") return KURALS.length;
-    return KURALS.filter(function (k) { return k.theme === id; }).length;
+    var c = 0;
+    for (var i = 0; i < KURALS.length; i++) if (KURALS[i].th === id) c++;
+    return c;
   }
 
   /* ---------- matching ---------- */
 
   function matches(k) {
-    if (state.theme !== "all" && k.theme !== state.theme) return false;
+    if (state.theme !== "all" && k.th !== state.theme) return false;
+    if (state.chapter !== "all" && String(k.ch) !== String(state.chapter)) return false;
+
     var q = state.query.trim().toLowerCase();
     if (!q) return true;
 
-    if (/^\d+$/.test(q)) return String(k.number) === String(parseInt(q, 10));
+    if (/^\d+$/.test(q)) return String(k.n) === String(parseInt(q, 10));
 
+    var ch = chById[k.ch];
+    var sec = secById[k.sec];
+    var th = themeById[k.th];
     var haystack = [
       k.ta[0], k.ta[1],
-      k.translit[0], k.translit[1],
+      k.tr[0], k.tr[1],
       k.en[0], k.en[1],
-      k.simple,
-      k.chapterTa, k.chapterEn,
-      k.sectionTa, k.sectionEn,
-      themeLabel(k.theme)
+      k.s,
+      ch ? ch.ta : "", ch ? ch.en : "",
+      sec ? sec.ta : "", sec ? sec.en : "",
+      th ? th.ta + " " + th.en : ""
     ].join(" \n ").toLowerCase();
 
-    return q.split(/\s+/).every(function (w) { return haystack.indexOf(w) !== -1; });
+    var words = q.split(/\s+/);
+    for (var i = 0; i < words.length; i++) {
+      if (haystack.indexOf(words[i]) === -1) return false;
+    }
+    return true;
   }
 
   /* ---------- rendering ---------- */
@@ -83,64 +109,72 @@
   function cardHtml(k) {
     var q = state.query.trim();
     var showQ = q && !/^\d+$/.test(q) ? q : "";
-    var num = pad(k.number);
+    var ch = chById[k.ch];
+    var sec = secById[k.sec];
+
+    var enLines =
+      '<span class="line">' + escapeHtml(k.en[0]) + "</span>" +
+      (k.en[1] ? '<span class="line">' + escapeHtml(k.en[1]) + "</span>" : "");
 
     return (
-      '<article class="kural-card" id="kural-' + k.number + '">' +
+      '<article class="kural-card" id="kural-' + k.n + '">' +
         '<div class="kural-meta">' +
-          '<span class="kural-num">#' + num + '</span>' +
-          '<span class="kural-chapter">' + escapeHtml(k.chapterTa) +
-            '<span class="ch-en">· ' + escapeHtml(k.chapterEn) + '</span></span>' +
-          '<span class="kural-theme">' + escapeHtml(themeLabel(k.theme)) + '</span>' +
-        '</div>' +
+          '<span class="kural-num">#' + pad(k.n) + "</span>" +
+          '<span class="kural-chapter">' + escapeHtml(ch ? ch.ta : "") +
+            '<span class="ch-en">· ' + escapeHtml(ch ? ch.en : "") + "</span></span>" +
+          '<span class="kural-theme">' + escapeHtml(themeLabel(k.th)) + "</span>" +
+        "</div>" +
 
         '<p class="kural-ta">' +
-          '<span class="line">' + highlight(k.ta[0], showQ) + '</span>' +
-          '<span class="line">' + highlight(k.ta[1], showQ) + '</span>' +
-        '</p>' +
+          '<span class="line">' + highlight(k.ta[0], showQ) + "</span>" +
+          '<span class="line">' + highlight(k.ta[1], showQ) + "</span>" +
+        "</p>" +
         '<p class="kural-translit">' +
-          escapeHtml(k.translit[0]) + ' —<br/>' + escapeHtml(k.translit[1]) +
-        '</p>' +
+          escapeHtml(k.tr[0]) + " —<br/>" + escapeHtml(k.tr[1]) +
+        "</p>" +
 
         '<hr class="kural-divider" />' +
 
         '<div class="block-label">English translation</div>' +
-        '<blockquote class="kural-en">' +
-          '<span class="line">' + escapeHtml(k.en[0]) + '</span>' +
-          '<span class="line">' + escapeHtml(k.en[1]) + '</span>' +
+        '<blockquote class="kural-en">' + enLines +
           '<span class="source">— G. U. Pope (1886)</span>' +
-        '</blockquote>' +
+        "</blockquote>" +
 
         '<div class="block-label" style="margin-top:16px;">Simple meaning</div>' +
-        '<div class="kural-simple">' + highlight(k.simple, showQ) + '</div>' +
+        '<div class="kural-simple">' + highlight(k.s, showQ) + "</div>" +
 
         '<div class="kural-foot">' +
-          '<span class="section-tag">' + escapeHtml(k.sectionTa) + ' · ' + escapeHtml(k.sectionEn) + '</span>' +
-          '<span>திருக்குறள் ' + num + '</span>' +
-        '</div>' +
-      '</article>'
+          '<span class="section-tag">' + escapeHtml(sec ? sec.ta : "") + " · " + escapeHtml(sec ? sec.en : "") + "</span>" +
+          "<span>திருக்குறள் " + pad(k.n) + "</span>" +
+        "</div>" +
+      "</article>"
     );
   }
 
   function render() {
     var results = KURALS.filter(matches);
+    var visible = results.slice(0, state.shown);
 
-    countEl.textContent = results.length + " of " + KURALS.length + " kurals";
+    countEl.textContent =
+      "Showing " + visible.length + " of " + results.length + " kurals" +
+      (results.length !== KURALS.length ? " (filtered from " + KURALS.length + ")" : "");
     rangeEl.textContent =
       results.length > 0
-        ? "#" + pad(results[0].number) + " – #" + pad(results[results.length - 1].number)
+        ? "#" + pad(results[0].n) + " – #" + pad(results[results.length - 1].n)
         : "";
 
     if (results.length === 0) {
       listEl.innerHTML =
         '<div class="empty">' +
           '<p class="kural-ta">தேடலில் எதுவும் கிடைக்கவில்லை</p>' +
-          '<p>Nothing found. Try a kural number (e.g. <b>151</b>) or another word.</p>' +
-        '</div>';
+          "<p>Nothing found. Try a kural number (e.g. <b>151</b>) or another word.</p>" +
+        "</div>";
+      sentinelEl.style.display = "none";
       return;
     }
 
-    listEl.innerHTML = results.map(cardHtml).join("");
+    listEl.innerHTML = visible.map(cardHtml).join("");
+    sentinelEl.style.display = results.length > visible.length ? "" : "none";
   }
 
   function renderChips() {
@@ -149,11 +183,25 @@
       return (
         '<button class="chip' + active + '" data-theme="' + t.id + '" role="tab" aria-selected="' +
         (state.theme === t.id) + '">' +
-          '<span class="chip-ta">' + escapeHtml(t.ta) + '</span>' + escapeHtml(t.en) +
-          '<span class="count">' + countForTheme(t.id) + '</span>' +
-        '</button>'
+          '<span class="chip-ta">' + escapeHtml(t.ta) + "</span>" + escapeHtml(t.en) +
+          '<span class="count">' + countForTheme(t.id) + "</span>" +
+        "</button>"
       );
     }).join("");
+  }
+
+  function renderChapterOptions() {
+    var html = '<option value="all">அனைத்து அதிகாரங்கள் · All 133 chapters</option>';
+    SECTIONS.forEach(function (s) {
+      html += '<optgroup label="' + escapeHtml(s.ta + " · " + s.en) + '">';
+      CHAPTERS.filter(function (c) { return c.sec === s.id; }).forEach(function (c) {
+        html +=
+          '<option value="' + c.n + '">' + c.n + ". " + escapeHtml(c.ta) +
+          " — " + escapeHtml(c.en) + "</option>";
+      });
+      html += "</optgroup>";
+    });
+    chapterEl.innerHTML = html;
   }
 
   /* ---------- events ---------- */
@@ -162,7 +210,14 @@
     var btn = e.target.closest(".chip");
     if (!btn) return;
     state.theme = btn.getAttribute("data-theme");
+    state.shown = PAGE_SIZE;
     renderChips();
+    render();
+  });
+
+  chapterEl.addEventListener("change", function () {
+    state.chapter = chapterEl.value;
+    state.shown = PAGE_SIZE;
     render();
   });
 
@@ -171,12 +226,43 @@
     clearTimeout(debounce);
     debounce = setTimeout(function () {
       state.query = searchEl.value;
+      state.shown = PAGE_SIZE;
       render();
     }, 120);
   });
 
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(
+      function (entries) {
+        if (entries[0].isIntersecting && sentinelEl.style.display !== "none") {
+          state.shown += PAGE_SIZE;
+          render();
+        }
+      },
+      { rootMargin: "700px 0px" }
+    );
+    io.observe(sentinelEl);
+  } else {
+    // very old browsers: show everything
+    state.shown = KURALS.length;
+  }
+
   /* ---------- init ---------- */
 
+  renderChapterOptions();
   renderChips();
   render();
+
+  // deep link: #kural-151
+  var m = (location.hash || "").match(/^#kural-(\d+)$/);
+  if (m) {
+    var target = parseInt(m[1], 10);
+    var idx = KURALS.findIndex(function (k) { return k.n === target; });
+    if (idx >= 0) {
+      state.shown = Math.max(PAGE_SIZE, idx + 1 + Math.floor(PAGE_SIZE / 2));
+      render();
+      var el = document.getElementById("kural-" + target);
+      if (el) el.scrollIntoView({ block: "start" });
+    }
+  }
 })();
