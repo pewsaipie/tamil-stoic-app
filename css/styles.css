@@ -1,0 +1,410 @@
+/* Tamil Stoic — Thirukkural page styles */
+
+:root {
+  --bg: #f6f1e5;
+  --bg-accent: #efe7d3;
+  --card: #fffdf7;
+  --ink: #2b2420;
+  --ink-soft: #5c534b;
+  --ink-faint: #8a7f73;
+  --line: #e2d7c0;
+  --green: #1f5d50;
+  --green-soft: #e4eeea;
+  --terracotta: #b0512f;
+  --gold: #b98a2e;
+  --simple-bg: #f2efe2;
+  --shadow: 0 1px 2px rgba(60, 45, 25, 0.06), 0 8px 24px rgba(60, 45, 25, 0.07);
+  --radius: 14px;
+  --font-ta: "Noto Serif Tamil", "Catamaran", "Latha", serif;
+  --font-en-classic: "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-ui);
+  background:
+    radial-gradient(1200px 500px at 80% -10%, #f0e6cd 0%, transparent 60%),
+    var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  min-height: 100vh;
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 20px 8px;
+  text-align: center;
+}
+
+.site-header .eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 999px;
+  padding: 6px 14px;
+  margin-bottom: 18px;
+}
+
+.site-header h1 {
+  font-family: var(--font-ta);
+  font-size: clamp(44px, 9vw, 72px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.site-header .subtitle {
+  font-family: var(--font-en-classic);
+  font-size: clamp(19px, 3vw, 24px);
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+.site-header .tagline {
+  max-width: 560px;
+  margin: 18px auto 0;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.site-header .tagline b {
+  color: var(--terracotta);
+  font-weight: 600;
+}
+
+/* ---------- Controls ---------- */
+
+.controls {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(246, 241, 229, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  margin-top: 28px;
+  padding: 14px 20px 12px;
+}
+
+.controls-inner {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.search-wrap {
+  position: relative;
+}
+
+.search-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  stroke: var(--ink-faint);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+#search {
+  width: 100%;
+  font: 15px/1.4 var(--font-ui);
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 11px 18px 11px 40px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+#search::placeholder { color: var(--ink-faint); }
+
+#search:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(31, 93, 80, 0.12);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.chip {
+  font: 600 12.5px/1 var(--font-ui);
+  color: var(--ink-soft);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.chip .chip-ta {
+  font-family: var(--font-ta);
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.chip:hover { border-color: var(--green); color: var(--green); }
+
+.chip.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+.chip .count {
+  opacity: 0.65;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* ---------- List ---------- */
+
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 26px 20px 60px;
+}
+
+.result-line {
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.kural-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 26px 28px 24px;
+  margin-bottom: 22px;
+  scroll-margin-top: 150px;
+  animation: rise 0.35s ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.kural-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 18px;
+}
+
+.kural-num {
+  font: 700 13px/1 var(--font-ui);
+  color: #fff;
+  background: var(--terracotta);
+  border-radius: 8px;
+  padding: 6px 9px;
+  letter-spacing: 0.02em;
+}
+
+.kural-chapter {
+  font-family: var(--font-ta);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.kural-chapter .ch-en {
+  font-family: var(--font-en-classic);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-left: 6px;
+}
+
+.kural-theme {
+  margin-left: auto;
+  font: 600 11.5px/1 var(--font-ui);
+  color: var(--green);
+  background: var(--green-soft);
+  border-radius: 999px;
+  padding: 6px 11px;
+}
+
+.kural-ta {
+  font-family: var(--font-ta);
+  font-size: clamp(21px, 3.6vw, 26px);
+  font-weight: 600;
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.kural-ta .line { display: block; }
+
+.kural-translit {
+  font-family: var(--font-en-classic);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-faint);
+  margin-top: 8px;
+}
+
+.kural-divider {
+  border: 0;
+  border-top: 1px dashed var(--line);
+  margin: 20px 0 16px;
+}
+
+.block-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 10.5px/1 var(--font-ui);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+
+.block-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.kural-en {
+  font-family: var(--font-en-classic);
+  font-size: 18.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.kural-en .line { display: block; }
+
+.kural-en .source {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-style: normal;
+  color: var(--ink-faint);
+}
+
+.kural-simple {
+  background: var(--simple-bg);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.kural-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+
+.kural-foot .section-tag {
+  font-family: var(--font-ta);
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  padding: 64px 20px;
+  color: var(--ink-faint);
+}
+
+.empty .kural-ta {
+  font-size: 20px;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.sentinel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 26px 0 10px;
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--line);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+mark {
+  background: #f3e3b8;
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: var(--bg-accent);
+  padding: 34px 20px 40px;
+}
+
+.site-footer .footer-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.site-footer b { color: var(--ink); font-weight: 600; }
+
+.site-footer .footer-ta {
+  font-family: var(--font-ta);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .kural-card { padding: 20px 18px 18px; }
+  .kural-theme { margin-left: 0; }
+  .site-header { padding-top: 40px; }
+}
