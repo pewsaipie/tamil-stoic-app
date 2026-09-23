@@ -68,10 +68,11 @@ Deployed to **GitHub Pages** by `.github/workflows/deploy.yml` — it runs on ev
 
 **https://pewsaipie.github.io/tamil-stoic-app/**
 
-If the first run reports that Pages is not enabled, flip it once in the repo:
+One-time prerequisite (owner only): enable Pages with the Actions source — open
 **Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the
-workflow. (Note: Pages from a private repo requires GitHub Pro/Team/Enterprise — or make
-the repo public first.)
+workflow (or push again). GitHub does not allow any token to create the Pages site
+automatically, so this single click cannot be scripted. (Note: Pages from a private
+repo requires GitHub Pro/Team/Enterprise — or make the repo public first.)
 
 ## License
 

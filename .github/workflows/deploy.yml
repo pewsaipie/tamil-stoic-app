@@ -5,18 +5,14 @@ on:
     branches: [main, arena/01a0cc4d-tamil-stoic-app]
   workflow_dispatch:
 
-# Pages deployments need Pages write + OIDC token exchange.
-# administration: write lets configure-pages register the Pages site
-# (build type: GitHub Actions) on the very first run, if the plan allows.
 permissions:
   contents: read
   pages: write
   id-token: write
-  administration: write
 
 concurrency:
-  group: github-pages
-  cancel-in-progress: true
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -36,8 +32,6 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
