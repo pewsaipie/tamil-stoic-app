@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>திருக்குறள் · Thirukkural — Tamil Stoic</title>
+  <meta name="description" content="Thirukkural couplets in Tamil with classic English translations and easy-to-understand plain-English meanings." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <span class="eyebrow">Tamil Stoic · தமிழ் ஸ்டோயிக்</span>
+    <h1>திருக்குறள்</h1>
+    <p class="subtitle">Thirukkural — couplets of Thiruvalluvar</p>
+    <p class="tagline">
+      Timeless wisdom in <b>Tamil</b>, its classic <b>English translation</b>, and a
+      <b>simple meaning</b> anyone can understand.
+    </p>
+  </header>
+
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+        </svg>
+        <input
+          id="search"
+          type="search"
+          placeholder="Search number or words — எ.கா. 151, பொறுத்தல், patience, anger…"
+          autocomplete="off"
+        />
+      </div>
+      <div class="chips" id="chips" role="tablist" aria-label="Filter by theme"></div>
+    </div>
+  </div>
+
+  <main>
+    <div class="result-line">
+      <span id="result-count"></span>
+      <span id="result-range"></span>
+    </div>
+    <section id="kural-list" aria-live="polite"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-ta"><b>யாதனின் யாதனின் நீங்கியான் நோதல் அதனின் யாதனின் இல்லன் நலம்.</b> (குறள் 360)</p>
+      <p>
+        English translations by <b>G. U. Pope</b> (with W. H. Drew, John Lazarus &amp; F. W. Ellis, 1886) — in the
+        public domain. Simple-English glosses written for this app. Tamil text follows the standard
+        Parimelalagar recension. Source cross-checked against KuralOviyam (kuraloviyam.com).
+      </p>
+      <p>
+        <b>tamil-stoic-app</b> · A calm corner for Tamil wisdom. அறம் · பொருள் · காமம்
+      </p>
+    </div>
+  </footer>
+
+  <script src="data/kurals.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
