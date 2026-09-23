@@ -60,6 +60,19 @@ node scripts/build-kurals.mjs
   layers (`scripts/curated-overrides.json`)
 - **Themes** are assigned per chapter in `scripts/build-kurals.mjs` (`CHAPTER_THEMES`)
 
+## Live site
+
+Deployed to **GitHub Pages** by `.github/workflows/deploy.yml` — it runs on every push to
+`main` (or the working branch) and publishes just the app files (`index.html`, `css/`, `js/`,
+`data/`). After the first successful run the site is at:
+
+**https://pewsaipie.github.io/tamil-stoic-app/**
+
+If the first run reports that Pages is not enabled, flip it once in the repo:
+**Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the
+workflow. (Note: Pages from a private repo requires GitHub Pro/Team/Enterprise — or make
+the repo public first.)
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Derived data comes from
