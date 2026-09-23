@@ -249,7 +249,14 @@ window.SECTIONS = ${J(SECTIONS)};
 window.THEMES = ${J(THEMES)};
 `;
 
-fs.writeFileSync(path.join(repo, "data", "kurals.js"), out);
+// Write ESM exports into src/data/kurals.js where the React app imports them.
+const target = path.join(repo, "src", "data", "kurals.js");
+fs.writeFileSync(target, out.replace(/^window\.KURALS = /m, "export const KURALS = ")
+                              .replace(/^window\.CHAPTERS = /m, "export const CHAPTERS = ")
+                              .replace(/^window\.SECTIONS = /m, "export const SECTIONS = ")
+                              .replace(/^window\.THEMES = /m, "export const THEMES = "));
+// eslint-disable-next-line no-console
+console.log("wrote", target);
 
 /* ---------- report ---------- */
 

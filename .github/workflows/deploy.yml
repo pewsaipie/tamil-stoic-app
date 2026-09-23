@@ -24,11 +24,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Gather site files
-        run: |
-          mkdir -p _site
-          cp index.html _site/
-          cp -r css js data _site/
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          # Vite needs to know the site is served from /tamil-stoic-app/ on Pages
+          BASE_PATH: "/tamil-stoic-app/"
+
+      - name: Test
+        run: node scripts/test-app.mjs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -36,7 +48,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment

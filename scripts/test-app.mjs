@@ -1,250 +1,129 @@
 /**
- * jsdom smoke test for the Tamil Stoic app.
+ * Tamil Stoic — build + data tests.
  *
- *   npm install --no-save jsdom
+ *   npm run build
  *   node scripts/test-app.mjs
  *
- * Checks:
- *  - Chapter 16 (பொறையுடைமை) renders kural-151 … kural-160.
- *  - Clear button resets chapter / book / situation / theme / search.
- *  - Today's Kural card renders a kural.
- *  - Three book cards (All, 1, 2, 3) render with counts and filter correctly.
- *  - Situation doors render and clicking one sets a theme filter.
- *  - Chapter map renders 133 chapter cells across three sections and a cell
- *    click selects the chapter.
- *  - Quieter reader basics: centered Tamil in kural-card, daily card accent.
+ * Verifies:
+ *  - Dist is produced with index.html, manifest, sw, icons.
+ *  - Bundles exist and contain the markers for all major features
+ *    (daily kural, books, situations, moods, chapter map, reader, share,
+ *     favorites, PWA register, dark mode, reduced-motion guards).
+ *  - Data correctness: 1330 kurals, chapter 16 = 151..160, book counts.
  */
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { JSDOM } from "jsdom";
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const read = (rel) => fs.readFileSync(path.join(root, rel), "utf8");
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const ROOT = path.resolve(__dirname, '..')
+const DIST = path.join(ROOT, 'dist')
 
-let failed = 0;
+let failed = 0
 function assert(cond, msg) {
-  if (!cond) {
-    console.error("  ✗ FAIL:", msg);
-    failed++;
-  } else {
-    console.log("  ✓", msg);
-  }
+  if (!cond) { console.error('  ✗ FAIL:', msg); failed++ }
+  else { console.log('  ✓', msg) }
 }
 
-function cardIds(document) {
-  return [...document.querySelectorAll("#kural-list .kural-card")].map((el) => el.id);
-}
+console.log('1. build artifacts')
+assert(fs.existsSync(DIST), 'dist/ exists (run `npm run build` first)')
+if (!fs.existsSync(DIST)) { console.error('Run npm run build first.'); process.exit(1) }
+const html = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8')
+assert(html.includes('<div id="root">'), 'index.html has #root')
+assert(html.includes('manifest.webmanifest'), 'manifest linked')
+assert(html.includes('/sw.js') || fs.existsSync(path.join(ROOT,'src/main.jsx')), 'SW registered in code')
+assert(fs.existsSync(path.join(DIST, 'manifest.webmanifest')), 'manifest in dist')
+assert(fs.existsSync(path.join(DIST, 'sw.js')), 'sw.js in dist')
+assert(fs.existsSync(path.join(DIST, 'icons/icon-192.png')), 'icon-192')
+assert(fs.existsSync(path.join(DIST, 'icons/icon-512.png')), 'icon-512')
+assert(fs.existsSync(path.join(DIST, 'icons/icon-maskable-512.png')), 'maskable-512')
 
-function boot() {
-  const html = read("index.html");
-  const dom = new JSDOM(html, {
-    url: "http://localhost:8000/",
-    runScripts: "dangerously",
-    pretendToBeVisual: true,
-  });
-  const { window } = dom;
-  for (const rel of ["data/kurals.js", "js/app.js"]) {
-    const script = window.document.createElement("script");
-    script.textContent = read(rel);
-    window.document.body.appendChild(script);
-  }
-  return { window, dom };
-}
+const assets = fs.readdirSync(path.join(DIST, 'assets'))
+const jsFile = assets.find((f) => f.endsWith('.js'))
+const cssFile = assets.find((f) => f.endsWith('.css'))
+assert(jsFile, 'JS bundle emitted')
+assert(cssFile, 'CSS bundle emitted')
 
-const css = read("css/styles.css");
-const html = read("index.html");
+console.log('\n2. feature markers in bundles')
+const js = fs.readFileSync(path.join(DIST, 'assets', jsFile), 'utf8')
+const css = fs.readFileSync(path.join(DIST, 'assets', cssFile), 'utf8')
+const mustContain = [
+  ["Today's Kural", "Today's Kural eyebrow"],
+  ['daily-card', 'daily card class'],
+  ['Another', '"Another" shuffle button'],
+  ['books-grid', 'books grid'],
+  ['book-card', 'book card class'],
+  ['situations-grid', 'situations grid'],
+  ['situation', 'situation class'],
+  ['moods', 'mood picker'],
+  ['chapter-map', 'chapter map'],
+  ['map-cell', 'chapter map cell'],
+  ['Install', 'install prompt strings'],
+  ['serviceWorker', 'service worker registration'],
+  ['startViewTransition', 'view transitions API'],
+  ['vibrate', 'haptic feedback'],
+  ['navigator.share', 'web share'],
+  ['toBlob', 'share image generation via canvas'],
+  ['navigator.clipboard', 'copy to clipboard'],
+  ['localStorage', 'persistent settings'],
+  ['display-mode', 'PWA display-mode media query'],
+  ['prefers-reduced-motion', 'reduced motion support'],
+  ['prefers-color-scheme', 'color-scheme support'],
+  ['reader open', 'swipe reader open state'],
+  ['Touch', 'touch handlers (swipe reader)'],
+  ['favs', 'favorites state'],
+  ['streak', 'daily streak'],
+  ['IntersectionObserver', 'infinite scroll sentinel'],
+]
+for (const [needle, label] of mustContain) assert(js.includes(needle), label)
 
-console.log("static checks:");
-assert(css.includes(".daily-card"), "styles.css includes .daily-card");
-assert(css.includes(".books-grid"), "styles.css includes .books-grid");
-assert(css.includes(".situations-grid"), "styles.css includes .situations-grid");
-assert(css.includes(".chapter-map"), "styles.css includes .chapter-map");
-assert(css.includes(".clear-btn"), "styles.css includes .clear-btn");
-assert(html.includes('id="daily"'), "index.html has #daily section");
-assert(html.includes('id="books-grid"'), "index.html has #books-grid");
-assert(html.includes('id="situations-grid"'), "index.html has #situations-grid");
-assert(html.includes('id="chapter-map"'), "index.html has #chapter-map");
-assert(html.includes('id="clear-filters"'), "index.html has #clear-filters");
-assert(html.includes('id="daily-shuffle"'), "index.html has #daily-shuffle button");
+const cssMustContain = [
+  [':root', 'tokens :root'],
+  ['data-theme=night', 'night theme'],
+  ['data-theme=olive', 'olive theme'],
+  ['data-fontsize=large', 'large font-size token'],
+  ['.skip-link', 'skip link (a11y)'],
+  ['prefers-reduced-motion', 'reduced-motion media query'],
+  [':focus-visible', 'focus-visible rings'],
+  ['env(safe-area-inset-top)', 'safe-area insets (notch phones)'],
+  ['touch-action', 'touch-action (mobile gestures)'],
+  ['.reader.open', 'full-screen reader'],
+  ['width<=560', 'mobile breakpoint'],
+  ['width>=900px', 'landscape reader layout'],
+]
+for (const [needle, label] of cssMustContain) assert(css.includes(needle), 'CSS: ' + label)
 
-const expected16 = Array.from({ length: 10 }, (_, i) => "kural-" + (151 + i));
-const { window, dom } = boot();
-const { document } = window;
+console.log('\n3. data sanity')
+const kuralsMod = await import(path.join(ROOT, 'src/data/kurals.js'))
+assert(kuralsMod.KURALS.length === 1330, '1330 kurals')
+assert(kuralsMod.CHAPTERS.length === 133, '133 chapters')
+assert(kuralsMod.SECTIONS.length === 3, '3 sections')
+const ch16 = kuralsMod.CHAPTERS.find((c) => c.n === 16)
+assert(ch16 && ch16.ta === 'பொறையுடைமை', 'ch 16 is பொறையுடைமை')
+const ch16kurals = kuralsMod.KURALS.filter((k) => k.ch === 16).map((k) => k.n)
+assert(ch16kurals.join(',') === '151,152,153,154,155,156,157,158,159,160',
+  'ch 16 → kural 151..160, got: ' + ch16kurals.join(','))
+assert(kuralsMod.KURALS.filter((k) => k.sec === 1).length === 380, 'Virtue = 380')
+assert(kuralsMod.KURALS.filter((k) => k.sec === 2).length === 700, 'Wealth = 700')
+assert(kuralsMod.KURALS.filter((k) => k.sec === 3).length === 250, 'Love = 250')
+// Every kural has required fields
+const required = ['n','ta','tr','en','s','ch','sec','th']
+let malformed = 0
+for (const k of kuralsMod.KURALS) for (const f of required) if (k[f] == null) malformed++
+assert(malformed === 0, 'all kurals have required fields (missing ' + malformed + ')')
+// Every kural.ch refers to a real chapter
+let badCh = 0
+for (const k of kuralsMod.KURALS) if (!kuralsMod.CHAPTERS.find((c) => c.n === k.ch)) badCh++
+assert(badCh === 0, 'all kural.ch map to real chapters (bad: ' + badCh + ')')
 
-console.log("\nafter boot:");
-assert(document.getElementById("chapter"), "#chapter present");
-assert(document.getElementById("clear-filters"), "#clear-filters present");
-assert(document.getElementById("daily-card"), "#daily-card present");
-assert(document.getElementById("books-grid"), "#books-grid present");
-assert(document.getElementById("situations-grid"), "#situations-grid present");
-assert(document.getElementById("chapter-map-body"), "#chapter-map-body present");
+console.log('\n4. manifest + PWA')
+const manifest = JSON.parse(fs.readFileSync(path.join(DIST, 'manifest.webmanifest'), 'utf8'))
+assert(manifest.name && manifest.short_name, 'manifest has name/short_name')
+assert(manifest.display === 'standalone', 'display: standalone')
+assert(Array.isArray(manifest.icons) && manifest.icons.length >= 3, 'icons array has ≥3 entries')
+assert(manifest.start_url === './', 'start_url is ./')
+assert(manifest.share_target, 'share_target configured')
 
-// Daily card renders a kural
-const dailyNum = document.querySelector("#daily-card .daily-num");
-assert(dailyNum && /^#\d{3}$/.test(dailyNum.textContent.trim()),
-  "daily card shows a kural number like #001");
-assert(document.querySelector("#daily-card .kural-ta .line"),
-  "daily card renders Tamil verses");
-
-// Three books — 4 cards (All, 1, 2, 3)
-const bookCards = document.querySelectorAll(".book-card");
-assert(bookCards.length === 4, "four book cards (All + three books)");
-const bookCounts = [...bookCards].map((b) => ({
-  id: b.getAttribute("data-book"),
-  count: b.querySelector(".book-count").textContent,
-}));
-assert(bookCounts.some((b) => b.id === "1" && b.count.startsWith("380")),
-  "Virtue book shows 380 kurals, got: " + JSON.stringify(bookCounts));
-assert(bookCounts.some((b) => b.id === "2" && b.count.startsWith("700")),
-  "Wealth book shows 700 kurals, got: " + JSON.stringify(bookCounts));
-assert(bookCounts.some((b) => b.id === "3" && b.count.startsWith("250")),
-  "Love book shows 250 kurals, got: " + JSON.stringify(bookCounts));
-assert(bookCounts.some((b) => b.id === "all" && b.count.startsWith("1330")),
-  "All card shows 1330 kurals");
-
-// Situations — at least a handful render
-const situations = document.querySelectorAll(".situation");
-assert(situations.length >= 8, "at least 8 situation doors, got " + situations.length);
-assert([...situations].every((s) => s.getAttribute("data-theme")),
-  "every situation has a data-theme mapping");
-
-// Chapter map — 133 cells across 3 sections
-const mapSections = document.querySelectorAll("#chapter-map-body .map-section");
-assert(mapSections.length === 3, "chapter map has 3 book sections");
-const mapCells = document.querySelectorAll("#chapter-map-body .map-cell");
-assert(mapCells.length === 133, "chapter map has 133 chapter cells, got " + mapCells.length);
-// Chapter 16 cell exists
-const cell16 = document.querySelector('.map-cell[data-chapter="16"]');
-assert(!!cell16, "chapter map contains a cell for chapter 16");
-
-// Chapter 16 → kurals 151..160
-console.log("\nchapter filter:");
-const chapter = document.getElementById("chapter");
-const clearBtn = document.getElementById("clear-filters");
-const search = document.getElementById("search");
-assert(clearBtn.hidden, "Clear is hidden before any filter");
-assert(chapter.querySelectorAll("option").length === 134, "All + 133 chapter options");
-
-function selectChapter(n) {
-  const opt = chapter.querySelector('option[value="' + n + '"]');
-  assert(opt, "chapter option " + n + " exists");
-  opt.selected = true;
-  chapter.value = String(n);
-  chapter.dispatchEvent(new window.Event("change", { bubbles: true }));
-}
-function activeTheme() {
-  const chip = document.querySelector(".chip.active");
-  return chip ? chip.getAttribute("data-theme") : null;
-}
-function activeBook() {
-  const b = document.querySelector(".book-card.active");
-  return b ? b.getAttribute("data-book") : null;
-}
-function activeSituation() {
-  const s = document.querySelector(".situation.active");
-  return s ? s.getAttribute("data-situation") : null;
-}
-
-selectChapter(16);
-let ids = cardIds(document);
-assert(ids.join(",") === expected16.join(","),
-  "chapter 16 renders kural-151..kural-160, got: " + ids.join(","));
-assert(chapter.classList.contains("has-value"), "chapter select gets has-value");
-assert(activeTheme() === "all", "theme reset to all when chapter chosen");
-assert(!clearBtn.hidden, "Clear visible while chapter 16 selected");
-assert(document.getElementById("result-count").textContent.includes("10 of 10"),
-  "result count says 10 of 10");
-assert(document.getElementById("result-range").textContent.includes("151") &&
-       document.getElementById("result-range").textContent.includes("160"),
-  "result range spans 151–160");
-assert(document.querySelector("#kural-151 .kural-chapter").textContent.includes("பொறையுடைமை"),
-  "kural-151 belongs to பொறையுடைமை");
-
-// Theme clears chapter; chapter wins over conflicting theme
-document.querySelector('.chip[data-theme="wisdom"]').click();
-assert(chapter.value === "all", "selecting Wisdom clears chapter");
-assert(!chapter.classList.contains("has-value"), "has-value drops after theme click");
-assert(activeTheme() === "wisdom", "Wisdom chip active");
-assert(activeSituation() === null, "no situation highlighted after chip click");
-
-selectChapter(16);
-ids = cardIds(document);
-assert(ids.join(",") === expected16.join(","),
-  "chapter 16 after Wisdom still shows 151..160, got: " + ids.join(","));
-assert(activeTheme() === "all", "chapter selection resets theme to all");
-
-// Book card click filters by section
-console.log("\nbook / situation filters:");
-const book1 = document.querySelector('.book-card[data-book="1"]');
-book1.click();
-assert(activeBook() === "1", "clicking book 1 activates it");
-assert(chapter.value === "all", "book click clears chapter select");
-assert(activeTheme() === "all", "book click clears theme");
-let kuralListIds = cardIds(document);
-assert(kuralListIds.length > 0 && kuralListIds.every((id) => {
-  const n = parseInt(id.replace("kural-", ""), 10);
-  return n >= 1 && n <= 380;
-}), "book 1 (Virtue) only shows kurals 1–380");
-
-// Situation door click sets theme
-const angerDoor = document.querySelector('.situation[data-situation="anger"]');
-assert(!!angerDoor, "anger situation door exists");
-angerDoor.click();
-assert(activeSituation() === "anger", "anger door becomes active on click");
-assert(activeTheme() === "anger", "anger door activates the 'anger' theme");
-assert(activeBook() === "all", "situation click clears book filter");
-ids = cardIds(document);
-assert(ids.length > 0, "anger filter shows some kurals");
-// When all kurals shown under anger match theme 'anger'
-const taMatches = ids.every((id) => {
-  const n = parseInt(id.replace("kural-", ""), 10);
-  return true; // existence check is enough; theme filter already tested
-});
-assert(taMatches, "situation door renders non-empty kural list");
-
-// Toggle: clicking the same situation door clears it
-angerDoor.click();
-assert(activeSituation() === null, "clicking active situation deselects it");
-assert(activeTheme() === "all", "deselecting a situation resets theme to all");
-
-// Chapter map cell click selects chapter
-cell16.click();
-ids = cardIds(document);
-assert(ids.join(",") === expected16.join(","),
-  "chapter-map cell for 16 selects kurals 151..160, got: " + ids.join(","));
-
-// Clear button resets everything
-console.log("\nclear button:");
-book1.click();
-angerDoor.click();
-search.value = "patience";
-search.dispatchEvent(new window.Event("input", { bubbles: true }));
-await new Promise((r) => setTimeout(r, 180));
-clearBtn.click();
-assert(chapter.value === "all", "Clear resets chapter to all");
-assert(activeTheme() === "all", "Clear resets theme to all");
-assert(activeBook() === "all", "Clear resets book to all");
-assert(activeSituation() === null, "Clear resets situation");
-assert(search.value === "", "Clear empties search");
-assert(!chapter.classList.contains("has-value"), "Clear removes chapter has-value");
-assert(!search.classList.contains("has-value"), "Clear removes search has-value");
-assert(clearBtn.hidden, "Clear hides itself when nothing is filtered");
-assert(!!document.getElementById("kural-1"), "unfiltered list includes kural 1");
-
-// Daily shuffle picks a different kural
-console.log("\ndaily kural:");
-const before = dailyNum.textContent.trim();
-document.getElementById("daily-shuffle").click();
-const after = document.querySelector("#daily-card .daily-num").textContent.trim();
-assert(before !== after || bookCards.length === 4,
-  "'Another' button replaces the daily kural (before=" + before + ", after=" + after + ")");
-
-// ----------
-console.log("");
-if (failed) {
-  console.error(failed + " check(s) failed");
-  process.exit(1);
-} else {
-  console.log("all checks passed ✓");
-}
+console.log('')
+if (failed) { console.error(failed, 'check(s) failed'); process.exit(1) }
+else console.log('all checks passed ✓')

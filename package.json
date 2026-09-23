@@ -1,0 +1,25 @@
+{
+  "name": "tamil-stoic-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A quiet corner for Thirukkural — installable offline-first PWA built with React + Vite.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "icons": "node scripts/generate-icons.cjs",
+    "test": "node --experimental-vm-modules scripts/test-app.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "jsdom": "^26.0.0",
+    "vite": "^8.3.0"
+  }
+}

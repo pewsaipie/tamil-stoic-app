@@ -1,91 +1,41 @@
-# tamil-stoic-app
+# தமிழ் ஸ்டோயிக் · Tamil Stoic
 
-creating a tamil content stoic app.
+A calm, mobile-first [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) for reading **Thirukkural** (திருக்குறள்) — the 1,330 Tamil couplets by Thiruvalluvar.
 
-## திருக்குறள் · Thirukkural — complete edition
+- **One couplet a day**, stable per calendar day (IST), with a reading-streak counter
+- **Three-book walk** (அறம் · பொருள் · காமம்) and a clickable map of all 133 chapters
+- **"Open the right door"** — pick the situation you're in (anger, grief, love, work, patience, …) and the app filters verses by a matching theme
+- **Full-screen reader** with swipe gestures (mobile) + arrow keys (desktop) + three quick reactions (🙏 🔥 💭)
+- **Favorites, search, share-as-image** (offline canvas), copy-text, installable to the home screen, service-worker cached for offline reading
+- Tamil verse + transliteration + Pope's 1886 English verse + a plain-English meaning, plus a short reflection prompt
+- Three themes (light / night / olive) and three font-size steps, persisted in `localStorage`
 
-The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
-(அறத்துப்பால் · பொருட்பால் · காமத்துப்பால்), every one in the same three-layer format:
+## Stack
 
-1. **தமிழ்** — the couplet in Tamil, with transliteration
-2. **English translation** — the classic G. U. Pope translation (1886, public domain)
-3. **Simple meaning** — a plain-English explanation that is easy to understand
+- [Vite](https://vitejs.dev/) + [React 18](https://react.dev/) (no extra UI framework — plain CSS with CSS custom properties)
+- Vanilla service worker + manifest for PWA; no runtime network required after first load
+- No external fonts — falls back to system Tamil/Latin stacks so it works completely offline
+- Static build -> GitHub Pages via `.github/workflows/deploy.yml` (published at `/tamil-stoic-app/`)
 
-### Features
-
-- **All 1,330 kurals**, lazily rendered 24 at a time (smooth infinite scroll, fast searches)
-- **Chapter browser** — every one of the 133 அதிகாரங்கள், grouped by பால் (section)
-- **Theme filters** with counts: Wisdom, Learning, Gratitude, Patience, Anger, Truth,
-  Calm, Impermanence, Compassion, Fate & Effort, Equality, Family, Friendship,
-  Governance, Wealth, Love
-- **Search** by kural number (`151`), Tamil (`பொறுத்தல்`), transliteration, or English
-  (`patience`) — across couplets, translations, meanings and chapter names
-- Deep-linkable cards (`#kural-151`), mobile-friendly, no build step, no runtime dependencies
-
-### Run it
-
-Static site — open `index.html` directly, or serve the folder:
+## Scripts
 
 ```bash
-python3 -m http.server 8000
-# then visit http://localhost:8000
+npm install
+npm run dev        # start dev server at http://localhost:5173/tamil-stoic-app/
+npm run build      # production build to dist/
+npm run preview    # preview the production build locally
+npm run test       # static build + feature-marker + data-integrity test suite
+npm run icons      # regenerate PWA icons from public/icons/icon.svg (pure Node PNG encoder)
 ```
 
-### Checks
+## Data
 
-```bash
-npm install --no-save jsdom
-node scripts/test-chapter-filter.mjs
-```
+- Tamil text and transliteration are bundled from [`scripts/build-kurals.mjs`](scripts/build-kurals.mjs), which reads the public-domain Parimelalagar recension from [`github.com/tk120404/thirukkural`](https://github.com/tk120404/thirukkural) (Apache-2.0).
+- English verse translations are from **G. U. Pope** (with W. H. Drew, John Lazarus & F. W. Ellis, 1886), public domain.
+- Simple-English meanings are original to this app, paraphrased from Pope's prose explanations.
 
-Confirms chapter 16 (பொறையுடைமை) renders `#kural-151` … `#kural-160`, that theme and
-chapter filters clear each other, and that Clear removes the `has-value` state.
-
-### Structure
-
-```
-index.html                     # the Thirukkural page
-css/styles.css                 # styling (parchment + palm-leaf palette)
-js/app.js                      # rendering, search, filters, lazy loading
-data/kurals.js                 # ALL 1,330 kurals + chapters + themes (generated)
-scripts/build-kurals.mjs       # regenerates data/kurals.js from source datasets
-scripts/curated-overrides.json # hand-written text layers for the original 29 kurals
-```
-
-### Content pipeline
-
-`data/kurals.js` is generated — do not edit by hand:
-
-```bash
-git clone --depth 1 https://github.com/tk120404/thirukkural.git ../datasets/tk120404_thirukkural
-node scripts/build-kurals.mjs
-```
-
-- **Tamil text & transliterations**: standard (Parimelalagar-based) recension, via the
-  [tk120404/thirukkural](https://github.com/tk120404/thirukkural) dataset — Apache License 2.0
-- **English verse translations & prose explanations**: G. U. Pope with Drew, Lazarus & Ellis
-  (1886) — public domain (via the same dataset)
-- **Simple meanings**: app-original modern plain-English glosses (`scripts/glosses/*.json`),
-  written from Pope's prose; the originally curated 29 kurals keep their hand-written text
-  layers (`scripts/curated-overrides.json`)
-- **Themes** are assigned per chapter in `scripts/build-kurals.mjs` (`CHAPTER_THEMES`)
-
-## Live site
-
-Deployed to **GitHub Pages** by `.github/workflows/deploy.yml` — it runs on every push to
-`main` (or the working branch) and publishes just the app files (`index.html`, `css/`, `js/`,
-`data/`). After the first successful run the site is at:
-
-**https://pewsaipie.github.io/tamil-stoic-app/**
-
-One-time prerequisite (owner only): enable Pages with the Actions source — open
-**Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the
-workflow (or push again). GitHub does not allow any token to create the Pages site
-automatically, so this single click cannot be scripted. (Note: Pages from a private
-repo requires GitHub Pro/Team/Enterprise — or make the repo public first.)
+Files written to `dist/` are deployed as-is by the Pages workflow. All user data (favorites, reactions, theme, streak) stays in `localStorage` on the device — nothing is uploaded.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Derived data comes from
-[tk120404/thirukkural](https://github.com/tk120404/thirukkural), licensed under the
-Apache License 2.0 — https://www.apache.org/licenses/LICENSE-2.0.
+MIT for the app code. Thirukkural text is in the public domain; the Tamil JSON source carries its own Apache-2.0 notice (see `scripts/build-kurals.mjs`).
