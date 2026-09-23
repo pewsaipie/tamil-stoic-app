@@ -3,8 +3,9 @@
  *   1. Tamil couplet (+ transliteration)
  *   2. Classic English translation (G. U. Pope, 1886)
  *   3. Simple-English meaning
- * Features: search (number / Tamil / English), theme filters, chapter browser,
- * lazy rendering (24 cards per batch) for smooth scrolling, deep links (#kural-151).
+ * Features: search (number / Tamil / English), mutually exclusive theme/chapter
+ * filters (picking one clears the other), clear button, has-value styling,
+ * chapter browser, lazy rendering (24 cards per batch), deep links (#kural-151).
  */
 (function () {
   "use strict";
@@ -20,9 +21,11 @@
   var chipsEl = document.getElementById("chips");
   var searchEl = document.getElementById("search");
   var chapterEl = document.getElementById("chapter");
+  var clearBtn = document.getElementById("clear-filters");
   var countEl = document.getElementById("result-count");
   var rangeEl = document.getElementById("result-range");
   var sentinelEl = document.getElementById("sentinel");
+  var debounce;
 
   // Defensive: auto-create sentinel if HTML is outdated
   if (!sentinelEl && listEl && listEl.parentNode) {
@@ -85,8 +88,13 @@
   /* ---------- matching ---------- */
 
   function matches(k) {
-    if (state.theme !== "all" && k.th !== state.theme) return false;
-    if (state.chapter !== "all" && String(k.ch) !== String(state.chapter)) return false;
+    // Theme and chapter are mutually exclusive. A selected chapter wins, so
+    // chapter 16 always yields kurals 151–160 even if a theme chip was active.
+    if (state.chapter !== "all") {
+      if (String(k.ch) !== String(state.chapter)) return false;
+    } else if (state.theme !== "all" && k.th !== state.theme) {
+      return false;
+    }
 
     var q = state.query.trim().toLowerCase();
     if (!q) return true;
@@ -160,7 +168,21 @@
     );
   }
 
+  function syncFilterChrome() {
+    var chapterActive = state.chapter !== "all";
+    var queryActive = !!state.query.trim();
+    var themeActive = state.theme !== "all";
+
+    if (chapterEl) {
+      chapterEl.classList.toggle("has-value", chapterActive);
+      if (chapterEl.value !== String(state.chapter)) chapterEl.value = String(state.chapter);
+    }
+    if (searchEl) searchEl.classList.toggle("has-value", queryActive);
+    if (clearBtn) clearBtn.hidden = !(chapterActive || queryActive || themeActive);
+  }
+
   function render() {
+    syncFilterChrome();
     if (!listEl) return;
     var results = KURALS.filter(matches);
     var visible = results.slice(0, state.shown);
@@ -227,7 +249,10 @@
     chipsEl.addEventListener("click", function (e) {
       var btn = e.target.closest(".chip");
       if (!btn) return;
-      state.theme = btn.getAttribute("data-theme");
+      var next = btn.getAttribute("data-theme");
+      state.theme = next;
+      // A specific theme clears the chapter so the two filters never intersect to empty.
+      if (next !== "all") state.chapter = "all";
       state.shown = PAGE_SIZE;
       renderChips();
       render();
@@ -236,13 +261,15 @@
 
   if (chapterEl) {
     chapterEl.addEventListener("change", function () {
-      state.chapter = chapterEl.value;
+      state.chapter = chapterEl.value || "all";
+      // A specific chapter clears the theme (chapter 16 → kurals 151–160).
+      if (state.chapter !== "all") state.theme = "all";
       state.shown = PAGE_SIZE;
+      renderChips();
       render();
     });
   }
 
-  var debounce;
   if (searchEl) {
     searchEl.addEventListener("input", function () {
       clearTimeout(debounce);
@@ -251,6 +278,20 @@
         state.shown = PAGE_SIZE;
         render();
       }, 120);
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      clearTimeout(debounce);
+      state.theme = "all";
+      state.chapter = "all";
+      state.query = "";
+      state.shown = PAGE_SIZE;
+      if (searchEl) searchEl.value = "";
+      if (chapterEl) chapterEl.value = "all";
+      renderChips();
+      render();
     });
   }
 

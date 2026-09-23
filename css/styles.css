@@ -183,6 +183,54 @@ body {
   box-shadow: 0 0 0 3px rgba(31, 93, 80, 0.12);
 }
 
+/* Active chapter — distinct from the empty "all chapters" state */
+.chapter-select.has-value {
+  color: var(--green);
+  font-weight: 600;
+  border-color: var(--green);
+  background-color: var(--green-soft);
+  box-shadow: 0 0 0 3px rgba(31, 93, 80, 0.1);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--green) 50%),
+    linear-gradient(135deg, var(--green) 50%, transparent 50%);
+}
+
+.chapter-wrap:has(.chapter-select.has-value) .chapter-label {
+  color: var(--green);
+}
+
+#search.has-value {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(31, 93, 80, 0.08);
+}
+
+.clear-btn {
+  font: 600 12.5px/1 var(--font-ui);
+  color: var(--terracotta);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.clear-btn:hover {
+  border-color: var(--terracotta);
+  background: #f8ebe6;
+}
+
+.clear-btn:focus-visible {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(176, 81, 47, 0.16);
+}
+
+.clear-btn[hidden] {
+  display: none;
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;

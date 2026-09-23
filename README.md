@@ -31,6 +31,16 @@ python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
+### Checks
+
+```bash
+npm install --no-save jsdom
+node scripts/test-chapter-filter.mjs
+```
+
+Confirms chapter 16 (பொறையுடைமை) renders `#kural-151` … `#kural-160`, that theme and
+chapter filters clear each other, and that Clear removes the `has-value` state.
+
 ### Structure
 
 ```
