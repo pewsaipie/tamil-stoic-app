@@ -51,13 +51,17 @@ git clone --depth 1 https://github.com/tk120404/thirukkural.git ../datasets/tk12
 node scripts/build-kurals.mjs
 ```
 
-- **Tamil text**: standard (Parimelalagar-based) recension, via the tk120404/thirukkural dataset
+- **Tamil text & transliterations**: standard (Parimelalagar-based) recension, via the
+  [tk120404/thirukkural](https://github.com/tk120404/thirukkural) dataset — Apache License 2.0
 - **English verse translations & prose explanations**: G. U. Pope with Drew, Lazarus & Ellis
-  (1886) — public domain
-- **Simple meanings**: Pope's prose explanations; the originally curated 29 kurals keep their
-  hand-written app-original glosses (`scripts/curated-overrides.json`)
+  (1886) — public domain (via the same dataset)
+- **Simple meanings**: app-original modern plain-English glosses (`scripts/glosses/*.json`),
+  written from Pope's prose; the originally curated 29 kurals keep their hand-written text
+  layers (`scripts/curated-overrides.json`)
 - **Themes** are assigned per chapter in `scripts/build-kurals.mjs` (`CHAPTER_THEMES`)
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). Derived data comes from
+[tk120404/thirukkural](https://github.com/tk120404/thirukkural), licensed under the
+Apache License 2.0 — https://www.apache.org/licenses/LICENSE-2.0.
