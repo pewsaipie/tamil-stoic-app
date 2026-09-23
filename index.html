@@ -40,6 +40,10 @@
           autocomplete="off"
         />
       </div>
+      <div class="chapter-wrap">
+        <label for="chapter" class="chapter-label">அதிகாரம் · Chapter</label>
+        <select id="chapter" class="chapter-select" aria-label="Filter by chapter"></select>
+      </div>
       <div class="chips" id="chips" role="tablist" aria-label="Filter by theme"></div>
     </div>
   </div>
@@ -50,6 +54,10 @@
       <span id="result-range"></span>
     </div>
     <section id="kural-list" aria-live="polite"></section>
+    <div id="sentinel" class="sentinel" aria-hidden="true">
+      <div class="spinner"></div>
+      <span>Loading more…</span>
+    </div>
   </main>
 
   <footer class="site-footer">

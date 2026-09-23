@@ -24,6 +24,15 @@
   var rangeEl = document.getElementById("result-range");
   var sentinelEl = document.getElementById("sentinel");
 
+  // Defensive: auto-create sentinel if HTML is outdated
+  if (!sentinelEl && listEl && listEl.parentNode) {
+    sentinelEl = document.createElement("div");
+    sentinelEl.id = "sentinel";
+    sentinelEl.className = "sentinel";
+    sentinelEl.innerHTML = '<div class="spinner"></div><span>Loading more…</span>';
+    listEl.parentNode.appendChild(sentinelEl);
+  }
+
   var state = { theme: "all", chapter: "all", query: "", shown: PAGE_SIZE };
 
   /* ---------- lookups ---------- */
@@ -48,7 +57,7 @@
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+      .replace(/\"/g, "&quot;");
   }
 
   function pad(n) {
@@ -152,16 +161,21 @@
   }
 
   function render() {
+    if (!listEl) return;
     var results = KURALS.filter(matches);
     var visible = results.slice(0, state.shown);
 
-    countEl.textContent =
-      "Showing " + visible.length + " of " + results.length + " kurals" +
-      (results.length !== KURALS.length ? " (filtered from " + KURALS.length + ")" : "");
-    rangeEl.textContent =
-      results.length > 0
-        ? "#" + pad(results[0].n) + " – #" + pad(results[results.length - 1].n)
-        : "";
+    if (countEl) {
+      countEl.textContent =
+        "Showing " + visible.length + " of " + results.length + " kurals" +
+        (results.length !== KURALS.length ? " (filtered from " + KURALS.length + ")" : "");
+    }
+    if (rangeEl) {
+      rangeEl.textContent =
+        results.length > 0
+          ? "#" + pad(results[0].n) + " – #" + pad(results[results.length - 1].n)
+          : "";
+    }
 
     if (results.length === 0) {
       listEl.innerHTML =
@@ -169,15 +183,16 @@
           '<p class="kural-ta">தேடலில் எதுவும் கிடைக்கவில்லை</p>' +
           "<p>Nothing found. Try a kural number (e.g. <b>151</b>) or another word.</p>" +
         "</div>";
-      sentinelEl.style.display = "none";
+      if (sentinelEl) sentinelEl.style.display = "none";
       return;
     }
 
     listEl.innerHTML = visible.map(cardHtml).join("");
-    sentinelEl.style.display = results.length > visible.length ? "" : "none";
+    if (sentinelEl) sentinelEl.style.display = results.length > visible.length ? "" : "none";
   }
 
   function renderChips() {
+    if (!chipsEl) return;
     chipsEl.innerHTML = THEMES.map(function (t) {
       var active = state.theme === t.id ? " active" : "";
       return (
@@ -191,6 +206,7 @@
   }
 
   function renderChapterOptions() {
+    if (!chapterEl) return;
     var html = '<option value="all">அனைத்து அதிகாரங்கள் · All 133 chapters</option>';
     SECTIONS.forEach(function (s) {
       html += '<optgroup label="' + escapeHtml(s.ta + " · " + s.en) + '">';
@@ -202,36 +218,43 @@
       html += "</optgroup>";
     });
     chapterEl.innerHTML = html;
+    chapterEl.value = state.chapter;
   }
 
   /* ---------- events ---------- */
 
-  chipsEl.addEventListener("click", function (e) {
-    var btn = e.target.closest(".chip");
-    if (!btn) return;
-    state.theme = btn.getAttribute("data-theme");
-    state.shown = PAGE_SIZE;
-    renderChips();
-    render();
-  });
+  if (chipsEl) {
+    chipsEl.addEventListener("click", function (e) {
+      var btn = e.target.closest(".chip");
+      if (!btn) return;
+      state.theme = btn.getAttribute("data-theme");
+      state.shown = PAGE_SIZE;
+      renderChips();
+      render();
+    });
+  }
 
-  chapterEl.addEventListener("change", function () {
-    state.chapter = chapterEl.value;
-    state.shown = PAGE_SIZE;
-    render();
-  });
-
-  var debounce;
-  searchEl.addEventListener("input", function () {
-    clearTimeout(debounce);
-    debounce = setTimeout(function () {
-      state.query = searchEl.value;
+  if (chapterEl) {
+    chapterEl.addEventListener("change", function () {
+      state.chapter = chapterEl.value;
       state.shown = PAGE_SIZE;
       render();
-    }, 120);
-  });
+    });
+  }
 
-  if ("IntersectionObserver" in window) {
+  var debounce;
+  if (searchEl) {
+    searchEl.addEventListener("input", function () {
+      clearTimeout(debounce);
+      debounce = setTimeout(function () {
+        state.query = searchEl.value;
+        state.shown = PAGE_SIZE;
+        render();
+      }, 120);
+    });
+  }
+
+  if (sentinelEl && "IntersectionObserver" in window) {
     var io = new IntersectionObserver(
       function (entries) {
         if (entries[0].isIntersecting && sentinelEl.style.display !== "none") {
@@ -242,7 +265,7 @@
       { rootMargin: "700px 0px" }
     );
     io.observe(sentinelEl);
-  } else {
+  } else if (!("IntersectionObserver" in window)) {
     // very old browsers: show everything
     state.shown = KURALS.length;
   }
