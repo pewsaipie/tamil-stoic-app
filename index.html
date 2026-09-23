@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>திருக்குறள் · Thirukkural — Tamil Stoic</title>
-  <meta name="description" content="Thirukkural couplets in Tamil with classic English translations and easy-to-understand plain-English meanings." />
+  <meta name="description" content="A quiet corner for Thirukkural: today's couplet, the three books, situations you are in, and every verse in Tamil with a plain-English meaning." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,47 +21,100 @@
     <h1>திருக்குறள்</h1>
     <p class="subtitle">Thirukkural — couplets of Thiruvalluvar</p>
     <p class="tagline">
-      Timeless wisdom in <b>Tamil</b>, its classic <b>English translation</b>, and a
-      <b>simple meaning</b> anyone can understand.
+      One couplet a day. Three books to walk through. A door for the situation
+      you're in right now — and every verse in <b>Tamil</b> with a plain-English meaning.
     </p>
   </header>
 
-  <div class="controls">
-    <div class="controls-inner">
-      <div class="search-wrap">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
-        </svg>
-        <input
-          id="search"
-          type="search"
-          placeholder="Search number or words — எ.கா. 151, பொறுத்தல், patience, anger…"
-          autocomplete="off"
-        />
+  <!-- Today's kural -->
+  <section class="daily" id="daily" aria-labelledby="daily-title">
+    <div class="daily-inner">
+      <div class="daily-eyebrow">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="daily-title">Today's Kural · இன்றைய குறள்</span>
+        <span class="daily-date" id="daily-date"></span>
       </div>
-      <div class="chapter-wrap">
-        <label for="chapter" class="chapter-label">அதிகாரம் · Chapter</label>
-        <select id="chapter" class="chapter-select" aria-label="Filter by chapter"></select>
-        <button type="button" id="clear-filters" class="clear-btn" hidden aria-label="Clear chapter, theme, and search">
-          Clear
+      <div class="daily-card" id="daily-card">
+        <!-- filled by js/app.js -->
+      </div>
+      <div class="daily-actions">
+        <button type="button" id="daily-shuffle" class="ghost-btn" title="Show another kural">
+          Another · வேறு ஒன்று
         </button>
+        <a href="#browse" class="ghost-link" id="daily-browse">Browse all →</a>
       </div>
-      <div class="chips" id="chips" role="tablist" aria-label="Filter by theme"></div>
     </div>
-  </div>
+  </section>
 
-  <main>
+  <!-- Three Books -->
+  <section class="books" aria-labelledby="books-title">
+    <div class="section-head">
+      <h2 id="books-title">The three books · முப்பால்</h2>
+      <p class="section-sub">Thirukkural is arranged in three books. Tap one to read it through.</p>
+    </div>
+    <div class="books-grid" id="books-grid"></div>
+  </section>
+
+  <!-- Situations -->
+  <section class="situations" aria-labelledby="situations-title">
+    <div class="section-head">
+      <h2 id="situations-title">Open the right door · சூழ்நிலை</h2>
+      <p class="section-sub">Where are you today? Pick the door that fits, and let Valluvar speak to it.</p>
+    </div>
+    <div class="situations-grid" id="situations-grid"></div>
+  </section>
+
+  <!-- Browse -->
+  <section class="browse" id="browse" aria-labelledby="browse-title">
+    <div class="browse-head">
+      <h2 id="browse-title">Browse · அதிகாரங்கள்</h2>
+      <p class="section-sub">
+        Search a number or word, pick a chapter, or wander.
+      </p>
+    </div>
+
+    <div class="controls" id="controls">
+      <div class="controls-inner">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+          </svg>
+          <input
+            id="search"
+            type="search"
+            placeholder="Search number or words — எ.கா. 151, பொறுத்தல், patience, anger…"
+            autocomplete="off"
+          />
+        </div>
+        <div class="chapter-wrap">
+          <label for="chapter" class="chapter-label">Chapter · அதிகாரம்</label>
+          <select id="chapter" class="chapter-select" aria-label="Filter by chapter"></select>
+          <button type="button" id="clear-filters" class="clear-btn" hidden aria-label="Clear chapter, book, situation, theme, and search">
+            Clear
+          </button>
+        </div>
+        <div class="chips" id="chips" role="tablist" aria-label="Filter by theme"></div>
+      </div>
+    </div>
+
     <div class="result-line">
       <span id="result-count"></span>
       <span id="result-range"></span>
     </div>
+
     <section id="kural-list" aria-live="polite"></section>
     <div id="sentinel" class="sentinel" aria-hidden="true">
       <div class="spinner"></div>
       <span>Loading more…</span>
     </div>
-  </main>
+
+    <!-- Chapter map -->
+    <div class="chapter-map" id="chapter-map" aria-label="All 133 chapters">
+      <h3 class="map-title">All chapters · அனைத்து அதிகாரங்கள்</h3>
+      <div id="chapter-map-body"></div>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="footer-inner">

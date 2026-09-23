@@ -1,11 +1,14 @@
 /* Tamil Stoic — Thirukkural page behaviour
- * Renders the complete Thirukkural (1,330 couplets) with:
- *   1. Tamil couplet (+ transliteration)
- *   2. Classic English translation (G. U. Pope, 1886)
- *   3. Simple-English meaning
- * Features: search (number / Tamil / English), mutually exclusive theme/chapter
- * filters (picking one clears the other), clear button, has-value styling,
- * chapter browser, lazy rendering (24 cards per batch), deep links (#kural-151).
+ *
+ * Sections:
+ *   • Today's Kural (deterministic pick from today's date; "Another" for a new one)
+ *   • Three books (அறம் / பொருள் / காமம்) — filter by section
+ *   • Situation doors — life-situation shortcuts that map to themes
+ *   • Browse — search + chapter + theme chips (chapter & theme mutually exclusive)
+ *   • Chapter map — 133-chapter grid grouped by book
+ *
+ * Reader is intentionally quiet: large Tamil, muted chrome, generous line-height,
+ * focus pulls to the couplet itself.
  */
 (function () {
   "use strict";
@@ -15,8 +18,25 @@
   var SECTIONS = window.SECTIONS || [];
   var THEMES = window.THEMES || [];
 
-  var PAGE_SIZE = 24;
+  // ---------- Situation doors (English + Tamil, mapped to a theme or chapter) ----------
+  var SITUATIONS = [
+    { id: "anger",     ta: "கோபம் வந்தபோது",     en: "When I'm angry",        theme: "anger" },
+    { id: "patience",  ta: "பொறுமை தேவை",        en: "When I need patience",  theme: "patience" },
+    { id: "grief",     ta: "துன்பத்தில்",         en: "When I'm grieving",     theme: "impermanence" },
+    { id: "fear",      ta: "பயம் வருகிறது",       en: "When I'm afraid",       theme: "calm" },
+    { id: "starting",  ta: "புதிதாக தொடங்கும்போது", en: "When I'm starting something", theme: "effort" },
+    { id: "friends",   ta: "நட்பை நினைக்கும்போது",  en: "Thinking of friends",   theme: "friendship" },
+    { id: "family",    ta: "குடும்பத்தில்",       en: "With family",           theme: "family" },
+    { id: "wealth",    ta: "பொருள் தேடும்போது",    en: "About money & work",    theme: "wealth" },
+    { id: "words",     ta: "பேசும் முன்",          en: "Before I speak",        theme: "truth" },
+    { id: "love",      ta: "காதலில்",              en: "In love",               theme: "love" },
+    { id: "learning",  ta: "கற்கும்போது",          en: "When I'm learning",     theme: "learning" },
+    { id: "wisdom",    ta: "ஞானம் தேடி",           en: "Looking for wisdom",    theme: "wisdom" },
+  ];
 
+  var PAGE_SIZE = 12; // quieter — fewer cards on screen at once
+
+  // ---------- DOM ----------
   var listEl = document.getElementById("kural-list");
   var chipsEl = document.getElementById("chips");
   var searchEl = document.getElementById("search");
@@ -25,6 +45,13 @@
   var countEl = document.getElementById("result-count");
   var rangeEl = document.getElementById("result-range");
   var sentinelEl = document.getElementById("sentinel");
+  var dailyCardEl = document.getElementById("daily-card");
+  var dailyDateEl = document.getElementById("daily-date");
+  var dailyShuffleEl = document.getElementById("daily-shuffle");
+  var booksGridEl = document.getElementById("books-grid");
+  var situationsGridEl = document.getElementById("situations-grid");
+  var chapterMapBodyEl = document.getElementById("chapter-map-body");
+
   var debounce;
 
   // Defensive: auto-create sentinel if HTML is outdated
@@ -36,10 +63,18 @@
     listEl.parentNode.appendChild(sentinelEl);
   }
 
-  var state = { theme: "all", chapter: "all", query: "", shown: PAGE_SIZE };
+  // state includes book (section id or 'all') and situation id (or null)
+  var state = {
+    theme: "all",
+    chapter: "all",
+    book: "all",
+    situation: null,
+    query: "",
+    shown: PAGE_SIZE,
+    dailyIndex: todayIndex(),
+  };
 
-  /* ---------- lookups ---------- */
-
+  // ---------- lookups ----------
   var chById = {};
   CHAPTERS.forEach(function (c) { chById[c.n] = c; });
 
@@ -53,18 +88,35 @@
     return themeById[id] ? themeById[id].en : id;
   }
 
-  /* ---------- helpers ---------- */
-
+  // ---------- helpers ----------
   function escapeHtml(s) {
     return String(s)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/\"/g, "&quot;");
+      .replace(/"/g, "&quot;");
   }
 
   function pad(n) {
     return n < 100 ? (n < 10 ? "00" + n : "0" + n) : String(n);
+  }
+
+  function todayIndex() {
+    var d = new Date();
+    var start = new Date(d.getFullYear(), 0, 0);
+    var diff = d - start;
+    var dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+    return dayOfYear % Math.max(1, KURALS.length);
+  }
+
+  function formatDate(d) {
+    try {
+      return d.toLocaleDateString(undefined, {
+        weekday: "long", year: "numeric", month: "long", day: "numeric",
+      });
+    } catch (e) {
+      return d.toDateString();
+    }
   }
 
   function highlight(text, q) {
@@ -85,11 +137,30 @@
     return c;
   }
 
-  /* ---------- matching ---------- */
+  function countForSection(id) {
+    if (id === "all") return KURALS.length;
+    var c = 0;
+    for (var i = 0; i < KURALS.length; i++) if (KURALS[i].sec === id) c++;
+    return c;
+  }
 
+  function findKural(n) {
+    for (var i = 0; i < KURALS.length; i++) if (KURALS[i].n === n) return KURALS[i];
+    return null;
+  }
+
+  function safeScrollTo(el, opts) {
+    if (el && typeof el.scrollIntoView === "function") {
+      try { el.scrollIntoView(opts || { block: "start" }); } catch (e) { /* ignore */ }
+    }
+  }
+
+  // ---------- matching ----------
   function matches(k) {
-    // Theme and chapter are mutually exclusive. A selected chapter wins, so
-    // chapter 16 always yields kurals 151–160 even if a theme chip was active.
+    // Book filter
+    if (state.book !== "all" && k.sec !== state.book) return false;
+
+    // Chapter is the most specific filter. If set, it wins over theme/situation.
     if (state.chapter !== "all") {
       if (String(k.ch) !== String(state.chapter)) return false;
     } else if (state.theme !== "all" && k.th !== state.theme) {
@@ -121,8 +192,7 @@
     return true;
   }
 
-  /* ---------- rendering ---------- */
-
+  // ---------- rendering ----------
   function cardHtml(k) {
     var q = state.query.trim();
     var showQ = q && !/^\d+$/.test(q) ? q : "";
@@ -136,7 +206,7 @@
     return (
       '<article class="kural-card" id="kural-' + k.n + '">' +
         '<div class="kural-meta">' +
-          '<span class="kural-num">#' + pad(k.n) + "</span>" +
+          '<a class="kural-num" href="#kural-' + k.n + '" title="Link to this kural">#' + pad(k.n) + "</a>" +
           '<span class="kural-chapter">' + escapeHtml(ch ? ch.ta : "") +
             '<span class="ch-en">· ' + escapeHtml(ch ? ch.en : "") + "</span></span>" +
           '<span class="kural-theme">' + escapeHtml(themeLabel(k.th)) + "</span>" +
@@ -161,24 +231,66 @@
         '<div class="kural-simple">' + highlight(k.s, showQ) + "</div>" +
 
         '<div class="kural-foot">' +
-          '<span class="section-tag">' + escapeHtml(sec ? sec.ta : "") + " · " + escapeHtml(sec ? sec.en : "") + "</span>" +
+          '<span class="section-tag">' +
+            escapeHtml(sec ? sec.ta : "") + " · " + escapeHtml(sec ? sec.en : "") +
+          "</span>" +
           "<span>திருக்குறள் " + pad(k.n) + "</span>" +
         "</div>" +
       "</article>"
     );
   }
 
+  function dailyCardHtml(k) {
+    var ch = chById[k.ch];
+    var sec = secById[k.sec];
+    return (
+      '<div class="daily-meta">' +
+        '<span class="daily-num">#' + pad(k.n) + "</span>" +
+        '<span class="kural-chapter">' + escapeHtml(ch ? ch.ta : "") +
+          '<span class="ch-en">· ' + escapeHtml(ch ? ch.en : "") + "</span></span>" +
+        '<span class="section-tag">' +
+          escapeHtml(sec ? sec.ta : "") + " · " + escapeHtml(sec ? sec.en : "") +
+        "</span>" +
+      "</div>" +
+      '<p class="kural-ta daily-ta">' +
+        '<span class="line">' + escapeHtml(k.ta[0]) + "</span>" +
+        '<span class="line">' + escapeHtml(k.ta[1]) + "</span>" +
+      "</p>" +
+      '<p class="kural-translit">' + escapeHtml(k.tr[0]) + " —<br/>" + escapeHtml(k.tr[1]) + "</p>" +
+      '<hr class="kural-divider" />' +
+      '<div class="block-label">Simple meaning</div>' +
+      '<div class="kural-simple">' + escapeHtml(k.s) + "</div>"
+    );
+  }
+
   function syncFilterChrome() {
     var chapterActive = state.chapter !== "all";
+    var bookActive = state.book !== "all";
+    var situationActive = !!state.situation;
     var queryActive = !!state.query.trim();
     var themeActive = state.theme !== "all";
+    var anyFilter = chapterActive || bookActive || situationActive || queryActive || themeActive;
 
     if (chapterEl) {
       chapterEl.classList.toggle("has-value", chapterActive);
       if (chapterEl.value !== String(state.chapter)) chapterEl.value = String(state.chapter);
     }
     if (searchEl) searchEl.classList.toggle("has-value", queryActive);
-    if (clearBtn) clearBtn.hidden = !(chapterActive || queryActive || themeActive);
+    if (clearBtn) clearBtn.hidden = !anyFilter;
+
+    // book cards + situation doors active state
+    if (booksGridEl) {
+      Array.prototype.forEach.call(booksGridEl.querySelectorAll(".book-card"), function (el) {
+        var id = el.getAttribute("data-book");
+        var match = state.book === "all" ? id === "all" : String(state.book) === id;
+        el.classList.toggle("active", match);
+      });
+    }
+    if (situationsGridEl) {
+      Array.prototype.forEach.call(situationsGridEl.querySelectorAll(".situation"), function (el) {
+        el.classList.toggle("active", el.getAttribute("data-situation") === state.situation);
+      });
+    }
   }
 
   function render() {
@@ -188,9 +300,10 @@
     var visible = results.slice(0, state.shown);
 
     if (countEl) {
+      var totalLabel = KURALS.length;
       countEl.textContent =
         "Showing " + visible.length + " of " + results.length + " kurals" +
-        (results.length !== KURALS.length ? " (filtered from " + KURALS.length + ")" : "");
+        (results.length !== totalLabel ? " (filtered from " + totalLabel + ")" : "");
     }
     if (rangeEl) {
       rangeEl.textContent =
@@ -203,7 +316,7 @@
       listEl.innerHTML =
         '<div class="empty">' +
           '<p class="kural-ta">தேடலில் எதுவும் கிடைக்கவில்லை</p>' +
-          "<p>Nothing found. Try a kural number (e.g. <b>151</b>) or another word.</p>" +
+          "<p>Nothing found. Try a kural number (e.g. <b>151</b>) or another word, or press Clear.</p>" +
         "</div>";
       if (sentinelEl) sentinelEl.style.display = "none";
       return;
@@ -243,16 +356,110 @@
     chapterEl.value = state.chapter;
   }
 
-  /* ---------- events ---------- */
+  function renderBooks() {
+    if (!booksGridEl) return;
+    // An "All" card + one per section
+    var cards = [
+      {
+        id: "all",
+        ta: "முப்பாலும்",
+        en: "All three books",
+        desc: "Walk the whole path — all 1,330 couplets.",
+        count: KURALS.length,
+        cls: "book-all",
+      },
+    ];
+    SECTIONS.forEach(function (s) {
+      var icons = { 1: "◈", 2: "❖", 3: "✿" };
+      cards.push({
+        id: String(s.id),
+        ta: s.ta,
+        en: s.en,
+        desc: s.en === "Virtue"
+          ? "On virtue, right conduct, and the inner life. (அறம்)"
+          : s.en === "Wealth"
+          ? "On kingship, wealth, work, friendship, and the world. (பொருள்)"
+          : "On love, longing, and the life of the heart. (காமம்)",
+        count: countForSection(s.id),
+        cls: "book-" + s.id,
+        icon: icons[s.id] || "◇",
+      });
+    });
 
+    booksGridEl.innerHTML = cards.map(function (c) {
+      return (
+        '<button type="button" class="book-card ' + c.cls + '" data-book="' + c.id + '" aria-pressed="false">' +
+          '<span class="book-icon">' + (c.icon || "✺") + "</span>" +
+          '<span class="book-ta">' + escapeHtml(c.ta) + "</span>" +
+          '<span class="book-en">' + escapeHtml(c.en) + "</span>" +
+          '<span class="book-desc">' + escapeHtml(c.desc) + "</span>" +
+          '<span class="book-count">' + c.count + " kurals</span>" +
+        "</button>"
+      );
+    }).join("");
+  }
+
+  function renderSituations() {
+    if (!situationsGridEl) return;
+    situationsGridEl.innerHTML = SITUATIONS.map(function (s) {
+      var t = themeById[s.theme];
+      return (
+        '<button type="button" class="situation" data-situation="' + s.id + '" data-theme="' + s.theme + '" aria-pressed="false">' +
+          '<span class="situation-ta">' + escapeHtml(s.ta) + "</span>" +
+          '<span class="situation-en">' + escapeHtml(s.en) + "</span>" +
+          '<span class="situation-theme">' +
+            (t ? escapeHtml(t.ta) + " · " + escapeHtml(t.en) : "") +
+          "</span>" +
+        "</button>"
+      );
+    }).join("");
+  }
+
+  function renderChapterMap() {
+    if (!chapterMapBodyEl) return;
+    var html = "";
+    SECTIONS.forEach(function (s) {
+      var chs = CHAPTERS.filter(function (c) { return c.sec === s.id; });
+      html +=
+        '<div class="map-section">' +
+          '<h4 class="map-section-title">' +
+            '<span class="map-section-ta">' + escapeHtml(s.ta) + "</span>" +
+            '<span class="map-section-en">' + escapeHtml(s.en) + " · " + chs.length + " chapters</span>" +
+          "</h4>" +
+          '<div class="map-grid">';
+      chs.forEach(function (c) {
+        html +=
+          '<button type="button" class="map-cell" data-chapter="' + c.n + '" title="' +
+            escapeHtml(c.ta) + " — " + escapeHtml(c.en) + '">' +
+            '<span class="map-num">' + c.n + ".</span>" +
+            '<span class="map-ta">' + escapeHtml(c.ta) + "</span>" +
+          "</button>";
+      });
+      html += "</div></div>";
+    });
+    chapterMapBodyEl.innerHTML = html;
+  }
+
+  function renderDaily() {
+    if (!dailyCardEl) return;
+    var idx = state.dailyIndex % KURALS.length;
+    if (idx < 0) idx += KURALS.length;
+    var k = KURALS[idx];
+    dailyCardEl.innerHTML = dailyCardHtml(k);
+    if (dailyDateEl) dailyDateEl.textContent = formatDate(new Date());
+  }
+
+  // ---------- events ----------
   if (chipsEl) {
     chipsEl.addEventListener("click", function (e) {
       var btn = e.target.closest(".chip");
       if (!btn) return;
       var next = btn.getAttribute("data-theme");
       state.theme = next;
-      // A specific theme clears the chapter so the two filters never intersect to empty.
-      if (next !== "all") state.chapter = "all";
+      state.situation = null; // chip click clears situation highlight
+      if (next !== "all") {
+        state.chapter = "all";
+      }
       state.shown = PAGE_SIZE;
       renderChips();
       render();
@@ -262,8 +469,10 @@
   if (chapterEl) {
     chapterEl.addEventListener("change", function () {
       state.chapter = chapterEl.value || "all";
-      // A specific chapter clears the theme (chapter 16 → kurals 151–160).
-      if (state.chapter !== "all") state.theme = "all";
+      if (state.chapter !== "all") {
+        state.theme = "all";
+        state.situation = null;
+      }
       state.shown = PAGE_SIZE;
       renderChips();
       render();
@@ -286,12 +495,87 @@
       clearTimeout(debounce);
       state.theme = "all";
       state.chapter = "all";
+      state.book = "all";
+      state.situation = null;
       state.query = "";
       state.shown = PAGE_SIZE;
       if (searchEl) searchEl.value = "";
       if (chapterEl) chapterEl.value = "all";
       renderChips();
       render();
+      // scroll user back to browse top so they see the reset
+      var browse = document.getElementById("browse");
+      safeScrollTo(browse, { block: "start", behavior: "smooth" });
+    });
+  }
+
+  if (booksGridEl) {
+    booksGridEl.addEventListener("click", function (e) {
+      var btn = e.target.closest(".book-card");
+      if (!btn) return;
+      var id = btn.getAttribute("data-book");
+      state.book = id === "all" ? "all" : parseInt(id, 10);
+      state.chapter = "all";
+      state.theme = "all";
+      state.situation = null;
+      state.shown = PAGE_SIZE;
+      if (chapterEl) chapterEl.value = "all";
+      renderChips();
+      render();
+      var browse = document.getElementById("browse");
+      safeScrollTo(browse, { block: "start", behavior: "smooth" });
+    });
+  }
+
+  if (situationsGridEl) {
+    situationsGridEl.addEventListener("click", function (e) {
+      var btn = e.target.closest(".situation");
+      if (!btn) return;
+      var id = btn.getAttribute("data-situation");
+      var theme = btn.getAttribute("data-theme");
+      // Toggling: click the same door again to deselect
+      if (state.situation === id) {
+        state.situation = null;
+        state.theme = "all";
+      } else {
+        state.situation = id;
+        state.theme = theme || "all";
+        state.chapter = "all";
+        state.book = "all";
+        if (chapterEl) chapterEl.value = "all";
+      }
+      state.shown = PAGE_SIZE;
+      renderChips();
+      render();
+      var browse = document.getElementById("browse");
+      safeScrollTo(browse, { block: "start", behavior: "smooth" });
+    });
+  }
+
+  if (chapterMapBodyEl) {
+    chapterMapBodyEl.addEventListener("click", function (e) {
+      var cell = e.target.closest(".map-cell");
+      if (!cell) return;
+      var n = cell.getAttribute("data-chapter");
+      state.chapter = n;
+      state.theme = "all";
+      state.situation = null;
+      state.shown = PAGE_SIZE;
+      if (chapterEl) chapterEl.value = n;
+      renderChips();
+      render();
+      var listTop = document.getElementById("kural-list");
+      safeScrollTo(listTop, { block: "start", behavior: "smooth" });
+    });
+  }
+
+  if (dailyShuffleEl) {
+    dailyShuffleEl.addEventListener("click", function () {
+      // Pick a *different* random kural
+      var next = Math.floor(Math.random() * KURALS.length);
+      if (KURALS.length > 1 && next === state.dailyIndex) next = (next + 1) % KURALS.length;
+      state.dailyIndex = next;
+      renderDaily();
     });
   }
 
@@ -307,26 +591,56 @@
     );
     io.observe(sentinelEl);
   } else if (!("IntersectionObserver" in window)) {
-    // very old browsers: show everything
     state.shown = KURALS.length;
   }
 
-  /* ---------- init ---------- */
-
+  // ---------- init ----------
   renderChapterOptions();
   renderChips();
+  renderBooks();
+  renderSituations();
+  renderChapterMap();
+  renderDaily();
   render();
 
-  // deep link: #kural-151
-  var m = (location.hash || "").match(/^#kural-(\d+)$/);
-  if (m) {
+  // deep link: #kural-151 or #book-1, #chapter-16, #situation-anger
+  var hash = location.hash || "";
+  var m;
+  if ((m = hash.match(/^#kural-(\d+)$/))) {
     var target = parseInt(m[1], 10);
     var idx = KURALS.findIndex(function (k) { return k.n === target; });
     if (idx >= 0) {
       state.shown = Math.max(PAGE_SIZE, idx + 1 + Math.floor(PAGE_SIZE / 2));
       render();
       var el = document.getElementById("kural-" + target);
-      if (el) el.scrollIntoView({ block: "start" });
+      safeScrollTo(el, { block: "start" });
+    }
+  } else if ((m = hash.match(/^#chapter-(\d+)$/))) {
+    state.chapter = m[1];
+    state.theme = "all";
+    state.shown = KURALS.length;
+    renderChips();
+    render();
+    safeScrollTo(document.getElementById("browse"), { block: "start" });
+  } else if ((m = hash.match(/^#book-(\d+|all)$/))) {
+    state.book = m[1] === "all" ? "all" : parseInt(m[1], 10);
+    state.shown = PAGE_SIZE;
+    render();
+    safeScrollTo(document.getElementById("browse"), { block: "start" });
+  } else if ((m = hash.match(/^#situation-([a-z]+)$/))) {
+    var sit = null;
+    for (var i = 0; i < SITUATIONS.length; i++) {
+      if (SITUATIONS[i].id === m[1]) { sit = SITUATIONS[i]; break; }
+    }
+    if (sit) {
+      state.situation = sit.id;
+      state.theme = sit.theme;
+      state.chapter = "all";
+      state.book = "all";
+      state.shown = PAGE_SIZE;
+      renderChips();
+      render();
+      safeScrollTo(document.getElementById("browse"), { block: "start" });
     }
   }
 })();
