@@ -63,8 +63,8 @@ node scripts/build-kurals.mjs
 ## Live site
 
 Deployed to **GitHub Pages** by `.github/workflows/deploy.yml` — it runs on every push to
-`main` (or the working branch) and publishes just the app files (`index.html`, `css/`, `js/`,
-`data/`). After the first successful run the site is at:
+`main` and publishes just the app files (`index.html`, `css/`, `js/`,
+`data/`). The site is at:
 
 **https://pewsaipie.github.io/tamil-stoic-app/**
 
