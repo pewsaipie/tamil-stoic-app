@@ -29,6 +29,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate content before publishing
+        run: node scripts/test-content.mjs
+
       - name: Gather site files
         run: |
           mkdir -p _site

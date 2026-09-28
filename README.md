@@ -89,8 +89,14 @@ node scripts/build-kurals.mjs
 - **English verse translations & prose explanations**: G. U. Pope with Drew, Lazarus & Ellis
   (1886) — public domain (via the same dataset)
 - **Simple meanings**: app-original modern plain-English glosses (`scripts/glosses/*.json`),
-  written from Pope's prose; the originally curated 29 kurals keep their hand-written text
-  layers (`scripts/curated-overrides.json`)
+  written from Pope's prose, with the original 29 hand-written entries in
+  `scripts/curated-overrides.json` as the starting text
+- **Reviewed corrections**: `scripts/content-corrections.json` applies last, including to
+  curated entries. Each change records the old/new text, rationale, and sources; upstream
+  drift stops the build. See [content review status and remaining work](docs/content-review.md).
+  This is a correction pass, not a claim of complete literary proofreading.
+- **Integrity checks**: `node scripts/test-content.mjs` checks all 1,330 published Kurals and
+  correction regressions without downloading datasets. It runs in CI and before deployment.
 - **Themes** are assigned per chapter in `scripts/build-kurals.mjs` (`CHAPTER_THEMES`)
 
 ## Privacy and offline reading

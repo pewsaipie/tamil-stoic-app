@@ -249,7 +249,7 @@ await wait(window);
 await wait(window);
 assert(mocks.downloads.some((item) => item.download === "thirukkural-001.png"), "share-card action downloads a bilingual PNG when file sharing is unavailable");
 assert(mocks.drawnText.some((text) => text.includes("அகர முதல")), "share card draws the Tamil couplet");
-assert(mocks.drawnText.some((text) => text.includes("As the letter")), "share card draws the simple-English meaning");
+assert(mocks.drawnText.join(" ").includes(window.KURALS[0].s), "share card draws the current complete simple-English meaning");
 
 // Dynamic daily rendering should retain actions after its existing shuffle control rerenders it.
 document.getElementById("daily-shuffle").click();

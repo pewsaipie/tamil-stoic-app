@@ -5,7 +5,7 @@
  * the reader's device and are never sent through this worker.
  */
 const CACHE_PREFIX = "tamil-stoic-";
-const CACHE_NAME = CACHE_PREFIX + "v1";
+const CACHE_NAME = CACHE_PREFIX + "v2-content-review";
 const APP_ASSETS = [
   "./",
   "./index.html",
