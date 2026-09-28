@@ -86,6 +86,12 @@ assert(dailyNum && /^#\d{3}$/.test(dailyNum.textContent.trim()),
   "daily card shows a kural number like #001");
 assert(document.querySelector("#daily-card .kural-ta .line"),
   "daily card renders Tamil verses");
+const firstTamilLines = [...document.querySelectorAll("#kural-1 .kural-ta .line")];
+assert(firstTamilLines.length === 2 && firstTamilLines[0].textContent.trim().split(/\s+/).length === 4 && firstTamilLines[1].textContent.trim().split(/\s+/).length === 3,
+  "browse Kural displays four words on top and three on bottom");
+const dailyTamilLines = [...document.querySelectorAll("#daily-card .kural-ta .line")];
+assert(dailyTamilLines.length === 2 && dailyTamilLines[0].textContent.trim().split(/\s+/).length === 4 && dailyTamilLines[1].textContent.trim().split(/\s+/).length === 3,
+  "daily Kural displays four words on top and three on bottom");
 
 // Three books — 4 cards (All, 1, 2, 3)
 const bookCards = document.querySelectorAll(".book-card");
