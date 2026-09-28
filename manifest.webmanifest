@@ -1,0 +1,61 @@
+{
+  "name": "Tamil Stoic — Thirukkural",
+  "short_name": "Thirukkural",
+  "description": "A calm, offline-friendly companion for reading, saving, and sharing Thirukkural.",
+  "lang": "ta",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f2e8",
+  "theme_color": "#26614f",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's Kural",
+      "short_name": "Today",
+      "description": "Open today's Thirukkural couplet",
+      "url": "./#daily",
+      "icons": [
+        {
+          "src": "assets/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Saved Kurals",
+      "short_name": "Saved",
+      "description": "Open your private saved Kurals",
+      "url": "./#saved",
+      "icons": [
+        {
+          "src": "assets/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

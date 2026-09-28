@@ -27,8 +27,8 @@ jobs:
       - name: Gather site files
         run: |
           mkdir -p _site
-          cp index.html _site/
-          cp -r css js data _site/
+          cp index.html manifest.webmanifest sw.js _site/
+          cp -r css js data assets _site/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
