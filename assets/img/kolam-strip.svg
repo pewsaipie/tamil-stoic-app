@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 16" preserveAspectRatio="none" role="img" aria-hidden="true">
+  <!-- Kolam dot-loop strip: repeats horizontally as a border band -->
+  <g fill="none" stroke="#b48630" stroke-width="1.1" stroke-linecap="round" opacity="0.85">
+    <path d="M0 8h6"/>
+    <path d="M12 8c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z"/>
+    <path d="M18 2c1.7 1.7 1.7 10.3 0 12M12 8c1.7-1.7 10.3-1.7 12 0"/>
+    <path d="M30 8c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z"/>
+    <path d="M36 2c1.7 1.7 1.7 10.3 0 12M30 8c1.7-1.7 10.3-1.7 12 0"/>
+    <circle cx="6" cy="8" r="1" fill="#b48630" stroke="none"/>
+    <circle cx="48" cy="8" r="1" fill="#b48630" stroke="none"/>
+    <path d="M42 8h6"/>
+    <circle cx="18" cy="8" r="1.4" fill="#a94f31" stroke="none"/>
+    <circle cx="36" cy="8" r="1.4" fill="#a94f31" stroke="none"/>
+  </g>
+</svg>

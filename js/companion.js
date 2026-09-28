@@ -25,7 +25,8 @@
   var defaults = {
     fontSize: "standard",
     lineSpacing: "comfortable",
-    colorScheme: "light",
+    colorScheme: "system",
+    uiLanguage: "en",
     showTamil: true,
     showTransliteration: true,
     showTranslation: true,
@@ -33,6 +34,31 @@
     reduceMotion: false,
   };
   var preferences = readPreferences();
+  var schemeListener = null;
+  var storageWarned = false;
+
+  // The i18n dictionary lives in app.js (it owns the strings it renders).
+  // Companion falls back to its English literals when it runs standalone.
+  function T(key, fallback) {
+    var i18n = window.TamilStoicI18n;
+    return i18n && typeof i18n.t === "function" ? i18n.t(key, fallback) : fallback;
+  }
+
+  function TF(key, fallback, vars) {
+    var i18n = window.TamilStoicI18n;
+    if (i18n && typeof i18n.tf === "function") return i18n.tf(key, fallback, vars);
+    return String(fallback).replace(/\{(\w+)\}/g, function (m, name) {
+      return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : m;
+    });
+  }
+
+  function resolvedColorScheme() {
+    if (preferences.colorScheme !== "system") return preferences.colorScheme;
+    try {
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
+    } catch (error) { /* ignore */ }
+    return "light";
+  }
 
   function byId(id) {
     return document.getElementById(id);
@@ -77,17 +103,28 @@
     if (!body) return;
     body.dataset.fontSize = preferences.fontSize;
     body.dataset.lineSpacing = preferences.lineSpacing;
-    body.dataset.colorScheme = preferences.colorScheme;
+    body.dataset.colorScheme = resolvedColorScheme();
+    body.dataset.schemePreference = preferences.colorScheme;
     body.dataset.showTamil = String(normaliseBoolean(preferences.showTamil));
     body.dataset.showTransliteration = String(normaliseBoolean(preferences.showTransliteration));
     body.dataset.showTranslation = String(normaliseBoolean(preferences.showTranslation));
     body.dataset.showSimple = String(normaliseBoolean(preferences.showSimple));
     body.dataset.reduceMotion = String(normaliseBoolean(preferences.reduceMotion));
 
+    // Markup uses kebab-case names ("font-size"); stored keys are camelCase.
+    // (The old code compared them directly, so buttons never announced
+    // aria-pressed="true" even when their preference was active.)
+    var aliases = {
+      "font-size": "fontSize",
+      "line-spacing": "lineSpacing",
+      "color-scheme": "colorScheme",
+      "ui-language": "uiLanguage",
+    };
     Array.prototype.forEach.call(document.querySelectorAll("[data-preference]"), function (button) {
       var key = button.getAttribute("data-preference");
       var value = button.getAttribute("data-value");
-      var active = String(preferences[key]) === value;
+      var storedKey = aliases[key] || key;
+      var active = String(preferences[storedKey]) === value;
       button.setAttribute("aria-pressed", String(active));
       button.classList.toggle("active", active);
     });
@@ -103,6 +140,28 @@
       var input = byId(pair[0]);
       if (input) input.checked = normaliseBoolean(preferences[pair[1]]);
     });
+
+    // Interface language follows the preference; setLanguage is a no-op when
+    // the language is already the active one.
+    if (window.TamilStoicI18n && typeof window.TamilStoicI18n.setLanguage === "function" &&
+        window.TamilStoicI18n.getLanguage() !== preferences.uiLanguage) {
+      window.TamilStoicI18n.setLanguage(preferences.uiLanguage);
+    }
+
+    // "Follow system" reacts to OS theme changes while the page is open.
+    if (!schemeListener) {
+      try {
+        if (window.matchMedia) {
+          var mq = window.matchMedia("(prefers-color-scheme: dark)");
+          schemeListener = function () {
+            if (preferences.colorScheme === "system") applyPreferences();
+          };
+          if (typeof mq.addEventListener === "function") mq.addEventListener("change", schemeListener);
+          else if (typeof mq.addListener === "function") mq.addListener(schemeListener);
+          else schemeListener = null;
+        }
+      } catch (error) { schemeListener = null; }
+    }
   }
 
   function setPreference(key, value) {
@@ -112,6 +171,7 @@
       "font-size": "fontSize",
       "line-spacing": "lineSpacing",
       "color-scheme": "colorScheme",
+      "ui-language": "uiLanguage",
     };
     key = aliases[key] || key;
     if (!Object.prototype.hasOwnProperty.call(defaults, key)) return;
@@ -129,7 +189,7 @@
     };
     proposed[key] = value;
     if (!proposed.showTamil && !proposed.showTransliteration && !proposed.showTranslation && !proposed.showSimple) {
-      showToast("Keep at least one reading layer visible.");
+      showToast(T("toast.keepLayer", "Keep at least one reading layer visible."));
       applyPreferences();
       return;
     }
@@ -190,19 +250,23 @@
 
   function actionMarkup(n) {
     return (
-      '<div class="companion-actions" data-kural="' + n + '" role="group" aria-label="Actions for Kural ' + pad(n) + '">' +
+      '<div class="companion-actions" data-kural="' + n + '" role="group" aria-label="' +
+        T("actions.group", "Actions for Kural ") + pad(n) + '">' +
         '<button type="button" class="card-action save-action" data-kural-action="save" data-kural="' + n + '" aria-pressed="false">' +
-          '<span class="action-symbol" aria-hidden="true">♡</span><span class="action-label">Save</span>' +
+          '<span class="action-symbol" aria-hidden="true">♡</span><span class="action-label">' +
+          T("action.save", "Save") + "</span>" +
         "</button>" +
         '<button type="button" class="card-action" data-kural-action="reflect" data-kural="' + n + '">' +
-          '<span class="action-symbol" aria-hidden="true">✎</span><span class="action-label">Reflect</span>' +
+          '<span class="action-symbol" aria-hidden="true">✎</span><span class="action-label">' +
+          T("action.reflect", "Reflect") + "</span>" +
         "</button>" +
         '<details class="share-menu">' +
-          '<summary class="card-action"><span class="action-symbol" aria-hidden="true">↗</span><span class="action-label">Share</span></summary>' +
-          '<div class="share-menu-options" role="group" aria-label="Share Kural ' + pad(n) + '">' +
-            '<button type="button" data-kural-action="share" data-kural="' + n + '">Share link</button>' +
-            '<button type="button" data-kural-action="copy-link" data-kural="' + n + '">Copy link</button>' +
-            '<button type="button" data-kural-action="share-card" data-kural="' + n + '">Create share card</button>' +
+          '<summary class="card-action"><span class="action-symbol" aria-hidden="true">↗</span><span class="action-label">' +
+          T("action.share", "Share") + "</span></summary>" +
+          '<div class="share-menu-options" role="group" aria-label="' + T("actions.shareGroup", "Share Kural ") + pad(n) + '">' +
+            '<button type="button" data-kural-action="share" data-kural="' + n + '">' + T("share.link", "Share link") + "</button>" +
+            '<button type="button" data-kural-action="copy-link" data-kural="' + n + '">' + T("share.copy", "Copy link") + "</button>" +
+            '<button type="button" data-kural-action="share-card" data-kural="' + n + '">' + T("share.card", "Create share card") + "</button>" +
           "</div>" +
         "</details>" +
       "</div>"
@@ -219,7 +283,7 @@
         button.classList.toggle("is-saved", isSaved);
         button.innerHTML =
           '<span class="action-symbol" aria-hidden="true">' + (isSaved ? "♥" : "♡") + "</span>" +
-          '<span class="action-label">' + (isSaved ? "Saved" : "Save") + "</span>";
+          '<span class="action-label">' + (isSaved ? T("action.savedLabel", "Saved") : T("action.save", "Save")) + "</span>";
       }
     });
   }
@@ -270,7 +334,12 @@
     empty.hidden = records.length !== 0;
     if (count) count.textContent = String(records.length);
     if (openButton) {
-      openButton.setAttribute("aria-label", records.length ? "Open " + records.length + " saved Kurals" : "Open saved Kurals");
+      openButton.setAttribute(
+        "aria-label",
+        records.length
+          ? TF("action.openSavedN", "Open {n} saved Kurals", { n: records.length })
+          : T("action.openSaved", "Open saved Kurals")
+      );
     }
 
     records.forEach(function (record) {
@@ -283,7 +352,7 @@
 
       var meta = document.createElement("p");
       meta.className = "saved-item-meta";
-      meta.textContent = "Kural #" + pad(record.n) + (chapter ? " · " + chapter.ta : "");
+      meta.textContent = T("saved.metaPrefix", "Kural #") + pad(record.n) + (chapter ? " · " + chapter.ta : "");
       var verse = document.createElement("p");
       verse.className = "saved-item-verse";
       verse.textContent = kural.ta[0] + " " + kural.ta[1];
@@ -297,7 +366,7 @@
       if (record.note) {
         var noteLabel = document.createElement("p");
         noteLabel.className = "saved-note-label";
-        noteLabel.textContent = "Private reflection";
+        noteLabel.textContent = T("saved.noteLabel", "Private reflection");
         var note = document.createElement("p");
         note.className = "saved-note";
         note.textContent = record.note;
@@ -308,9 +377,9 @@
       var actions = document.createElement("div");
       actions.className = "saved-item-actions";
       actions.innerHTML =
-        '<button type="button" data-saved-action="reflect" data-kural="' + record.n + '">Reflect</button>' +
-        '<button type="button" data-saved-action="share" data-kural="' + record.n + '">Share</button>' +
-        '<button type="button" data-saved-action="remove" data-kural="' + record.n + '">Remove</button>';
+        '<button type="button" data-saved-action="reflect" data-kural="' + record.n + '">' + T("action.reflect", "Reflect") + "</button>" +
+        '<button type="button" data-saved-action="share" data-kural="' + record.n + '">' + T("action.share", "Share") + "</button>" +
+        '<button type="button" data-saved-action="remove" data-kural="' + record.n + '">' + T("action.remove", "Remove") + "</button>";
       item.appendChild(actions);
       list.appendChild(item);
     });
@@ -323,11 +392,17 @@
       var record = { n: n, note: "", savedAt: Date.now(), updatedAt: Date.now() };
       var saved = await store.put(record);
       savedByNumber[String(n)] = saved;
-      showToast("Saved privately on this device.");
+      showToast(T("toast.saved", "Saved privately on this device."));
+      // one-shot foil shimmer on the control that was just pressed
+      var foil = document.querySelector('.companion-actions[data-kural="' + n + '"] .save-action');
+      if (foil) {
+        foil.classList.add("just-saved");
+        window.setTimeout(function () { foil.classList.remove("just-saved"); }, 700);
+      }
     } else if (!shouldSave && current) {
       await store.remove(n);
       delete savedByNumber[String(n)];
-      showToast("Removed from your saved Kurals.");
+      showToast(T("toast.removed", "Removed from your saved Kurals."));
     }
     renderSavedCollection();
     updateActionState();
@@ -377,7 +452,7 @@
     var label = byId("reflection-kural-label");
     var verse = byId("reflection-verse");
     var input = byId("reflection-input");
-    if (label) label.textContent = "Kural #" + pad(n);
+    if (label) label.textContent = T("reflection.metaPrefix", "Kural #") + pad(n);
     if (verse) verse.textContent = kural.ta[0] + " " + kural.ta[1];
     if (input) input.value = record ? record.note || "" : "";
     openDialog(byId("reflection-dialog"), trigger);
@@ -399,7 +474,9 @@
     renderSavedCollection();
     updateActionState();
     closeDialog(byId("reflection-dialog"));
-    showToast(record.note ? "Private reflection saved on this device." : "Kural saved privately on this device.");
+    showToast(record.note
+      ? T("toast.reflectSaved", "Private reflection saved on this device.")
+      : T("toast.kuralSaved", "Kural saved privately on this device."));
   }
 
   function kuralUrl(n) {
@@ -432,9 +509,9 @@
         document.execCommand("copy");
         helper.remove();
       }
-      showToast(message || "Copied to your clipboard.");
+      showToast(message || T("toast.copied", "Copied to your clipboard."));
     } catch (error) {
-      showToast("Could not copy that link here. Please copy it from the address bar.");
+      showToast(T("toast.copyFail", "Could not copy that link here. Please copy it from the address bar."));
     }
   }
 
@@ -449,14 +526,36 @@
     if (navigator.share) {
       try {
         await navigator.share(payload);
-        showToast("Share sheet opened.");
+        showToast(T("toast.shareSheet", "Share sheet opened."));
       } catch (error) {
         if (error && error.name === "AbortError") return;
-        await copyText(payload.url, "Share link copied to your clipboard.");
+        await copyText(payload.url, T("toast.shareCopied", "Share link copied to your clipboard."));
       }
     } else {
-      await copyText(payload.url, "Share link copied to your clipboard.");
+      await copyText(payload.url, T("toast.shareCopied", "Share link copied to your clipboard."));
     }
+  }
+
+  function taNumeral(n) {
+    var digits = "௦௧௨௩௪௫௬௭௮௯";
+    return String(n).split("").map(function (d) { return digits[Number(d)] || d; }).join("");
+  }
+
+  // Lotus rosette drawn from dots — used on seals, corners and dividers.
+  // Only uses canvas primitives available in the smallest browser/test shims.
+  function drawRosette(ctx, cx, cy, r, color) {
+    var previous = ctx.fillStyle;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    for (var i = 0; i < 8; i++) {
+      var angle = (i / 8) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(angle) * r * 0.62, cy + Math.sin(angle) * r * 0.62, r * 0.22, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = previous;
   }
 
   function wrapCanvasText(ctx, text, maxWidth) {
@@ -529,12 +628,23 @@
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // palm-leaf fibre grain, drawn in code so the card needs no assets
+    ctx.fillStyle = "rgba(150, 120, 70, 0.05)";
+    for (var fibre = 0; fibre < 46; fibre++) {
+      ctx.fillRect(0, 60 + fibre * 41, 1080, 1.5);
+    }
+
     ctx.fillStyle = "#26614f";
     ctx.fillRect(0, 0, 1080, 132);
     ctx.fillStyle = "#b48630";
     ctx.fillRect(0, 132, 1080, 12);
     ctx.fillStyle = "#a94f31";
     ctx.fillRect(0, 144, 18, 1640);
+
+    // manuscript gold frame
+    ctx.strokeStyle = "#b48630";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(34, 34, 1012, 1852);
 
     ctx.fillStyle = "#fffdf7";
     ctx.beginPath();
@@ -548,6 +658,11 @@
     ctx.beginPath();
     ctx.arc(924, 282, 56, 0, Math.PI * 2);
     ctx.fill();
+    drawRosette(ctx, 924, 282, 44, "#f4ead2");
+
+    // corner rosettes, manuscript style
+    drawRosette(ctx, 70, 1846, 24, "#b48630");
+    drawRosette(ctx, 1010, 1846, 24, "#b48630");
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#fffdf7";
@@ -558,6 +673,11 @@
     ctx.font = "600 28px Inter, Arial, sans-serif";
     ctx.fillText("KURAL #" + pad(kural.n), 76, 246);
 
+    // ghost Tamil-numeral watermark
+    ctx.fillStyle = "rgba(169, 79, 49, 0.08)";
+    ctx.font = "700 340px 'Noto Serif Tamil', serif";
+    ctx.fillText(taNumeral(kural.n), 560, 1560);
+
     var y = 378;
     ctx.fillStyle = "#2a241f";
     ctx.font = "600 58px 'Noto Serif Tamil', serif";
@@ -566,6 +686,7 @@
 
     ctx.fillStyle = "#b48630";
     ctx.fillRect(76, y, 108, 4);
+    drawRosette(ctx, 204, y + 2, 15, "#b48630");
     y += 92;
     ctx.fillStyle = "#5c5249";
     ctx.font = "600 24px Inter, Arial, sans-serif";
@@ -591,7 +712,7 @@
   async function shareCard(n) {
     var kural = kuralForNumber(n);
     if (!kural) return;
-    showToast("Preparing your bilingual share card…");
+    showToast(T("toast.cardPreparing", "Preparing your bilingual share card…"));
     try {
       var blob = await createShareCard(kural);
       var filename = "thirukkural-" + pad(kural.n) + ".png";
@@ -613,7 +734,7 @@
               text: "A Kural from Tamil Stoic",
               files: [file],
             });
-            showToast("Share card ready in your share sheet.");
+            showToast(T("toast.cardSheet", "Share card ready in your share sheet."));
             return;
           } catch (error) {
             if (error && error.name === "AbortError") return;
@@ -629,9 +750,9 @@
       link.click();
       link.remove();
       window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-      showToast("Your bilingual share card is ready to share.");
+      showToast(T("toast.cardReady", "Your bilingual share card is ready to share."));
     } catch (error) {
-      showToast("Could not create a share card in this browser.");
+      showToast(T("toast.cardFail", "Could not create a share card in this browser."));
     }
   }
 
@@ -652,12 +773,18 @@
     var action = byId("install-action");
     if (!card || !message || !action || isStandalone() || safeGet(installDismissKey)) return;
     if (mode === "ios") {
-      message.innerHTML = "<strong>Install on iPhone or iPad:</strong> tap <b>Share</b>, then <b>Add to Home Screen</b> for a calm offline companion.";
+      message.innerHTML = T(
+        "install.ios",
+        "<strong>Install on iPhone or iPad:</strong> tap <b>Share</b>, then <b>Add to Home Screen</b> for a calm offline companion."
+      );
       action.hidden = true;
     } else {
-      message.textContent = "Install Tamil Stoic for a calm, offline-friendly reading space on your phone.";
+      message.textContent = T(
+        "install.prompt",
+        "Install Tamil Stoic for a calm, offline-friendly reading space on your phone."
+      );
       action.hidden = false;
-      action.textContent = "Install app";
+      action.textContent = T("install.action", "Install app");
     }
     card.hidden = false;
   }
@@ -677,7 +804,7 @@
     window.addEventListener("appinstalled", function () {
       deferredInstallPrompt = null;
       hideInstallCard(false);
-      showToast("Tamil Stoic is ready on your home screen.");
+      showToast(T("toast.installDone", "Tamil Stoic is ready on your home screen."));
     });
     if (isIos() && !isStandalone()) showInstallCard("ios");
 
@@ -754,10 +881,15 @@
         if (type === "save") toggleSaved(n);
         else if (type === "reflect") openReflection(n, action);
         else if (type === "share") shareKural(n);
-        else if (type === "copy-link") copyText(kuralUrl(n), "Share link copied to your clipboard.");
+        else if (type === "copy-link") copyText(kuralUrl(n), T("toast.shareCopied", "Share link copied to your clipboard."));
         else if (type === "share-card") shareCard(n);
         return;
       }
+
+      // Close any open share disclosure when clicking or tapping elsewhere.
+      Array.prototype.forEach.call(document.querySelectorAll(".share-menu[open]"), function (menu) {
+        if (!event.target.closest || !event.target.closest(".share-menu")) menu.removeAttribute("open");
+      });
 
       var savedAction = event.target.closest("[data-saved-action]");
       if (savedAction) {
@@ -811,6 +943,15 @@
       saveReflection();
     });
 
+    // Escape closes an open share disclosure without closing the page dialog
+    // the reader may be working in (the dialog's own cancel handles that).
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      Array.prototype.forEach.call(document.querySelectorAll(".share-menu[open]"), function (menu) {
+        menu.removeAttribute("open");
+      });
+    });
+
     Array.prototype.forEach.call(document.querySelectorAll("dialog"), function (dialog) {
       dialog.addEventListener("click", function (event) {
         if (event.target === dialog) closeDialog(dialog);
@@ -820,6 +961,81 @@
         closeDialog(dialog);
       });
     });
+
+    // Re-render companion surfaces whenever the interface language changes.
+    if (window.TamilStoicI18n && typeof window.TamilStoicI18n.onChange === "function") {
+      window.TamilStoicI18n.onChange(function () {
+        renderSavedCollection();
+        Array.prototype.forEach.call(document.querySelectorAll(".companion-actions[data-kural]"), function (actions) {
+          var n = Number(actions.getAttribute("data-kural"));
+          if (n) actions.outerHTML = actionMarkup(n);
+        });
+        updateActionState();
+      });
+    }
+
+    // The storage adapter announces when even its localStorage fallback fails.
+    window.addEventListener("tamil-stoic-storage-degraded", function () {
+      if (storageWarned) return;
+      storageWarned = true;
+      showToast(T("toast.storage", "Local storage is unavailable — saves will last this session only."));
+    });
+  }
+
+  // The daily card gains its own Share entry point (the browse cards keep the
+  // calmer disclosure menu).
+  function initialiseDailyShare() {
+    var button = byId("daily-share");
+    if (!button) return;
+    button.hidden = false;
+    button.addEventListener("click", function () {
+      var seal = document.querySelector("#daily-card .daily-num");
+      var n = seal ? Number(String(seal.textContent).replace(/\D/g, "")) : 0;
+      if (n) shareKural(n);
+    });
+  }
+
+  // A gentle, once-per-device tour card; never blocking the reader.
+  var ONBOARDING_KEY = "tamil-stoic-onboarding-seen-v1";
+  function initialiseOnboarding() {
+    var card = byId("onboarding-card");
+    var dialog = byId("onboarding-dialog");
+    if (!card || !dialog) return;
+    if (isStandalone() || safeGet(ONBOARDING_KEY)) return;
+    card.hidden = false;
+
+    var step = 1;
+    function showStep(n) {
+      step = Math.min(3, Math.max(1, n));
+      Array.prototype.forEach.call(dialog.querySelectorAll(".onboarding-step"), function (s) {
+        s.hidden = Number(s.getAttribute("data-step")) !== step;
+      });
+      Array.prototype.forEach.call(dialog.querySelectorAll(".onboarding-dots span"), function (d, i) {
+        d.classList.toggle("dot-on", i === step - 1);
+      });
+      var back = byId("onboarding-back");
+      var next = byId("onboarding-next");
+      var done = byId("onboarding-done");
+      if (back) back.hidden = step === 1;
+      if (next) next.hidden = step === 3;
+      if (done) done.hidden = step !== 3;
+    }
+    function markSeen() {
+      safeSet(ONBOARDING_KEY, "1");
+      card.hidden = true;
+    }
+
+    var start = byId("onboarding-start");
+    if (start) start.addEventListener("click", function () { showStep(1); openDialog(dialog, start); });
+    var dismiss = byId("onboarding-dismiss");
+    if (dismiss) dismiss.addEventListener("click", markSeen);
+    var back = byId("onboarding-back");
+    var next = byId("onboarding-next");
+    var done = byId("onboarding-done");
+    if (back) back.addEventListener("click", function () { showStep(step - 1); });
+    if (next) next.addEventListener("click", function () { showStep(step + 1); });
+    if (done) done.addEventListener("click", function () { closeDialog(dialog); markSeen(); });
+    dialog.addEventListener("close", markSeen);
   }
 
   function openSavedFromShortcut() {
@@ -848,6 +1064,8 @@
     renderSavedCollection();
     decorateKuralCards();
     openSavedFromShortcut();
+    initialiseDailyShare();
+    initialiseOnboarding();
   })();
 
   window.addEventListener("hashchange", openSavedFromShortcut);

@@ -5,12 +5,13 @@
  * the reader's device and are never sent through this worker.
  */
 const CACHE_PREFIX = "tamil-stoic-";
-const CACHE_NAME = CACHE_PREFIX + "v2-content-review";
+const CACHE_NAME = CACHE_PREFIX + "v3-ancient-ui";
 const APP_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./css/styles.css",
+  "./css/fonts.css",
   "./data/kurals.js",
   "./js/storage.js",
   "./js/app.js",
@@ -18,7 +19,30 @@ const APP_ASSETS = [
   "./assets/icon.svg",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
-  "./assets/apple-touch-icon.png"
+  "./assets/apple-touch-icon.png",
+  "./assets/img/rosette.svg",
+  "./assets/img/kolam-strip.svg",
+  "./assets/img/hero-temple.svg",
+  "./assets/img/ola-texture.jpg",
+  "./assets/img/granite-texture.jpg",
+  "./assets/fonts/inter-latin-400-normal.woff2",
+  "./assets/fonts/inter-latin-500-normal.woff2",
+  "./assets/fonts/inter-latin-600-normal.woff2",
+  "./assets/fonts/inter-latin-700-normal.woff2",
+  "./assets/fonts/inter-latin-ext-400-normal.woff2",
+  "./assets/fonts/inter-latin-ext-500-normal.woff2",
+  "./assets/fonts/inter-latin-ext-600-normal.woff2",
+  "./assets/fonts/inter-latin-ext-700-normal.woff2",
+  "./assets/fonts/eb-garamond-latin-400-normal.woff2",
+  "./assets/fonts/eb-garamond-latin-500-normal.woff2",
+  "./assets/fonts/eb-garamond-latin-400-italic.woff2",
+  "./assets/fonts/eb-garamond-latin-500-italic.woff2",
+  "./assets/fonts/noto-serif-tamil-tamil-400-normal.woff2",
+  "./assets/fonts/noto-serif-tamil-tamil-600-normal.woff2",
+  "./assets/fonts/noto-serif-tamil-tamil-700-normal.woff2",
+  "./assets/fonts/noto-serif-tamil-latin-400-normal.woff2",
+  "./assets/fonts/noto-serif-tamil-latin-600-normal.woff2",
+  "./assets/fonts/noto-serif-tamil-latin-700-normal.woff2"
 ];
 
 self.addEventListener("install", (event) => {
