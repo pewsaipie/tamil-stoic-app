@@ -151,7 +151,13 @@
 
   function safeScrollTo(el, opts) {
     if (el && typeof el.scrollIntoView === "function") {
-      try { el.scrollIntoView(opts || { block: "start" }); } catch (e) { /* ignore */ }
+      var settings = opts || { block: "start" };
+      // The companion's accessibility preference should also calm the existing
+      // browse/filter navigation, not just CSS transitions.
+      if (document.body && document.body.dataset.reduceMotion === "true") {
+        settings = Object.assign({}, settings, { behavior: "auto" });
+      }
+      try { el.scrollIntoView(settings); } catch (e) { /* ignore */ }
     }
   }
 
@@ -212,23 +218,31 @@
           '<span class="kural-theme">' + escapeHtml(themeLabel(k.th)) + "</span>" +
         "</div>" +
 
-        '<p class="kural-ta">' +
-          '<span class="line">' + highlight(k.ta[0], showQ) + "</span>" +
-          '<span class="line">' + highlight(k.ta[1], showQ) + "</span>" +
-        "</p>" +
-        '<p class="kural-translit">' +
-          escapeHtml(k.tr[0]) + " —<br/>" + escapeHtml(k.tr[1]) +
-        "</p>" +
+        '<div class="kural-tamil-block">' +
+          '<p class="kural-ta">' +
+            '<span class="line">' + highlight(k.ta[0], showQ) + "</span>" +
+            '<span class="line">' + highlight(k.ta[1], showQ) + "</span>" +
+          "</p>" +
+        "</div>" +
+        '<div class="kural-transliteration-block">' +
+          '<p class="kural-translit">' +
+            escapeHtml(k.tr[0]) + " —<br/>" + escapeHtml(k.tr[1]) +
+          "</p>" +
+        "</div>" +
 
         '<hr class="kural-divider" />' +
 
-        '<div class="block-label">English translation</div>' +
-        '<blockquote class="kural-en">' + enLines +
-          '<span class="source">— G. U. Pope (1886)</span>' +
-        "</blockquote>" +
+        '<div class="kural-translation-block">' +
+          '<div class="block-label">English translation</div>' +
+          '<blockquote class="kural-en">' + enLines +
+            '<span class="source">— G. U. Pope (1886)</span>' +
+          "</blockquote>" +
+        "</div>" +
 
-        '<div class="block-label" style="margin-top:16px;">Simple meaning</div>' +
-        '<div class="kural-simple">' + highlight(k.s, showQ) + "</div>" +
+        '<div class="kural-meaning-block">' +
+          '<div class="block-label" style="margin-top:16px;">Simple meaning</div>' +
+          '<div class="kural-simple">' + highlight(k.s, showQ) + "</div>" +
+        "</div>" +
 
         '<div class="kural-foot">' +
           '<span class="section-tag">' +
@@ -252,14 +266,20 @@
           escapeHtml(sec ? sec.ta : "") + " · " + escapeHtml(sec ? sec.en : "") +
         "</span>" +
       "</div>" +
-      '<p class="kural-ta daily-ta">' +
-        '<span class="line">' + escapeHtml(k.ta[0]) + "</span>" +
-        '<span class="line">' + escapeHtml(k.ta[1]) + "</span>" +
-      "</p>" +
-      '<p class="kural-translit">' + escapeHtml(k.tr[0]) + " —<br/>" + escapeHtml(k.tr[1]) + "</p>" +
+      '<div class="kural-tamil-block">' +
+        '<p class="kural-ta daily-ta">' +
+          '<span class="line">' + escapeHtml(k.ta[0]) + "</span>" +
+          '<span class="line">' + escapeHtml(k.ta[1]) + "</span>" +
+        "</p>" +
+      "</div>" +
+      '<div class="kural-transliteration-block">' +
+        '<p class="kural-translit">' + escapeHtml(k.tr[0]) + " —<br/>" + escapeHtml(k.tr[1]) + "</p>" +
+      "</div>" +
       '<hr class="kural-divider" />' +
-      '<div class="block-label">Simple meaning</div>' +
-      '<div class="kural-simple">' + escapeHtml(k.s) + "</div>"
+      '<div class="kural-meaning-block">' +
+        '<div class="block-label">Simple meaning</div>' +
+        '<div class="kural-simple">' + escapeHtml(k.s) + "</div>" +
+      "</div>"
     );
   }
 

@@ -877,3 +877,429 @@ mark {
   .chapter-wrap { justify-content: stretch; }
   .chapter-label { display: none; }
 }
+
+/* ---------- Kural Companion: install, sharing, privacy and access ---------- */
+
+:focus-visible {
+  outline: 3px solid rgba(38, 97, 79, 0.42);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 100;
+  transform: translateY(-180%);
+  background: var(--green);
+  color: #fff;
+  border-radius: 8px;
+  padding: 9px 13px;
+  font: 600 13px/1 var(--font-ui);
+  text-decoration: none;
+  transition: transform 0.16s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+
+.header-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.utility-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--green-ink);
+  background: rgba(255, 253, 247, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 13px;
+  font: 600 12px/1 var(--font-ui);
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.utility-btn:hover { background: var(--green-soft); border-color: var(--green); }
+.utility-btn-saved { color: var(--terracotta); }
+.utility-btn-saved:hover { background: var(--terracotta-soft); border-color: var(--terracotta); }
+.saved-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  color: #fff;
+  background: var(--terracotta);
+  border-radius: 999px;
+  font-size: 10px;
+}
+
+.install-card,
+.update-banner {
+  max-width: 740px;
+  margin: 12px auto 0;
+  padding: 0 22px;
+}
+.install-card[hidden],
+.update-banner[hidden] { display: none; }
+.install-card-inner,
+.update-banner {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: var(--green-soft);
+  border: 1px solid rgba(38, 97, 79, 0.22);
+  border-radius: 14px;
+  color: var(--green-ink);
+  box-shadow: var(--shadow-sm);
+}
+.install-card-inner { padding: 13px 15px; }
+.install-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 31px;
+  height: 31px;
+  color: #fff;
+  background: var(--green);
+  border-radius: 50%;
+  font: 700 20px/1 var(--font-ui);
+}
+.install-card p,
+.update-banner p {
+  flex: 1;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.install-actions,
+.update-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+.install-primary,
+.update-actions button:first-child {
+  color: #fff;
+  background: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font: 600 12px/1 var(--font-ui);
+}
+.install-dismiss,
+.update-actions button:last-child {
+  color: var(--green-ink);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 8px 9px;
+  font: 600 12px/1 var(--font-ui);
+}
+.install-dismiss:hover,
+.update-actions button:last-child:hover { background: rgba(38, 97, 79, 0.09); }
+.update-banner { margin-top: 12px; padding: 10px 15px; }
+
+/* Actions only appear after a Kural has been read; sharing stays tucked under
+   one calm disclosure instead of adding a row of social controls everywhere. */
+.companion-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--line-soft);
+}
+.card-action,
+.share-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  color: var(--ink-soft);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 10px;
+  font: 600 11.5px/1 var(--font-ui);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.card-action:hover,
+.share-menu > summary:hover { color: var(--green); background: var(--green-soft); border-color: var(--green); }
+.card-action.is-saved { color: var(--terracotta); background: var(--terracotta-soft); border-color: rgba(169, 79, 49, 0.35); }
+.action-symbol { font-size: 15px; line-height: 1; }
+.share-menu { position: relative; }
+.share-menu > summary { cursor: pointer; list-style: none; }
+.share-menu > summary::-webkit-details-marker { display: none; }
+.share-menu[open] > summary { color: var(--green); background: var(--green-soft); border-color: var(--green); }
+.share-menu-options {
+  position: absolute;
+  z-index: 30;
+  right: 0;
+  bottom: calc(100% + 8px);
+  display: grid;
+  min-width: 164px;
+  gap: 2px;
+  padding: 6px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  box-shadow: var(--shadow);
+}
+.share-menu-options button {
+  padding: 9px 10px;
+  color: var(--ink-soft);
+  border-radius: 7px;
+  text-align: left;
+  font: 500 12px/1.25 var(--font-ui);
+}
+.share-menu-options button:hover { color: var(--green); background: var(--green-soft); }
+.daily-card { overflow: visible; }
+
+/* Device-local collection and reader controls. */
+.companion-dialog {
+  width: min(620px, calc(100% - 30px));
+  max-height: min(780px, calc(100vh - 30px));
+  overflow: auto;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 20px 70px rgba(42, 36, 31, 0.26);
+  padding: 0;
+}
+.companion-dialog::backdrop { background: rgba(38, 32, 26, 0.43); backdrop-filter: blur(2px); }
+.dialog-shell { position: relative; padding: 30px; }
+.dialog-close {
+  position: absolute;
+  right: 16px;
+  top: 15px;
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 23px;
+  line-height: 1;
+}
+.dialog-close:hover { color: var(--terracotta); background: var(--terracotta-soft); border-color: var(--terracotta); }
+.dialog-eyebrow {
+  margin-bottom: 6px;
+  color: var(--terracotta);
+  font: 600 10.5px/1.3 var(--font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.dialog-shell h2 {
+  font: 500 clamp(27px, 5vw, 34px)/1.1 var(--font-en-classic);
+  color: var(--ink);
+}
+.dialog-intro,
+.field-hint { margin-top: 10px; color: var(--ink-soft); font-size: 13.5px; line-height: 1.55; }
+.saved-empty {
+  margin: 24px 0 4px;
+  padding: 20px;
+  color: var(--ink-soft);
+  background: var(--bg-soft);
+  border: 1px dashed var(--line);
+  border-radius: 11px;
+  font: italic 17px/1.5 var(--font-en-classic);
+  text-align: center;
+}
+.saved-list { display: grid; gap: 12px; margin-top: 20px; }
+.saved-item {
+  padding: 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+}
+.saved-item-meta { color: var(--terracotta); font: 600 10.5px/1.3 var(--font-ui); letter-spacing: 0.08em; text-transform: uppercase; }
+.saved-item-verse { margin-top: 6px; color: var(--ink); font: 600 16px/1.65 var(--font-ta); }
+.saved-item-meaning { margin-top: 6px; color: var(--ink-soft); font: 15px/1.55 var(--font-en-classic); }
+.saved-note-label { margin-top: 11px; color: var(--green); font: 600 10px/1.3 var(--font-ui); letter-spacing: 0.1em; text-transform: uppercase; }
+.saved-note { margin-top: 3px; color: var(--ink); font-size: 13px; line-height: 1.55; white-space: pre-wrap; }
+.saved-item-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
+.saved-item-actions button {
+  color: var(--green-ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font: 600 11px/1 var(--font-ui);
+}
+.saved-item-actions button:hover { color: var(--green); border-color: var(--green); background: var(--green-soft); }
+.saved-item-actions button:last-child { color: var(--terracotta); }
+
+.reflection-verse {
+  margin: 15px 0 18px;
+  color: var(--ink);
+  font: 600 17px/1.65 var(--font-ta);
+}
+.reflection-dialog label { display: block; color: var(--ink); font: 600 13px/1.3 var(--font-ui); }
+.reflection-dialog textarea {
+  width: 100%;
+  min-height: 124px;
+  margin-top: 8px;
+  padding: 12px 13px;
+  resize: vertical;
+  color: var(--ink);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font: 15px/1.55 var(--font-ui);
+}
+.reflection-dialog textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(38, 97, 79, 0.14); }
+.dialog-actions { display: flex; gap: 9px; margin-top: 19px; }
+.dialog-primary,
+.dialog-secondary {
+  border-radius: 999px;
+  padding: 10px 14px;
+  font: 600 12.5px/1 var(--font-ui);
+}
+.dialog-primary { color: #fff; background: var(--green); border: 1px solid var(--green); }
+.dialog-secondary { color: var(--ink-soft); background: var(--card); border: 1px solid var(--line); }
+.dialog-secondary:hover { color: var(--terracotta); border-color: var(--terracotta); }
+
+.settings-dialog .dialog-shell { padding-bottom: 26px; }
+.settings-group {
+  margin: 24px 0 0;
+  padding: 0;
+  border: 0;
+}
+.settings-group h3,
+.settings-group legend {
+  margin-bottom: 9px;
+  color: var(--ink);
+  font: 600 12px/1.3 var(--font-ui);
+}
+.setting-choice-group { display: flex; flex-wrap: wrap; gap: 7px; }
+.setting-choice-group button {
+  color: var(--ink-soft);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 11px;
+  font: 500 12px/1 var(--font-ui);
+}
+.setting-choice-group button.active,
+.setting-choice-group button[aria-pressed="true"] { color: #fff; background: var(--green); border-color: var(--green); }
+.settings-layers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+.settings-layers legend { grid-column: 1 / -1; }
+.settings-layers label,
+.motion-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+.settings-layers input,
+.motion-toggle input { width: 16px; height: 16px; accent-color: var(--green); }
+.motion-toggle { margin-top: 22px; color: var(--ink); font-weight: 600; }
+
+.app-status {
+  position: fixed;
+  z-index: 90;
+  left: 50%;
+  bottom: 20px;
+  max-width: calc(100% - 36px);
+  transform: translateX(-50%);
+  color: #fff;
+  background: #2a241f;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  box-shadow: 0 8px 26px rgba(42, 36, 31, 0.24);
+  padding: 10px 15px;
+  font: 500 12.5px/1.3 var(--font-ui);
+  text-align: center;
+}
+.app-status[hidden] { display: none; }
+
+/* Reading layers persist across reloads and apply to cards that lazy-render
+   later, so no reader has to reset the view while browsing. */
+body[data-show-tamil="false"] .kural-tamil-block,
+body[data-show-transliteration="false"] .kural-transliteration-block,
+body[data-show-translation="false"] .kural-translation-block,
+body[data-show-simple="false"] .kural-meaning-block { display: none; }
+
+body[data-font-size="large"] .kural-ta { font-size: clamp(25px, 4.1vw, 32px); }
+body[data-font-size="large"] .kural-translit { font-size: 17px; }
+body[data-font-size="large"] .kural-en { font-size: 21px; }
+body[data-font-size="large"] .kural-simple { font-size: 17px; }
+body[data-font-size="x-large"] .kural-ta { font-size: clamp(28px, 4.55vw, 36px); }
+body[data-font-size="x-large"] .kural-translit { font-size: 18px; }
+body[data-font-size="x-large"] .kural-en { font-size: 23px; }
+body[data-font-size="x-large"] .kural-simple { font-size: 18px; }
+body[data-line-spacing="relaxed"] .kural-ta { line-height: 2.08; }
+body[data-line-spacing="relaxed"] .kural-translit { line-height: 1.75; margin-top: 8px; }
+body[data-line-spacing="relaxed"] .kural-en,
+body[data-line-spacing="relaxed"] .kural-simple { line-height: 1.9; }
+
+body[data-color-scheme="dark"] {
+  --bg: #18201b;
+  --bg-soft: #202b24;
+  --bg-accent: #26352c;
+  --card: #202923;
+  --ink: #f4eadb;
+  --ink-soft: #d0c6b6;
+  --ink-faint: #ada392;
+  --line: #425147;
+  --line-soft: #344239;
+  --green: #76af97;
+  --green-soft: #263e33;
+  --green-ink: #b2d8c3;
+  --terracotta: #dc8868;
+  --terracotta-soft: #452f2a;
+  --gold: #dfbd67;
+  --gold-soft: #4a4027;
+  --simple-bg: #313525;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.18);
+  --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 10px 28px rgba(0,0,0,0.26);
+  color-scheme: dark;
+  background: radial-gradient(1000px 420px at 80% -8%, #263a2e 0%, transparent 55%), var(--bg);
+}
+body[data-color-scheme="dark"] .daily-card { background: linear-gradient(180deg, #273229 0%, #202923 100%); }
+body[data-color-scheme="dark"] .controls { background: rgba(24, 32, 27, 0.94); }
+body[data-color-scheme="dark"] .utility-btn { background: rgba(32, 41, 35, 0.78); }
+body[data-color-scheme="dark"] mark { background: #665327; }
+body[data-color-scheme="dark"] .companion-dialog::backdrop { background: rgba(0, 0, 0, 0.58); }
+
+body[data-reduce-motion="true"] *,
+body[data-reduce-motion="true"] *::before,
+body[data-reduce-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .header-actions { margin-top: 18px; }
+  .utility-btn { padding: 8px 11px; }
+  .install-card,
+  .update-banner { padding-left: 16px; padding-right: 16px; }
+  .install-card-inner,
+  .update-banner { align-items: flex-start; flex-wrap: wrap; }
+  .install-actions,
+  .update-actions { width: 100%; margin-left: 44px; }
+  .companion-actions { gap: 6px; }
+  .card-action,
+  .share-menu > summary { padding: 7px 9px; }
+  .dialog-shell { padding: 25px 20px 22px; }
+  .settings-layers { grid-template-columns: 1fr; }
+  .share-menu-options { right: auto; left: 0; }
+}
