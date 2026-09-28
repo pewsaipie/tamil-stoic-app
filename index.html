@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ta">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,103 +9,147 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Thirukkural" />
+
+  <!-- Social preview: shared links get a branded card instead of a bare URL -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tamil Stoic — Thirukkural" />
+  <meta property="og:title" content="திருக்குறள் · Thirukkural — Tamil Stoic" />
+  <meta property="og:description" content="One couplet a day. Every verse in Tamil with a plain-English meaning — a calm, offline-friendly reading companion." />
+  <meta property="og:image" content="https://pewsaipie.github.io/tamil-stoic-app/assets/icon-512.png" />
+  <meta property="og:image:alt" content="Palm-leaf and book mark of the Tamil Stoic Thirukkural app" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="திருக்குறள் · Thirukkural — Tamil Stoic" />
+  <meta name="twitter:description" content="One couplet a day. Every verse in Tamil with a plain-English meaning." />
+  <meta name="twitter:image" content="https://pewsaipie.github.io/tamil-stoic-app/assets/icon-512.png" />
+  <link rel="canonical" href="https://pewsaipie.github.io/tamil-stoic-app/" />
+
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-
+  <!-- Self-hosted fonts: offline-complete, no third-party runtime requests -->
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <a class="skip-link" href="#daily">Skip to today's Kural</a>
+  <a class="skip-link" href="#daily" data-i18n="skip.daily">Skip to today's Kural</a>
+  <a class="skip-link skip-link-browse" href="#browse" data-i18n="skip.browse">Skip to search and browse</a>
+
   <header class="site-header">
-    <span class="eyebrow">Tamil Stoic · தமிழ் ஸ்டோயிக்</span>
-    <h1>திருக்குறள்</h1>
-    <p class="subtitle">Thirukkural — couplets of Thiruvalluvar</p>
-    <p class="tagline">
+    <div class="hero-band" aria-hidden="true">
+      <img src="assets/img/hero-temple.svg" alt="" class="hero-art" />
+    </div>
+    <span class="eyebrow" data-i18n="header.eyebrow">Tamil Stoic · தமிழ் ஸ்டோயிக்</span>
+    <h1 lang="ta">திருக்குறள்</h1>
+    <p class="subtitle" data-i18n="header.subtitle">Thirukkural — couplets of Thiruvalluvar</p>
+    <p class="tagline" data-i18n-html="header.tagline">
       One couplet a day. Three books to walk through. A door for the situation
       you're in right now — and every verse in <b>Tamil</b> with a plain-English meaning.
     </p>
-    <div class="header-actions" aria-label="Reader tools">
+    <div class="header-actions" aria-label="Reader tools" data-i18n-aria="header.tools">
       <button type="button" id="reader-settings-open" class="utility-btn" aria-haspopup="dialog">
-        <span aria-hidden="true">Aa</span> Reading settings
+        <span aria-hidden="true">Aa</span> <span data-i18n="action.settings">Reading settings</span>
       </button>
-      <button type="button" id="saved-open" class="utility-btn utility-btn-saved" aria-haspopup="dialog" aria-label="Open saved Kurals">
-        <span aria-hidden="true">♡</span> Saved <span id="saved-count" class="saved-count" aria-live="polite">0</span>
+      <button type="button" id="saved-open" class="utility-btn utility-btn-saved" aria-haspopup="dialog" aria-label="Open saved Kurals" data-i18n-aria="action.openSaved">
+        <span aria-hidden="true">♡</span> <span data-i18n="action.saved">Saved</span> <span id="saved-count" class="saved-count" aria-live="polite">0</span>
+      </button>
+      <button type="button" id="palette-open" class="utility-btn" aria-haspopup="dialog">
+        <span aria-hidden="true">⌕</span> <span data-i18n="action.palette">Search &amp; commands</span> <kbd class="kbd-hint" aria-hidden="true">⌘K</kbd>
       </button>
     </div>
   </header>
+
+  <aside class="onboarding-card" id="onboarding-card" hidden aria-label="New here?" data-i18n-aria="onboard.cardLabel">
+    <div class="onboarding-card-inner">
+      <span class="onboarding-mark" aria-hidden="true">✦</span>
+      <p data-i18n="onboard.cardText">New to Tamil Stoic? Take the 30-second tour — daily verse, private saves, offline reading.</p>
+      <div class="onboarding-actions">
+        <button type="button" id="onboarding-start" class="install-primary" data-i18n="onboard.start">Show me around</button>
+        <button type="button" id="onboarding-dismiss" class="install-dismiss" data-i18n="action.dismiss">Not now</button>
+      </div>
+    </div>
+  </aside>
 
   <aside class="install-card" id="install-card" hidden aria-label="Install Tamil Stoic">
     <div class="install-card-inner">
       <span class="install-mark" aria-hidden="true">↓</span>
       <p id="install-message"></p>
       <div class="install-actions">
-        <button type="button" id="install-action" class="install-primary">Install app</button>
-        <button type="button" id="install-dismiss" class="install-dismiss">Not now</button>
+        <button type="button" id="install-action" class="install-primary" data-i18n="install.action">Install app</button>
+        <button type="button" id="install-dismiss" class="install-dismiss" data-i18n="action.dismiss">Not now</button>
       </div>
     </div>
   </aside>
 
   <aside class="update-banner" id="update-banner" hidden role="status" aria-live="polite">
-    <p>A quieter, newer version of Tamil Stoic is ready.</p>
+    <p data-i18n="update.text">A quieter, newer version of Tamil Stoic is ready.</p>
     <div class="update-actions">
-      <button type="button" id="update-reload">Update now</button>
-      <button type="button" id="update-later">Later</button>
+      <button type="button" id="update-reload" data-i18n="update.now">Update now</button>
+      <button type="button" id="update-later" data-i18n="update.later">Later</button>
     </div>
   </aside>
 
   <!-- Today's kural -->
-  <section class="daily" id="daily" aria-labelledby="daily-title">
+  <section class="daily" id="daily" aria-labelledby="daily-title" tabindex="-1">
     <div class="daily-inner">
       <div class="daily-eyebrow">
         <span class="dot" aria-hidden="true"></span>
-        <span id="daily-title">Today's Kural · இன்றைய குறள்</span>
+        <span id="daily-title" data-i18n="daily.title">Today's Kural · இன்றைய குறள்</span>
         <span class="daily-date" id="daily-date"></span>
       </div>
       <div class="daily-card" id="daily-card">
+        <div class="daily-skeleton" aria-hidden="true">
+          <span class="sk-line sk-line-num"></span>
+          <span class="sk-line sk-line-verse"></span>
+          <span class="sk-line sk-line-verse short"></span>
+          <span class="sk-line sk-line-text"></span>
+        </div>
         <!-- filled by js/app.js -->
       </div>
       <div class="daily-actions">
-        <button type="button" id="daily-shuffle" class="ghost-btn" title="Show another kural">
-          Another · வேறு ஒன்று
+        <button type="button" id="daily-shuffle" class="ghost-btn" title="Show another kural" data-i18n-title="daily.shuffleTitle">
+          <span data-i18n="daily.shuffle">Another · வேறு ஒன்று</span>
         </button>
-        <a href="#browse" class="ghost-link" id="daily-browse">Browse all →</a>
+        <button type="button" id="daily-share" class="ghost-btn ghost-btn-share" hidden>
+          <span aria-hidden="true">↗</span> <span data-i18n="daily.share">Share today's Kural</span>
+        </button>
+        <a href="#browse" class="ghost-link" id="daily-browse" data-i18n="daily.browse">Browse all →</a>
       </div>
     </div>
   </section>
 
   <!-- Three Books -->
-  <section class="books" aria-labelledby="books-title">
+  <section class="books" aria-labelledby="books-title" tabindex="-1">
     <div class="section-head">
-      <h2 id="books-title">The three books · முப்பால்</h2>
-      <p class="section-sub">Thirukkural is arranged in three books. Tap one to read it through.</p>
+      <h2 id="books-title" data-i18n="books.title">The three books · முப்பால்</h2>
+      <p class="section-sub" data-i18n="books.sub">Thirukkural is arranged in three books. Tap one to read it through.</p>
     </div>
     <div class="books-grid" id="books-grid"></div>
   </section>
 
   <!-- Situations -->
-  <section class="situations" aria-labelledby="situations-title">
+  <section class="situations" aria-labelledby="situations-title" tabindex="-1">
     <div class="section-head">
-      <h2 id="situations-title">Open the right door · சூழ்நிலை</h2>
-      <p class="section-sub">Where are you today? Pick the door that fits, and let Valluvar speak to it.</p>
+      <h2 id="situations-title" data-i18n="situations.title">Open the right door · சூழ்நிலை</h2>
+      <p class="section-sub" data-i18n="situations.sub">Where are you today? Pick the door that fits, and let Valluvar speak to it.</p>
     </div>
     <div class="situations-grid" id="situations-grid"></div>
   </section>
 
   <!-- Browse -->
-  <section class="browse" id="browse" aria-labelledby="browse-title">
+  <section class="browse" id="browse" aria-labelledby="browse-title" tabindex="-1">
     <div class="browse-head">
-      <h2 id="browse-title">Browse · அதிகாரங்கள்</h2>
-      <p class="section-sub">
+      <h2 id="browse-title" data-i18n="browse.title">Browse · அதிகாரங்கள்</h2>
+      <p class="section-sub" data-i18n="browse.sub">
         Search a number or word, pick a chapter, or wander.
       </p>
+      <div class="journey" id="journey" role="status" aria-live="polite">
+        <svg class="journey-ring" viewBox="0 0 36 36" aria-hidden="true">
+          <circle class="journey-ring-bg" cx="18" cy="18" r="15.5"></circle>
+          <circle class="journey-ring-fg" cx="18" cy="18" r="15.5"></circle>
+        </svg>
+        <span class="journey-text" id="journey-text" data-i18n="journey.empty">Your reading journey begins with one couplet.</span>
+      </div>
     </div>
 
     <div class="controls" id="controls">
@@ -118,106 +162,211 @@
           <input
             id="search"
             type="search"
+            aria-label="Search kurals by number, Tamil, transliteration, or English"
+            data-i18n-aria="search.label"
             placeholder="Search number or words — எ.கா. 151, பொறுத்தல், patience, anger…"
+            data-i18n-placeholder="search.placeholder"
             autocomplete="off"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="search-suggestions"
+            aria-autocomplete="list"
           />
+          <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Search suggestions" data-i18n-aria="search.suggestions" hidden></div>
         </div>
         <div class="chapter-wrap">
-          <label for="chapter" class="chapter-label">Chapter · அதிகாரம்</label>
-          <select id="chapter" class="chapter-select" aria-label="Filter by chapter"></select>
-          <button type="button" id="clear-filters" class="clear-btn" hidden aria-label="Clear chapter, book, situation, theme, and search">
-            Clear
+          <label for="chapter" class="chapter-label" data-i18n="chapter.label">Chapter · அதிகாரம்</label>
+          <select id="chapter" class="chapter-select" aria-label="Filter by chapter" data-i18n-aria="chapter.aria"></select>
+          <button type="button" id="clear-filters" class="clear-btn" hidden aria-label="Clear chapter, book, situation, theme, and search" data-i18n-aria="clear.aria">
+            <span data-i18n="clear.text">Clear</span>
           </button>
         </div>
-        <div class="chips" id="chips" role="tablist" aria-label="Filter by theme"></div>
+        <div class="chips" id="chips" role="group" aria-label="Filter by theme" data-i18n-aria="chips.aria"></div>
       </div>
     </div>
 
-    <div class="result-line">
+    <div class="result-line" role="status">
       <span id="result-count"></span>
       <span id="result-range"></span>
     </div>
 
-    <section id="kural-list" aria-live="polite"></section>
+    <div id="chapter-intro" class="chapter-intro" hidden></div>
+
+    <section id="kural-list"></section>
     <div id="sentinel" class="sentinel" aria-hidden="true">
       <div class="spinner"></div>
-      <span>Loading more…</span>
+      <span data-i18n="list.loading">Loading more…</span>
     </div>
 
     <!-- Chapter map -->
     <div class="chapter-map" id="chapter-map" aria-label="All 133 chapters">
-      <h3 class="map-title">All chapters · அனைத்து அதிகாரங்கள்</h3>
+      <h3 class="map-title" data-i18n="map.title">All chapters · அனைத்து அதிகாரங்கள்</h3>
       <div id="chapter-map-body"></div>
     </div>
   </section>
 
+  <button type="button" id="back-to-top" class="back-to-top" hidden>
+    <span aria-hidden="true">↑</span>
+    <span data-i18n="backToTop">Top</span>
+  </button>
+
   <dialog class="companion-dialog saved-dialog" id="saved-dialog" aria-labelledby="saved-title">
     <div class="dialog-shell">
-      <button type="button" class="dialog-close" data-close-dialog aria-label="Close saved Kurals">×</button>
-      <p class="dialog-eyebrow">Your private collection</p>
-      <h2 id="saved-title">Saved Kurals</h2>
-      <p class="dialog-intro">Saved Kurals and reflections stay on this device. Nothing is posted or shared automatically.</p>
-      <p id="saved-empty" class="saved-empty">Save a Kural that meets you at the right moment. It will appear here.</p>
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Close saved Kurals" data-i18n-aria="saved.close">×</button>
+      <p class="dialog-eyebrow" data-i18n="saved.eyebrow">Your private collection</p>
+      <h2 id="saved-title" data-i18n="saved.title">Saved Kurals</h2>
+      <p class="dialog-intro" data-i18n="saved.intro">Saved Kurals and reflections stay on this device. Nothing is posted or shared automatically.</p>
+      <p id="saved-empty" class="saved-empty" data-i18n="saved.empty">Save a Kural that meets you at the right moment. It will appear here.</p>
       <div id="saved-list" class="saved-list" aria-live="polite"></div>
     </div>
   </dialog>
 
   <dialog class="companion-dialog reflection-dialog" id="reflection-dialog" aria-labelledby="reflection-title">
     <form id="reflection-form" class="dialog-shell">
-      <button type="button" class="dialog-close" data-close-dialog aria-label="Close reflection editor">×</button>
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Close reflection editor" data-i18n-aria="reflection.close">×</button>
       <p class="dialog-eyebrow" id="reflection-kural-label">Kural</p>
-      <h2 id="reflection-title">A private reflection</h2>
-      <p class="reflection-verse" id="reflection-verse"></p>
-      <label for="reflection-input">What do you want to remember?</label>
-      <textarea id="reflection-input" maxlength="500" rows="5" placeholder="A thought for yourself — stored only on this device."></textarea>
-      <p class="field-hint">Up to 500 characters. Leaving this blank still saves the Kural.</p>
+      <h2 id="reflection-title" data-i18n="reflection.title">A private reflection</h2>
+      <p class="reflection-verse" id="reflection-verse" lang="ta"></p>
+      <label for="reflection-input" data-i18n="reflection.label">What do you want to remember?</label>
+      <textarea id="reflection-input" maxlength="500" rows="5" placeholder="A thought for yourself — stored only on this device." data-i18n-placeholder="reflection.placeholder"></textarea>
+      <p class="field-hint" data-i18n="reflection.hint">Up to 500 characters. Leaving this blank still saves the Kural.</p>
       <div class="dialog-actions">
-        <button type="submit" class="dialog-primary">Save reflection</button>
-        <button type="button" class="dialog-secondary" data-close-dialog>Cancel</button>
+        <button type="submit" class="dialog-primary" data-i18n="reflection.save">Save reflection</button>
+        <button type="button" class="dialog-secondary" data-close-dialog data-i18n="action.cancel">Cancel</button>
       </div>
     </form>
   </dialog>
 
   <dialog class="companion-dialog settings-dialog" id="reader-settings-dialog" aria-labelledby="reader-settings-title">
     <div class="dialog-shell">
-      <button type="button" class="dialog-close" data-close-dialog aria-label="Close reading settings">×</button>
-      <p class="dialog-eyebrow">Make this reader yours</p>
-      <h2 id="reader-settings-title">Reading settings</h2>
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Close reading settings" data-i18n-aria="settings.close">×</button>
+      <p class="dialog-eyebrow" data-i18n="settings.eyebrow">Make this reader yours</p>
+      <h2 id="reader-settings-title" data-i18n="settings.title">Reading settings</h2>
 
       <section class="settings-group" aria-labelledby="text-size-title">
-        <h3 id="text-size-title">Text size</h3>
-        <div class="setting-choice-group" role="group" aria-label="Text size">
-          <button type="button" data-preference="font-size" data-value="standard">Standard</button>
-          <button type="button" data-preference="font-size" data-value="large">Large</button>
-          <button type="button" data-preference="font-size" data-value="x-large">Extra large</button>
+        <h3 id="text-size-title" data-i18n="settings.textSize">Text size</h3>
+        <div class="setting-choice-group" role="group" aria-label="Text size" data-i18n-aria="settings.textSizeAria">
+          <button type="button" data-preference="font-size" data-value="standard" data-i18n="settings.size.standard">Standard</button>
+          <button type="button" data-preference="font-size" data-value="large" data-i18n="settings.size.large">Large</button>
+          <button type="button" data-preference="font-size" data-value="x-large" data-i18n="settings.size.xlarge">Extra large</button>
         </div>
       </section>
 
       <section class="settings-group" aria-labelledby="line-spacing-title">
-        <h3 id="line-spacing-title">Line spacing</h3>
-        <div class="setting-choice-group" role="group" aria-label="Line spacing">
-          <button type="button" data-preference="line-spacing" data-value="comfortable">Comfortable</button>
-          <button type="button" data-preference="line-spacing" data-value="relaxed">Relaxed</button>
+        <h3 id="line-spacing-title" data-i18n="settings.spacing">Line spacing</h3>
+        <div class="setting-choice-group" role="group" aria-label="Line spacing" data-i18n-aria="settings.spacingAria">
+          <button type="button" data-preference="line-spacing" data-value="comfortable" data-i18n="settings.spacing.comfortable">Comfortable</button>
+          <button type="button" data-preference="line-spacing" data-value="relaxed" data-i18n="settings.spacing.relaxed">Relaxed</button>
         </div>
       </section>
 
       <section class="settings-group" aria-labelledby="colour-scheme-title">
-        <h3 id="colour-scheme-title">Colour</h3>
-        <div class="setting-choice-group" role="group" aria-label="Colour scheme">
-          <button type="button" data-preference="color-scheme" data-value="light">Warm light</button>
-          <button type="button" data-preference="color-scheme" data-value="dark">Quiet dark</button>
+        <h3 id="colour-scheme-title" data-i18n="settings.colour">Colour</h3>
+        <div class="setting-choice-group" role="group" aria-label="Colour scheme" data-i18n-aria="settings.colourAria">
+          <button type="button" data-preference="color-scheme" data-value="light" data-i18n="settings.colour.light">Palm-leaf day</button>
+          <button type="button" data-preference="color-scheme" data-value="dark" data-i18n="settings.colour.dark">Temple night</button>
+          <button type="button" data-preference="color-scheme" data-value="system" data-i18n="settings.colour.system">Follow system</button>
+        </div>
+      </section>
+
+      <section class="settings-group" aria-labelledby="language-title">
+        <h3 id="language-title" data-i18n="settings.language">Interface language · இடைமுக மொழி</h3>
+        <div class="setting-choice-group" role="group" aria-label="Interface language" data-i18n-aria="settings.languageAria">
+          <button type="button" data-preference="ui-language" data-value="en" lang="en">English</button>
+          <button type="button" data-preference="ui-language" data-value="ta" lang="ta">தமிழ்</button>
         </div>
       </section>
 
       <fieldset class="settings-group settings-layers">
-        <legend>Reading layers</legend>
-        <label><input type="checkbox" id="pref-show-tamil" checked /> Tamil couplet</label>
-        <label><input type="checkbox" id="pref-show-transliteration" checked /> Transliteration</label>
-        <label><input type="checkbox" id="pref-show-translation" checked /> English translation</label>
-        <label><input type="checkbox" id="pref-show-simple" checked /> Simple meaning</label>
+        <legend data-i18n="settings.layers">Reading layers</legend>
+        <label><input type="checkbox" id="pref-show-tamil" checked /> <span data-i18n="settings.layer.tamil">Tamil couplet</span></label>
+        <label><input type="checkbox" id="pref-show-transliteration" checked /> <span data-i18n="settings.layer.translit">Transliteration</span></label>
+        <label><input type="checkbox" id="pref-show-translation" checked /> <span data-i18n="settings.layer.translation">English translation</span></label>
+        <label><input type="checkbox" id="pref-show-simple" checked /> <span data-i18n="settings.layer.simple">Simple meaning</span></label>
       </fieldset>
 
-      <label class="motion-toggle"><input type="checkbox" id="pref-reduce-motion" /> Reduce motion</label>
+      <label class="motion-toggle"><input type="checkbox" id="pref-reduce-motion" /> <span data-i18n="settings.motion">Reduce motion</span></label>
+    </div>
+  </dialog>
+
+  <dialog class="companion-dialog focus-dialog" id="focus-dialog" aria-labelledby="focus-kural-label">
+    <div class="dialog-shell">
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Close reader" data-i18n-aria="focus.close">×</button>
+      <p class="dialog-eyebrow" id="focus-kural-label">Kural</p>
+      <div id="focus-body" class="focus-body"></div>
+      <div class="focus-nav">
+        <button type="button" id="focus-prev" class="dialog-secondary"><span aria-hidden="true">←</span> <span data-i18n="nav.prev">Previous</span></button>
+        <button type="button" id="focus-listen" class="dialog-secondary"><span aria-hidden="true">♪</span> <span data-i18n="nav.listen">Listen</span></button>
+        <button type="button" id="focus-next" class="dialog-secondary"><span data-i18n="nav.next">Next</span> <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="companion-dialog palette-dialog" id="palette-dialog" aria-labelledby="palette-title">
+    <div class="dialog-shell">
+      <p class="dialog-eyebrow" data-i18n="palette.eyebrow">Go anywhere</p>
+      <h2 id="palette-title" class="visually-hidden" data-i18n="palette.title">Search and commands</h2>
+      <div class="palette-input-wrap">
+        <span aria-hidden="true" class="palette-glyph">⌕</span>
+        <input id="palette-input" type="text" role="combobox" aria-expanded="true" aria-controls="palette-list"
+               aria-label="Type a kural number, chapter, or command"
+               data-i18n-aria="palette.aria"
+               placeholder="Type a kural number, chapter, or command…"
+               data-i18n-placeholder="palette.placeholder"
+               autocomplete="off" />
+      </div>
+      <ul id="palette-list" class="palette-list" role="listbox" aria-label="Results"></ul>
+      <p class="palette-hint"><kbd>↑</kbd><kbd>↓</kbd> <span data-i18n="palette.navigate">navigate</span> · <kbd>Enter</kbd> <span data-i18n="palette.open">open</span> · <kbd>Esc</kbd> <span data-i18n="palette.close">close</span></p>
+    </div>
+  </dialog>
+
+  <dialog class="companion-dialog shortcuts-dialog" id="shortcuts-dialog" aria-labelledby="shortcuts-title">
+    <div class="dialog-shell">
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Close keyboard shortcuts" data-i18n-aria="shortcuts.close">×</button>
+      <p class="dialog-eyebrow" data-i18n="shortcuts.eyebrow">Keyboard</p>
+      <h2 id="shortcuts-title" data-i18n="shortcuts.title">Keyboard shortcuts</h2>
+      <dl class="shortcut-list">
+        <div><dt><kbd>/</kbd></dt><dd data-i18n="shortcuts.search">Focus search</dd></div>
+        <div><dt><kbd>⌘</kbd><kbd>K</kbd> / <kbd>Ctrl</kbd><kbd>K</kbd></dt><dd data-i18n="shortcuts.palette">Open the command palette</dd></div>
+        <div><dt><kbd>j</kbd></dt><dd data-i18n="shortcuts.j">Next couplet</dd></div>
+        <div><dt><kbd>k</kbd></dt><dd data-i18n="shortcuts.k">Previous couplet</dd></div>
+        <div><dt><kbd>s</kbd></dt><dd data-i18n="shortcuts.s">Save the focused couplet</dd></div>
+        <div><dt><kbd>l</kbd></dt><dd data-i18n="shortcuts.l">Listen to the focused couplet</dd></div>
+        <div><dt><kbd>Enter</kbd></dt><dd data-i18n="shortcuts.enter">Read the focused couplet in focus mode</dd></div>
+        <div><dt><kbd>?</kbd></dt><dd data-i18n="shortcuts.help">Show this help</dd></div>
+      </dl>
+    </div>
+  </dialog>
+
+  <dialog class="companion-dialog onboarding-dialog" id="onboarding-dialog" aria-labelledby="onboarding-title">
+    <div class="dialog-shell">
+      <button type="button" class="dialog-close" data-close-dialog aria-label="Close tour" data-i18n-aria="onboard.close">×</button>
+      <div class="onboarding-steps">
+        <section class="onboarding-step" data-step="1">
+          <span class="onboarding-step-num" aria-hidden="true">௧</span>
+          <p class="dialog-eyebrow" data-i18n="onboard.step1Eyebrow">Step one of three</p>
+          <h2 id="onboarding-title" data-i18n="onboard.step1Title">One couplet a day</h2>
+          <p class="dialog-intro" data-i18n="onboard.step1Body">Today's Kural greets you at the top. Tap “Another” for a different verse, or share it with someone who needs it.</p>
+        </section>
+        <section class="onboarding-step" data-step="2" hidden>
+          <span class="onboarding-step-num" aria-hidden="true">௨</span>
+          <p class="dialog-eyebrow" data-i18n="onboard.step2Eyebrow">Step two of three</p>
+          <h2 data-i18n="onboard.step2Title">Save what meets you</h2>
+          <p class="dialog-intro" data-i18n="onboard.step2Body">Press Save on any couplet, or write a private reflection. Both stay on this device alone — never posted, never synced.</p>
+        </section>
+        <section class="onboarding-step" data-step="3" hidden>
+          <span class="onboarding-step-num" aria-hidden="true">௩</span>
+          <p class="dialog-eyebrow" data-i18n="onboard.step3Eyebrow">Step three of three</p>
+          <h2 data-i18n="onboard.step3Title">Read your way, offline</h2>
+          <p class="dialog-intro" data-i18n="onboard.step3Body">Choose text size, layers, and day or night colour in Reading settings. Install the app and the whole library works offline.</p>
+        </section>
+      </div>
+      <div class="dialog-actions onboarding-actions-row">
+        <button type="button" id="onboarding-back" class="dialog-secondary" hidden data-i18n="onboard.back">Back</button>
+        <button type="button" id="onboarding-next" class="dialog-primary" data-i18n="onboard.next">Next</button>
+        <button type="button" id="onboarding-done" class="dialog-primary" hidden data-i18n="onboard.done">Start reading</button>
+      </div>
+      <div class="onboarding-dots" aria-hidden="true"><span class="dot-on"></span><span></span><span></span></div>
     </div>
   </dialog>
 
@@ -225,23 +374,23 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <p class="footer-ta"><b>யாதனின் யாதனின் நீங்கியான் நோதல் அதனின் யாதனின் இல்லன் நலம்.</b> (குறள் 360)</p>
-      <p>
+      <p class="footer-ta" lang="ta"><b>யாதனின் யாதனின் நீங்கியான் நோதல் அதனின் யாதனின் இல்லன் நலம்.</b> (குறள் 360)</p>
+      <p data-i18n-html="footer.credits">
         English verse translations and prose explanations by <b>G. U. Pope</b> (with W. H. Drew,
         John Lazarus &amp; F. W. Ellis, 1886) — in the public domain. The simple-English meanings
         are original to this app, written from Pope's prose. Tamil text follows the standard
         Parimelalagar recension, built from <b>github.com/tk120404/thirukkural</b>
         (Apache&nbsp;License&nbsp;2.0) via <code>scripts/build-kurals.mjs</code>.
       </p>
-      <p>
+      <p data-i18n-html="footer.about">
         <b>tamil-stoic-app</b> · A calm corner for Tamil wisdom. அறம் · பொருள் · காமம்
       </p>
     </div>
   </footer>
 
-  <script src="data/kurals.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/companion.js"></script>
+  <script src="data/kurals.js" defer></script>
+  <script src="js/storage.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/companion.js" defer></script>
 </body>
 </html>

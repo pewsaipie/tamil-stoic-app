@@ -10,6 +10,7 @@
   "background_color": "#f7f2e8",
   "theme_color": "#26614f",
   "orientation": "any",
+  "categories": ["books", "education", "lifestyle"],
   "icons": [
     {
       "src": "assets/icon-192.png",
@@ -30,6 +31,13 @@
       "purpose": "any"
     }
   ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "params": {
+      "q": "text"
+    }
+  },
   "shortcuts": [
     {
       "name": "Today's Kural",

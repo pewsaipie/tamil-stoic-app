@@ -51,7 +51,11 @@
       if (global.localStorage) global.localStorage.setItem(FALLBACK_KEY, JSON.stringify(records));
     } catch (error) {
       // Browsers can deny localStorage in private contexts. The in-memory copy
-      // still lets the current reading session remain calm and functional.
+      // still keeps this session functional — announce once so the reader
+      // knows saves won't survive a reload.
+      try {
+        global.dispatchEvent(new CustomEvent("tamil-stoic-storage-degraded"));
+      } catch (dispatchError) { /* very old engines: stay silent */ }
     }
   }
 

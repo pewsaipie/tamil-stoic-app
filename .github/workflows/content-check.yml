@@ -17,3 +17,19 @@ jobs:
           node-version: '22'
       - name: Validate all Kurals and correction regressions
         run: node scripts/test-content.mjs
+
+      # Presentation-layer gates from the UI/UX proposal (docs/ui-ux-proposal.md).
+      # The contrast suite is dependency-free; the rest need jsdom (+ axe-core).
+      - name: Colour-contrast regression (WCAG AA token pairs)
+        run: node scripts/test-contrast.mjs
+      - name: Service worker offline/update contract
+        run: node scripts/test-service-worker.mjs
+      - name: Install DOM test dependencies
+        run: npm install --no-save jsdom axe-core
+      - name: Reader behaviour smoke tests
+        run: |
+          node scripts/test-app.mjs
+          node scripts/test-chapter-filter.mjs
+          node scripts/test-companion-features.mjs
+      - name: axe-core accessibility scan
+        run: node scripts/test-a11y.mjs
