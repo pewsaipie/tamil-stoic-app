@@ -199,11 +199,19 @@
   }
 
   // ---------- rendering ----------
+  // Present each couplet in the familiar four-word / three-word layout,
+  // regardless of how the source dataset's two poetic lines are segmented.
+  function tamilCoupletLines(kural) {
+    var words = (kural.ta || []).join(" ").trim().split(/\s+/).filter(Boolean);
+    return [words.slice(0, 4).join(" "), words.slice(4).join(" ")];
+  }
+
   function cardHtml(k) {
     var q = state.query.trim();
     var showQ = q && !/^\d+$/.test(q) ? q : "";
     var ch = chById[k.ch];
     var sec = secById[k.sec];
+    var taLines = tamilCoupletLines(k);
 
     var enLines =
       '<span class="line">' + escapeHtml(k.en[0]) + "</span>" +
@@ -220,8 +228,8 @@
 
         '<div class="kural-tamil-block">' +
           '<p class="kural-ta">' +
-            '<span class="line">' + highlight(k.ta[0], showQ) + "</span>" +
-            '<span class="line">' + highlight(k.ta[1], showQ) + "</span>" +
+            '<span class="line">' + highlight(taLines[0], showQ) + "</span>" +
+            '<span class="line">' + highlight(taLines[1], showQ) + "</span>" +
           "</p>" +
         "</div>" +
         '<div class="kural-transliteration-block">' +
@@ -257,6 +265,7 @@
   function dailyCardHtml(k) {
     var ch = chById[k.ch];
     var sec = secById[k.sec];
+    var taLines = tamilCoupletLines(k);
     return (
       '<div class="daily-meta">' +
         '<span class="daily-num">#' + pad(k.n) + "</span>" +
@@ -268,8 +277,8 @@
       "</div>" +
       '<div class="kural-tamil-block">' +
         '<p class="kural-ta daily-ta">' +
-          '<span class="line">' + escapeHtml(k.ta[0]) + "</span>" +
-          '<span class="line">' + escapeHtml(k.ta[1]) + "</span>" +
+          '<span class="line">' + escapeHtml(taLines[0]) + "</span>" +
+          '<span class="line">' + escapeHtml(taLines[1]) + "</span>" +
         "</p>" +
       "</div>" +
       '<div class="kural-transliteration-block">' +
