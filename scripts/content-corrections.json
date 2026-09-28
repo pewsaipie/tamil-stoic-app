@@ -1,0 +1,1572 @@
+{
+  "version": 1,
+  "corrections": [
+    {
+      "n": 1,
+      "before": {
+        "s": "As the letter ‘A’ comes first in every language, the Divine comes first in the world. Begin from what is highest."
+      },
+      "after": {
+        "s": "As A is the first of all letters, so God is first in the world."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Remove added motivational advice that is not in the couplet.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "before": {
+        "s": "What is the use of all your learning if you never bow to true wisdom?"
+      },
+      "after": {
+        "s": "What use is learning if one does not worship the good feet of the One who has pure knowledge?"
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Restore the explicit divine reference instead of substituting abstract wisdom.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "before": {
+        "s": "Hold on to what is highest, and you will flourish beyond this world."
+      },
+      "after": {
+        "s": "Those who reach the glorious feet of the One who dwells upon the flower will live long upon the earth."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Restore the flower image and the promise of long life; do not replace them with generic self-help.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "before": {
+        "ta": [
+          "வேண்டுதல் வேண்டாமை இலான் அடி சேர்ந்தார்க்கு",
+          "யாண்டும் இடும்பை இல"
+        ],
+        "s": "Those who reach the One who wants nothing and fears nothing will never face trouble anywhere."
+      },
+      "after": {
+        "ta": [
+          "வேண்டுதல் வேண்டாமை இலானடி சேர்ந்தார்க்கு",
+          "யாண்டும் இடும்பை இல"
+        ],
+        "s": "Those who reach the feet of the One free from desire and aversion will never suffer distress."
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore the edition’s joined poetic form, not a modernized word expansion.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "s",
+          "reason": "Aversion is not fear.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "before": {
+        "s": "Those who truly delight in praising God shake off even the deeds done in darkness."
+      },
+      "after": {
+        "s": "The two kinds of deeds, good and evil, born of ignorance do not cling to those who delight in the true praise of God."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Restore both kinds of karma, not just deeds done in darkness.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "before": {
+        "ta": [
+          "தனக்குவமை இல்லாதான் தாள்சேர்ந்தார்க்கு அல்லால்",
+          "மனக்கவலை மாற்றல் அரிது"
+        ],
+        "s": "Worry will not leave the mind until it finds a greater, steadier thing to hold on to.",
+        "tr": [
+          "Thannakkuvamai Illaathaan Thaalserndhaarkku Allaal",
+          "Manakkavalai Maatral Arithu"
+        ]
+      },
+      "after": {
+        "ta": [
+          "தனக்குவமை இல்லாதான் தாள்சேர்ந்தார்க் கல்லால்",
+          "மனக்கவலை மாற்றல் அரிது"
+        ],
+        "s": "It is hard to remove the mind’s anxiety except by reaching the feet of the One beyond compare.",
+        "tr": [
+          "Thanakkuvamai Illaadhaan Thaalserndhaark Kallaal",
+          "Manakkavalai Maatral Aridhu"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore the edition’s metrical word division and sandhi.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "s",
+          "reason": "Restore the specific subject and avoid turning “hard” into an absolute impossibility.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "before": {
+        "s": "No one swims the sea of wrongdoing alone. Only those who hold the feet of the One who is a sea of goodness can cross it."
+      },
+      "after": {
+        "s": "Only those who reach the feet of the gracious One, an ocean of virtue, can cross the sea of vice."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Remove the unsupported claim about crossing alone; follow the existing prose interpretation.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "before": {
+        "s": "A head that bows to nothing greater is like a sense that has lost its power — useless."
+      },
+      "after": {
+        "s": "A head that does not bow to the feet of the One with eight virtues is like a sense organ that cannot function."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Restore the eight attributes and divine reference.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "before": {
+        "s": "Only those who hold on to the highest will cross the great ocean of life. The rest will not reach the other shore."
+      },
+      "after": {
+        "s": "Those who reach God’s feet cross the great ocean of rebirth; those who do not cannot cross it."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Birth/rebirth is not merely life.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "before": {
+        "ta": [
+          "வான்நின்று உலகம் வழங்கி வருதலால்",
+          "தான்அமிழ்தம் என்று உணரற்பாற்று"
+        ],
+        "s": "Rain keeps every living thing alive. It is the world’s own food — treasure it.",
+        "tr": [
+          "Vaannindru Ulagam Vazhangi Varudhalaal",
+          "Thaanamizhtham Endru Unaralpaatru"
+        ]
+      },
+      "after": {
+        "ta": [
+          "வான்நின்று உலகம் வழங்கி வருதலால்",
+          "தான்அமிழ்தம் என்றுணரற் பாற்று"
+        ],
+        "s": "Rain sustains the world; that is why it is called life-giving nectar.",
+        "tr": [
+          "Vaannindru Ulagam Vazhangi Varudhalaal",
+          "Thaanamizhtham Endrunarar Paatru"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "s",
+          "reason": "Restore the nectar comparison and remove added advice.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 19,
+      "before": {
+        "s": "Without rain, prayer and charity cannot live in this wide world."
+      },
+      "after": {
+        "s": "Without rain, neither charity nor ascetic practice can continue in this wide world."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "தவம் is ascetic practice, not simply prayer.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 28,
+      "before": {
+        "s": "The quiet, weighty words of the truly great show their greatness to the world."
+      },
+      "after": {
+        "s": "The sacred words of those whose speech is powerful reveal their greatness to the world."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "மறைமொழி is not simply quiet speech.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 31,
+      "before": {
+        "s": "Virtue gives both heaven and wealth. What greater happiness could anyone hold?"
+      },
+      "after": {
+        "s": "Virtue brings distinction and wealth. What greater benefit can a person gain?"
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Restore the question about benefit rather than happiness.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 39,
+      "before": {
+        "s": "Only the joy that comes from a good home life is real joy. Everything else brings no praise."
+      },
+      "after": {
+        "s": "True happiness comes from virtue; everything else brings neither real happiness nor honour."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Avoid narrowing அறம் to home life.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 42,
+      "before": {
+        "s": "He truly flourishes in family life who helps the forsaken, the poor, and even the dead with a proper farewell."
+      },
+      "after": {
+        "s": "A householder supports those who have renounced worldly life, those in need, and those who have died."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "The renouncers are not the forsaken.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 50,
+      "before": {
+        "s": "Whoever lives the married life as it should be lived will stand among the gods in heaven.",
+        "tr": [
+          "Vaiyaththul Vaazhvaangu Vaazhpavan Vaanu�ryum",
+          "Theyvaththul Vaikkap Patum"
+        ]
+      },
+      "after": {
+        "s": "One who lives rightly in this world will be placed among the gods in heaven.",
+        "tr": [
+          "Vaiyaththul Vaazhvaangu Vaazhpavan Vaanuraiyum",
+          "Theyvaththul Vaikkap Patum"
+        ]
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Do not restrict living rightly to married life.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 63,
+      "before": {
+        "s": "People call their sons their wealth, because children carry on their good deeds for them."
+      },
+      "after": {
+        "s": "People call their children their wealth; the children’s wealth comes through their own actions."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Keep the two clauses rather than asserting that children perform their parents’ good deeds.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 67,
+      "before": {
+        "ta": [
+          "தந்தை மகற்காற்றும் நன்றி அவையத்து",
+          "முந்தி இருப்பச் செயல்"
+        ],
+        "s": "The finest thing a father can do for his son is make the learned receive him with honor.",
+        "tr": [
+          "Thandhai Makarkaatrum Nandri Avaiyaththu",
+          "Mundhi Iruppach Cheyal"
+        ]
+      },
+      "after": {
+        "ta": [
+          "தந்தை மகற்காற்று நன்றி அவையத்து",
+          "முந்தி இருப்பச் செயல்"
+        ],
+        "s": "The good a father can do for his son is to help him stand foremost among the learned.",
+        "tr": [
+          "Thandhai Makarkaatru Nandri Avaiyaththu",
+          "Mundhi Iruppach Cheyal"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "s",
+          "reason": "Restore foremost, rather than merely being welcomed with honour.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 68,
+      "before": {
+        "s": "Nothing pleases good people on this earth more than seeing their children learned."
+      },
+      "after": {
+        "s": "Children whose wisdom exceeds their parents’ bring joy to all living in this wide world."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Restore the comparison தம்மின்தம்.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 75,
+      "before": {
+        "s": "A life filled with love bears fruits of peace like these."
+      },
+      "after": {
+        "s": "The happiness people enjoy in this world is said to be the fruit of a life lived in love."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Replace a vague reference to fruits “like these” with the actual proposition.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 82,
+      "before": {
+        "s": "However fine your own meal, it is wrong to wish your guests away from the door."
+      },
+      "after": {
+        "s": "It is wrong to eat while leaving a guest outside, even if the food could make you immortal."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Restore the immortality comparison.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 85,
+      "before": {
+        "s": "He who feeds his guests first and eats what remains need never plough a field — plenty finds him."
+      },
+      "after": {
+        "s": "Must one even sow the field of a person who feeds guests first and eats only what remains?"
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Sowing is not ploughing; retain the rhetorical question.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 104,
+      "before": {
+        "s": "Though the help be small as a millet seed, the grateful hold it as large as a palm fruit."
+      },
+      "after": {
+        "s": "Those who understand a kindness value help as small as a millet seed as though it were as large as a palmyra tree."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "பனை is the palmyra tree, not its fruit.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 105,
+      "before": {
+        "s": "A favor is not measured by its size, but by how the one who received it honors it."
+      },
+      "after": {
+        "s": "The value of help is measured not by its size, but by the worth of the person who receives it."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Worth of the recipient is not how they honour a gift.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 154,
+      "before": {
+        "ta": [
+          "நிறையுடைமை நீங்காமை வேண்டின் பொற்யுடைமை",
+          "போற்றி யொழுகப் படும்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "நிறையுடைமை நீங்காமை வேண்டின் பொறையுடைமை",
+          "போற்றி யொழுகப் படும்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore பொறையுடைமை (patience); the source transliteration Poraiyutaimai and Tamil commentaries confirm the missing vowel.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 155,
+      "before": {
+        "s": "People who lash out in anger are thrown away like trash. Patient people are kept safe like gold."
+      },
+      "after": {
+        "s": "People do not hold those who retaliate in esteem; they treasure the patient like gold."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Remove the invented comparison to trash.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 157,
+      "before": {
+        "ta": [
+          "திறனல்ல திறப்பிறர் செய்யினும் நோன்து",
+          "அறனல் செய்யாமை நன்று"
+        ],
+        "tr": [
+          "Thiranalla Thirappirar Seyyinum Noanthu",
+          "Aranala Seyyaamai Nandru"
+        ]
+      },
+      "after": {
+        "ta": [
+          "திறனல்ல தற்பிறர் செய்யினும் நோநொந்து",
+          "அறனல்ல செய்யாமை நன்று"
+        ],
+        "tr": [
+          "Thiranalla Tharpirar Seyyinum Nonondhu",
+          "Aranalla Seyyaamai Nandru"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 165,
+      "before": {
+        "ta": [
+          "அழுக்காறு உடையார்க்கு அதுசாலும் ஒன்னார்",
+          "வழுக்காயும் கேடீன் பது"
+        ],
+        "tr": [
+          "Azhukkaaru Utaiyaarkku Adhusaalum Onnaar",
+          "Vazhukka�yum Keteen Padhu"
+        ]
+      },
+      "after": {
+        "ta": [
+          "அழுக்காறு உடையார்க்கு அதுசாலும் ஒன்னார்",
+          "வழுக்கியும் கேடீன் பது"
+        ],
+        "tr": [
+          "Azhukkaaru Utaiyaarkku Adhusaalum Onnaar",
+          "Vazhukkiyum Keteen Padhu"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 291,
+      "before": {
+        "ta": [
+          "வாய்மை எனப்படுவது யாதெனின் யாதொன்றும்",
+          "தீமை இல்லாத சொல்"
+        ],
+        "tr": [
+          "Vaaimai Enappaduvadhu Yaadhenin Yaadhondrum",
+          "Theemai Illaadha Sol"
+        ]
+      },
+      "after": {
+        "ta": [
+          "வாய்மை எனப்படுவது யாதெனின் யாதொன்றும்",
+          "தீமை இலாத சொலல்"
+        ],
+        "tr": [
+          "Vaaimai Enappaduvadhu Yaadhenin Yaadhondrum",
+          "Theemai Ilaadha Solal"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 293,
+      "before": {
+        "ta": [
+          "தனெஞ்சறிவது பொய்யற்க பொய்த்தபின்",
+          "தனெஞ்சே தன்னைச் சுடும்"
+        ],
+        "tr": [
+          "Thunenjarivadhu Poyyarke Poythapin",
+          "Thunenje Thannai Sutum"
+        ]
+      },
+      "after": {
+        "ta": [
+          "தன்நெஞ் சறிவது பொய்யற்க பொய்த்தபின்",
+          "தன்நெஞ்சே தன்னைச் சுடும்"
+        ],
+        "tr": [
+          "Thannenj Charivadhu Poiyarka Poiththapin",
+          "Thannenje Thannaich Chudum"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Align transliteration with the corrected Tamil; retain the app’s existing romanization style.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 308,
+      "before": {
+        "s": "Even if someone drops a burning bundle on you, hold your anger, if you can."
+      },
+      "after": {
+        "s": "Even if someone causes pain like being plunged into blazing fire, it is good to refrain from anger if you can."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Retain the simile rather than making it a literal burning bundle.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 316,
+      "before": {
+        "ta": [
+          "இன்னா எனத்தான் உணர்ந்தவை துன்னாமை",
+          "வேண்டும் பிறன்கண செயல்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "இன்னா எனத்தான் உணர்ந்தவை துன்னாமை",
+          "வேண்டும் பிறன்கண் செயல்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 342,
+      "before": {
+        "s": "Even after giving things up, temptations remain. If they pull you, renounce more deeply while there is time."
+      },
+      "after": {
+        "s": "If you want the happiness that renunciation brings, give up attachments while you still have possessions; many joys follow renunciation."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Correct the reversed claim that the verse is about temptations remaining after renunciation.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 350,
+      "before": {
+        "s": "To end desire, desire only this: the desireless desire of the One without desire."
+      },
+      "after": {
+        "s": "Hold firmly to the One who is free from attachment; hold to that bond so that you can let go of other attachments."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Replace the obscure “desireless desire” with the attachment contrast.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 363,
+      "before": {
+        "ta": [
+          "வேண்டாமை அன்ன விழுச்செல்வம் ஈண்டில்லை",
+          "ஆண்டும் அஃதொப்பது இல"
+        ]
+      },
+      "after": {
+        "ta": [
+          "வேண்டாமை அன்ன விழுச்செல்வம் ஈண்டில்லை",
+          "ஆண்டும் அஃதொப்பது இல்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 368,
+      "before": {
+        "ta": [
+          "அவாஇல்லார்க்கு கில்லாகுந் துன்பம் அஃதுண்டே",
+          "தவாஅது மேன்மேல் வரும்"
+        ],
+        "tr": [
+          "Avaaillaarkku Killaagum Thunbam Aqdhuonte",
+          "Thavaadhu Menmel Varum"
+        ]
+      },
+      "after": {
+        "ta": [
+          "அவாஇல்லார்க் கில்லாகுந் துன்பம் அஃதுண்டேல்",
+          "தவாஅது மேன்மேல் வரும்"
+        ],
+        "tr": [
+          "Avaaillaark Killaagun Thunpam Aqdhuntel",
+          "Thavaadhu Menmel Varum"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 395,
+      "before": {
+        "s": "The unlearned stand begging before the learned, as the destitute stand before the wealthy."
+      },
+      "after": {
+        "s": "The learned have stood humbly before their teachers, like the poor before the rich; those who remain unlearned are lower still."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "Correct the subject: it is the learners who humbly seek instruction.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 398,
+      "before": {
+        "s": "What you learn in this life will please you for seven lives."
+      },
+      "after": {
+        "s": "Learning gained in one birth protects a person through seven births."
+      },
+      "notes": [
+        {
+          "field": "s",
+          "reason": "ஏமாப்பு means protection, not merely pleasure.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 479,
+      "before": {
+        "tr": [
+          "Alavara�ndhu Vaazhaadhaan Vaazhkkai Ulapola",
+          "Illaakith Thondraak Ketum"
+        ]
+      },
+      "after": {
+        "tr": [
+          "Alavarindhu Vaazhaadhaan Vaazhkkai Ulapola",
+          "Illaakith Thondraak Ketum"
+        ]
+      },
+      "notes": [
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 483,
+      "before": {
+        "ta": [
+          "அருவினை யென்ப உளவோ கருவியான்",
+          "காலம் அற஧ந்து செயின்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "அருவினை யென்ப உளவோ கருவியான்",
+          "காலம் அறிந்து செயின்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 599,
+      "before": {
+        "ta": [
+          "பரியது கூர்ங்கோட்டது ஆயினும் யானை",
+          "஦வ்ருஉம் புலிதாக் குறின்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "பரியது கூர்ங்கோட்டது ஆயினும் யானை",
+          "வெருஉம் புலிதாக் குறின்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 600,
+      "before": {
+        "en": [
+          "Firmness of soul in man is real excellance;",
+          "Others are trees, their human form a mere pretence"
+        ]
+      },
+      "after": {
+        "en": [
+          "Firmness of soul in man is real excellence;",
+          "Others are trees, their human form a mere pretence"
+        ]
+      },
+      "notes": [
+        {
+          "field": "en",
+          "reason": "Correct an evident English spelling error; preserve the historical verse otherwise.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 650,
+      "before": {
+        "ta": [
+          "இணருழ்த்தும் நாறா மலரனையர் கற்றது",
+          "உணர விரித்துரையா தார்"
+        ],
+        "tr": [
+          "Inaruzhththum Naaraa Malaranaiyar Katradhu",
+          "Unara Viriththuraiyaa Thaar"
+        ]
+      },
+      "after": {
+        "ta": [
+          "இணரூழ்த்தும் நாறா மலரனையர் கற்றது",
+          "உணர விரித்துரையா தார்"
+        ],
+        "tr": [
+          "Inaroozhththum Naaraa Malaranaiyar Katradhu",
+          "Unara Viriththuraiyaa Thaar"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore the long vowel in ஊழ்த்தும் (blossoming).",
+          "sources": [
+            "https://tamil.oneindia.com/art-culture/kural/65.html"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 701,
+      "before": {
+        "ta": [
+          "கூறாமை நோக்கக் குறிப்பறிவான் எஞ்ஞான்றும்",
+          "மாறாநீர் வையக் கணி"
+        ],
+        "tr": [
+          "Kooraamai Nokkake Kuripparivaan Egngnaandrum",
+          "Maaraaneer Vaiyak Kani"
+        ]
+      },
+      "after": {
+        "ta": [
+          "கூறாமை நோக்கிக் குறிப்பறிவான் எஞ்ஞான்றும்",
+          "மாறாநீர் வையக் கணி"
+        ],
+        "tr": [
+          "Kooraamai Nokkik Kuripparivaan Egngnaandrum",
+          "Maaraaneer Vaiyak Kani"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 710,
+      "before": {
+        "en": [
+          "The men of keen discerning soul no other test apply (When you their secret ask) than man's revealing eye",
+          ""
+        ]
+      },
+      "after": {
+        "en": [
+          "The men of keen discerning soul no other test apply",
+          "(When you their secret ask) than man's revealing eye"
+        ]
+      },
+      "notes": [
+        {
+          "field": "en",
+          "reason": "Restore the lost verse line break; no words changed.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 763,
+      "before": {
+        "tr": [
+          "Oliththakkaal Ennaam Uvari Ela�ppakai",
+          "Naakam Uyirppak Ketum"
+        ]
+      },
+      "after": {
+        "tr": [
+          "Oliththakkaal Ennaam Uvari Elippakai",
+          "Naakam Uyirppak Ketum"
+        ]
+      },
+      "notes": [
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 851,
+      "before": {
+        "ta": [
+          "இகலென்ப எல்லா உயிர்க்கும் பகலென்னும்",
+          "பண்பின்மை பார஧க்கும் நோய்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "இகலென்ப எல்லா உயிர்க்கும் பகலென்னும்",
+          "பண்பின்மை பாரிக்கும் நோய்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 876,
+      "before": {
+        "tr": [
+          "Thera�num Theraa Vitinum Azhivinkan",
+          "Theraan Pakaaan Vital"
+        ]
+      },
+      "after": {
+        "tr": [
+          "Therinum Theraa Vitinum Azhivinkan",
+          "Theraan Pakaaan Vital"
+        ]
+      },
+      "notes": [
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 913,
+      "before": {
+        "ta": [
+          "பொருட்பெண்டிர் பொய்ம்மை முயக்கம் இருட்டறையில்",
+          "ஏத஧ல் பிணந்தழீஇ அற்று"
+        ]
+      },
+      "after": {
+        "ta": [
+          "பொருட்பெண்டிர் பொய்ம்மை முயக்கம் இருட்டறையில்",
+          "ஏதில் பிணந்தழீஇ அற்று"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 934,
+      "before": {
+        "ta": [
+          "சிறுமை பலசெய்து சீரழக்கும் சூதின்",
+          "வறுமை தருவதொன்று இல்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "சிறுமை பலசெய்து சீரழிக்கும் சூதின்",
+          "வறுமை தருவதொன்று இல்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 940,
+      "before": {
+        "tr": [
+          "Izhaththoru�um Kaadhalikkum Soodhepol Thunpam",
+          "Uzhaththoru�um Kaadhatru Uyir"
+        ]
+      },
+      "after": {
+        "tr": [
+          "Izhaththorum Kaadhalikkum Soodhepol Thunpam",
+          "Uzhaththorum Kaadhatru Uyir"
+        ]
+      },
+      "notes": [
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 957,
+      "before": {
+        "ta": [
+          "குடிப்பிறந்தார் கண்விளங்கும் குற்றம் விசும்பின்",
+          "மத஧க்கண் மறுப்போல் உயர்ந்து"
+        ]
+      },
+      "after": {
+        "ta": [
+          "குடிப்பிறந்தார் கண்விளங்கும் குற்றம் விசும்பின்",
+          "மதிக்கண் மறுப்போல் உயர்ந்து"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 967,
+      "before": {
+        "tr": [
+          "Ottaarpin Sendroruvan Vaazhdhala�n Annilaiye",
+          "Kettaan Enappatudhal Nandru"
+        ]
+      },
+      "after": {
+        "tr": [
+          "Ottaarpin Sendroruvan Vaazhdhalin Annilaiye",
+          "Kettaan Enappatudhal Nandru"
+        ]
+      },
+      "notes": [
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1117,
+      "before": {
+        "ta": [
+          "அறுவாய் நிறைந்த அவிர்மதிக்குப் க்குப் போல",
+          "மறுவுண்டோ மாதர் முகத்து"
+        ]
+      },
+      "after": {
+        "ta": [
+          "அறுவாய் நிறைந்த அவிர்மதிக்குப் போல",
+          "மறுவுண்டோ மாதர் முகத்து"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove duplicated க்குப் fragment.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1118,
+      "before": {
+        "ta": [
+          "மாதர் முகம்போல் ஒளிவிட வல்லையேல்",
+          "காதலை வாழி மத஧"
+        ]
+      },
+      "after": {
+        "ta": [
+          "மாதர் முகம்போல் ஒளிவிட வல்லையேல்",
+          "காதலை வாழி மதி"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1141,
+      "before": {
+        "tr": [
+          "Alarezha Aaruyir Na�rkum Adhanaip",
+          "Palarariyaar Paakkiyath Thaal"
+        ]
+      },
+      "after": {
+        "tr": [
+          "Alarezha Aaruyir Nirkum Adhanaip",
+          "Palarariyaar Paakkiyath Thaal"
+        ]
+      },
+      "notes": [
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1192,
+      "before": {
+        "ta": [
+          "வாழ்வார்க்கு வானம் பயந்தற்றால் வீழ்வார்க்கு",
+          "வீழ்வார் அள஧ க்கும் அளி"
+        ],
+        "tr": [
+          "Vaazhvaarkku Vaanam Payandhatraal Veezhvaarkku",
+          "Veezhvaar Ala� Kkum Ali"
+        ]
+      },
+      "after": {
+        "ta": [
+          "வாழ்வார்க்கு வானம் பயந்தற்றால் வீழ்வார்க்கு",
+          "வீழ்வார் அளிக்கும் அளி"
+        ],
+        "tr": [
+          "Vaazhvaarkku Vaanam Payandhatraal Veezhvaarkku",
+          "Veezhvaar Alikkum Ali"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
+          "sources": [
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1202,
+      "before": {
+        "ta": [
+          "எனைத்தொனறு இனிதேகாண் காமம்தாம் வீழ்வார்",
+          "நினைப்ப வருவதொன்று ஏல்"
+        ],
+        "tr": [
+          "Enaiththonaru Inidhekaan Kaamamdhaam Veezhvaar",
+          "Ninaippa Varuvadhondru El"
+        ]
+      },
+      "after": {
+        "ta": [
+          "எனைத்தொன்று இனிதேகாண் காமம்தாம் வீழ்வார்",
+          "நினைப்ப வருவதொன்று இல்"
+        ],
+        "tr": [
+          "Enaiththondru Inidhekaan Kaamamthaam Veezhvaar",
+          "Ninaippa Varuvadhondru Il"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing pulli in எனைத்தொன்று.",
+          "sources": [
+            "https://thirukkural.io/kural/1202"
+          ]
+        },
+        {
+          "field": "ta",
+          "reason": "Restore இல் (no sorrow), rather than the corrupted ஏல்.",
+          "sources": [
+            "https://thirukkural.io/kural/1202"
+          ]
+        },
+        {
+          "field": "tr",
+          "reason": "Align transliteration with the corrected Tamil; retain the app’s existing romanization style.",
+          "sources": [
+            "https://thirukkural.io/kural/1202"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1321,
+      "before": {
+        "ta": [
+          "இல்லை தவறவர்க்கு ஆயினும் ஊடுதல்",
+          "வல்லது அவர்அள஧க்கு மாறு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "இல்லை தவறவர்க்கு ஆயினும் ஊடுதல்",
+          "வல்லது அவர்அளிக்கு மாறு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Restore missing or corrupted Tamil letters; retain the poetic wording.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    }
+  ]
+}
