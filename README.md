@@ -103,9 +103,10 @@ sync can be considered later without changing the reader experience.
 
 ## Live site
 
-Deployed to **GitHub Pages** by `.github/workflows/deploy.yml` — it runs on every push to
-`main` (or the working branch) and publishes just the app files (`index.html`, `css/`, `js/`,
-`data/`). After the first successful run the site is at:
+Deployed to **GitHub Pages** by `.github/workflows/deploy.yml` — it runs after each push to
+`main` and publishes the app files, manifest, service worker, and icons. The configured
+`github-pages` environment intentionally permits deployments from the default branch only.
+After the first successful run the site is at:
 
 **https://pewsaipie.github.io/tamil-stoic-app/**
 

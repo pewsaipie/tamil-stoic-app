@@ -186,6 +186,7 @@ assert(html.includes('id="saved-dialog"'), "HTML has a saved-Kurals dialog");
 assert(html.includes('id="reader-settings-dialog"'), "HTML has a reading settings dialog");
 assert(html.includes("js/storage.js") && html.includes("js/companion.js"), "HTML loads private storage and companion modules");
 assert(workflow.includes("manifest.webmanifest") && workflow.includes("sw.js") && workflow.includes("assets"), "Pages workflow publishes PWA files and icons");
+assert(!workflow.includes('"arena/**"') && workflow.includes("github.ref == 'refs/heads/main'"), "Pages workflow avoids protected-environment failures on feature branches");
 
 assert(exists("manifest.webmanifest"), "manifest exists");
 assert(exists("sw.js"), "service worker exists");

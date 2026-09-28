@@ -1,8 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
+  # The configured github-pages environment only permits the default branch.
+  # Keep feature-branch pushes green and deploy the public site after merge.
   push:
-    branches: [main, "arena/**"]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -16,6 +18,9 @@ concurrency:
 
 jobs:
   deploy:
+    # A manual dispatch can select another branch; skip rather than fail when
+    # github-pages protection rules reject non-main deployments.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
