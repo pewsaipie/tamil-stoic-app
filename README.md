@@ -65,6 +65,7 @@ node scripts/test-service-worker.mjs    # offline/update contract (no deps)
 node scripts/test-app.mjs
 node scripts/test-chapter-filter.mjs
 node scripts/test-companion-features.mjs
+node scripts/test-speech.mjs               # Listen (device TTS) regression suite
 node scripts/test-a11y.mjs              # axe-core scan of page + every dialog
 node scripts/test-content.mjs           # 1,330-kural content integrity (runs in CI)
 ```

@@ -182,6 +182,7 @@
       "card.focusAria": "இந்தக் குறளை முனைவு முறையில் படி",
       "card.linkAria": "இந்தக் குறளுக்கான இணைப்பு",
       "speech.unsupported": "இந்த உலாவியில் ஒலி இல்லை.",
+      "speech.failed": "இந்தச் சாதனத்தில் ஒலி இயக்க முடியவில்லை. தமிழ் குரல் இல்லாமல் இருக்கலாம்.",
       "daily.listenAria": "இன்றைய குறளைக் கேளுங்கள்",
       "daily.focusAria": "இன்றைய குறளை முனைவு முறையில் படி",
       "nav.kuralOf": "குறள் {n} / 1330",
@@ -912,6 +913,7 @@
     if (sentinelEl) sentinelEl.style.display = results.length > visible.length ? "" : "none";
     observeReadMarks();
     syncHash();
+    syncListenLabels(); // fresh buttons must reflect any audio already playing
   }
 
   function renderChips() {
@@ -1052,6 +1054,7 @@
     var k = KURALS[idx];
     dailyCardEl.innerHTML = dailyCardHtml(k);
     if (dailyDateEl) dailyDateEl.textContent = formatDate(new Date());
+    syncListenLabels();
   }
 
   // ---------- reading position restoration (per-tab) ----------
@@ -1326,6 +1329,7 @@
     if (label) {
       label.textContent = (lang === "ta" ? "குறள் #" : "Kural #") + pad(k.n) + (ch ? " · " + ch.en : "");
     }
+    syncListenLabels(); // focus button must show Stop if this kural is playing
   }
 
   function showStatus(message) {
@@ -1382,18 +1386,70 @@
 
   // ---------- speech (device TTS, no network) ----------
   var speakingN = null;
-  function resetListenLabels() {
+  // A monotonically increasing token invalidates callbacks from utterances
+  // that were cancelled or superseded. Chrome fires onerror("interrupted")
+  // for a cancelled utterance *after* a replacement may already be playing;
+  // without this guard the stale callback wiped the new utterance's UI state.
+  var speechToken = 0;
+  var voiceCache = null;
+
+  function primeVoices() {
+    var synth = window.speechSynthesis;
+    if (!synth || typeof synth.getVoices !== "function") return;
+    try { voiceCache = synth.getVoices() || []; } catch (e) { voiceCache = []; }
+    if (voiceCache.length) return;
+    // Chrome populates the voice list asynchronously via voiceschanged.
+    if (typeof synth.addEventListener === "function") {
+      try {
+        synth.addEventListener("voiceschanged", function () {
+          try { voiceCache = synth.getVoices() || []; } catch (e) { /* ignore */ }
+        });
+      } catch (e) { /* ignore */ }
+    }
+  }
+
+  function pickTamilVoice(synth) {
+    var voices = voiceCache;
+    if (!voices || !voices.length) {
+      try { voices = synth.getVoices() || []; } catch (e) { voices = []; }
+      voiceCache = voices;
+    }
+    for (var i = 0; i < voices.length; i++) {
+      var code = String((voices[i] && voices[i].lang) || "").toLowerCase().replace("_", "-");
+      if (code === "ta" || code.indexOf("ta-") === 0) return voices[i];
+    }
+    return null;
+  }
+
+  // Repaint every Listen control (cards, daily card, focus dialog) from the
+  // single source of truth. Called after each re-render because innerHTML
+  // swaps used to drop the "Stop" state while audio kept playing, which made
+  // the next click silently *stop* hidden speech instead of starting it.
+  function syncListenLabels() {
     Array.prototype.forEach.call(document.querySelectorAll('[data-app-action="listen"]'), function (btn) {
+      var n = Number(btn.getAttribute("data-kural"));
+      var active = speakingN !== null && n === speakingN;
       var label = btn.querySelector(".listen-label");
-      if (label) label.textContent = t("card.listen", "Listen");
-      btn.classList.remove("is-speaking");
+      if (label) label.textContent = active ? t("card.stop", "Stop") : t("card.listen", "Listen");
+      if (active) btn.classList.add("is-speaking");
+      else btn.classList.remove("is-speaking");
     });
     var focusBtn = document.getElementById("focus-listen");
     if (focusBtn) {
       var span = focusBtn.querySelector("span:last-child");
-      if (span) span.textContent = t("nav.listen", "Listen");
+      var focusActive = speakingN !== null && focusNumber === speakingN;
+      if (span) span.textContent = focusActive ? t("card.stop", "Stop") : t("nav.listen", "Listen");
     }
+  }
+
+  function stopSpeech() {
+    speechToken++;
     speakingN = null;
+    var synth = window.speechSynthesis;
+    if (synth) {
+      try { synth.cancel(); } catch (e) { /* engine may already be idle */ }
+    }
+    syncListenLabels();
   }
 
   function toggleSpeech(n) {
@@ -1402,30 +1458,72 @@
       return;
     }
     var synth = window.speechSynthesis;
-    if (speakingN !== null) {
-      synth.cancel();
-      resetListenLabels();
+    n = Number(n);
+    var k = findKural(n);
+    if (!k) return;
+
+    var engineBusy = synth.speaking === true || synth.pending === true;
+    if (speakingN === n && engineBusy) {
+      stopSpeech(); // toggle the currently-playing kural off
       return;
     }
-    var k = findKural(Number(n));
-    if (!k) return;
+    // speakingN === n but the engine is idle means the previous run died
+    // without delivering onend (a known Web Speech quirk): fall through and
+    // restart instead of pretending to stop silence.
+
+    // Switching away from another kural (or recovering): invalidate in-flight
+    // callbacks first so the old utterance's interrupted-error can't reset the
+    // new one's labels, then cancel any live speech.
+    speechToken++;
+    var token = speechToken;
+    speakingN = n;
+    if (synth.speaking === true || synth.pending === true) {
+      try { synth.cancel(); } catch (e) { /* ignore */ }
+    }
+    syncListenLabels();
+
     var utter = new SpeechSynthesisUtterance(k.ta[0] + " " + k.ta[1]);
     utter.lang = "ta-IN";
     utter.rate = 0.9;
-    utter.onend = resetListenLabels;
-    utter.onerror = resetListenLabels;
-    speakingN = Number(n);
-    Array.prototype.forEach.call(document.querySelectorAll('[data-app-action="listen"][data-kural="' + Number(n) + '"]'), function (btn) {
-      var label = btn.querySelector(".listen-label");
-      if (label) label.textContent = t("card.stop", "Stop");
-      btn.classList.add("is-speaking");
-    });
-    if (focusNumber === Number(n)) {
-      var focusBtn = document.getElementById("focus-listen");
-      var span = focusBtn && focusBtn.querySelector("span:last-child");
-      if (span) span.textContent = t("card.stop", "Stop");
+    var voice = pickTamilVoice(synth);
+    if (voice) utter.voice = voice;
+
+    utter.onend = function () {
+      if (token !== speechToken) return; // superseded — newer speech owns the UI
+      speakingN = null;
+      syncListenLabels();
+    };
+    utter.onerror = function (event) {
+      if (token !== speechToken) return; // cancelled on purpose — ignore
+      speakingN = null;
+      syncListenLabels();
+      var err = event && event.error;
+      if (err && err !== "interrupted" && err !== "canceled") {
+        showStatus(t("speech.failed", "Audio couldn't play on this device. It may lack a Tamil voice."));
+      }
+    };
+
+    function start() {
+      if (token !== speechToken) return; // user stopped/switched meanwhile
+      try {
+        synth.speak(utter);
+      } catch (e) {
+        if (token === speechToken) {
+          speakingN = null;
+          syncListenLabels();
+          showStatus(t("speech.failed", "Audio couldn't play on this device. It may lack a Tamil voice."));
+        }
+      }
     }
-    try { synth.speak(utter); } catch (e) { resetListenLabels(); }
+
+    if (engineBusy) {
+      // Chrome can drop speak() issued in the same turn as cancel(); give the
+      // engine one tick. The first play stays synchronous so iOS's user-gesture
+      // requirement is satisfied.
+      window.setTimeout(start, 80);
+    } else {
+      start();
+    }
   }
 
   // ---------- command palette ----------
@@ -1873,6 +1971,7 @@
 
   // ---------- init ----------
   lang = currentLanguage();
+  primeVoices();
   renderChapterOptions();
   renderChips();
   renderBooks();
