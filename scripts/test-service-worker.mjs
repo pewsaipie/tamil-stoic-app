@@ -112,6 +112,29 @@ listeners.get("fetch")({
 response = await responsePromise;
 assert((await response.text()).includes("cached ./index.html"), "offline navigation falls back to the cached app shell");
 
+// Version-consistency contract: every versioned script URL that index.html
+// requests must be precached by the service worker, and the cache name must
+// be bumped in lockstep. This is what guarantees a deployed fix (e.g. the
+// Listen repair) actually reaches browsers instead of a stale cached app.js.
+const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const scriptSrcs = [...indexHtml.matchAll(/<script src="([^"]+)"/g)].map((m) => m[1]);
+assert(scriptSrcs.length >= 4, "index.html references its scripts");
+assert(
+  scriptSrcs.every((src) => /[?&]v=/.test(src)),
+  "every script URL in index.html is version-busted (" + scriptSrcs.join(", ") + ")"
+);
+for (const src of scriptSrcs) {
+  const rel = "./" + src;
+  assert(
+    source.includes('"' + rel + '"'),
+    "sw.js precaches the versioned asset " + rel
+  );
+}
+assert(
+  source.includes("CACHE_PREFIX + \"v5-listen-hardened\"") || /CACHE_NAME\s*=\s*CACHE_PREFIX \+ "v5-/.test(source),
+  "cache name bumped for the hardened-listen release"
+);
+
 if (failed) {
   console.error(`\n${failed} service-worker check(s) failed`);
   process.exit(1);

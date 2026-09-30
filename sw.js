@@ -5,7 +5,8 @@
  * the reader's device and are never sent through this worker.
  */
 const CACHE_PREFIX = "tamil-stoic-";
-const CACHE_NAME = CACHE_PREFIX + "v4-listen-fix";
+const CACHE_NAME = CACHE_PREFIX + "v5-listen-hardened";
+
 const APP_ASSETS = [
   "./",
   "./index.html",
@@ -16,6 +17,13 @@ const APP_ASSETS = [
   "./js/storage.js",
   "./js/app.js",
   "./js/companion.js",
+  // The exact versioned URLs index.html requests (?v=5). Precaching both
+  // shapes means the shell works offline whether it was loaded fresh or
+  // from an older cached copy.
+  "./data/kurals.js?v=5",
+  "./js/storage.js?v=5",
+  "./js/app.js?v=5",
+  "./js/companion.js?v=5",
   "./assets/icon.svg",
   "./assets/icon-192.png",
   "./assets/icon-512.png",

@@ -31,7 +31,12 @@ The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
   next/previous navigation within the current results
 - **Command palette (⌘K / Ctrl+K)** and keyboard shortcuts (`/` `j` `k` `s` `l` `?`)
 - **Device TTS recitation** — a "Listen" button per couplet using the browser's offline
-  speech engine (no network, no recording)
+  speech engine (no network, no recording). Hardened against real-engine quirks: stale
+  cancel callbacks, utterance garbage-collection, Chrome's dropped cancel→speak race,
+  iOS user-gesture timing, and dead engines. On devices without a Tamil voice installed
+  (most Windows PCs, iPhones without the optional Tamil TTS voice) it reads the
+  transliterated couplet instead of staying silent, and says so once in a toast; the
+  original Tamil is used automatically as soon as a `ta` voice appears.
 - **Tamil interface** — full தமிழ் UI mode via Reading settings (verse layers independent)
 - Deep-linkable cards (`#kural-151`), mobile-friendly, no build step, no runtime dependencies
 - **Installable PWA** — add it to a phone home screen and read the full library offline
@@ -65,7 +70,9 @@ node scripts/test-service-worker.mjs    # offline/update contract (no deps)
 node scripts/test-app.mjs
 node scripts/test-chapter-filter.mjs
 node scripts/test-companion-features.mjs
-node scripts/test-speech.mjs               # Listen (device TTS) regression suite
+node scripts/test-speech.mjs               # Listen (device TTS) regression suite:
+                                           #   engine personas (Chrome drop, iOS
+                                           #   gesture, voiceless devices, dead engine)
 node scripts/test-a11y.mjs              # axe-core scan of page + every dialog
 node scripts/test-content.mjs           # 1,330-kural content integrity (runs in CI)
 ```
