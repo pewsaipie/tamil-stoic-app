@@ -183,6 +183,8 @@
       "card.linkAria": "இந்தக் குறளுக்கான இணைப்பு",
       "speech.unsupported": "இந்த உலாவியில் ஒலி இல்லை.",
       "speech.failed": "இந்தச் சாதனத்தில் ஒலி இயக்க முடியவில்லை. தமிழ் குரல் இல்லாமல் இருக்கலாம்.",
+      "speech.noTamilVoice": "இந்தச் சாதனத்தில் தமிழ் குரல் நிறுவப்படவில்லை — எழுத்துப்படமாக ஒலிக்கப்படும். தமிழ் குரலை நிறுவினால் மூல எழுத்தில் கேட்கலாம்.",
+      "speech.blocked": "ஒலி உலாவியால் தடுக்கப்பட்டது — மீண்டும் ‘கேளுங்கள்’ அழுத்துங்கள்.",
       "daily.listenAria": "இன்றைய குறளைக் கேளுங்கள்",
       "daily.focusAria": "இன்றைய குறளை முனைவு முறையில் படி",
       "nav.kuralOf": "குறள் {n} / 1330",
@@ -1385,46 +1387,81 @@
   }
 
   // ---------- speech (device TTS, no network) ----------
+  // Hardened implementation. Real-engine landmines handled here:
+  //   * Chrome fires onerror("interrupted") for a cancelled utterance
+  //     asynchronously, after a replacement may already play -> token guard.
+  //   * Chrome can garbage-collect an utterance nothing references, cutting
+  //     speech short or never starting it -> strong module-level reference.
+  //   * Chrome can silently drop a speak() issued in the same tick as
+  //     cancel() -> verify the engine actually started; retry once if not.
+  //   * iOS Safari requires speak() inside the user gesture -> always speak
+  //     synchronously first; only ever recover asynchronously.
+  //   * Devices without a Tamil voice (Windows, iOS, some Androids) silently
+  //     say nothing and fire no error -> fall back to the transliteration so
+  //     the reader always hears the kural, with a one-time explanation.
+  //   * getVoices() is empty until the engine warms up and some WebViews
+  //     never fire voiceschanged -> prime at boot with short polling.
   var speakingN = null;
-  // A monotonically increasing token invalidates callbacks from utterances
-  // that were cancelled or superseded. Chrome fires onerror("interrupted")
-  // for a cancelled utterance *after* a replacement may already be playing;
-  // without this guard the stale callback wiped the new utterance's UI state.
   var speechToken = 0;
   var voiceCache = null;
+  var currentUtterance = null; // strong ref: keeps Chrome from GC-ing mid-speech
+  var noTamilVoiceWarned = false;
+
+  function loadVoices(synth) {
+    try { voiceCache = synth.getVoices() || []; } catch (e) { voiceCache = []; }
+    return voiceCache;
+  }
 
   function primeVoices() {
     var synth = window.speechSynthesis;
     if (!synth || typeof synth.getVoices !== "function") return;
-    try { voiceCache = synth.getVoices() || []; } catch (e) { voiceCache = []; }
-    if (voiceCache.length) return;
-    // Chrome populates the voice list asynchronously via voiceschanged.
-    if (typeof synth.addEventListener === "function") {
-      try {
-        synth.addEventListener("voiceschanged", function () {
-          try { voiceCache = synth.getVoices() || []; } catch (e) { /* ignore */ }
-        });
-      } catch (e) { /* ignore */ }
+    loadVoices(synth);
+    if (!voiceCache.length) {
+      // Chrome/Android populate the list asynchronously; a few WebViews
+      // never fire voiceschanged at all, so poll briefly instead.
+      [250, 800, 2000, 4000].forEach(function (ms) {
+        window.setTimeout(function () { loadVoices(synth); }, ms);
+      });
     }
+    var onVoices = function () { loadVoices(synth); };
+    if (typeof synth.addEventListener === "function") {
+      try { synth.addEventListener("voiceschanged", onVoices); } catch (e) { /* older engine */ }
+    }
+    try { synth.onvoiceschanged = onVoices; } catch (e) { /* ignore */ }
+  }
+
+  function voiceLangCode(voice) {
+    return String((voice && voice.lang) || "").toLowerCase().replace("_", "-");
   }
 
   function pickTamilVoice(synth) {
-    var voices = voiceCache;
-    if (!voices || !voices.length) {
-      try { voices = synth.getVoices() || []; } catch (e) { voices = []; }
-      voiceCache = voices;
-    }
+    var voices = voiceCache && voiceCache.length ? voiceCache : loadVoices(synth);
     for (var i = 0; i < voices.length; i++) {
-      var code = String((voices[i] && voices[i].lang) || "").toLowerCase().replace("_", "-");
+      var code = voiceLangCode(voices[i]);
       if (code === "ta" || code.indexOf("ta-") === 0) return voices[i];
     }
     return null;
   }
 
+  // Fallback narrator when the device has no Tamil voice: prefer an Indian
+  // English voice (closest pronunciation for the transliterated couplet),
+  // then any English voice, then the engine default.
+  function pickFallbackVoice(synth) {
+    var voices = voiceCache && voiceCache.length ? voiceCache : loadVoices(synth);
+    var firstEnglish = null;
+    for (var i = 0; i < voices.length; i++) {
+      var code = voiceLangCode(voices[i]);
+      if (code.indexOf("en") !== 0) continue;
+      if (!firstEnglish) firstEnglish = voices[i];
+      if (code === "en-in") return voices[i];
+    }
+    return firstEnglish;
+  }
+
   // Repaint every Listen control (cards, daily card, focus dialog) from the
   // single source of truth. Called after each re-render because innerHTML
-  // swaps used to drop the "Stop" state while audio kept playing, which made
-  // the next click silently *stop* hidden speech instead of starting it.
+  // swaps would otherwise drop the "Stop" state while audio keeps playing,
+  // making the next click silently stop hidden speech instead of starting it.
   function syncListenLabels() {
     Array.prototype.forEach.call(document.querySelectorAll('[data-app-action="listen"]'), function (btn) {
       var n = Number(btn.getAttribute("data-kural"));
@@ -1445,11 +1482,113 @@
   function stopSpeech() {
     speechToken++;
     speakingN = null;
+    currentUtterance = null;
     var synth = window.speechSynthesis;
     if (synth) {
       try { synth.cancel(); } catch (e) { /* engine may already be idle */ }
     }
     syncListenLabels();
+  }
+
+  function isVoiceMissingError(err) {
+    return err === "not-found" || err === "language-unavailable" ||
+      err === "language-not-supported" || err === "voice-unavailable" ||
+      err === "synthesis-unavailable";
+  }
+
+  function speechFailToast() {
+    showStatus(t("speech.failed", "Audio couldn't play on this device. It may lack a Tamil voice."));
+  }
+
+  // Build and start the utterance for kural n. `useTranslit` reads the
+  // romanised couplet instead of the Tamil script (no Tamil voice installed,
+  // or the engine rejected its reported Tamil voice at play time).
+  function startSpeech(n, token, opts) {
+    var options = opts || {};
+    var synth = window.speechSynthesis;
+    var k = findKural(n);
+    if (!k || !synth) return;
+
+    var voice = options.useTranslit ? null : pickTamilVoice(synth);
+    var utter;
+    if (voice) {
+      utter = new SpeechSynthesisUtterance(k.ta[0] + " " + k.ta[1]);
+      utter.voice = voice;
+      utter.lang = voice.lang || "ta-IN";
+    } else {
+      utter = new SpeechSynthesisUtterance(k.tr[0] + " " + k.tr[1]);
+      var fallback = pickFallbackVoice(synth);
+      if (fallback) utter.voice = fallback;
+      utter.lang = (fallback && fallback.lang) || "en-IN";
+      if (!noTamilVoiceWarned) {
+        noTamilVoiceWarned = true;
+        showStatus(t("speech.noTamilVoice",
+          "No Tamil voice is installed on this device - reading the transliteration instead. " +
+          "Install a Tamil voice to hear the original script."));
+      }
+    }
+    utter.rate = 0.9;
+    currentUtterance = utter;
+    var usedTamil = !!voice;
+    var retried = false;
+
+    utter.onend = function () {
+      if (token !== speechToken) return; // superseded - newer speech owns the UI
+      speakingN = null;
+      currentUtterance = null;
+      syncListenLabels();
+    };
+
+    utter.onerror = function (event) {
+      if (token !== speechToken) return; // cancelled on purpose - ignore
+      var err = event && typeof event.error === "string" ? event.error : "";
+      if (err === "interrupted" || err === "canceled" || err === "cancelled") return;
+      speakingN = null;
+      currentUtterance = null;
+      syncListenLabels();
+      if (usedTamil && isVoiceMissingError(err)) {
+        // The engine reported a Tamil voice but failed to use it (some
+        // Android builds do). Self-heal: read the transliteration instead.
+        startSpeech(n, token, { useTranslit: true });
+        return;
+      }
+      if (err === "not-allowed") {
+        showStatus(t("speech.blocked", "Audio was blocked by the browser - tap Listen again to allow it."));
+      } else {
+        speechFailToast();
+      }
+    };
+
+    speakingN = n;
+    syncListenLabels();
+    try {
+      // Always inside the click gesture: iOS Safari refuses deferred speech.
+      synth.speak(utter);
+      // Chrome occasionally queues speech while the engine is paused and
+      // stays silent until resumed; resume() is a harmless no-op otherwise.
+      try { synth.resume(); } catch (e) { /* ignore */ }
+    } catch (e) {
+      speakingN = null;
+      currentUtterance = null;
+      syncListenLabels();
+      speechFailToast();
+      return;
+    }
+
+    // Verify the engine actually took the speak() call. Chrome can silently
+    // drop a speak() issued in the same tick as cancel(); this check only
+    // ever *starts* speech that was dropped - never stops speech that began.
+    window.setTimeout(function () {
+      if (token !== speechToken) return; // stopped or switched meanwhile
+      if (speakingN !== n || currentUtterance !== utter) return; // ended or errored
+      if (synth.speaking === true || synth.pending === true) return; // playing
+      if (retried) return;
+      retried = true;
+      try {
+        synth.speak(utter);
+        try { synth.resume(); } catch (e2) { /* ignore */ }
+      } catch (e) { /* give up quietly; the next click restarts cleanly */ }
+    }, 150);
   }
 
   function toggleSpeech(n) {
@@ -1459,71 +1598,27 @@
     }
     var synth = window.speechSynthesis;
     n = Number(n);
-    var k = findKural(n);
-    if (!k) return;
+    if (!findKural(n)) return;
 
     var engineBusy = synth.speaking === true || synth.pending === true;
     if (speakingN === n && engineBusy) {
       stopSpeech(); // toggle the currently-playing kural off
       return;
     }
-    // speakingN === n but the engine is idle means the previous run died
-    // without delivering onend (a known Web Speech quirk): fall through and
-    // restart instead of pretending to stop silence.
+    // speakingN === n with an idle engine means the previous run died without
+    // delivering onend (a known Web Speech quirk): fall through and restart
+    // instead of pretending to stop silence.
 
-    // Switching away from another kural (or recovering): invalidate in-flight
-    // callbacks first so the old utterance's interrupted-error can't reset the
-    // new one's labels, then cancel any live speech.
+    // Switching from another kural (or recovering): invalidate in-flight
+    // callbacks first so the old utterance's late interrupted-error can't
+    // reset the new one's labels, then cancel any live speech.
     speechToken++;
     var token = speechToken;
-    speakingN = n;
-    if (synth.speaking === true || synth.pending === true) {
+    currentUtterance = null;
+    if (engineBusy) {
       try { synth.cancel(); } catch (e) { /* ignore */ }
     }
-    syncListenLabels();
-
-    var utter = new SpeechSynthesisUtterance(k.ta[0] + " " + k.ta[1]);
-    utter.lang = "ta-IN";
-    utter.rate = 0.9;
-    var voice = pickTamilVoice(synth);
-    if (voice) utter.voice = voice;
-
-    utter.onend = function () {
-      if (token !== speechToken) return; // superseded — newer speech owns the UI
-      speakingN = null;
-      syncListenLabels();
-    };
-    utter.onerror = function (event) {
-      if (token !== speechToken) return; // cancelled on purpose — ignore
-      speakingN = null;
-      syncListenLabels();
-      var err = event && event.error;
-      if (err && err !== "interrupted" && err !== "canceled") {
-        showStatus(t("speech.failed", "Audio couldn't play on this device. It may lack a Tamil voice."));
-      }
-    };
-
-    function start() {
-      if (token !== speechToken) return; // user stopped/switched meanwhile
-      try {
-        synth.speak(utter);
-      } catch (e) {
-        if (token === speechToken) {
-          speakingN = null;
-          syncListenLabels();
-          showStatus(t("speech.failed", "Audio couldn't play on this device. It may lack a Tamil voice."));
-        }
-      }
-    }
-
-    if (engineBusy) {
-      // Chrome can drop speak() issued in the same turn as cancel(); give the
-      // engine one tick. The first play stays synchronous so iOS's user-gesture
-      // requirement is satisfied.
-      window.setTimeout(start, 80);
-    } else {
-      start();
-    }
+    startSpeech(n, token, {});
   }
 
   // ---------- command palette ----------

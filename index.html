@@ -388,9 +388,11 @@
     </div>
   </footer>
 
-  <script src="data/kurals.js" defer></script>
-  <script src="js/storage.js" defer></script>
-  <script src="js/app.js" defer></script>
-  <script src="js/companion.js" defer></script>
+  <!-- ?v= busts browser/HTTP cache after each deploy; sw.js precaches the
+       same versioned URLs, so offline installs stay in sync with the site. -->
+  <script src="data/kurals.js?v=5" defer></script>
+  <script src="js/storage.js?v=5" defer></script>
+  <script src="js/app.js?v=5" defer></script>
+  <script src="js/companion.js?v=5" defer></script>
 </body>
 </html>
