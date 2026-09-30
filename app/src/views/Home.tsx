@@ -15,6 +15,7 @@ import { TodayKuralCard } from '../components/today/TodayKuralCard'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { Button } from '../components/ui/Button'
 import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
+import { HeroCanvas } from '../components/canvas/HeroCanvas'
 import type { Kural } from '../lib/types'
 
 function pickAnother(kurals: readonly Kural[], current: Kural): Kural {
@@ -59,17 +60,18 @@ export function Home() {
 
   return (
     <div className="min-h-dvh">
-      {/* Hero zone — the animated palm-leaf shader mounts here (next step);
-          this gradient is the documented no-WebGL fallback. */}
+      {/* Hero zone. The gradient is the documented no-WebGL fallback; when the
+          device can render it, the AgedLeaf shader paints over it. */}
       <header
-        className="relative overflow-hidden px-4 pt-[var(--space-7)] pb-[var(--space-6)]"
+        className="relative isolate overflow-hidden px-4 pt-[var(--space-7)] pb-[var(--space-6)]"
         style={{
           minHeight: '240px',
           backgroundImage:
             'radial-gradient(120% 90% at 50% 0%, var(--hero-tint-a) 0%, var(--hero-tint-b) 55%, var(--hero-tint-c) 100%)',
         }}
       >
-        <div className="mx-auto flex max-w-[var(--content-max)] flex-col items-center gap-[var(--space-4)] text-center">
+        <HeroCanvas />
+        <div className="relative z-10 mx-auto flex max-w-[var(--content-max)] flex-col items-center gap-[var(--space-4)] text-center">
           <h1
             lang="ta"
             className="m-0 text-[clamp(28px,6vw,44px)] text-ink drop-shadow-[0_1px_0_rgba(255,255,255,0.25)]"
