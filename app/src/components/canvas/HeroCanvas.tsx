@@ -2,14 +2,26 @@
  * HeroCanvas — lazy, resilient wrapper around the Three.js hero material.
  *
  * Design rules it enforces:
- *   - the library is fetched only after the hero is on screen and only when
- *     WebGL actually exists, so the first paint never waits on it
+ *   - the library is fetched only after the hero is near the viewport and
+ *     only when WebGL actually exists, so the first paint never waits on it
  *   - no WebGL → render nothing and let the caller's CSS radial-gradient stand
  *     in (the documented fallback, not a broken panel)
  *   - blend mode comes from the theme (`multiply` by day, `normal` at night)
  *   - a runtime WebGL context loss falls back instead of leaving a blank box
  */
-import { Suspense, lazy, memo, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import {
+  Component,
+  Suspense,
+  lazy,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ErrorInfo,
+  type ReactNode,
+} from 'react'
 import { cn } from '../../lib/cn'
 import { useReducedMotion } from '../../hooks/useReader'
 
@@ -22,9 +34,41 @@ function detectWebGL(): boolean {
       canvas.getContext('webgl2') ??
       canvas.getContext('webgl') ??
       canvas.getContext('experimental-webgl')
-    return context !== null
+    if (!context) return false
+
+    // The capability probe uses a temporary canvas; release its GPU context so
+    // the real renderer does not have to compete for the device's context cap.
+    const gl = context as WebGLRenderingContext | WebGL2RenderingContext
+    gl.getExtension('WEBGL_lose_context')?.loseContext()
+    return true
   } catch {
     return false
+  }
+}
+
+interface CanvasErrorBoundaryProps {
+  children: ReactNode
+  onError: () => void
+}
+
+interface CanvasErrorBoundaryState {
+  hasError: boolean
+}
+
+/** Keep a renderer or lazy-chunk failure from taking down the reader. */
+class CanvasErrorBoundary extends Component<CanvasErrorBoundaryProps, CanvasErrorBoundaryState> {
+  override state: CanvasErrorBoundaryState = { hasError: false }
+
+  static getDerivedStateFromError(): CanvasErrorBoundaryState {
+    return { hasError: true }
+  }
+
+  override componentDidCatch(_error: Error, _info: ErrorInfo): void {
+    this.props.onError()
+  }
+
+  override render(): ReactNode {
+    return this.state.hasError ? null : this.props.children
   }
 }
 
@@ -35,20 +79,57 @@ export interface HeroCanvasProps {
 }
 
 export const HeroCanvas = memo(function HeroCanvas({ className, onUnavailable }: HeroCanvasProps) {
+  const [nearViewport, setNearViewport] = useState(false)
   const [supported, setSupported] = useState(false)
   const host = useRef<HTMLDivElement>(null)
+  const onUnavailableRef = useRef(onUnavailable)
   const reducedMotion = useReducedMotion()
 
-  useEffect(() => {
-    const ok = detectWebGL()
-    setSupported(ok)
-    if (!ok) onUnavailable?.()
-  }, [onUnavailable])
+  // Keep the callback fresh without restarting capability detection when a
+  // caller passes an inline function.
+  onUnavailableRef.current = onUnavailable
 
   const giveUp = useCallback(() => {
     setSupported(false)
-    onUnavailable?.()
-  }, [onUnavailable])
+    onUnavailableRef.current?.()
+  }, [])
+
+  // Don't even probe WebGL or fetch the shader chunk until the hero approaches
+  // the viewport. Older browsers without IntersectionObserver get the safe
+  // eager path; the gradient still remains available if WebGL is missing.
+  useEffect(() => {
+    const node = host.current
+    if (!node) return
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setNearViewport(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setNearViewport(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '120px' },
+    )
+    observer.observe(node)
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!nearViewport) return
+
+    const ok = detectWebGL()
+    if (ok) {
+      setSupported(true)
+    } else {
+      giveUp()
+    }
+  }, [nearViewport, giveUp])
 
   /**
    * The canvas element appears asynchronously (lazy chunk + WebGL init), so
@@ -84,8 +165,6 @@ export const HeroCanvas = memo(function HeroCanvas({ className, onUnavailable }:
     }
   }, [supported, giveUp])
 
-  if (!supported) return null
-
   return (
     <div
       ref={host}
@@ -93,9 +172,13 @@ export const HeroCanvas = memo(function HeroCanvas({ className, onUnavailable }:
       className={cn('absolute inset-0 z-0 overflow-hidden', className)}
       style={{ mixBlendMode: 'var(--hero-blend)' as CSSProperties['mixBlendMode'] }}
     >
-      <Suspense fallback={null}>
-        <HeroScene frozen={reducedMotion} />
-      </Suspense>
+      {supported ? (
+        <CanvasErrorBoundary onError={giveUp}>
+          <Suspense fallback={null}>
+            <HeroScene frozen={reducedMotion} />
+          </Suspense>
+        </CanvasErrorBoundary>
+      ) : null}
     </div>
   )
 })

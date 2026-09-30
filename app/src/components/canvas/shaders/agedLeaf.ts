@@ -26,7 +26,11 @@ void main() {
 `
 
 export const AGED_LEAF_FRAGMENT = /* glsl */ `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
+#else
+precision mediump float;
+#endif
 
 varying vec2 vUv;
 
@@ -94,7 +98,7 @@ void main() {
   color += vec3(0.35, 0.16, 0.02) * ember;
 
   // 4. vignette — protects the headline's contrast at the edges
-  float vignette = smoothstep(0.95, 0.25, length(p * vec2(0.85, 1.15)));
+  float vignette = 1.0 - smoothstep(0.25, 0.95, length(p * vec2(0.85, 1.15)));
   color *= mix(0.72, 1.0, vignette);
 
   gl_FragColor = vec4(color, 1.0);
