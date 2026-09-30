@@ -75,6 +75,7 @@ node scripts/test-speech.mjs               # Listen (device TTS) regression suit
                                            #   gesture, voiceless devices, dead engine)
 node scripts/test-a11y.mjs              # axe-core scan of page + every dialog
 node scripts/test-content.mjs           # 1,330-kural content integrity (runs in CI)
+node scripts/test-credits.mjs           # attribution, local licenses, offline/deploy contract
 ```
 
 Confirms chapter 16 (பொறையுடைமை) renders `#kural-151` … `#kural-160`, that theme and
@@ -97,6 +98,8 @@ sw.js                          # offline cache (shell, dataset, fonts, textures)
 assets/                        # PWA / Apple home-screen icons
 assets/img/                    # ancient-theme graphics (hero, rosette, kolam, textures)
 assets/fonts/                  # self-hosted woff2 subsets (Inter, EB Garamond, Noto Serif Tamil)
+assets/licenses/               # app and bundled third-party license texts
+THIRD_PARTY_NOTICES.md         # full attribution and source inventory
 css/styles.css                 # styling (palm-leaf + temple-stone system, layer 2 components)
 css/fonts.css                  # @font-face declarations for the self-hosted fonts
 js/app.js                      # rendering, search, suggestions, journey, palette, focus, TTS, i18n
@@ -158,8 +161,13 @@ workflow (or push again). GitHub does not allow any token to create the Pages si
 automatically, so this single click cannot be scripted. (Note: Pages from a private
 repo requires GitHub Pro/Team/Enterprise — or make the repo public first.)
 
-## License
+## License and credits
 
-MIT — see [LICENSE](LICENSE). Derived data comes from
-[tk120404/thirukkural](https://github.com/tk120404/thirukkural), licensed under the
-Apache License 2.0 — https://www.apache.org/licenses/LICENSE-2.0.
+The application code and project-original writing are MIT — see [LICENSE](LICENSE).
+The generated Kural dataset includes upstream material from
+[tk120404/thirukkural](https://github.com/tk120404/thirukkural), licensed under Apache
+License 2.0. The bundled Inter, EB Garamond, and Noto Serif Tamil font files are licensed
+under SIL Open Font License 1.1. Full attribution, copyright notices, and copies of
+third-party licenses are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
+[`assets/licenses/`](assets/licenses/). The app also presents these credits in its
+**Credits & open source** section.

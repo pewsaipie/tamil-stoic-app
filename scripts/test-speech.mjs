@@ -165,6 +165,9 @@ function boot({ voices = [], persona = {}, withSpeech = true } = {}) {
     pretendToBeVisual: true,
   });
   const { window } = dom;
+  // Keep the speech suite representative of a browser and avoid rendering all
+  // 1,330 cards in jsdom when the optional observer API is absent.
+  window.IntersectionObserver = class { observe() {} disconnect() {} unobserve() {} };
   let speechState = null;
   if (withSpeech) {
     speechState = installSpeechMock(window, persona);

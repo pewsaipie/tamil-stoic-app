@@ -29,7 +29,7 @@
 
   <!-- Self-hosted fonts: offline-complete, no third-party runtime requests -->
   <link rel="stylesheet" href="css/fonts.css" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css?v=6" />
 </head>
 <body>
   <a class="skip-link" href="#daily" data-i18n="skip.daily">Skip to today's Kural</a>
@@ -372,15 +372,78 @@
 
   <div id="app-status" class="app-status" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 
+  <section class="credits-section" id="credits" aria-labelledby="credits-title" tabindex="-1">
+    <div class="credits-shell">
+      <div class="section-head credits-head">
+        <p class="credits-eyebrow" data-i18n="credits.eyebrow">Open source · attribution</p>
+        <h2 id="credits-title" data-i18n="credits.title">Credits &amp; open source</h2>
+        <p class="section-sub" data-i18n="credits.intro">Tamil Stoic is made with respect for the people and projects behind this reading experience. Source code and license details are open for everyone to inspect and reuse.</p>
+      </div>
+
+      <div class="credits-grid">
+        <article class="credits-card">
+          <p class="credits-label" data-i18n="credits.app.label">The application</p>
+          <h3>Tamil Stoic</h3>
+          <p data-i18n-html="credits.app.body">Application code, interface, and original project artwork are © 2026 pewsaipie and released under the <b>MIT License</b>. The source repository includes the code, build scripts, tests, and documentation.</p>
+          <a class="credits-link" href="https://github.com/pewsaipie/tamil-stoic-app" data-i18n="credits.app.link">Browse the source on GitHub →</a>
+          <a class="credits-link credits-link-secondary" href="LICENSE" data-i18n="credits.app.license">Read the MIT license</a>
+        </article>
+
+        <article class="credits-card">
+          <p class="credits-label" data-i18n="credits.kural.label">Tamil text &amp; structure</p>
+          <h3>Thirukkural · திருக்குறள்</h3>
+          <p data-i18n-html="credits.kural.body">The Tamil couplets, transliterations, and chapter structure are derived from <b>tk120404/thirukkural</b>, following the standard Parimelalagar-based recension. The source dataset is licensed under Apache 2.0; our generated data keeps the attribution in its file header.</p>
+          <a class="credits-link" href="https://github.com/tk120404/thirukkural" data-i18n="credits.kural.source">View the source dataset →</a>
+          <a class="credits-link credits-link-secondary" href="assets/licenses/Apache-2.0.txt" data-i18n="credits.kural.license">Read the Apache 2.0 license</a>
+        </article>
+
+        <article class="credits-card">
+          <p class="credits-label" data-i18n="credits.pope.label">Historical English source</p>
+          <h3>G. U. Pope · 1886</h3>
+          <p data-i18n-html="credits.pope.body">English verse translations and prose explanations are attributed to <b>G. U. Pope</b>, with W. H. Drew, John Lazarus, and F. W. Ellis (1886). This historical work is in the public domain and is included through the upstream dataset.</p>
+          <p class="credits-note" data-i18n="credits.pope.note">The plain-English meanings are newly written for Tamil Stoic from Pope’s prose; they are not Pope’s own wording.</p>
+        </article>
+
+        <article class="credits-card">
+          <p class="credits-label" data-i18n="credits.editorial.label">Project writing &amp; editorial work</p>
+          <h3 data-i18n="credits.editorial.title">Modern meanings and corrections</h3>
+          <p data-i18n-html="credits.editorial.body">The modern simple-English meanings are original to this project. Textual corrections are recorded with reasons and references; the review notes explain what has and has not been proofread.</p>
+          <a class="credits-link" href="https://github.com/pewsaipie/tamil-stoic-app/blob/main/scripts/glosses/" data-i18n="credits.editorial.glosses">Browse the original meanings →</a>
+          <a class="credits-link credits-link-secondary" href="https://github.com/pewsaipie/tamil-stoic-app/blob/main/scripts/content-corrections.json" data-i18n="credits.editorial.corrections">See correction sources</a>
+          <a class="credits-link credits-link-secondary" href="https://github.com/pewsaipie/tamil-stoic-app/blob/main/docs/content-review.md" data-i18n="credits.editorial.review">Read the editorial review notes</a>
+        </article>
+
+        <article class="credits-card credits-card-wide">
+          <p class="credits-label" data-i18n="credits.fonts.label">Offline typefaces</p>
+          <h3 data-i18n="credits.fonts.title">Fonts &amp; their designers</h3>
+          <p data-i18n-html="credits.fonts.body">Self-hosted via <b>Fontsource</b> so Tamil Stoic remains usable offline. Font software is licensed separately under the <b>SIL Open Font License 1.1</b>.</p>
+          <ul class="credits-font-list">
+            <li><b>Inter</b> · The Inter Project Authors · <a href="https://github.com/rsms/inter">source</a></li>
+            <li><b>EB Garamond</b> · Georg A. Duffner and the EB Garamond Project Authors · <a href="https://github.com/octaviopardo/EBGaramond12">source</a></li>
+            <li><b>Noto Serif Tamil</b> · The Noto Project Authors · <a href="https://github.com/notofonts/tamil">source</a></li>
+          </ul>
+          <a class="credits-link" href="https://fontsource.org/" data-i18n="credits.fonts.fontsource">About Fontsource →</a>
+          <a class="credits-link credits-link-secondary" href="assets/licenses/OFL-1.1.txt" data-i18n="credits.fonts.license">Read the font license and copyright notices</a>
+        </article>
+
+        <article class="credits-card credits-card-wide credits-distribution">
+          <p class="credits-label" data-i18n="credits.distribution.label">Reuse &amp; transparency</p>
+          <h3 data-i18n="credits.distribution.title">Open by design</h3>
+          <p data-i18n="credits.distribution.body">The project has no third-party JavaScript runtime dependencies or hosted font/script requests. Listen uses speech voices supplied by your browser or device; they are not bundled. Saved items remain on your device.</p>
+          <a class="credits-link" href="THIRD_PARTY_NOTICES.md" data-i18n="credits.distribution.notices">Read all third-party notices →</a>
+          <a class="credits-link credits-link-secondary" href="https://github.com/pewsaipie/tamil-stoic-app" data-i18n="credits.distribution.contribute">Inspect, adapt, or contribute on GitHub</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="footer-ta" lang="ta"><b>யாதனின் யாதனின் நீங்கியான் நோதல் அதனின் யாதனின் இல்லன் நலம்.</b> (குறள் 360)</p>
       <p data-i18n-html="footer.credits">
         English verse translations and prose explanations by <b>G. U. Pope</b> (with W. H. Drew,
-        John Lazarus &amp; F. W. Ellis, 1886) — in the public domain. The simple-English meanings
-        are original to this app, written from Pope's prose. Tamil text follows the standard
-        Parimelalagar recension, built from <b>github.com/tk120404/thirukkural</b>
-        (Apache&nbsp;License&nbsp;2.0) via <code>scripts/build-kurals.mjs</code>.
+        John Lazarus &amp; F. W. Ellis, 1886) are public domain. Tamil text is derived from
+        <b>tk120404/thirukkural</b> (Apache 2.0). <a href="#credits">Full credits, sources, and open-source licenses →</a>
       </p>
       <p data-i18n-html="footer.about">
         <b>tamil-stoic-app</b> · A calm corner for Tamil wisdom. அறம் · பொருள் · காமம்
@@ -390,9 +453,9 @@
 
   <!-- ?v= busts browser/HTTP cache after each deploy; sw.js precaches the
        same versioned URLs, so offline installs stay in sync with the site. -->
-  <script src="data/kurals.js?v=5" defer></script>
-  <script src="js/storage.js?v=5" defer></script>
-  <script src="js/app.js?v=5" defer></script>
-  <script src="js/companion.js?v=5" defer></script>
+  <script src="data/kurals.js?v=6" defer></script>
+  <script src="js/storage.js?v=6" defer></script>
+  <script src="js/app.js?v=6" defer></script>
+  <script src="js/companion.js?v=6" defer></script>
 </body>
 </html>
