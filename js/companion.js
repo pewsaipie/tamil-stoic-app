@@ -25,7 +25,7 @@
   var defaults = {
     fontSize: "standard",
     lineSpacing: "comfortable",
-    colorScheme: "system",
+    colorScheme: "dark", // Sangam clay is the signature look; Reading settings still offers day + system
     uiLanguage: "en",
     showTamil: true,
     showTransliteration: true,
@@ -274,6 +274,7 @@
   }
 
   function updateActionState() {
+    updateDetailSaveState();
     Array.prototype.forEach.call(document.querySelectorAll(".companion-actions"), function (actions) {
       var n = Number(actions.getAttribute("data-kural"));
       var button = actions.querySelector('[data-kural-action="save"]');
@@ -285,6 +286,16 @@
           '<span class="action-symbol" aria-hidden="true">' + (isSaved ? "♥" : "♡") + "</span>" +
           '<span class="action-label">' + (isSaved ? T("action.savedLabel", "Saved") : T("action.save", "Save")) + "</span>";
       }
+    });
+  }
+
+  // The reader's heart button lives outside .companion-actions.
+  function updateDetailSaveState() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-detail-save]"), function (button) {
+      var isSaved = !!getRecord(Number(button.getAttribute("data-kural")));
+      button.setAttribute("aria-pressed", String(isSaved));
+      button.classList.toggle("is-saved", isSaved);
+      button.setAttribute("aria-label", isSaved ? T("detail.unsave", "Remove from saved") : T("detail.save", "Save this kural"));
     });
   }
 
@@ -1073,6 +1084,7 @@
     whenReady: function () { return ready; },
     getSavedRecords: function () { return Promise.resolve(sortedRecords()); },
     getPreferences: function () { return Object.assign({}, preferences); },
+    refreshActionState: updateActionState,
     createShareCard: createShareCard,
   };
 })();

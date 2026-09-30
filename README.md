@@ -97,7 +97,7 @@ manifest.webmanifest           # install metadata, share_target, icons, home-scr
 sw.js                          # offline cache (shell, dataset, fonts, textures) + update flow
 assets/                        # PWA / Apple home-screen icons
 assets/img/                    # ancient-theme graphics (hero, rosette, kolam, textures)
-assets/fonts/                  # self-hosted woff2 subsets (Inter, EB Garamond, Noto Serif Tamil)
+assets/fonts/                  # self-hosted woff2 subsets (Inter, EB Garamond, Noto Serif Tamil, Noto Sans Tamil)
 assets/licenses/               # app and bundled third-party license texts
 THIRD_PARTY_NOTICES.md         # full attribution and source inventory
 css/styles.css                 # styling (palm-leaf + temple-stone system, layer 2 components)
@@ -166,7 +166,7 @@ repo requires GitHub Pro/Team/Enterprise — or make the repo public first.)
 The application code and project-original writing are MIT — see [LICENSE](LICENSE).
 The generated Kural dataset includes upstream material from
 [tk120404/thirukkural](https://github.com/tk120404/thirukkural), licensed under Apache
-License 2.0. The bundled Inter, EB Garamond, and Noto Serif Tamil font files are licensed
+License 2.0. The bundled Inter, EB Garamond, Noto Serif Tamil, and Noto Sans Tamil font files are licensed
 under SIL Open Font License 1.1. Full attribution, copyright notices, and copies of
 third-party licenses are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
 [`assets/licenses/`](assets/licenses/). The app also presents these credits in its
