@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" data-theme="system" data-motion="full" data-contrast="normal">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>திருக்குறள் · Thirukkural — Tamil Stoic</title>
+    <meta
+      name="description"
+      content="A calm, installable companion for reading, saving and sharing Thirukkural in Tamil with a plain-English meaning."
+    />
+    <meta name="theme-color" content="#F5EDD6" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="குறள்" />
+
+    <link rel="icon" href="%BASE_URL%icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="%BASE_URL%icons/apple-touch-icon.png" />
+
+    <!--
+      Apply the stored theme before first paint. Without this the reader sees a
+      flash of the wrong palette on every cold load.
+    -->
+    <script>
+      ;(function () {
+        try {
+          var stored = JSON.parse(localStorage.getItem('tamil-stoic-reader-preferences-v1') || '{}')
+          var map = { dark: 'night', light: 'palm', system: 'system' }
+          var theme = map[stored.colorScheme] || 'night'
+          var root = document.documentElement
+          root.dataset.theme = theme
+          if (stored.reduceMotion === true) root.dataset.motion = 'reduced'
+          if (stored.highContrast === true) root.dataset.contrast = 'high'
+        } catch (error) {
+          /* first visit, or storage blocked — defaults stand */
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+#!/usr/bin/env node
+/**
+ * Mirror the repository's canonical binary assets into the Vite app.
+ *
+ * The repo root (`assets/`) stays the single committed source of truth for
+ * fonts, artwork and PWA icons — exactly as the vanilla app uses them. The
+ * React app consumes copies so Vite can hash and emit them with correct
+ * base-relative URLs. Copies are generated (git-ignored), never committed, so
+ * there is no duplicated binary in version control.
+ *
+ *   node scripts/sync-assets.mjs           # copy
+ *   node scripts/sync-assets.mjs --check   # verify parity, exit 1 on drift
+ */
+import { cp, mkdir, readdir, readFile, rm } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+import { existsSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const here = dirname(fileURLToPath(import.meta.url))
+const appRoot = resolve(here, '..')
+const repoRoot = resolve(appRoot, '..')
+const check = process.argv.includes('--check')
+
+/** [source dir (repo root), destination dir (app)] */
+const MIRRORS = [
+  ['assets/fonts', 'src/assets/fonts'],
+  ['assets/img', 'src/assets/img'],
+]
+
+/** Individual files that must land under public/icons/ for the manifest. */
+const ICONS = [
+  ['assets/icon-192.png', 'public/icons/icon-192.png'],
+  ['assets/icon-512.png', 'public/icons/icon-512.png'],
+  ['assets/icon.svg', 'public/icons/icon.svg'],
+  ['assets/apple-touch-icon.png', 'public/icons/apple-touch-icon.png'],
+]
+
+const sha = async (file) => createHash('sha256').update(await readFile(file)).digest('hex')
+
+async function listFiles(dir) {
+  const out = []
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name)
+    if (entry.isDirectory()) out.push(...(await listFiles(full)))
+    else if (entry.isFile()) out.push(full)
+  }
+  return out
+}
+
+async function syncDir(srcDir, destDir) {
+  if (!existsSync(srcDir)) return { copied: 0, missing: [srcDir] }
+
+  if (check) {
+    const missing = []
+    for (const file of await listFiles(srcDir)) {
+      const rel = file.slice(srcDir.length + 1)
+      const dest = join(destDir, rel)
+      if (!existsSync(dest)) missing.push(`${rel} (missing)`)
+      else if ((await sha(file)) !== (await sha(dest))) missing.push(`${rel} (differs)`)
+    }
+    return { copied: 0, missing }
+  }
+
+  await rm(destDir, { recursive: true, force: true })
+  await mkdir(destDir, { recursive: true })
+  await cp(srcDir, destDir, { recursive: true })
+  const count = (await listFiles(destDir)).length
+  return { copied: count, missing: [] }
+}
+
+async function syncFile(src, dest) {
+  if (!existsSync(src)) return { copied: 0, missing: [src] }
+
+  if (check) {
+    if (!existsSync(dest)) return { copied: 0, missing: [`${dest} (missing)`] }
+    if ((await sha(src)) !== (await sha(dest))) return { copied: 0, missing: [`${dest} (differs)`] }
+    return { copied: 0, missing: [] }
+  }
+
+  await mkdir(dirname(dest), { recursive: true })
+  await cp(src, dest)
+  return { copied: 1, missing: [] }
+}
+
+const problems = []
+let copied = 0
+
+for (const [from, to] of MIRRORS) {
+  const result = await syncDir(join(repoRoot, from), join(appRoot, to))
+  copied += result.copied
+  problems.push(...result.missing)
+}
+
+for (const [from, to] of ICONS) {
+  const result = await syncFile(join(repoRoot, from), join(appRoot, to))
+  copied += result.copied
+  problems.push(...result.missing)
+}
+
+if (problems.length > 0) {
+  console.error('✗ asset mirror out of sync:')
+  for (const problem of problems) console.error(`   ${problem}`)
+  console.error('  run `npm run sync-assets` to regenerate the mirrors.')
+  process.exit(1)
+}
+
+console.log(
+  check
+    ? '✓ asset mirrors match the repository assets'
+    : `✓ mirrored repository assets into the app (${copied} files)`,
+)

@@ -1,0 +1,344 @@
+/* =============================================================================
+ * Global stylesheet — Tailwind v4 entry point
+ * ========================================================================== */
+@import "tailwindcss";
+@import "./fonts.css";
+@import "./tokens.css";
+
+/* Bridge the design tokens into Tailwind's utility namespaces.
+ * `inline` keeps the utilities referencing the live variable, so switching
+ * `data-theme` re-themes every utility without a re-render. */
+@theme inline {
+  --color-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-glass: var(--bg-glass);
+  --color-ink: var(--ink-primary);
+  --color-muted: var(--ink-secondary);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-line: var(--border-color);
+  --color-line-strong: var(--border-strong);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-tamil: "Noto Serif Tamil", "Noto Sans Tamil", "Latha", serif;
+  --font-display: "Playfair Display", "EB Garamond", Georgia, serif;
+
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-glow: var(--shadow-glow);
+
+  --ease-out: var(--ease-out), ease;
+  --ease-spring: var(--ease-spring), ease;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* No layout shift on font load: the fallback metrics are close and the
+       swap is `font-display: swap` with a clamped size. */
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--bg-base);
+    color: var(--ink-primary);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    /* Safe areas for the standalone PWA on notched devices. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    overscroll-behavior-y: none;
+  }
+
+  /* Every interactive element gets a visible, high-contrast focus ring. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  /* Tamil content is wrapped in lang="ta"; the verse face follows from here. */
+  [lang="ta"] {
+    font-family: var(--font-tamil);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  svg,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------------------
+   * Glass surface — the app's primary material.
+   * Progressive enhancement: browsers without backdrop-filter still get an
+   * opaque, readable panel because --bg-glass is an opaque-ish tint.
+   * ------------------------------------------------------------------------ */
+  .glass-panel {
+    position: relative;
+    background: var(--bg-glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-panel {
+      background: var(--bg-elevated);
+    }
+  }
+
+  /* Inner top-edge glow: light catching the top of a physical card. */
+  .glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(180deg, var(--glass-highlight) 0%, transparent 12%);
+    opacity: 0.9;
+  }
+
+  .glass-panel--quiet {
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Paper grain — a 4% feTurbulence overlay that gives the glass a printed,
+   * physical feel without shipping an image.
+   * ------------------------------------------------------------------------ */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: var(--grain-blend, multiply);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  [data-theme="night"] .grain::after {
+    --grain-blend: screen;
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Reader typography
+   * ------------------------------------------------------------------------ */
+  .verse {
+    font-family: var(--font-tamil);
+    font-size: clamp(18px, 2.5vw, 24px);
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+    color: var(--ink-primary);
+    text-wrap: pretty;
+  }
+
+  .transliteration {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-secondary);
+  }
+
+  .meaning {
+    font-family: var(--font-ui);
+    font-size: clamp(15px, 2vw, 17px);
+    line-height: 1.75;
+    color: var(--ink-primary);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Chips & pills
+   * ------------------------------------------------------------------------ */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 36px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    background: var(--bg-glass);
+    color: var(--ink-secondary);
+    font-size: 14px;
+    white-space: nowrap;
+    transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+      transform var(--dur) var(--ease-out);
+  }
+
+  .chip:hover {
+    border-color: var(--border-strong);
+    color: var(--ink-primary);
+  }
+
+  .chip[aria-pressed="true"],
+  .chip[data-active="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  /* ---------------------------------------------------------------------------
+   * Skeletons — no spinners anywhere in the app.
+   * ------------------------------------------------------------------------ */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--border-color);
+    border-radius: var(--radius-sm);
+  }
+
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--ink-primary) 8%, transparent),
+      transparent
+    );
+    animation: skeleton-shimmer 1.4s var(--ease-out) infinite;
+  }
+
+  /* Ripple for tile presses (Feature 4). */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    animation: ripple 600ms var(--ease-out);
+    pointer-events: none;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.003);
+  }
+}
+
+/* -----------------------------------------------------------------------------
+ * Motion policy — every animation in the app is dual-gated: the OS preference
+ * and the in-app toggle both end up here.
+ * -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+}
+
+[data-motion="reduced"] html,
+[data-motion="reduced"] body {
+  scroll-behavior: auto;
+}
+
+/* -----------------------------------------------------------------------------
+ * Print — the app doubles as a study handout (carried over from the vanilla
+ * reader so the merged behaviour is not lost in the rewrite).
+ * -------------------------------------------------------------------------- */
+@media print {
+  .no-print,
+  nav,
+  canvas {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .glass-panel {
+    box-shadow: none;
+    border: 1px solid #999;
+    background: #fff;
+    backdrop-filter: none;
+  }
+}
