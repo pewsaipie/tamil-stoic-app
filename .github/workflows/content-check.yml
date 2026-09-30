@@ -31,5 +31,6 @@ jobs:
           node scripts/test-app.mjs
           node scripts/test-chapter-filter.mjs
           node scripts/test-companion-features.mjs
+          node scripts/test-speech.mjs
       - name: axe-core accessibility scan
         run: node scripts/test-a11y.mjs
