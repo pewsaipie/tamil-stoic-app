@@ -29,6 +29,7 @@ Font files are self-hosted from [Fontsource](https://fontsource.org/) to support
 | EB Garamond | Georg A. Duffner; The EB Garamond Project Authors · <https://github.com/octaviopardo/EBGaramond12> | <https://fontsource.org/fonts/eb-garamond> |
 | Noto Serif Tamil | The Noto Project Authors · <https://github.com/notofonts/tamil> | <https://fontsource.org/fonts/noto-serif-tamil> |
 | Noto Sans Tamil | The Noto Project Authors · <https://github.com/notofonts/tamil> | <https://fontsource.org/fonts/noto-sans-tamil> |
+| Playfair Display | The Playfair Project Authors · <https://github.com/clauseggers/Playfair-Display> | <https://fontsource.org/fonts/playfair-display> |
 
 ## Runtime and development tools
 
