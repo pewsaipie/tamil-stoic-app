@@ -5,25 +5,31 @@
  * the reader's device and are never sent through this worker.
  */
 const CACHE_PREFIX = "tamil-stoic-";
-const CACHE_NAME = CACHE_PREFIX + "v5-listen-hardened";
+const CACHE_NAME = CACHE_PREFIX + "v6-open-source-credits";
 
 const APP_ASSETS = [
   "./",
   "./index.html",
+  "./LICENSE",
+  "./THIRD_PARTY_NOTICES.md",
+  "./assets/licenses/MIT.txt",
+  "./assets/licenses/Apache-2.0.txt",
+  "./assets/licenses/OFL-1.1.txt",
   "./manifest.webmanifest",
   "./css/styles.css",
+  "./css/styles.css?v=6",
   "./css/fonts.css",
   "./data/kurals.js",
   "./js/storage.js",
   "./js/app.js",
   "./js/companion.js",
-  // The exact versioned URLs index.html requests (?v=5). Precaching both
+  // The exact versioned URLs index.html requests (?v=6). Precaching both
   // shapes means the shell works offline whether it was loaded fresh or
   // from an older cached copy.
-  "./data/kurals.js?v=5",
-  "./js/storage.js?v=5",
-  "./js/app.js?v=5",
-  "./js/companion.js?v=5",
+  "./data/kurals.js?v=6",
+  "./js/storage.js?v=6",
+  "./js/app.js?v=6",
+  "./js/companion.js?v=6",
   "./assets/icon.svg",
   "./assets/icon-192.png",
   "./assets/icon-512.png",

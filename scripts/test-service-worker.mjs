@@ -78,6 +78,9 @@ async function dispatchWait(type) {
 await dispatchWait("install");
 assert([...stores.values()].some((store) => [...store.entries.keys()].some((key) => key.endsWith("data/kurals.js"))), "install precaches the Kural dataset for offline reading");
 assert([...stores.values()].some((store) => [...store.entries.keys()].some((key) => key.endsWith("index.html"))), "install precaches the app shell");
+for (const notice of ["LICENSE", "THIRD_PARTY_NOTICES.md", "assets/licenses/MIT.txt", "assets/licenses/Apache-2.0.txt", "assets/licenses/OFL-1.1.txt"]) {
+  assert([...stores.values()].some((store) => [...store.entries.keys()].some((key) => key.endsWith(notice))), "install precaches the open-source notice " + notice);
+}
 
 stores.set("tamil-stoic-old-version", cacheFor("tamil-stoic-old-version"));
 await dispatchWait("activate");
@@ -112,8 +115,8 @@ listeners.get("fetch")({
 response = await responsePromise;
 assert((await response.text()).includes("cached ./index.html"), "offline navigation falls back to the cached app shell");
 
-// Version-consistency contract: every versioned script URL that index.html
-// requests must be precached by the service worker, and the cache name must
+// Version-consistency contract: every versioned script and stylesheet URL
+// that index.html requests must be precached by the service worker, and the cache name must
 // be bumped in lockstep. This is what guarantees a deployed fix (e.g. the
 // Listen repair) actually reaches browsers instead of a stale cached app.js.
 const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
@@ -130,9 +133,15 @@ for (const src of scriptSrcs) {
     "sw.js precaches the versioned asset " + rel
   );
 }
+const styleHrefs = [...indexHtml.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map((m) => m[1]);
+const versionedStyles = styleHrefs.filter((href) => /[?&]v=/.test(href));
+assert(versionedStyles.includes("css/styles.css?v=6"), "changed stylesheet has a cache-busted URL");
+for (const href of versionedStyles) {
+  assert(source.includes('"./' + href + '"'), "sw.js precaches the versioned stylesheet ./" + href);
+}
 assert(
-  source.includes("CACHE_PREFIX + \"v5-listen-hardened\"") || /CACHE_NAME\s*=\s*CACHE_PREFIX \+ "v5-/.test(source),
-  "cache name bumped for the hardened-listen release"
+  source.includes("CACHE_PREFIX + \"v6-open-source-credits\"") || /CACHE_NAME\s*=\s*CACHE_PREFIX \+ "v6-/.test(source),
+  "cache name bumped for the open-source credits release"
 );
 
 if (failed) {

@@ -17,6 +17,8 @@ jobs:
           node-version: '22'
       - name: Validate all Kurals and correction regressions
         run: node scripts/test-content.mjs
+      - name: Validate open-source attributions and license packaging
+        run: node scripts/test-credits.mjs
 
       # Presentation-layer gates from the UI/UX proposal (docs/ui-ux-proposal.md).
       # The contrast suite is dependency-free; the rest need jsdom (+ axe-core).
