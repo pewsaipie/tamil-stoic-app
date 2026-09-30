@@ -65,7 +65,21 @@
       "books.sub": "திருக்குறள் மூன்று பால்களாக அமைந்துள்ளது. ஒன்றைத் தட்டி, முழுமையாகப் படியுங்கள்.",
       "situations.title": "சரியான வாயிலைத் திற · சூழ்நிலை",
       "situations.sub": "இன்று நீங்கள் எங்கே? பொருந்தும் வாயிலைத் தேர்ந்தெடுங்கள்; வள்ளுவர் அதற்குப் பேசுவார்.",
-      "browse.title": "உலாவு · அதிகாரங்கள்",
+      "tabs.aria": "மூன்று பால்கள்",
+      "nav.backHome": "முகப்புக்குத் திரும்ப",
+      "nav.main": "முதன்மை வழிசெலுத்தல்",
+      "detail.actions": "குறள் செயல்கள்",
+      "detail.save": "இந்தக் குறளைச் சேமி",
+      "detail.unsave": "சேமித்ததிலிருந்து நீக்கு",
+      "detail.note": "தனிக் குறிப்பு எழுது",
+      "detail.share": "இந்தக் குறளைப் பகிர்",
+      "stat.chapters": "அதிகாரங்கள்",
+      "stat.kurals": "குறள்கள்",
+      "stat.iyals": "இயல்கள்",
+      "stat.read": "படித்தவை",
+      "stat.visited": "பார்த்தவை",
+      "stat.themes": "தலைப்புகள்",
+      "detail.meaning": "பொருள்",
       "browse.sub": "எண் அல்லது சொல் தேடுங்கள், அதிகாரம் தேர்வு செய்யுங்கள், அல்லது சுதந்திரமாக அலையுங்கள்.",
       "journey.empty": "உங்கள் வாசிப்புப் பயணம் ஒரு குறளில் தொடங்குகிறது.",
       "journey.progress": "{r} குறள்கள் படித்தவை · {c} அதிகாரங்கள் பார்த்தவை · {s} நாள் தொடர்",
@@ -106,7 +120,7 @@
       "settings.colour": "நிறம்",
       "settings.colourAria": "நிறத் திட்டம்",
       "settings.colour.light": "பனையோலை பகல்",
-      "settings.colour.dark": "கோயில் இரவு",
+      "settings.colour.dark": "சங்கக் களிமண்",
       "settings.colour.system": "கணினியைப் பின்தொடர்",
       "settings.language": "இடைமுக மொழி · Interface language",
       "settings.languageAria": "இடைமுக மொழி",
@@ -529,7 +543,47 @@
     return null;
   }
 
+  // ---------- screens: home / chapters (the kural reader is a dialog) ----------
+  // One document, two screens. CSS shows `.view-home` or `.view-chapters`
+  // depending on body[data-view]; every in-page jump goes through safeScrollTo,
+  // which switches to the screen that owns the target first.
+  var viewName = "home";
+  var booting = true; // deep-link entry must not add a history step
+
+  function viewForElement(el) {
+    if (!el || !el.closest) return null;
+    if (el.closest("#browse")) return "chapters";
+    if (el.closest(".view-home, .credits-section")) return "home";
+    return null;
+  }
+
+  function syncNavState() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-nav]"), function (btn) {
+      // "Chapters" is the library entry: lit on the home and chapter screens alike
+      var active = btn.getAttribute("data-nav") === "chapters";
+      btn.classList.toggle("active", active);
+      if (active) btn.setAttribute("aria-current", "page");
+      else btn.removeAttribute("aria-current");
+    });
+  }
+
+  function setView(next, opts) {
+    var options = opts || {};
+    next = next === "chapters" ? "chapters" : "home";
+    var changed = next !== viewName;
+    viewName = next;
+    if (document.body) document.body.dataset.view = next;
+    syncNavState();
+    if (!changed) return;
+    if (!options.keepScroll) document.documentElement.scrollTop = 0;
+    if (next === "chapters" && !options.fromHistory && !booting) {
+      try { history.pushState({ tsView: "chapters" }, "", location.href); } catch (e) { /* file:// */ }
+    }
+  }
+
   function safeScrollTo(el, opts) {
+    var owner = viewForElement(el);
+    if (owner && owner !== viewName) setView(owner, { keepScroll: true });
     if (el && typeof el.scrollIntoView === "function") {
       var settings = opts || { block: "start" };
       // The companion's accessibility preference should also calm the existing
@@ -710,6 +764,7 @@
     var sec = secById[k.sec];
     var taLines = tamilCoupletLines(k);
     var cardId = options.plain ? "" : ' id="kural-' + k.n + '"';
+    var simpleLabel = options.detail ? t("detail.meaning", "பொருள் · Meaning") : t("block.simple", "Simple meaning");
 
     var enLines =
       '<span class="line">' + escapeHtml(k.en[0]) + "</span>" +
@@ -737,7 +792,7 @@
         "</span>";
 
     return (
-      '<article class="kural-card"' + cardId + ' tabindex="-1">' +
+      '<article class="kural-card' + (options.detail ? " detail-card" : "") + '"' + cardId + ' tabindex="-1">' +
         '<div class="kural-meta">' +
           numMarkup +
           '<span class="kural-chapter"><span lang="ta">' + escapeHtml(ch ? ch.ta : "") + "</span>" +
@@ -767,17 +822,18 @@
         "</div>" +
 
         '<div class="kural-meaning-block">' +
-          '<div class="block-label" style="margin-top:16px;">' + t("block.simple", "Simple meaning") + "</div>" +
+          '<div class="block-label" style="margin-top:16px;">' + simpleLabel + "</div>" +
           '<div class="kural-simple" lang="en">' + highlight(k.s, showQ) + "</div>" +
         "</div>" +
 
+        (options.detail ? "" :
         '<div class="kural-foot">' +
           '<span class="section-tag">' +
             escapeHtml(sec ? sec.ta : "") + " · " + escapeHtml(sec ? sec.en : "") +
           "</span>" +
           navMarkup +
           "<span>திருக்குறள் " + pad(k.n) + "</span>" +
-        "</div>" +
+        "</div>") +
       "</article>"
     );
   }
@@ -858,6 +914,11 @@
         el.classList.toggle("current", el.getAttribute("data-chapter") === String(state.chapter));
       });
     }
+
+    // the book tabs follow whichever book or chapter the reader is in
+    var followSec = state.book !== "all" ? Number(state.book)
+      : state.chapter !== "all" && chById[parseInt(state.chapter, 10)] ? chById[parseInt(state.chapter, 10)].sec : 0;
+    if (followSec && followSec !== activeTab && typeof setTab === "function") setTab(followSec);
   }
 
   function renderChapterIntro() {
@@ -1057,7 +1118,7 @@
     SECTIONS.forEach(function (s) {
       var chs = CHAPTERS.filter(function (c) { return c.sec === s.id; });
       html +=
-        '<div class="map-section">' +
+        '<div class="map-section" data-sec="' + s.id + '"' + (s.id === activeTab ? "" : " hidden") + ">" +
           '<h4 class="map-section-title">' +
             '<span class="map-section-ta" lang="ta">' + escapeHtml(s.ta) + "</span>" +
             '<span class="map-section-en">' + escapeHtml(s.en) + " · " + chs.length + " " +
@@ -1079,6 +1140,89 @@
     syncFilterChrome();
   }
 
+  // ---------- chapter-list screen: book tabs + statistics ----------
+  var SECTION_SHORT = { 1: "அறம்", 2: "பொருள்", 3: "இன்பம்" };
+  var activeTab = 1;
+
+  function pad2(n) { return n < 10 ? "0" + n : String(n); }
+
+  function renderStats() {
+    var grid = document.getElementById("stat-grid");
+    if (!grid) return;
+    var chs = CHAPTERS.filter(function (c) { return c.sec === activeTab; });
+    var iyals = {};
+    chs.forEach(function (c) { iyals[c.iyal] = true; });
+    var kurals = KURALS.filter(function (k) { return k.sec === activeTab; });
+    var themes = {};
+    kurals.forEach(function (k) { themes[k.th] = true; });
+    var read = kurals.filter(function (k) { return journey.read[String(k.n)]; }).length;
+    var visited = chs.filter(function (c) { return journey.chapters[String(c.n)]; }).length;
+    var cards = [
+      [chs.length, "stat.chapters", "அதிகாரங்கள்", "Chapters"],
+      [kurals.length, "stat.kurals", "குறள்கள்", "Couplets"],
+      [Object.keys(iyals).length, "stat.iyals", "இயல்கள்", "Divisions"],
+      [read, "stat.read", "படித்தவை", "Read"],
+      [visited, "stat.visited", "பார்த்தவை", "Visited"],
+      [Object.keys(themes).length, "stat.themes", "தலைப்புகள்", "Themes"],
+    ];
+    grid.innerHTML = cards.map(function (c) {
+      return '<div class="stat-card"><span class="stat-num">' + pad2(c[0]) + "</span>" +
+        '<span class="stat-label" lang="ta">' + escapeHtml(c[2]) + "</span>" +
+        '<span class="stat-label-en" lang="en">' + escapeHtml(c[3]) + "</span></div>";
+    }).join("");
+  }
+
+  function setTab(id, opts) {
+    var sec = parseInt(id, 10);
+    if (!secById[sec]) return;
+    var changed = sec !== activeTab;
+    activeTab = sec;
+    Array.prototype.forEach.call(document.querySelectorAll(".book-tab"), function (tab) {
+      var on = tab.getAttribute("data-tab") === String(sec);
+      tab.setAttribute("aria-selected", String(on));
+      tab.tabIndex = on ? 0 : -1;
+      tab.classList.toggle("active", on);
+    });
+    var panel = document.getElementById("stat-grid");
+    if (panel) panel.setAttribute("aria-labelledby", "tab-" + sec);
+    if (chapterMapBodyEl) {
+      Array.prototype.forEach.call(chapterMapBodyEl.querySelectorAll(".map-section"), function (el) {
+        el.hidden = el.getAttribute("data-sec") !== String(sec);
+      });
+    }
+    renderStats();
+    if (changed && panel) {
+      // replay the entrance transition on the two panels that change
+      [panel, chapterMapBodyEl].forEach(function (el) {
+        if (!el) return;
+        el.classList.remove("tab-swap");
+        void el.offsetWidth;
+        el.classList.add("tab-swap");
+      });
+    }
+    if (opts && opts.focus) {
+      var tabEl = document.getElementById("tab-" + sec);
+      if (tabEl) tabEl.focus();
+    }
+  }
+
+  function bindTabs() {
+    var bar = document.getElementById("book-tabs");
+    if (!bar) return;
+    bar.addEventListener("click", function (e) {
+      var tab = e.target.closest(".book-tab");
+      if (tab) setTab(tab.getAttribute("data-tab"));
+    });
+    bar.addEventListener("keydown", function (e) {
+      var delta = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (e.key === "Home") { e.preventDefault(); setTab(1, { focus: true }); return; }
+      if (e.key === "End") { e.preventDefault(); setTab(3, { focus: true }); return; }
+      if (!delta) return;
+      e.preventDefault();
+      setTab(((activeTab - 1 + delta + 3) % 3) + 1, { focus: true });
+    });
+  }
+
   function renderDaily() {
     if (!dailyCardEl) return;
     var idx = state.dailyIndex % KURALS.length;
@@ -1096,7 +1240,7 @@
     try {
       var y = window.scrollY || document.documentElement.scrollTop || 0;
       if (y < 700) return; // only meaningful once the reader is deep in the list
-      window.sessionStorage.setItem(RESTORE_KEY, JSON.stringify({ y: y, shown: state.shown }));
+      window.sessionStorage.setItem(RESTORE_KEY, JSON.stringify({ y: y, shown: state.shown, view: viewName }));
     } catch (e) { /* private browsing */ }
   }
 
@@ -1108,6 +1252,7 @@
       var data = JSON.parse(raw);
       if (!data || typeof data.y !== "number" || data.y < 700) return;
       state.shown = Math.max(PAGE_SIZE, Number(data.shown) || PAGE_SIZE);
+      setView(data.view === "chapters" ? "chapters" : "home", { keepScroll: true, fromHistory: true });
       render();
       window.setTimeout(function () {
         try { window.scrollTo(0, data.y); } catch (e) { /* jsdom / old engines */ }
@@ -1137,7 +1282,7 @@
     if (!hash && /^#kural-\d+$/.test(location.hash)) return; // keep explicit card links
     if (hash === location.hash) return;
     try {
-      history.replaceState(null, "", hash || location.pathname);
+      history.replaceState(history.state, "", hash || location.pathname);
     } catch (e) { /* file:// or old engine */ }
   }
 
@@ -1276,7 +1421,7 @@
     state.shown = Math.max(PAGE_SIZE, idx + 1 + Math.floor(PAGE_SIZE / 2));
     renderChips();
     render();
-    try { history.replaceState(null, "", "#kural-" + n); } catch (e) { /* ignore */ }
+    try { history.replaceState(history.state, "", "#kural-" + n); } catch (e) { /* ignore */ }
     var el = document.getElementById("kural-" + n);
     safeScrollTo(el, { block: "start" });
     focusSilently(el);
@@ -1356,10 +1501,18 @@
     var k = findKural(focusNumber);
     if (!k || !focusBody) return;
     var ch = chById[k.ch];
-    focusBody.innerHTML = cardHtml(k, { plain: true });
+    focusBody.innerHTML = cardHtml(k, { plain: true, detail: true });
     var label = document.getElementById("focus-kural-label");
     if (label) {
-      label.textContent = (lang === "ta" ? "குறள் #" : "Kural #") + pad(k.n) + (ch ? " · " + ch.en : "");
+      label.textContent = (SECTION_SHORT[k.sec] || "") + " › " + (ch ? ch.ta : "");
+    }
+    var counter = document.getElementById("focus-counter");
+    if (counter) counter.textContent = k.n + " / " + KURALS.length;
+    Array.prototype.forEach.call(focusDialog.querySelectorAll("[data-kural-action]"), function (btn) {
+      btn.setAttribute("data-kural", String(k.n));
+    });
+    if (window.TamilStoicApp && typeof window.TamilStoicApp.refreshActionState === "function") {
+      window.TamilStoicApp.refreshActionState();
     }
     syncListenLabels(); // focus button must show Stop if this kural is playing
   }
@@ -2029,7 +2182,7 @@
 
       if (e.key === "/") {
         e.preventDefault();
-        if (searchEl) { focusSilently(searchEl); searchEl.select && searchEl.select(); }
+        if (searchEl) { setView("chapters", { keepScroll: true }); focusSilently(searchEl); searchEl.select && searchEl.select(); }
       } else if (e.key === "?") {
         e.preventDefault();
         openPanel(document.getElementById("shortcuts-dialog"), document.activeElement);
@@ -2070,7 +2223,70 @@
     });
   }
 
+  // ---------- bottom navigation, back arrow, in-page links, history ----------
+  function closeOpenDialogs() {
+    Array.prototype.forEach.call(document.querySelectorAll("dialog[open]"), function (d) { closePanel(d); });
+  }
+
+  function mountNavCopy() {
+    // The reader is a top-layer dialog, so it carries its own copy of the bar.
+    var nav = document.getElementById("bottom-nav");
+    var slot = document.querySelector("[data-nav-slot]");
+    if (!nav || !slot) return;
+    var copy = nav.cloneNode(true);
+    copy.removeAttribute("id");
+    copy.classList.add("bottom-nav-inline");
+    Array.prototype.forEach.call(copy.querySelectorAll("[id]"), function (el) {
+      if (el.classList.contains("saved-count")) el.parentNode.removeChild(el);
+      else el.removeAttribute("id");
+    });
+    slot.appendChild(copy);
+  }
+
+  function bindNavigation() {
+    mountNavCopy();
+    document.addEventListener("click", function (e) {
+      var navBtn = e.target.closest && e.target.closest("[data-nav]");
+      if (navBtn) {
+        var type = navBtn.getAttribute("data-nav");
+        if (type === "chapters") {
+          closeOpenDialogs();
+          setView("chapters");
+        } else if (type === "search") {
+          closeOpenDialogs();
+          openPalette(navBtn);
+        } else if (type === "settings") {
+          var cfg = document.getElementById("reader-settings-open");
+          if (cfg) cfg.click();
+        } else if (type === "saved" && navBtn.id !== "saved-open") {
+          var real = document.getElementById("saved-open");
+          if (real) real.click();
+        }
+        return;
+      }
+      var back = e.target.closest && e.target.closest("#chapters-back");
+      if (back) {
+        if (history.state && history.state.tsView === "chapters") history.back();
+        else setView("home");
+        return;
+      }
+      var link = e.target.closest && e.target.closest('a[href^="#"]');
+      if (link && link.getAttribute("href").length > 1) {
+        var target = document.getElementById(link.getAttribute("href").slice(1));
+        var owner = viewForElement(target);
+        if (owner && owner !== viewName) setView(owner, { keepScroll: true });
+      }
+    });
+    window.addEventListener("popstate", function (e) {
+      var inBrowse = /^#(kural|chapter|book|situation|theme)-/.test(location.hash) ||
+        !!(e.state && e.state.tsView === "chapters");
+      setView(inBrowse ? "chapters" : "home", { keepScroll: true, fromHistory: true });
+    });
+  }
+
   if (chipsEl) bindChipEvents();
+  bindTabs();
+  bindNavigation();
   bindControlEvents();
   bindSectionEvents();
   bindAppActions();
@@ -2102,6 +2318,7 @@
   renderBooks();
   renderSituations();
   renderChapterMap();
+  setTab(activeTab);
   renderDaily();
   render();
   applyLanguage(); // static markup + re-renders dynamic strings via callbacks
@@ -2175,6 +2392,8 @@
     }
   }
 
+  booting = false;
+
   // Re-render every dynamic surface when the interface language changes.
   window.TamilStoicI18n.onChange(function () {
     renderChapterOptions();
@@ -2182,6 +2401,7 @@
     renderBooks();
     renderSituations();
     renderChapterMap();
+    setTab(activeTab);
     renderDaily();
     render();
     updateJourneyUi();

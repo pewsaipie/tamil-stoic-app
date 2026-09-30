@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>திருக்குறள் · Thirukkural — Tamil Stoic</title>
   <meta name="description" content="A calm, installable companion for reading, saving, and sharing Thirukkural in Tamil with a plain-English meaning." />
-  <meta name="theme-color" content="#26614f" />
+  <meta name="theme-color" content="#3A2A1A" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Thirukkural" />
@@ -29,37 +29,35 @@
 
   <!-- Self-hosted fonts: offline-complete, no third-party runtime requests -->
   <link rel="stylesheet" href="css/fonts.css" />
-  <link rel="stylesheet" href="css/styles.css?v=6" />
+  <link rel="stylesheet" href="css/styles.css?v=7" />
 </head>
-<body>
+<body data-view="home">
   <a class="skip-link" href="#daily" data-i18n="skip.daily">Skip to today's Kural</a>
   <a class="skip-link skip-link-browse" href="#browse" data-i18n="skip.browse">Skip to search and browse</a>
 
-  <header class="site-header">
-    <div class="hero-band" aria-hidden="true">
-      <img src="assets/img/hero-temple.svg" alt="" class="hero-art" />
+  <!-- Top bar (shared by every screen) -->
+  <div class="top-bar">
+    <button type="button" id="reader-settings-open" class="top-btn" aria-haspopup="dialog" aria-label="Reading settings" data-i18n-aria="action.settings">
+      <svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <button type="button" id="palette-open" class="top-btn" aria-haspopup="dialog" aria-label="Search and commands" data-i18n-aria="action.palette">
+      <svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><circle cx="11" cy="11" r="6.5"/><path d="M20.5 20.5 16 16"/></svg>
+    </button>
+  </div>
+
+  <header class="site-header view-home">
+    <div class="hero-pot" aria-hidden="true">
+      <img src="assets/img/sangam-pot.svg" alt="" class="hero-art" width="240" height="204" />
     </div>
-    <span class="eyebrow" data-i18n="header.eyebrow">Tamil Stoic · தமிழ் ஸ்டோயிக்</span>
     <h1 lang="ta">திருக்குறள்</h1>
-    <p class="subtitle" data-i18n="header.subtitle">Thirukkural — couplets of Thiruvalluvar</p>
+    <p class="subtitle" lang="ta">அறம் • பொருள் • இன்பம்</p>
     <p class="tagline" data-i18n-html="header.tagline">
       One couplet a day. Three books to walk through. A door for the situation
       you're in right now — and every verse in <b>Tamil</b> with a plain-English meaning.
     </p>
-    <div class="header-actions" aria-label="Reader tools" data-i18n-aria="header.tools">
-      <button type="button" id="reader-settings-open" class="utility-btn" aria-haspopup="dialog">
-        <span aria-hidden="true">Aa</span> <span data-i18n="action.settings">Reading settings</span>
-      </button>
-      <button type="button" id="saved-open" class="utility-btn utility-btn-saved" aria-haspopup="dialog" aria-label="Open saved Kurals" data-i18n-aria="action.openSaved">
-        <span aria-hidden="true">♡</span> <span data-i18n="action.saved">Saved</span> <span id="saved-count" class="saved-count" aria-live="polite">0</span>
-      </button>
-      <button type="button" id="palette-open" class="utility-btn" aria-haspopup="dialog">
-        <span aria-hidden="true">⌕</span> <span data-i18n="action.palette">Search &amp; commands</span> <kbd class="kbd-hint" aria-hidden="true">⌘K</kbd>
-      </button>
-    </div>
   </header>
 
-  <aside class="onboarding-card" id="onboarding-card" hidden aria-label="New here?" data-i18n-aria="onboard.cardLabel">
+  <aside class="onboarding-card view-home" id="onboarding-card" hidden aria-label="New here?" data-i18n-aria="onboard.cardLabel">
     <div class="onboarding-card-inner">
       <span class="onboarding-mark" aria-hidden="true">✦</span>
       <p data-i18n="onboard.cardText">New to Tamil Stoic? Take the 30-second tour — daily verse, private saves, offline reading.</p>
@@ -70,7 +68,7 @@
     </div>
   </aside>
 
-  <aside class="install-card" id="install-card" hidden aria-label="Install Tamil Stoic">
+  <aside class="install-card view-home" id="install-card" hidden aria-label="Install Tamil Stoic">
     <div class="install-card-inner">
       <span class="install-mark" aria-hidden="true">↓</span>
       <p id="install-message"></p>
@@ -90,7 +88,7 @@
   </aside>
 
   <!-- Today's kural -->
-  <section class="daily" id="daily" aria-labelledby="daily-title" tabindex="-1">
+  <section class="daily view-home" id="daily" aria-labelledby="daily-title" tabindex="-1">
     <div class="daily-inner">
       <div class="daily-eyebrow">
         <span class="dot" aria-hidden="true"></span>
@@ -119,7 +117,7 @@
   </section>
 
   <!-- Three Books -->
-  <section class="books" aria-labelledby="books-title" tabindex="-1">
+  <section class="books view-home" aria-labelledby="books-title" tabindex="-1">
     <div class="section-head">
       <h2 id="books-title" data-i18n="books.title">The three books · முப்பால்</h2>
       <p class="section-sub" data-i18n="books.sub">Thirukkural is arranged in three books. Tap one to read it through.</p>
@@ -128,7 +126,7 @@
   </section>
 
   <!-- Situations -->
-  <section class="situations" aria-labelledby="situations-title" tabindex="-1">
+  <section class="situations view-home" aria-labelledby="situations-title" tabindex="-1">
     <div class="section-head">
       <h2 id="situations-title" data-i18n="situations.title">Open the right door · சூழ்நிலை</h2>
       <p class="section-sub" data-i18n="situations.sub">Where are you today? Pick the door that fits, and let Valluvar speak to it.</p>
@@ -137,9 +135,15 @@
   </section>
 
   <!-- Browse -->
-  <section class="browse" id="browse" aria-labelledby="browse-title" tabindex="-1">
+  <section class="browse view-chapters" id="browse" aria-labelledby="browse-title" tabindex="-1">
     <div class="browse-head">
-      <h2 id="browse-title" data-i18n="browse.title">Browse · அதிகாரங்கள்</h2>
+      <button type="button" class="screen-back" id="chapters-back" aria-label="Back to home" data-i18n-aria="nav.backHome">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M20 12H4M10.5 5.5 4 12l6.5 6.5"/></svg>
+      </button>
+      <h2 id="browse-title" lang="ta">அத்தியாயங்கள்</h2>
+      <button type="button" class="screen-action" data-nav="settings" aria-haspopup="dialog" aria-label="Reading settings" data-i18n-aria="action.settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
       <p class="section-sub" data-i18n="browse.sub">
         Search a number or word, pick a chapter, or wander.
       </p>
@@ -150,6 +154,19 @@
         </svg>
         <span class="journey-text" id="journey-text" data-i18n="journey.empty">Your reading journey begins with one couplet.</span>
       </div>
+    </div>
+
+    <div class="book-tabs" id="book-tabs" role="tablist" aria-label="Three books" data-i18n-aria="tabs.aria">
+      <button type="button" role="tab" class="book-tab" id="tab-1" data-tab="1" aria-selected="true" aria-controls="stat-grid" lang="ta">அறம்</button>
+      <button type="button" role="tab" class="book-tab" id="tab-2" data-tab="2" aria-selected="false" aria-controls="stat-grid" tabindex="-1" lang="ta">பொருள்</button>
+      <button type="button" role="tab" class="book-tab" id="tab-3" data-tab="3" aria-selected="false" aria-controls="stat-grid" tabindex="-1" lang="ta">இன்பம்</button>
+    </div>
+    <div class="stat-grid" id="stat-grid" role="tabpanel" aria-labelledby="tab-1"></div>
+
+    <!-- Chapter map -->
+    <div class="chapter-map" id="chapter-map" aria-label="All 133 chapters">
+      <h3 class="map-title" data-i18n="map.title">All chapters · அனைத்து அதிகாரங்கள்</h3>
+      <div id="chapter-map-body"></div>
     </div>
 
     <div class="controls" id="controls">
@@ -198,12 +215,14 @@
       <span data-i18n="list.loading">Loading more…</span>
     </div>
 
-    <!-- Chapter map -->
-    <div class="chapter-map" id="chapter-map" aria-label="All 133 chapters">
-      <h3 class="map-title" data-i18n="map.title">All chapters · அனைத்து அதிகாரங்கள்</h3>
-      <div id="chapter-map-body"></div>
-    </div>
   </section>
+
+  <!-- Bottom navigation (fixed; a copy lives inside the kural reader) -->
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Main" data-i18n-aria="nav.main">
+    <button type="button" class="nav-item" data-nav="chapters"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1" class="dot"/><circle cx="4.5" cy="12" r="1" class="dot"/><circle cx="4.5" cy="18" r="1" class="dot"/></svg><span class="nav-label" lang="ta">அத்தியாயங்கள்</span></button>
+    <button type="button" class="nav-item" data-nav="search"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><circle cx="11" cy="11" r="6.5"/><path d="M20.5 20.5 16 16"/></svg><span class="nav-label" lang="ta">தேடல்</span></button>
+    <button type="button" class="nav-item" data-nav="saved" id="saved-open" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M6.5 3.5h11v17L12 16.5l-5.5 4z"/></svg><span class="nav-label" lang="ta">புத்தகக் குறிப்பு</span><span id="saved-count" class="saved-count" aria-live="polite">0</span></button>
+  </nav>
 
   <button type="button" id="back-to-top" class="back-to-top" hidden>
     <span aria-hidden="true">↑</span>
@@ -264,7 +283,7 @@
         <h3 id="colour-scheme-title" data-i18n="settings.colour">Colour</h3>
         <div class="setting-choice-group" role="group" aria-label="Colour scheme" data-i18n-aria="settings.colourAria">
           <button type="button" data-preference="color-scheme" data-value="light" data-i18n="settings.colour.light">Palm-leaf day</button>
-          <button type="button" data-preference="color-scheme" data-value="dark" data-i18n="settings.colour.dark">Temple night</button>
+          <button type="button" data-preference="color-scheme" data-value="dark" data-i18n="settings.colour.dark">Sangam clay</button>
           <button type="button" data-preference="color-scheme" data-value="system" data-i18n="settings.colour.system">Follow system</button>
         </div>
       </section>
@@ -290,15 +309,24 @@
   </dialog>
 
   <dialog class="companion-dialog focus-dialog" id="focus-dialog" aria-labelledby="focus-kural-label">
-    <div class="dialog-shell">
-      <button type="button" class="dialog-close" data-close-dialog aria-label="Close reader" data-i18n-aria="focus.close">×</button>
-      <p class="dialog-eyebrow" id="focus-kural-label">Kural</p>
+    <div class="dialog-shell detail-shell">
+      <header class="detail-header">
+        <button type="button" class="detail-back" data-close-dialog aria-label="Close reader" data-i18n-aria="focus.close"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M20 12H4M10.5 5.5 4 12l6.5 6.5"/></svg></button>
+        <p class="detail-crumb" id="focus-kural-label" lang="ta">அறம் › கடவுள் வாழ்த்து</p>
+        <span class="detail-counter" id="focus-counter">1 / 1330</span>
+      </header>
       <div id="focus-body" class="focus-body"></div>
-      <div class="focus-nav">
-        <button type="button" id="focus-prev" class="dialog-secondary"><span aria-hidden="true">←</span> <span data-i18n="nav.prev">Previous</span></button>
-        <button type="button" id="focus-listen" class="dialog-secondary"><span aria-hidden="true">♪</span> <span data-i18n="nav.listen">Listen</span></button>
-        <button type="button" id="focus-next" class="dialog-secondary"><span data-i18n="nav.next">Next</span> <span aria-hidden="true">→</span></button>
+      <div class="detail-listen-row">
+        <button type="button" id="focus-listen" class="detail-listen"><span aria-hidden="true">♪</span> <span data-i18n="nav.listen">Listen</span></button>
       </div>
+      <div class="focus-nav detail-actions" role="group" aria-label="Kural actions" data-i18n-aria="detail.actions">
+        <button type="button" id="focus-prev" class="detail-act" aria-label="Previous kural" data-i18n-aria="card.prevAria"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M20 12H4M10.5 5.5 4 12l6.5 6.5"/></svg></button>
+        <button type="button" id="focus-save" class="detail-act" data-kural-action="save" data-detail-save aria-pressed="false" aria-label="Save this kural" data-i18n-aria="detail.save"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg></button>
+        <button type="button" id="focus-reflect" class="detail-act" data-kural-action="reflect" aria-label="Write a private note" data-i18n-aria="detail.note"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M6.5 3.5h11v17L12 16.5l-5.5 4z"/></svg></button>
+        <button type="button" id="focus-share" class="detail-act" data-kural-action="share" aria-label="Share this kural" data-i18n-aria="detail.share"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
+        <button type="button" id="focus-next" class="detail-act" aria-label="Next kural" data-i18n-aria="card.nextAria"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path d="M4 12h16M13.5 5.5 20 12l-6.5 6.5"/></svg></button>
+      </div>
+      <div class="bottom-nav-slot" data-nav-slot></div>
     </div>
   </dialog>
 
@@ -421,6 +449,7 @@
             <li><b>Inter</b> · The Inter Project Authors · <a href="https://github.com/rsms/inter">source</a></li>
             <li><b>EB Garamond</b> · Georg A. Duffner and the EB Garamond Project Authors · <a href="https://github.com/octaviopardo/EBGaramond12">source</a></li>
             <li><b>Noto Serif Tamil</b> · The Noto Project Authors · <a href="https://github.com/notofonts/tamil">source</a></li>
+            <li><b>Noto Sans Tamil</b> · The Noto Project Authors · <a href="https://github.com/notofonts/tamil">source</a></li>
           </ul>
           <a class="credits-link" href="https://fontsource.org/" data-i18n="credits.fonts.fontsource">About Fontsource →</a>
           <a class="credits-link credits-link-secondary" href="assets/licenses/OFL-1.1.txt" data-i18n="credits.fonts.license">Read the font license and copyright notices</a>
@@ -437,7 +466,7 @@
     </div>
   </section>
 
-  <footer class="site-footer">
+  <footer class="site-footer view-home">
     <div class="footer-inner">
       <p class="footer-ta" lang="ta"><b>யாதனின் யாதனின் நீங்கியான் நோதல் அதனின் யாதனின் இல்லன் நலம்.</b> (குறள் 360)</p>
       <p data-i18n-html="footer.credits">
@@ -453,9 +482,9 @@
 
   <!-- ?v= busts browser/HTTP cache after each deploy; sw.js precaches the
        same versioned URLs, so offline installs stay in sync with the site. -->
-  <script src="data/kurals.js?v=6" defer></script>
-  <script src="js/storage.js?v=6" defer></script>
-  <script src="js/app.js?v=6" defer></script>
-  <script src="js/companion.js?v=6" defer></script>
+  <script src="data/kurals.js?v=7" defer></script>
+  <script src="js/storage.js?v=7" defer></script>
+  <script src="js/app.js?v=7" defer></script>
+  <script src="js/companion.js?v=7" defer></script>
 </body>
 </html>

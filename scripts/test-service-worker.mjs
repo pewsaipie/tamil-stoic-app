@@ -135,13 +135,13 @@ for (const src of scriptSrcs) {
 }
 const styleHrefs = [...indexHtml.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map((m) => m[1]);
 const versionedStyles = styleHrefs.filter((href) => /[?&]v=/.test(href));
-assert(versionedStyles.includes("css/styles.css?v=6"), "changed stylesheet has a cache-busted URL");
+assert(versionedStyles.includes("css/styles.css?v=7"), "changed stylesheet has a cache-busted URL");
 for (const href of versionedStyles) {
   assert(source.includes('"./' + href + '"'), "sw.js precaches the versioned stylesheet ./" + href);
 }
 assert(
-  source.includes("CACHE_PREFIX + \"v6-open-source-credits\"") || /CACHE_NAME\s*=\s*CACHE_PREFIX \+ "v6-/.test(source),
-  "cache name bumped for the open-source credits release"
+  /CACHE_NAME\s*=\s*CACHE_PREFIX \+ "v7-sangam-clay"/.test(source),
+  "cache name bumped for the Sangam clay redesign"
 );
 
 if (failed) {

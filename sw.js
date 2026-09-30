@@ -5,7 +5,7 @@
  * the reader's device and are never sent through this worker.
  */
 const CACHE_PREFIX = "tamil-stoic-";
-const CACHE_NAME = CACHE_PREFIX + "v6-open-source-credits";
+const CACHE_NAME = CACHE_PREFIX + "v7-sangam-clay";
 
 const APP_ASSETS = [
   "./",
@@ -17,19 +17,19 @@ const APP_ASSETS = [
   "./assets/licenses/OFL-1.1.txt",
   "./manifest.webmanifest",
   "./css/styles.css",
-  "./css/styles.css?v=6",
+  "./css/styles.css?v=7",
   "./css/fonts.css",
   "./data/kurals.js",
   "./js/storage.js",
   "./js/app.js",
   "./js/companion.js",
-  // The exact versioned URLs index.html requests (?v=6). Precaching both
+  // The exact versioned URLs index.html requests (?v=7). Precaching both
   // shapes means the shell works offline whether it was loaded fresh or
   // from an older cached copy.
-  "./data/kurals.js?v=6",
-  "./js/storage.js?v=6",
-  "./js/app.js?v=6",
-  "./js/companion.js?v=6",
+  "./data/kurals.js?v=7",
+  "./js/storage.js?v=7",
+  "./js/app.js?v=7",
+  "./js/companion.js?v=7",
   "./assets/icon.svg",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
@@ -37,6 +37,7 @@ const APP_ASSETS = [
   "./assets/img/rosette.svg",
   "./assets/img/kolam-strip.svg",
   "./assets/img/hero-temple.svg",
+  "./assets/img/sangam-pot.svg",
   "./assets/img/ola-texture.jpg",
   "./assets/img/granite-texture.jpg",
   "./assets/fonts/inter-latin-400-normal.woff2",
@@ -56,7 +57,10 @@ const APP_ASSETS = [
   "./assets/fonts/noto-serif-tamil-tamil-700-normal.woff2",
   "./assets/fonts/noto-serif-tamil-latin-400-normal.woff2",
   "./assets/fonts/noto-serif-tamil-latin-600-normal.woff2",
-  "./assets/fonts/noto-serif-tamil-latin-700-normal.woff2"
+  "./assets/fonts/noto-serif-tamil-latin-700-normal.woff2",
+  "./assets/fonts/noto-sans-tamil-tamil-400-normal.woff2",
+  "./assets/fonts/noto-sans-tamil-tamil-600-normal.woff2",
+  "./assets/fonts/noto-sans-tamil-tamil-700-normal.woff2"
 ];
 
 self.addEventListener("install", (event) => {
