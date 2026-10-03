@@ -12,6 +12,7 @@ import {
   BookmarkCheck,
   ChevronLeft,
   ChevronRight,
+  ImageDown,
   PenLine,
   Share2,
 } from 'lucide-react'
@@ -26,6 +27,7 @@ import { GlassCard } from '../components/ui/GlassCard'
 import { Button } from '../components/ui/Button'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { shareKural } from '../lib/share'
+import { shareKuralCard } from '../lib/shareCard'
 import { LAYER_LABELS } from '../lib/types'
 import { themeById } from '../lib/search'
 
@@ -208,6 +210,22 @@ export function KuralView() {
             aria-label={`Share kural ${kural.n}`}
           >
             Share
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<ImageDown size={17} strokeWidth={1.5} />}
+            aria-label={`Share kural ${kural.n} as an image`}
+            onClick={() => {
+              pushToast('Preparing your bilingual share card…', 'info')
+              void shareKuralCard({ kural, chapter }).then((outcome) => {
+                if (outcome === 'downloaded') pushToast('Your share card is ready ✓', 'success')
+                if (outcome === 'failed') pushToast('Could not create a share card here', 'danger')
+              })
+            }}
+          >
+            Card
           </Button>
         </div>
       </GlassCard>

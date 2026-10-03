@@ -253,13 +253,36 @@ check(
   'the action row renders',
 )
 
+/* ---------- the couplet line contract in the DOM (c9) ---------- */
+console.log('couplet word contract across the corpus sample:')
+const corpusKurals = JSON.parse(corpusJson).kurals
+const words = (value) => (value ?? '').trim().split(/\s+/).filter(Boolean).length
+for (const number of [1, 42, 82, 976]) {
+  const kural = corpusKurals.find((k) => k.n === number)
+  await navigate(`#/kural/${number}`, () => document.querySelector(`[data-kural="${number}"]`) !== null)
+  const verse = document.querySelector(`[data-kural="${number}"]`)
+  const lines = [...(verse?.querySelectorAll('[data-verse-line]') ?? [])]
+  check(lines.length === 2, `kural ${number}: exactly two lines are rendered`)
+  check(
+    lines[0]?.textContent?.trim() === kural.ta[0].replace(/\s+/g, ' ').trim() &&
+      lines[1]?.textContent?.trim() === kural.ta[1].replace(/\s+/g, ' ').trim(),
+    `kural ${number}: line 1 holds the முதல் அடி and line 2 the ஈற்றடி, in order`,
+  )
+  check(
+    words(lines[0]?.textContent) === words(kural.ta[0]) && words(lines[1]?.textContent) === words(kural.ta[1]),
+    `kural ${number}: ${words(kural.ta[0])} words over ${words(kural.ta[1])} — no word moved across the break`,
+  )
+}
+
 /* ---------- the accessibility-independence rule ---------- */
+await navigate('#/kural/151', readerReady)
 console.log('couplet structure under accessibility settings:')
 const stylesheet = fs.readFileSync(path.join(root, 'src', 'styles', 'global.css'), 'utf8')
+const verse151 = () => [...document.querySelectorAll('[data-kural="151"] [data-verse-line]')].map((node) => node.textContent?.trim())
 for (const setting of ['large', 'x-large']) {
   window.document.documentElement.dataset.fontSize = setting
   await wait(30)
-  const lines = [...document.querySelectorAll('[data-verse-line]')].map((node) => node.textContent?.trim())
+  const lines = verse151()
   check(
     lines[0] === kural151.ta[0] && lines[1] === kural151.ta[1],
     `text size "${setting}" changes type, not the couplet's two lines`,
@@ -267,11 +290,32 @@ for (const setting of ['large', 'x-large']) {
 }
 window.document.documentElement.dataset.lineSpacing = 'relaxed'
 await wait(30)
-const relaxedLines = [...document.querySelectorAll('[data-verse-line]')].map((node) => node.textContent?.trim())
+const relaxedLines = verse151()
 check(
   relaxedLines[0] === kural151.ta[0] && relaxedLines[1] === kural151.ta[1],
   'relaxed line spacing changes type, not the couplet',
 )
+
+// An exception couplet must hold its split under every type setting as well.
+await navigate('#/kural/42', () => document.querySelector('[data-kural="42"]') !== null)
+for (const [size, spacing] of [
+  ['large', 'normal'],
+  ['x-large', 'normal'],
+  ['x-large', 'relaxed'],
+  ['normal', 'relaxed'],
+]) {
+  window.document.documentElement.dataset.fontSize = size
+  window.document.documentElement.dataset.lineSpacing = spacing
+  await wait(20)
+  const lines = [...document.querySelectorAll('[data-kural="42"] [data-verse-line]')].map((node) => node.textContent?.trim())
+  check(
+    lines[0] === 'துறந்தார்க்கும் துவ்வாதவர்க்கும் இறந்தார்க்கும்' && lines[1] === 'இல்வாழ்வான் என்பான் துணை',
+    `kural 42 keeps its standard 3 + 3 split at ${size} / ${spacing}`,
+  )
+}
+delete window.document.documentElement.dataset.fontSize
+delete window.document.documentElement.dataset.lineSpacing
+await navigate('#/kural/151', readerReady)
 check(
   stylesheet.includes("html[data-font-size='large']") && stylesheet.includes("html[data-line-spacing='relaxed']"),
   'the type settings are expressed as variables, never as a line split',

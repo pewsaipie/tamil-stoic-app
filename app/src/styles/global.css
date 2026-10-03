@@ -225,6 +225,16 @@
     font-size: var(--verse-size-focus);
   }
 
+  /* One அடி per block, always. The four-word top line and the three-word bottom
+     line are separate blocks that never re-flow into each other; `balance` only
+     tidies the ragged edge when a phone wraps a line inside itself. */
+  .verse__line {
+    display: block;
+    text-wrap: balance;
+    /* No hyphenation, no word-breaking across the couplet's two lines. */
+    hyphens: none;
+  }
+
   .transliteration {
     font-family: var(--font-ui);
     font-size: var(--translit-size);

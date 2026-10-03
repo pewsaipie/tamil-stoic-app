@@ -11,6 +11,7 @@
  * order, on every surface.
  */
 import type { Kural } from '../../lib/types'
+import { coupletLines } from '../../lib/couplet'
 import { cn } from '../../lib/cn'
 
 export interface KuralVerseProps {
@@ -21,17 +22,20 @@ export interface KuralVerseProps {
 }
 
 export function KuralVerse({ kural, size = 'card', className }: KuralVerseProps) {
+  // The one and only place a couplet becomes lines — see lib/couplet.ts.
+  const [top, bottom] = coupletLines(kural)
+
   return (
     <div
       className={cn('verse', size === 'focus' && 'verse--focus', className)}
       lang="ta"
       data-kural={kural.n}
     >
-      <span className="block" data-verse-line="1">
-        {kural.ta[0]}
+      <span className="verse__line" data-verse-line="1">
+        {top}
       </span>
-      <span className="block" data-verse-line="2">
-        {kural.ta[1]}
+      <span className="verse__line" data-verse-line="2">
+        {bottom}
       </span>
     </div>
   )

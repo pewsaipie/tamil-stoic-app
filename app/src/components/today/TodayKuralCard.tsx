@@ -5,7 +5,7 @@
  * exactly the layers chosen in Reading settings.
  */
 import { motion } from 'framer-motion'
-import { Bookmark, BookmarkCheck, Share2, Sparkles } from 'lucide-react'
+import { Bookmark, BookmarkCheck, ImageDown, Share2, Sparkles } from 'lucide-react'
 import { GlassCard } from '../ui/GlassCard'
 import { KuralVerse } from '../kural/KuralVerse'
 import { Button } from '../ui/Button'
@@ -14,6 +14,7 @@ import { useReaderStore, selectIsSaved } from '../../store/appStore'
 import { LAYER_LABELS, type Chapter, type Kural, type Section } from '../../lib/types'
 import { cn } from '../../lib/cn'
 import { useT } from '../../i18n'
+import { shareKuralCard } from '../../lib/shareCard'
 import { ListenButton } from '../kural/ListenButton'
 
 export interface TodayKuralCardProps {
@@ -24,12 +25,15 @@ export interface TodayKuralCardProps {
   onShare: () => void
 }
 
+
+
 export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: TodayKuralCardProps) {
   const layers = useReaderStore((state) => state.layers)
   const toggleSaved = useReaderStore((state) => state.toggleSaved)
   const saved = useReaderStore(selectIsSaved(kural.n))
   const reducedMotion = useReducedMotion()
   const t = useT()
+  const pushToast = useReaderStore((state) => state.pushToast)
 
 
   return (
@@ -106,6 +110,21 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
           icon={<Share2 size={18} strokeWidth={1.5} />}
         >
           Share
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={() => {
+            pushToast('Preparing your bilingual share card…', 'info')
+            void shareKuralCard({ kural, chapter }).then((outcome) => {
+              if (outcome === 'downloaded') pushToast('Your share card is ready ✓', 'success')
+              if (outcome === 'failed') pushToast('Could not create a share card here', 'danger')
+            })
+          }}
+          aria-label={`Share Kural ${kural.n} as an image`}
+          icon={<ImageDown size={18} strokeWidth={1.5} />}
+        >
+          Card
         </Button>
 
         <Button
