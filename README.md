@@ -13,6 +13,21 @@ The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
 
 ### Features
 
+> **The live site is the React PWA in [`app/`](app/)** — React 18 + TypeScript, built by
+> Vite, published to GitHub Pages by `.github/workflows/deploy.yml`, with `npm test`
+> (couplets, intent model, speech, render + axe, PWA contract) gating the deploy. The
+> original dependency-free reader is still in the repository as the parity reference
+> (`index.html`, `js/`) and is no longer what ships.
+
+- **Ask Valluvar (வள்ளுவரைக் கேள்)** — describe what you are going through, in Tamil or
+  Tanglish, and an **on-device** classifier (lexicon + Naive Bayes, 38 intents, 48.5 KB)
+  answers with a couplet from the chapter that speaks to it. No account, no API key, no
+  network call; support phrases route to Tele-MANAS 14416, KIRAN and findahelpline.com
+  before anything else. Model card: [docs/ask-valluvar.md](docs/ask-valluvar.md)
+- **The standard couplet layout, always** — every one of the 1,330 couplets renders as
+  the முதல் அடி on top and the ஈற்றடி below, four words over three in 1,301 of them, the
+  standard 4 சீர்/3 சீர் split in the 29 documented exceptions, and **no accessibility
+  setting changes the split**. Contract: [docs/couplet-line-contract.md](docs/couplet-line-contract.md)
 - **All 1,330 kurals**, lazily rendered 24 at a time (smooth infinite scroll, fast searches)
 - **Chapter browser** — every one of the 133 அதிகாரங்கள், grouped by பால் (section), with a
   data-derived intro card (range + themes) whenever a chapter is selected
@@ -38,7 +53,7 @@ The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
   transliterated couplet instead of staying silent, and says so once in a toast; the
   original Tamil is used automatically as soon as a `ta` voice appears.
 - **Tamil interface** — full தமிழ் UI mode via Reading settings (verse layers independent)
-- Deep-linkable cards (`#kural-151`), mobile-friendly, no build step, no runtime dependencies
+- Deep-linkable cards (`#kural-151`), installable on every platform, no runtime services
 - **Installable PWA** — add it to a phone home screen and read the full library offline
   after the first visit, fonts and textures included (self-hosted, no CDN)
 - **Private saved Kurals and reflections** — stored only on the reader's device, with no
@@ -54,7 +69,17 @@ The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
 
 ### Run it
 
-Static site — open `index.html` directly, or serve the folder:
+The reader is the React app:
+
+```bash
+cd app
+npm ci
+npm run dev        # http://localhost:5173  (generates the corpus + intent model first)
+npm run build      # static bundle in app/dist, published to Pages
+```
+
+The original static reader (no build step) still runs from the repository root, and is
+kept as the parity reference the React app was verified against:
 
 ```bash
 python3 -m http.server 8000
@@ -62,6 +87,17 @@ python3 -m http.server 8000
 ```
 
 ### Checks
+
+The React app is gated by its own suite (this is what CI runs, in `app/`):
+
+```bash
+cd app
+npm test     # assets + corpus + tokens + couplet contract + intent model + reader
+             # + speech personas + render/axe + build + PWA contract
+npm run train:intent   # retrain and re-evaluate the Ask Valluvar model
+```
+
+The original reader's checks still run from the repository root:
 
 ```bash
 npm install --no-save jsdom axe-core
