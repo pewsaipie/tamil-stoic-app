@@ -5,7 +5,7 @@
  * it is loaded through a dynamic import from HeroCanvas so the ~135 KB library
  * never touches the first paint.
  */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { AGED_LEAF_FRAGMENT, AGED_LEAF_VERTEX } from './shaders/agedLeaf'
@@ -68,7 +68,6 @@ function useHeroColors(): LeafColors {
 function LeafPlane({ frozen }: { frozen: boolean }) {
   const { size } = useThree()
   const colors = useHeroColors()
-  const material = useRef<THREE.ShaderMaterial>(null)
 
   const uniforms = useMemo(
     () => ({
@@ -105,7 +104,6 @@ function LeafPlane({ frozen }: { frozen: boolean }) {
     <mesh frustumCulled={false}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
-        ref={material}
         uniforms={uniforms}
         vertexShader={AGED_LEAF_VERTEX}
         fragmentShader={AGED_LEAF_FRAGMENT}
