@@ -2,8 +2,8 @@
  * HeroScene — the Three.js side of the hero background.
  *
  * This module is the *only* place that imports three / @react-three/fiber, and
- * it is loaded through a dynamic import from HeroCanvas so the large Three.js
- * dependency graph never touches the first paint.
+ * it is loaded through a dynamic import from HeroCanvas so the ~135 KB library
+ * never touches the first paint.
  */
 import { useEffect, useMemo, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
@@ -66,7 +66,7 @@ function useHeroColors(): LeafColors {
 }
 
 function LeafPlane({ frozen }: { frozen: boolean }) {
-  const { size, invalidate } = useThree()
+  const { size } = useThree()
   const colors = useHeroColors()
 
   const uniforms = useMemo(
@@ -87,16 +87,12 @@ function LeafPlane({ frozen }: { frozen: boolean }) {
     uniforms.uColorB.value.set(colors.b)
     uniforms.uColorC.value.set(colors.c)
     uniforms.uEmber.value = colors.ember
-    // A frozen scene uses on-demand rendering, so explicitly redraw after a
-    // theme change instead of waiting for an animation frame that won't come.
-    invalidate()
-  }, [colors, invalidate, uniforms])
+  }, [colors, uniforms])
 
   // Keep the shader's aspect correction in step with the canvas size.
   useEffect(() => {
     uniforms.uResolution.value.set(size.width, size.height)
-    invalidate()
-  }, [invalidate, size, uniforms])
+  }, [size, uniforms])
 
   useFrame((_, delta) => {
     // Reduced motion freezes the material rather than slowing it: the canvas
