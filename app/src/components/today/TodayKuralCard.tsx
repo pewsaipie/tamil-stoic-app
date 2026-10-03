@@ -54,19 +54,22 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
       </p>
 
       <div className="mt-[var(--space-5)] space-y-[var(--space-5)]">
-        {layers.tamil ? <KuralVerse kural={kural} /> : null}
+        {layers.tamil ? <KuralVerse kural={kural} size="focus" /> : null}
 
         {layers.translit ? (
           <p className="transliteration m-0" lang="en">
-            {kural.tr[0]} · {kural.tr[1]}
+            <span className="block">{kural.tr[0]}</span>
+            <span className="block">{kural.tr[1]}</span>
           </p>
         ) : null}
 
         {layers.english ? (
-          <p className="meaning m-0" lang="en">
+          <blockquote className="meaning m-0 border-l-2 border-line pl-4" lang="en">
             <span className="sr-only">{LAYER_LABELS.english.en}: </span>
-            {kural.en[0]} {kural.en[1]}
-          </p>
+            <span className="block">{kural.en[0]}</span>
+            {kural.en[1] ? <span className="block">{kural.en[1]}</span> : null}
+            <cite className="mt-1 block text-xs text-muted not-italic">— G. U. Pope (1886)</cite>
+          </blockquote>
         ) : null}
 
         {layers.simple ? (

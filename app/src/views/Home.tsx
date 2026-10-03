@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { chapterOf, kuralOfTheDay, sectionOf } from '../lib/corpus'
+import { shareKural } from '../lib/share'
 import { useCorpus, useReducedMotion } from '../hooks/useReader'
 import { useReaderStore } from '../store/appStore'
 import { TodayKuralCard } from '../components/today/TodayKuralCard'
@@ -56,18 +57,9 @@ export function Home() {
 
   const share = useCallback(async () => {
     if (!current) return
-    const url = `${window.location.origin}${window.location.pathname}#/kural/${current.n}`
-    const text = `${current.ta[0]} ${current.ta[1]}\n\n${current.s}`
-    try {
-      if (typeof navigator.share === 'function') {
-        await navigator.share({ title: `Kural ${current.n}`, text, url })
-        return
-      }
-      await navigator.clipboard.writeText(`${text}\n\n${url}`)
-      pushToast('Kural copied to the clipboard ✓', 'success')
-    } catch {
-      pushToast('Sharing is unavailable on this device', 'danger')
-    }
+    const outcome = await shareKural(current)
+    if (outcome === 'copied') pushToast('Kural copied to the clipboard ✓', 'success')
+    if (outcome === 'failed') pushToast('Sharing is unavailable on this device', 'danger')
   }, [current, pushToast])
 
   return (

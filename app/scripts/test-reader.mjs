@@ -55,7 +55,7 @@ check(twoLines === 1330, 'every kural has exactly two non-empty Tamil lines')
 // Regressions for the word-count slicer the React app replaces: cutting a
 // couplet at its fourth *space* splits these verses in the wrong place.
 const fixtures = [
-  [10, 'பிறவிப் பெருங் கடல் நீந்துவர் நீந்தார்', 'இறைவன் அடி சேராதார்'],
+  [10, 'பிறவிப் பெருங்கடல் நீந்துவர் நீந்தார்', 'இறைவன் அடி சேராதார்'],
   [42, 'துறந்தார்க்கும் துவ்வாதவர்க்கும் இறந்தார்க்கும்', 'இல்வாழ்வான் என்பான் துணை'],
   [331, 'நில்லாத வற்றை நிலையின என்றுணரும்', 'புல்லறிவாண்மை கடை'],
 ]

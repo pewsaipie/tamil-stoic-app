@@ -19,8 +19,23 @@ export interface PwaCallbacks {
   onUpdateReady?: (apply: UpdateAction) => void
 }
 
+async function purgeLegacyVanillaCaches(): Promise<boolean> {
+  if (typeof caches === 'undefined') return false
+  try {
+    const keys = await caches.keys()
+    const legacy = keys.filter((key) => key.startsWith('tamil-stoic-'))
+    if (legacy.length === 0) return false
+    await Promise.all(legacy.map((key) => caches.delete(key)))
+    return true
+  } catch {
+    return false
+  }
+}
+
 export function registerServiceWorker(callbacks: PwaCallbacks = {}): void {
   if (import.meta.env.DEV) return
+
+  const hadLegacyPromise = purgeLegacyVanillaCaches()
 
   const updateSW = registerSW({
     immediate: true,
@@ -31,7 +46,13 @@ export function registerServiceWorker(callbacks: PwaCallbacks = {}): void {
       applyUpdate = async (reload = true) => {
         await updateSW(reload)
       }
-      callbacks.onUpdateReady?.(applyUpdate)
+      void hadLegacyPromise.then((hadLegacy) => {
+        if (hadLegacy) {
+          void applyUpdate?.(true)
+          return
+        }
+        callbacks.onUpdateReady?.(applyUpdate!)
+      })
     },
   }) as unknown as UpdateAction
 }

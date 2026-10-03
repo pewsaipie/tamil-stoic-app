@@ -672,15 +672,21 @@ a.kural-num:hover { background: var(--btn-accent-bg); color: var(--btn-accent-in
 }
 
 .kural-ta {
+  container-type: inline-size;
   font-family: var(--font-ta);
-  font-size: clamp(22px, 3.6vw, 28px);
+  font-size: min(clamp(16px, 3.2vw, 25px), 3.4cqi);
   font-weight: 600;
   line-height: 1.85;
   color: var(--ink);
   text-align: center;
   margin: 4px 0 10px;
 }
-.kural-ta .line { display: block; }
+.kural-ta .line,
+.saved-item-verse .line,
+.reflection-verse .line {
+  display: block;
+  white-space: nowrap;
+}
 .daily-ta { text-align: left; margin-top: 6px; }
 
 .kural-translit {

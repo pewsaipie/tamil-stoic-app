@@ -3,17 +3,24 @@
  *
  *   npm run test:couplet
  *
- * Asserts the shipped corpus, `src/lib/couplet.ts` and
+ * Asserts the shipped corpus, `src/lib/couplet.ts`, `src/styles/global.css` and
  * `docs/couplet-line-contract.md` all agree: every one of the 1,330 couplets has
- * exactly two lines in the standard 4 சீர் / 3 சீர் order, nothing is moved or
- * dropped, 1,301 of them land on four words over three, and the 29 exceptions are
- * exactly the ones the contract document lists.
+ * exactly two lines in the standard 4 சீர் / 3 சீர் order, every couplet has at most
+ * 4 words on top and at most 3 words below, 1,324 of them land on four words over
+ * three, the 6 compound-சீர் exceptions match the contract document, and the CSS
+ * prevents a couplet line from wrapping into a paragraph (`white-space: nowrap`).
  */
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { coupletLines, coupletText, isStandardWordSplit, lineWordCounts } from '../src/lib/couplet.ts'
+import {
+  coupletLines,
+  coupletText,
+  isStandardWordSplit,
+  isWithinMaxWordSplit,
+  lineWordCounts,
+} from '../src/lib/couplet.ts'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(here, '..')
@@ -48,7 +55,7 @@ const docPath = path.join(repo, 'docs', 'couplet-line-contract.md')
 assert.ok(fs.existsSync(docPath), 'the contract document exists')
 const doc = fs.readFileSync(docPath, 'utf8')
 
-/** Rows of the §3 exception table: | 10 | 5 / 3 | … | `top`<br>`bottom` | */
+/** Rows of the §3 exception table: | 42 | 3 / 3 | … | `top`<br>`bottom` | */
 const docRows = new Map()
 for (const line of doc.split('\n')) {
   const match = /^\|\s*(\d+)\s*\|\s*(\d+)\s*\/\s*(\d+)\s*\|/.exec(line)
@@ -72,6 +79,7 @@ for (const kural of kurals) {
     top: words(lines[0]),
     bottom: words(lines[1]),
     standard: isStandardWordSplit(kural),
+    withinMax: isWithinMaxWordSplit(kural),
   })
 }
 
@@ -86,12 +94,16 @@ check(
   measured.every((row) => row.top > 0 && row.bottom > 0),
   'every couplet renders as two non-empty lines',
 )
+check(
+  measured.every((row) => row.withinMax && row.top <= 4 && row.bottom <= 3),
+  'every one of the 1,330 couplets has at most 4 words on top and at most 3 words below',
+)
 
 console.log('\nstandard 4 / 3 split')
-check(fourThree.length === 1301, `1,301 couplets read four words over three (found ${fourThree.length})`)
+check(fourThree.length === 1324, `1,324 couplets read four words over three (found ${fourThree.length})`)
 check(
   fourThree.every((row) => row.top === 4 && row.bottom === 3),
-  'each of the 1,301 is exactly four words over three',
+  'each of the 1,324 is exactly four words over three',
 )
 {
   const counts = new Map()
@@ -100,9 +112,9 @@ check(
   console.log('    distribution:', summary)
 }
 
-console.log('\ndocumented exceptions')
-check(exceptions.length === 29, `exactly 29 couplets are exceptions (found ${exceptions.length})`)
-check(docRows.size === 29, `the contract document lists 29 exceptions (found ${docRows.size})`)
+console.log('\ndocumented compound-சீர் exceptions')
+check(exceptions.length === 6, `exactly 6 couplets are compound-சீர் exceptions (found ${exceptions.length})`)
+check(docRows.size === 6, `the contract document lists 6 exceptions (found ${docRows.size})`)
 check(
   exceptions.every((row) => docRows.get(row.n)?.top === row.top && docRows.get(row.n)?.bottom === row.bottom),
   'every measured exception matches the document’s number and word counts',
@@ -113,7 +125,7 @@ check(
 )
 check(
   exceptions.every((row) => row.top + row.bottom !== 7),
-  'no exception is a clean seven-token couplet split the wrong way — each is a சீர்/word mismatch',
+  'no exception is a clean seven-token couplet split the wrong way — each is a compound-சீர் word',
 )
 
 console.log('\nlibrary contract')
@@ -124,18 +136,21 @@ check(
   `the first couplet reads four over three (${lineWordCounts(sample).join('/')})`,
 )
 const kural82 = kurals.find((k) => k.n === 82)
-check(kural82 !== undefined && !isStandardWordSplit(kural82), 'kural 82 is a documented exception')
-check(
-  coupletLines(kural82)[1] === tidy(kural82.ta[1]),
-  'kural 82 keeps its corpus wording — the app never rewrites Thirukkural text',
-)
+check(kural82 !== undefined && isStandardWordSplit(kural82), 'kural 82 reads 4 over 3 after intra-word space repair')
+const kural42 = kurals.find((k) => k.n === 42)
+check(kural42 !== undefined && !isStandardWordSplit(kural42) && isWithinMaxWordSplit(kural42), 'kural 42 is a documented 3/3 compound-சீர் exception')
 
-console.log('\nrenderer wiring')
+console.log('\nrenderer & non-wrapping visual contract')
 const verse = fs.readFileSync(path.join(root, 'src', 'components', 'kural', 'KuralVerse.tsx'), 'utf8')
+const globalCss = fs.readFileSync(path.join(root, 'src', 'styles', 'global.css'), 'utf8')
 check(verse.includes("from '../../lib/couplet'"), 'KuralVerse renders through lib/couplet.ts')
 check(verse.includes('coupletLines(kural)'), 'KuralVerse derives both lines from coupletLines()')
 check(verse.includes('data-verse-line="1"') && verse.includes('data-verse-line="2"'), 'both data-verse-line hooks are present')
 check(!verse.includes('kural.ta[0]') && !verse.includes('kural.ta[1]'), 'KuralVerse no longer indexes the corpus lines directly')
+check(
+  /\.verse__line\s*\{[^}]*white-space:\s*nowrap/s.test(globalCss),
+  '.verse__line enforces white-space: nowrap so a couplet line never wraps into a paragraph',
+)
 
 /* ---------- report ---------- */
 
@@ -143,4 +158,4 @@ if (failed > 0) {
   console.error(`\n✗ couplet contract: ${failed} failure(s)`)
   process.exit(1)
 }
-console.log('\n✓ couplet contract: 1,330 couplets, 1,301 at four over three, 29 documented exceptions\n')
+console.log('\n✓ couplet contract: 1,330 couplets (1,324 at 4/3, 6 at 3/3 or 4/2; 100% ≤ 4 over ≤ 3, non-wrapping)\n')

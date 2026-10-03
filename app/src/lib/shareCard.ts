@@ -6,6 +6,7 @@
  *
  * Everything is drawn in code — no image assets, no network.
  */
+import { coupletLines } from './couplet'
 import type { Chapter, Kural } from './types'
 
 const WIDTH = 1080
@@ -159,12 +160,24 @@ export async function createShareCard({ kural, chapter, footer }: ShareCardOptio
   ctx.font = "700 340px 'Noto Serif Tamil', serif"
   ctx.fillText(taNumeral(kural.n), 560, 1560)
 
-  // The couplet — always its two standard lines, in order.
+  // The couplet — always its two standard lines on two single lines, in order.
+  const [top, bottom] = coupletLines(kural)
   let y = 378
   ctx.fillStyle = INK
-  ctx.font = "600 58px 'Noto Serif Tamil', serif"
-  y = drawLines(ctx, wrap(ctx, kural.ta[0], 820), 76, y, 88) + 18
-  y = drawLines(ctx, wrap(ctx, kural.ta[1], 820), 76, y, 88) + 84
+  let versePx = 54
+  ctx.font = `600 ${versePx}px 'Noto Serif Tamil', serif`
+  while (
+    versePx > 28 &&
+    Math.max(ctx.measureText(top).width, ctx.measureText(bottom).width) > 900
+  ) {
+    versePx -= 2
+    ctx.font = `600 ${versePx}px 'Noto Serif Tamil', serif`
+  }
+  const verseLineHeight = Math.round(versePx * 1.65)
+  ctx.fillText(top, 76, y)
+  y += verseLineHeight
+  ctx.fillText(bottom, 76, y)
+  y += verseLineHeight + 64
 
   ctx.fillStyle = GOLD
   ctx.fillRect(76, y, 108, 4)
