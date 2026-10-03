@@ -185,7 +185,13 @@ assert(html.includes('id="install-card"'), "HTML has an install guidance card");
 assert(html.includes('id="saved-dialog"'), "HTML has a saved-Kurals dialog");
 assert(html.includes('id="reader-settings-dialog"'), "HTML has a reading settings dialog");
 assert(html.includes("js/storage.js") && html.includes("js/companion.js"), "HTML loads private storage and companion modules");
-assert(workflow.includes("manifest.webmanifest") && workflow.includes("sw.js") && workflow.includes("assets"), "Pages workflow publishes PWA files and icons");
+// The published PWA is the React build: Vite emits manifest.webmanifest, sw.js and
+// the icons into app/dist, and the workflow ships that directory. The old static
+// files stay in the repo as the parity reference, so they are still checked above.
+assert(
+  workflow.includes("npm run build") && workflow.includes("cp -r app/dist/."),
+  "Pages workflow builds and publishes the React PWA bundle",
+);
 assert(!workflow.includes('"arena/**"') && workflow.includes("github.ref == 'refs/heads/main'"), "Pages workflow avoids protected-environment failures on feature branches");
 
 assert(exists("manifest.webmanifest"), "manifest exists");
