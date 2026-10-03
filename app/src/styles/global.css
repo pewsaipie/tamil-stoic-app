@@ -210,29 +210,32 @@
    * Reader typography
    * ------------------------------------------------------------------------ */
   .verse {
+    container-type: inline-size;
+    width: 100%;
+    max-width: 100%;
     font-family: var(--font-tamil);
-    font-size: var(--verse-size);
+    font-size: min(var(--verse-size), calc(98cqi / var(--verse-em, 24)));
+    font-weight: 600;
     line-height: var(--verse-leading);
     letter-spacing: 0.01em;
     color: var(--ink-primary);
-    text-wrap: pretty;
-    /* The couplet keeps its two lines. Nothing here may hyphenate, split or
-       re-flow one அடி into the other — only the type around it scales. */
-    overflow-wrap: break-word;
   }
 
   .verse--focus {
-    font-size: var(--verse-size-focus);
+    font-size: min(var(--verse-size-focus), calc(98cqi / var(--verse-em, 24)));
   }
 
-  /* One அடி per block, always. The four-word top line and the three-word bottom
-     line are separate blocks that never re-flow into each other; `balance` only
-     tidies the ragged edge when a phone wraps a line inside itself. */
+  /* One அடி per single horizontal line, always. The top line (at most four
+     words) and the bottom line (at most three words) never wrap into a
+     paragraph and never re-flow into each other. */
   .verse__line {
     display: block;
-    text-wrap: balance;
-    /* No hyphenation, no word-breaking across the couplet's two lines. */
+    white-space: nowrap;
     hyphens: none;
+  }
+
+  .verse__line + .verse__line {
+    margin-top: 0.16em;
   }
 
   .transliteration {

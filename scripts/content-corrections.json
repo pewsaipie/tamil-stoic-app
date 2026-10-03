@@ -203,10 +203,18 @@
     {
       "n": 10,
       "before": {
-        "s": "Only those who hold on to the highest will cross the great ocean of life. The rest will not reach the other shore."
+        "s": "Only those who hold on to the highest will cross the great ocean of life. The rest will not reach the other shore.",
+        "ta": [
+          "பிறவிப் பெருங் கடல் நீந்துவர் நீந்தார்",
+          "இறைவன் அடி சேராதார்"
+        ]
       },
       "after": {
-        "s": "Those who reach God’s feet cross the great ocean of rebirth; those who do not cannot cross it."
+        "s": "Those who reach God’s feet cross the great ocean of rebirth; those who do not cannot cross it.",
+        "ta": [
+          "பிறவிப் பெருங்கடல் நீந்துவர் நீந்தார்",
+          "இறைவன் அடி சேராதார்"
+        ]
       },
       "notes": [
         {
@@ -215,6 +223,14 @@
           "sources": [
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
             "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        },
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் பெருங்கடல் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -327,6 +343,31 @@
       ]
     },
     {
+      "n": 33,
+      "before": {
+        "ta": [
+          "ஒல்லும் வகையான் அறவினை ஓவாதே",
+          "செல்லும் வாய் எல்லாஞ் செயல்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "ஒல்லும் வகையான் அறவினை ஓவாதே",
+          "செல்லும்வாய் எல்லாஞ் செயல்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் செல்லும்வாய் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
       "n": 39,
       "before": {
         "s": "Only the joy that comes from a good home life is real joy. Everything else brings no praise."
@@ -394,6 +435,31 @@
           "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
           "sources": [
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 60,
+      "before": {
+        "ta": [
+          "மங்கலம் என்ப மனைமாட்சி மற்று அதன்",
+          "நன்கலம் நன்மக்கட் பேறு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "மங்கலம் என்ப மனைமாட்சி மற்றதன்",
+          "நன்கலம் நன்மக்கட் பேறு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join elided சீர் மற்றதன் (மற்று அதன்) so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -487,6 +553,56 @@
       ]
     },
     {
+      "n": 70,
+      "before": {
+        "ta": [
+          "மகன்தந்தைக்கு ஆற்றும் உதவி இவன்தந்தை",
+          "என்நோற்றான் கொல் எனும் சொல்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "மகன்தந்தைக்கு ஆற்றும் உதவி இவன்தந்தை",
+          "என்நோற்றான்கொல் எனும் சொல்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join enclitic சீர் என்நோற்றான்கொல் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 74,
+      "before": {
+        "ta": [
+          "அன்புஈனும் ஆர்வம் உடைமை அதுஈனும்",
+          "நண்பு என்னும் நாடாச் சிறப்பு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "அன்புஈனும் ஆர்வம் உடைமை அதுஈனும்",
+          "நண்புஎன்னும் நாடாச் சிறப்பு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் நண்புஎன்னும் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
       "n": 75,
       "before": {
         "s": "A life filled with love bears fruits of peace like these."
@@ -508,10 +624,18 @@
     {
       "n": 82,
       "before": {
-        "s": "However fine your own meal, it is wrong to wish your guests away from the door."
+        "s": "However fine your own meal, it is wrong to wish your guests away from the door.",
+        "ta": [
+          "விருந்து புறத்ததாத் தானுண்டல் சாவா",
+          "மருந்தெனினும் வேண் டற்பாற் றன்று"
+        ]
       },
       "after": {
-        "s": "It is wrong to eat while leaving a guest outside, even if the food could make you immortal."
+        "s": "It is wrong to eat while leaving a guest outside, even if the food could make you immortal.",
+        "ta": [
+          "விருந்து புறத்ததாத் தானுண்டல் சாவா",
+          "மருந்தெனினும் வேண்டற்பாற் றன்று"
+        ]
       },
       "notes": [
         {
@@ -520,6 +644,14 @@
           "sources": [
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
             "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        },
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in வேண்டற்பாற் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -577,6 +709,31 @@
           "sources": [
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json",
             "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0153.html"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 143,
+      "before": {
+        "ta": [
+          "விளிந்தாரின் வேறல்லர் மன்ற தெளிந்தாரில்",
+          "தீமை புரிந்து ஒழுகு வார்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "விளிந்தாரின் வேறல்லர் மன்ற தெளிந்தாரில்",
+          "தீமை புரிந்தொழுகு வார்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் புரிந்தொழுகு so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -709,6 +866,31 @@
           "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
           "sources": [
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 211,
+      "before": {
+        "ta": [
+          "கைம்மாறு வேண்டா கடப்பாடு மாரிமாட்டு",
+          "என் ஆற்றுங் கொல்லோ உலகு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "கைம்மாறு வேண்டா கடப்பாடு மாரிமாட்டு",
+          "என்ஆற்றுங் கொல்லோ உலகு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் என்ஆற்றுங் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -865,6 +1047,31 @@
       ]
     },
     {
+      "n": 347,
+      "before": {
+        "ta": [
+          "பற்றி விடாஅ இடும்பைகள் பற்றினைப்",
+          "பற்றி விடாஅ தவர் க்கு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "பற்றி விடாஅ இடும்பைகள் பற்றினைப்",
+          "பற்றி விடாஅ தவர்க்கு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in தவர்க்கு so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
       "n": 350,
       "before": {
         "s": "To end desire, desire only this: the desireless desire of the One without desire."
@@ -987,6 +1194,31 @@
       ]
     },
     {
+      "n": 408,
+      "before": {
+        "ta": [
+          "நல்லார்கண் பட்ட வறுமையின் இன்னாதே",
+          "கல்லார்கண் பட் ட திரு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "நல்லார்கண் பட்ட வறுமையின் இன்னாதே",
+          "கல்லார்கண் பட்ட திரு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in பட்ட so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
       "n": 479,
       "before": {
         "tr": [
@@ -1031,6 +1263,81 @@
           "sources": [
             "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 530,
+      "before": {
+        "ta": [
+          "உழைப்பிரிந்து காரணத்தின் வந்தானை வேந்தன்",
+          "இழைத் திருந்து எண்ணிக் கொளல்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "உழைப்பிரிந்து காரணத்தின் வந்தானை வேந்தன்",
+          "இழைத்திருந்து எண்ணிக் கொளல்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in இழைத்திருந்து so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 532,
+      "before": {
+        "ta": [
+          "பொச்சாப்புக் கொல்லும் புகழை அறிவினை",
+          "நிச்ச நிரப்புக் கொன் றாங்கு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "பொச்சாப்புக் கொல்லும் புகழை அறிவினை",
+          "நிச்ச நிரப்புக் கொன்றாங்கு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in கொன்றாங்கு so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 542,
+      "before": {
+        "ta": [
+          "வானோக்கி வாழும் உலகெல்லாம் மன்னவன்",
+          "கோல் நோக்கி வாழுங் குடி"
+        ]
+      },
+      "after": {
+        "ta": [
+          "வானோக்கி வாழும் உலகெல்லாம் மன்னவன்",
+          "கோல்நோக்கி வாழுங் குடி"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் கோல்நோக்கி (matching வானோக்கி) so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -1261,6 +1568,31 @@
       ]
     },
     {
+      "n": 908,
+      "before": {
+        "ta": [
+          "நட்டார் குறைமுடியார் நன்றாற்றார் நன்னுதலாள்",
+          "பெட் டாங்கு ஒழுகு பவர்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "நட்டார் குறைமுடியார் நன்றாற்றார் நன்னுதலாள்",
+          "பெட்டாங்கு ஒழுகு பவர்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in பெட்டாங்கு so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
       "n": 913,
       "before": {
         "ta": [
@@ -1335,6 +1667,56 @@
       ]
     },
     {
+      "n": 950,
+      "before": {
+        "ta": [
+          "உற்றவன் தீர்ப்பான் மருந்துழைச் செல்வானென்று",
+          "அப்பால் நாற் கூற்றே மருந்து"
+        ]
+      },
+      "after": {
+        "ta": [
+          "உற்றவன் தீர்ப்பான் மருந்துழைச் செல்வானென்று",
+          "அப்பால் நாற்கூற்றே மருந்து"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in நாற்கூற்றே so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 956,
+      "before": {
+        "ta": [
+          "சலம்பற்றிச் சால்பில செய்யார்மா சற்ற",
+          "குலம்பற்றி வாழ்தும் என் பார்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "சலம்பற்றிச் சால்பில செய்யார்மா சற்ற",
+          "குலம்பற்றி வாழ்தும் என்பார்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in என்பார் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
       "n": 957,
       "before": {
         "ta": [
@@ -1379,6 +1761,81 @@
           "reason": "Repair encoding corruption or align the reading aid with the corrected Tamil; this is not a new romanization standard.",
           "sources": [
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 976,
+      "before": {
+        "ta": [
+          "சிறியார் உணர்ச்சியுள் இல்லை பெரியாரைப்",
+          "பேணிக் கொள் வேம் என்னும் நோக்கு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "சிறியார் உணர்ச்சியுள் இல்லை பெரியாரைப்",
+          "பேணிக்கொள்வேம் என்னும் நோக்கு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் பேணிக்கொள்வேம் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 988,
+      "before": {
+        "ta": [
+          "இன்மை ஒருவற்கு இளிவன்று சால்பென்னும்",
+          "திண்மை உண் டாகப் பெறின்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "இன்மை ஒருவற்கு இளிவன்று சால்பென்னும்",
+          "திண்மை உண்டாகப் பெறின்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in உண்டாகப் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1081,
+      "before": {
+        "ta": [
+          "அணங்குகொல் ஆய்மயில் கொல்லோ கனங்குழை",
+          "மாதர்கொல் மாலும் என் நெஞ்சு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "அணங்குகொல் ஆய்மயில் கொல்லோ கனங்குழை",
+          "மாதர்கொல் மாலும் என்நெஞ்சு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Join compound சீர் என்நெஞ்சு so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -1429,6 +1886,56 @@
           "sources": [
             "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
             "https://github.com/tk120404/thirukkural/blob/master/thirukkural.json"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1129,
+      "before": {
+        "ta": [
+          "இமைப்பின் கரப்பாக்கு அறிவல் அனைத்திற்கே",
+          "ஏதிலர் என்னும் இவ் வூர்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "இமைப்பின் கரப்பாக்கு அறிவல் அனைத்திற்கே",
+          "ஏதிலர் என்னும் இவ்வூர்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in இவ்வூர் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1130,
+      "before": {
+        "ta": [
+          "உவந்துறைவர் உள்ளத்துள் என்றும் இகந்துறைவர்",
+          "ஏதிலர் என்னும் இவ் வூர்"
+        ]
+      },
+      "after": {
+        "ta": [
+          "உவந்துறைவர் உள்ளத்துள் என்றும் இகந்துறைவர்",
+          "ஏதிலர் என்னும் இவ்வூர்"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in இவ்வூர் so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]
@@ -1539,6 +2046,56 @@
           "reason": "Align transliteration with the corrected Tamil; retain the app’s existing romanization style.",
           "sources": [
             "https://thirukkural.io/kural/1202"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1284,
+      "before": {
+        "ta": [
+          "ஊடற்கண் சென்றேன்மன் தோழி அதுமறந்து",
+          "கூடற்கண் சென்றது என் னெஞ்சு"
+        ]
+      },
+      "after": {
+        "ta": [
+          "ஊடற்கண் சென்றேன்மன் தோழி அதுமறந்து",
+          "கூடற்கண் சென்றது என்னெஞ்சு"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in என்னெஞ்சு so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 1307,
+      "before": {
+        "ta": [
+          "ஊடலின் உண்டாங்கோர் துன்பம் புணர்வது",
+          "நீடுவ தன்று கொல் என்று"
+        ]
+      },
+      "after": {
+        "ta": [
+          "ஊடலின் உண்டாங்கோர் துன்பம் புணர்வது",
+          "நீடுவதன்று கொல் என்று"
+        ]
+      },
+      "notes": [
+        {
+          "field": "ta",
+          "reason": "Remove spurious intra-word space in நீடுவதன்று so முதல் அடி has 4 words and ஈற்றடி has 3 words.",
+          "sources": [
+            "https://www.projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
+            "https://ta.wikisource.org/wiki/%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%81%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AF%81%E0%AE%B1%E0%AE%B3%E0%AF%8D"
           ]
         }
       ]

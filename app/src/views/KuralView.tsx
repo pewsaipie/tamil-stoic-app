@@ -144,7 +144,8 @@ export function KuralView() {
 
           {layers.translit ? (
             <p className="transliteration m-0" lang="en">
-              {kural.tr[0]} <span aria-hidden="true">—</span> {kural.tr[1]}
+              <span className="block">{kural.tr[0]}</span>
+              <span className="block">{kural.tr[1]}</span>
             </p>
           ) : null}
 

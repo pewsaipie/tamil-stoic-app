@@ -163,10 +163,11 @@ export function CommandPalette({ open, onOpenChange, onOpenSettings, onOpenShort
     if (numeric) {
       const n = Number.parseInt(trimmed, 10)
       if (n >= 1 && n <= corpus.kurals.length) {
+        const matched = corpus.kurals[n - 1]
         base.unshift({
           id: `kural-${n}`,
           label: `Kural ${n}`,
-          hint: corpus.kurals[n - 1]?.ta.join(' ') ?? '',
+          hint: matched ? `${matched.ta[0]}\n${matched.ta[1]}` : '',
           group: 'Kurals',
           icon: <Search size={16} strokeWidth={1.6} />,
           run: go(`/kural/${n}`),
@@ -312,7 +313,7 @@ export function CommandPalette({ open, onOpenChange, onOpenSettings, onOpenShort
                   <span className="flex-1">
                     <span className="block text-sm">{item.label}</span>
                     {item.hint ? (
-                      <span lang="ta" className="block text-xs text-muted">
+                      <span lang="ta" className="block text-xs whitespace-pre-line text-muted">
                         {item.hint}
                       </span>
                     ) : null}

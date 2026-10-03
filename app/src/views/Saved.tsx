@@ -98,7 +98,8 @@ export function Saved() {
               <div className="mt-[var(--space-4)] space-y-[var(--space-3)]">
                 <KuralVerse kural={kural} />
                 <p className="transliteration m-0" lang="en">
-                  {kural.tr[0]} <span aria-hidden="true">—</span> {kural.tr[1]}
+                  <span className="block">{kural.tr[0]}</span>
+                  <span className="block">{kural.tr[1]}</span>
                 </p>
                 <p
                   className="m-0 rounded-[var(--radius-md)] border border-line bg-surface/70 px-4 py-3 text-[15px]"

@@ -366,7 +366,15 @@
       meta.textContent = T("saved.metaPrefix", "Kural #") + pad(record.n) + (chapter ? " · " + chapter.ta : "");
       var verse = document.createElement("p");
       verse.className = "saved-item-verse";
-      verse.textContent = kural.ta[0] + " " + kural.ta[1];
+      verse.setAttribute("lang", "ta");
+      var line1 = document.createElement("span");
+      line1.className = "line";
+      line1.textContent = kural.ta[0];
+      var line2 = document.createElement("span");
+      line2.className = "line";
+      line2.textContent = kural.ta[1];
+      verse.appendChild(line1);
+      verse.appendChild(line2);
       var meaning = document.createElement("p");
       meaning.className = "saved-item-meaning";
       meaning.textContent = kural.s;
@@ -464,7 +472,17 @@
     var verse = byId("reflection-verse");
     var input = byId("reflection-input");
     if (label) label.textContent = T("reflection.metaPrefix", "Kural #") + pad(n);
-    if (verse) verse.textContent = kural.ta[0] + " " + kural.ta[1];
+    if (verse) {
+      verse.textContent = "";
+      var rLine1 = document.createElement("span");
+      rLine1.className = "line";
+      rLine1.textContent = kural.ta[0];
+      var rLine2 = document.createElement("span");
+      rLine2.className = "line";
+      rLine2.textContent = kural.ta[1];
+      verse.appendChild(rLine1);
+      verse.appendChild(rLine2);
+    }
     if (input) input.value = record ? record.note || "" : "";
     openDialog(byId("reflection-dialog"), trigger);
     if (input) window.setTimeout(function () { input.focus(); }, 0);

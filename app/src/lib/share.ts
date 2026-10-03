@@ -5,6 +5,7 @@
  * followed by the simple meaning and a deep link that opens the reader on that
  * kural. Nothing else is attached: no tracking parameters, no identifiers.
  */
+import { coupletLines } from './couplet'
 import type { Kural } from './types'
 
 export function kuralUrl(n: number): string {
@@ -13,14 +14,16 @@ export function kuralUrl(n: number): string {
 }
 
 export function kuralShareText(kural: Kural): string {
-  return `${kural.ta[0]}\n${kural.ta[1]}\n\n${kural.s}\n\n${kuralUrl(kural.n)}`
+  const [top, bottom] = coupletLines(kural)
+  return `${top}\n${bottom}\n\n${kural.s}\n\n${kuralUrl(kural.n)}`
 }
 
 export type ShareOutcome = 'shared' | 'copied' | 'failed'
 
 export async function shareKural(kural: Kural): Promise<ShareOutcome> {
   const url = kuralUrl(kural.n)
-  const text = `${kural.ta[0]}\n${kural.ta[1]}\n\n${kural.s}`
+  const [top, bottom] = coupletLines(kural)
+  const text = `${top}\n${bottom}\n\n${kural.s}`
 
   try {
     if (typeof navigator.share === 'function') {

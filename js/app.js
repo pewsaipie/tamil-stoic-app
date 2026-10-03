@@ -749,11 +749,14 @@
   }
 
   // ---------- rendering ----------
-  // Present each couplet in the familiar four-word / three-word layout,
-  // regardless of how the source dataset's two poetic lines are segmented.
+  // Present each couplet on its two standard lines (at most 4 words on top,
+  // at most 3 words below), never re-slicing across the poetic break.
   function tamilCoupletLines(kural) {
-    var words = (kural.ta || []).join(" ").trim().split(/\s+/).filter(Boolean);
-    return [words.slice(0, 4).join(" "), words.slice(4).join(" ")];
+    var ta = kural && Array.isArray(kural.ta) ? kural.ta : ["", ""];
+    return [
+      String(ta[0] || "").replace(/\s+/g, " ").trim(),
+      String(ta[1] || "").replace(/\s+/g, " ").trim()
+    ];
   }
 
   function cardHtml(k, opts) {

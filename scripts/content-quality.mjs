@@ -45,6 +45,12 @@ export function validateContent(kurals) {
         assert(!/<\/?[a-z][^>]*>/i.test(text), `${label}/${field}: HTML instead of text`);
         if (field === 'ta') assert(/^[\p{Script=Tamil}\s.,;:?!‘’“”'"—–-]+$/u.test(text), `${label}: non-Tamil character in verse`);
       }
+      if (field === 'ta') {
+        const topWords = values[0].trim().split(/\s+/).length;
+        const bottomWords = values[1].trim().split(/\s+/).length;
+        assert(topWords > 0 && topWords <= 4, `${label}: முதல் அடி must have at most 4 words (got ${topWords})`);
+        assert(bottomWords > 0 && bottomWords <= 3, `${label}: ஈற்றடி must have at most 3 words (got ${bottomWords})`);
+      }
     }
   }
 }
