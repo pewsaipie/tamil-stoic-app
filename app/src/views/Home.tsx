@@ -18,7 +18,12 @@ import { HeroCanvas } from '../components/canvas/HeroCanvas'
 import { BookTiles } from '../components/home/BookTiles'
 import { SituationDoors } from '../components/home/SituationDoors'
 import { TopBar } from '../components/layout/TopBar'
+import { JourneyCard } from '../components/journey/JourneyCard'
+import { useT } from '../i18n'
 import { Link } from 'react-router-dom'
+import { CommandPalette } from '../components/palette/CommandPalette'
+import { ShortcutsDialog } from '../components/palette/ShortcutsDialog'
+import { SettingsSheet } from '../components/settings/SettingsSheet'
 import type { Kural } from '../lib/types'
 
 function pickAnother(kurals: readonly Kural[], current: Kural): Kural {
@@ -37,6 +42,10 @@ export function Home() {
   const markRead = useReaderStore((state) => state.markRead)
   const pushToast = useReaderStore((state) => state.pushToast)
   const [override, setOverride] = useState<Kural | null>(null)
+  const [paletteOpen, setPaletteOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [helpOpen, setHelpOpen] = useState(false)
+  const t = useT()
 
   const today = useMemo(() => (corpus ? kuralOfTheDay(corpus.kurals) : null), [corpus])
   const current = override ?? today
@@ -75,7 +84,7 @@ export function Home() {
       >
         <HeroCanvas />
         <div className="relative z-10 mx-auto mb-3 max-w-[var(--content-max)]">
-          <TopBar title="தமிழ் ஸ்டோயிக் · Tamil Stoic" />
+          <TopBar title="தமிழ் ஸ்டோயிக் · Tamil Stoic" onOpenPalette={() => setPaletteOpen(true)} />
         </div>
         <div className="relative z-10 mx-auto flex max-w-[var(--content-max)] flex-col items-center gap-[var(--space-4)] text-center">
           <h1
@@ -85,7 +94,10 @@ export function Home() {
             திருக்குறள்
           </h1>
           <p className="m-0 max-w-[36ch] text-sm text-ink/80">
-            One couplet a day, with a plain-English meaning. Everything stays on your device.
+            {t(
+              'header.tagline',
+              'One couplet a day, with a plain-English meaning. Everything stays on your device.',
+            )}
           </p>
           <ThemeSwitcher className="justify-center" />
         </div>
@@ -128,14 +140,23 @@ export function Home() {
           </AnimatePresence>
         ) : null}
 
+        {/* Reading journey */}
+        {corpus ? (
+          <JourneyCard
+            totalKurals={corpus.kurals.length}
+            totalChapters={corpus.chapters.length}
+            className="mt-[var(--space-6)]"
+          />
+        ) : null}
+
         {/* Three books */}
         {corpus ? (
           <section aria-labelledby="books-title" className="mt-[var(--space-7)]">
             <h2 id="books-title" className="m-0 text-lg text-ink">
-              <span lang="ta">மூன்று பால்கள்</span> · The three books
+              <span lang="ta">மூன்று பால்கள்</span> · {t('books.title', 'The three books')}
             </h2>
             <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
-              The Kural is arranged in three books. Open one and read it whole.
+              {t('books.sub', 'The Kural is arranged in three books. Open one and read it whole.')}
             </p>
             <BookTiles sections={corpus.sections} chapters={corpus.chapters} kurals={corpus.kurals} />
           </section>
@@ -145,21 +166,36 @@ export function Home() {
         {corpus ? (
           <section aria-labelledby="situations-title" className="mt-[var(--space-7)]">
             <h2 id="situations-title" className="m-0 text-lg text-ink">
-              <span lang="ta">சூழ்நிலை</span> · Where are you today?
+              <span lang="ta">சூழ்நிலை</span> · {t('situations.title', 'Where are you today?')}
             </h2>
             <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
-              Pick the door that fits — or search the whole book.
+              {t('situations.sub', 'Pick the door that fits — or search the whole book.')}
             </p>
             <SituationDoors themes={corpus.themes} />
             <p className="mt-[var(--space-4)] mb-0">
               <Link to="/chapters" className="text-sm text-accent-text no-underline">
-                Search all 1,330 kurals →
+                {t('search.all', 'Search all 1,330 kurals')} →
+              </Link>
+              <span aria-hidden="true" className="mx-3 text-muted">
+                ·
+              </span>
+              <Link to="/credits" className="text-sm text-accent-text no-underline">
+                Credits & open source →
               </Link>
             </p>
           </section>
         ) : null}
 
       </main>
+
+      <CommandPalette
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        onOpenSettings={() => setSettingsOpen(true)}
+        onOpenShortcuts={() => setHelpOpen(true)}
+      />
+      <SettingsSheet open={settingsOpen} onOpenChange={setSettingsOpen} />
+      <ShortcutsDialog open={helpOpen} onOpenChange={setHelpOpen} />
     </div>
   )
 }

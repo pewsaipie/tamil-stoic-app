@@ -32,6 +32,7 @@ import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { TopBar } from '../components/layout/TopBar'
 import { SITUATIONS } from '../lib/situations'
 import { useReaderStore } from '../store/appStore'
+import { useT } from '../i18n'
 import type { Kural } from '../lib/types'
 
 const BOOKS: readonly { id: number | 'all'; label: string }[] = [
@@ -63,6 +64,7 @@ export function Chapters() {
   const [mapOpen, setMapOpen] = useState(false)
   const [reflectionFor, setReflectionFor] = useState<Kural | null>(null)
 
+  const t = useT()
   const read = useReaderStore((state) => state.read)
   const visited = useReaderStore((state) => state.chapters)
   const markRead = useReaderStore((state) => state.markRead)
@@ -220,9 +222,14 @@ export function Chapters() {
         </Link>
       </nav>
 
-      <h1 className="m-0 text-2xl text-ink">அத்தியாயங்கள் · Chapters</h1>
+      <h1 className="m-0 text-2xl text-ink">
+        <span lang="ta">அத்தியாயங்கள்</span> · {t('browse.title', 'Chapters')}
+      </h1>
       <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
-        Search by number or word, pick a chapter, or open a door that fits your day.
+        {t(
+          'browse.sub',
+          'Search by number or word, pick a chapter, or open a door that fits your day.',
+        )}
       </p>
 
       {/* Books */}
@@ -311,7 +318,7 @@ export function Chapters() {
         </span>
         {hasFilters ? (
           <button type="button" onClick={clearAll} className="inline-flex items-center gap-1 text-accent-text">
-            <Eraser size={14} strokeWidth={1.6} aria-hidden="true" /> Clear
+            <Eraser size={14} strokeWidth={1.6} aria-hidden="true" /> {t('clear.text', 'Clear')}
           </button>
         ) : null}
         <button
@@ -321,7 +328,7 @@ export function Chapters() {
           className="ml-auto inline-flex items-center gap-1 text-accent-text"
         >
           {mapOpen ? <ArrowUp size={14} aria-hidden="true" /> : <ArrowDown size={14} aria-hidden="true" />}
-          All 133 chapters
+          {t('map.title', 'All 133 chapters')}
         </button>
       </p>
 
@@ -399,7 +406,7 @@ export function Chapters() {
 
         {paged.hasMore ? (
           <div ref={paged.sentinelRef} className="py-4 text-center text-sm text-muted">
-            Loading more…
+            {t('list.loading', 'Loading more…')}
           </div>
         ) : null}
       </section>

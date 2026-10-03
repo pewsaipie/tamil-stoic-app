@@ -4,12 +4,14 @@
  */
 import { Link, useLocation } from 'react-router-dom'
 import { Bookmark, BookOpen, Home } from 'lucide-react'
+import { useT } from '../../i18n'
 import { cn } from '../../lib/cn'
 
 const ITEMS = [
-  { to: '/', label: 'இன்று', en: "Today", icon: Home, match: (path: string) => path === '/' },
+  { to: '/', labelKey: 'nav.today', label: 'இன்று', en: "Today", icon: Home, match: (path: string) => path === '/' },
   {
     to: '/chapters',
+    labelKey: 'nav.chapters',
     label: 'அத்தியாயங்கள்',
     en: 'Chapters',
     icon: BookOpen,
@@ -17,6 +19,7 @@ const ITEMS = [
   },
   {
     to: '/saved',
+    labelKey: 'nav.saved',
     label: 'சேமித்தவை',
     en: 'Saved',
     icon: Bookmark,
@@ -26,6 +29,7 @@ const ITEMS = [
 
 export function BottomNav() {
   const { pathname } = useLocation()
+  const t = useT()
 
   return (
     <nav
@@ -50,7 +54,7 @@ export function BottomNav() {
                 )}
               >
                 <Icon size={20} strokeWidth={1.6} aria-hidden="true" />
-                <span lang="ta">{item.label}</span>
+                <span lang="ta">{t(item.labelKey, item.label)}</span>
               </Link>
             </li>
           )

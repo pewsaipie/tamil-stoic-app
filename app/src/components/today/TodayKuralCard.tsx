@@ -13,6 +13,8 @@ import { useReducedMotion } from '../../hooks/useReader'
 import { useReaderStore, selectIsSaved } from '../../store/appStore'
 import { LAYER_LABELS, type Chapter, type Kural, type Section } from '../../lib/types'
 import { cn } from '../../lib/cn'
+import { useT } from '../../i18n'
+import { ListenButton } from '../kural/ListenButton'
 
 export interface TodayKuralCardProps {
   kural: Kural
@@ -27,6 +29,8 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
   const toggleSaved = useReaderStore((state) => state.toggleSaved)
   const saved = useReaderStore(selectIsSaved(kural.n))
   const reducedMotion = useReducedMotion()
+  const t = useT()
+
 
   return (
     <GlassCard
@@ -93,6 +97,8 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
           {saved ? 'Saved' : 'Save'}
         </Button>
 
+        <ListenButton kural={kural} />
+
         <Button
           variant="secondary"
           onClick={onShare}
@@ -117,7 +123,7 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
             </motion.span>
           }
         >
-          Another
+          {t('daily.shuffle', 'Another')}
         </Button>
       </div>
     </GlassCard>

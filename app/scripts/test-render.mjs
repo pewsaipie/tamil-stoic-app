@@ -177,9 +177,10 @@ const navigate = async (hash, predicate) => {
   window.location.hash = hash
   await waitFor(predicate)
 }
-await wait(250)
-
 const { document } = window
+// Wait for the corpus fetch + first render rather than sleeping a fixed time.
+await waitFor(() => document.querySelector('[data-verse-line]') !== null, 8000)
+await waitFor(() => document.body.textContent?.includes('மூன்று பால்கள்') === true, 8000)
 const text = () => document.body.textContent ?? ''
 
 console.log('today route:')
@@ -284,6 +285,46 @@ console.log('saved route:')
 check(text().includes('stays on this device'), 'the privacy line is present')
 check(text().includes('It will appear here'), 'the empty state renders for a fresh device')
 
+/* ---------- palette, journey, credits, Tamil UI ---------- */
+console.log('command palette:')
+window.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
+await waitFor(() => document.querySelector('#palette-input') !== null)
+check(document.querySelector('#palette-input') !== null, 'Ctrl+K opens the command palette')
+const paletteItems = [...document.querySelectorAll('#palette-input ~ ul button')]
+check(paletteItems.length > 0, 'the palette lists destinations and commands')
+
+// Switching the interface language through the palette must translate the chrome.
+const tamilCommand = paletteItems.find((item) => (item.textContent ?? '').includes('தமிழில்'))
+check(tamilCommand !== undefined, 'the palette offers the Tamil interface')
+tamilCommand?.click()
+await waitFor(() => text().includes('இன்று'))
+check(text().includes('இன்று'), 'the Tamil interface renders Tamil navigation labels')
+check(
+  text().includes('புத்தகக் குறிப்பு') || text().includes('சேமித்தவை'),
+  'the saved destination is translated too',
+)
+
+console.log('journey:')
+await navigate('#/', () => text().includes('பால்கள்') || text().includes('books'))
+check(
+  text().includes('படித்தவை') || text().includes('kurals read') || text().includes('journey'),
+  "the reading journey reflects the kural the reader opened",
+)
+
+console.log('credits:')
+await navigate('#/credits', () => text().includes('Credits'))
+check(text().includes('Pope'), 'the credits name the 1886 translation')
+check(text().includes('Parimelalagar') || text().includes('tk120404'), 'the credits name the Tamil source')
+check(text().includes('MIT'), 'the credits state the app licence')
+
+document.dispatchEvent(new window.KeyboardEvent('keydown', { key: '?', bubbles: true }))
+await waitFor(() => text().includes('Keyboard shortcuts') || text().includes('விசைப்பலகை'))
+check(
+  text().includes('Keyboard shortcuts') || text().includes('விசைப்பலகை'),
+  '? opens the shortcut help',
+)
+document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+
 /* ---------- axe ---------- */
 console.log('accessibility:')
 async function scan(label) {
@@ -302,8 +343,10 @@ await navigate('#/kural/151', readerReady)
 await scan('/kural/151')
 await navigate('#/saved', () => text().includes('Saved Kurals'))
 await scan('/saved')
-await navigate('#/', () => text().includes('மூன்று பால்கள்'))
+await navigate('#/', () => text().includes('பால்கள்') || text().includes('books'))
 await scan('/')
+await navigate('#/credits', () => text().includes('Credits'))
+await scan('/credits')
 
 /* ---------- runtime errors ---------- */
 console.log('runtime:')

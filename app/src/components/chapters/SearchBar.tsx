@@ -7,6 +7,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Search, X } from 'lucide-react'
 import type { Suggestion } from '../../lib/search'
 import { cn } from '../../lib/cn'
+import { useT } from '../../i18n'
 
 export interface SearchBarProps {
   value: string
@@ -36,6 +37,7 @@ export function SearchBar({
   const [activeIndex, setActiveIndex] = useState(-1)
   const listId = useId()
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const t = useT()
 
   const showRecents = value.trim().length === 0 && recents.length > 0
   const showSuggestions = value.trim().length > 0 && suggestions.length > 0
@@ -74,7 +76,7 @@ export function SearchBar({
         }}
       >
         <label htmlFor={`${listId}-input`} className="sr-only">
-          Search by kural number, Tamil, transliteration or English
+          {t('search.label', 'Search by kural number, Tamil, transliteration or English')}
         </label>
         <div className="relative">
           <Search
@@ -96,7 +98,7 @@ export function SearchBar({
             }
             autoComplete="off"
             value={value}
-            placeholder="151, பொறுத்தல், patience…"
+            placeholder={t('search.placeholder', '151, பொறுத்தல், patience…')}
             onChange={(event) => {
               onChange(event.target.value)
               setOpen(true)
@@ -156,7 +158,7 @@ export function SearchBar({
           <ul
             id={listId}
             role="listbox"
-            aria-label="Search suggestions"
+            aria-label={t('search.suggestions', 'Search suggestions')}
             className="glass-panel max-h-[320px] overflow-auto p-1"
           >
             {showSuggestions

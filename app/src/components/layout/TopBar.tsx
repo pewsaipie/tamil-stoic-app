@@ -4,20 +4,24 @@
  */
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Bookmark, Settings2 } from 'lucide-react'
+import { Bookmark, Search, Settings2 } from 'lucide-react'
 import { SettingsSheet } from '../settings/SettingsSheet'
 import { useReaderStore } from '../../store/appStore'
+import { useT } from '../../i18n'
 import { cn } from '../../lib/cn'
 
 export interface TopBarProps {
   /** Title shown on the left (Tamil wordmark). */
   title?: string
+  /** Opens the command palette; omitted on screens that own their own search. */
+  onOpenPalette?: () => void
   className?: string
 }
 
-export function TopBar({ title = 'திருக்குறள்', className }: TopBarProps) {
+export function TopBar({ title = 'திருக்குறள்', onOpenPalette, className }: TopBarProps) {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const savedCount = useReaderStore((state) => state.saved.length)
+  const t = useT()
 
   return (
     <>
@@ -26,11 +30,23 @@ export function TopBar({ title = 'திருக்குறள்', className 
           {title}
         </span>
 
+        {onOpenPalette ? (
+          <button
+            type="button"
+            onClick={onOpenPalette}
+            aria-haspopup="dialog"
+            aria-label={t('action.palette', 'Search and commands')}
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-muted hover:text-ink"
+          >
+            <Search size={20} strokeWidth={1.5} aria-hidden="true" />
+          </button>
+        ) : null}
+
         <button
           type="button"
           onClick={() => setSettingsOpen(true)}
           aria-haspopup="dialog"
-          aria-label="Reading settings"
+          aria-label={t('action.settings', 'Reading settings')}
           className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-muted hover:text-ink"
         >
           <Settings2 size={20} strokeWidth={1.5} aria-hidden="true" />
@@ -38,7 +54,7 @@ export function TopBar({ title = 'திருக்குறள்', className 
 
         <Link
           to="/saved"
-          aria-label={`Saved kurals (${savedCount})`}
+          aria-label={`${t('action.saved', 'Saved Kurals')} (${savedCount})`}
           className="relative inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-muted no-underline hover:text-ink"
         >
           <Bookmark size={20} strokeWidth={1.5} aria-hidden="true" />

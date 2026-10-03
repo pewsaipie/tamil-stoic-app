@@ -17,6 +17,7 @@ import { GlassCard } from '../components/ui/GlassCard'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { chapterOf, findKural, sectionOf } from '../lib/corpus'
 import { shareKural } from '../lib/share'
+import { useT } from '../i18n'
 import type { Kural } from '../lib/types'
 
 export function Saved() {
@@ -27,6 +28,7 @@ export function Saved() {
   const pushToast = useReaderStore((state) => state.pushToast)
   const [reflectionFor, setReflectionFor] = useState<Kural | null>(null)
   const [reflectionOpen, setReflectionOpen] = useState(false)
+  const t = useT()
 
   const entries = useMemo(() => {
     if (!corpus) return []
@@ -38,7 +40,9 @@ export function Saved() {
   if (status === 'loading' || !hydrated) {
     return (
       <main id="main" className="mx-auto max-w-[var(--reader-max)] px-4 pt-[var(--space-5)] pb-[var(--space-7)]">
-        <h1 className="m-0 mb-[var(--space-4)] text-2xl text-ink">புத்தகக் குறிப்பு · Saved</h1>
+        <h1 className="m-0 mb-[var(--space-4)] text-2xl text-ink">
+          <span lang="ta">புத்தகக் குறிப்பு</span> · {t('nav.saved', 'Saved')}
+        </h1>
         <SkeletonKuralCard />
       </main>
     )
@@ -52,15 +56,20 @@ export function Saved() {
         </Link>
       </nav>
 
-      <h1 className="m-0 text-2xl text-ink">புத்தகக் குறிப்பு · Saved Kurals</h1>
+      <h1 className="m-0 text-2xl text-ink">
+        <span lang="ta">புத்தகக் குறிப்பு</span> · {t('saved.title', 'Saved Kurals')}
+      </h1>
       <p className="mt-1 mb-[var(--space-5)] text-sm text-muted">
-        Saved kurals and reflections stay on this device. Nothing is posted or shared automatically.
+        {t(
+          'saved.intro',
+          'Saved kurals and reflections stay on this device. Nothing is posted or shared automatically.',
+        )}
       </p>
 
       {entries.length === 0 ? (
         <GlassCard quiet className="p-6 text-center">
           <p className="m-0 text-muted">
-            Save a kural that meets you at the right moment. It will appear here.
+            {t('saved.empty', 'Save a kural that meets you at the right moment. It will appear here.')}
           </p>
           <p className="mt-[var(--space-4)] mb-0">
             <Link to="/chapters" className="text-accent-text">
@@ -99,7 +108,9 @@ export function Saved() {
                 </p>
                 {record.note ? (
                   <div className="rounded-[var(--radius-md)] border border-accent/40 bg-accent/10 px-4 py-3">
-                    <p className="m-0 text-xs tracking-wide text-muted uppercase">Private reflection</p>
+                    <p className="m-0 text-xs tracking-wide text-muted uppercase">
+                      {t('saved.noteLabel', 'Private reflection')}
+                    </p>
                     <p className="m-0 mt-1 text-[15px] whitespace-pre-wrap">{record.note}</p>
                   </div>
                 ) : null}

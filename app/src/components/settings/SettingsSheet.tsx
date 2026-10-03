@@ -11,6 +11,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { LAYER_LABELS, LAYER_ORDER, type LayerKey } from '../../lib/types'
 import { useReaderStore } from '../../store/appStore'
+import { useT } from '../../i18n'
 import { cn } from '../../lib/cn'
 
 const TEXT_SIZES = [
@@ -87,6 +88,7 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
   const setReduceMotion = useReaderStore((state) => state.setReduceMotion)
   const highContrast = useReaderStore((state) => state.highContrast)
   const setHighContrast = useReaderStore((state) => state.setHighContrast)
+  const t = useT()
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -102,8 +104,12 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
         >
           <div className="mb-[var(--space-4)] flex items-start justify-between gap-4">
             <div>
-              <p className="m-0 text-xs tracking-wide text-muted uppercase">Make this reader yours</p>
-              <Dialog.Title className="m-0 text-xl text-ink">Reading settings</Dialog.Title>
+              <p className="m-0 text-xs tracking-wide text-muted uppercase">
+                {t('settings.eyebrow', 'Make this reader yours')}
+              </p>
+              <Dialog.Title className="m-0 text-xl text-ink">
+                {t('settings.title', 'Reading settings')}
+              </Dialog.Title>
             </div>
             <Dialog.Close
               aria-label="Close reading settings"
@@ -115,27 +121,32 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
 
           <div className="space-y-[var(--space-5)]">
             <ChoiceGroup
-              legend="Text size"
+              legend={t('settings.textSize', 'Text size')}
               value={fontSize}
               options={TEXT_SIZES}
               onChange={setFontSize}
             />
             <ChoiceGroup
-              legend="Line spacing"
+              legend={t('settings.spacing', 'Line spacing')}
               value={lineSpacing}
               options={SPACINGS}
               onChange={setLineSpacing}
             />
-            <ChoiceGroup legend="Colour" value={theme} options={THEMES} onChange={setTheme} />
             <ChoiceGroup
-              legend="Interface language · இடைமுக மொழி"
+              legend={t('settings.colour', 'Colour')}
+              value={theme}
+              options={THEMES}
+              onChange={setTheme}
+            />
+            <ChoiceGroup
+              legend={`${t('settings.language', 'Interface language')} · இடைமுக மொழி`}
               value={uiLanguage}
               options={LANGUAGES}
               onChange={setUiLanguage}
             />
 
             <fieldset className="space-y-2 border-0 p-0">
-              <legend className="text-sm text-muted">Reading layers</legend>
+              <legend className="text-sm text-muted">{t('settings.layers', 'Reading layers')}</legend>
               {LAYER_ORDER.map((layer: LayerKey) => (
                 <label key={layer} className="flex min-h-[44px] items-center gap-3 text-[15px]">
                   <input
@@ -144,7 +155,9 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
                     checked={layers[layer]}
                     onChange={() => toggleLayer(layer)}
                   />
-                  <span>{LAYER_LABELS[layer].en}</span>
+                  <span>
+                    {t(`settings.layer.${layer}`, LAYER_LABELS[layer].en)}
+                  </span>
                   {layer === 'tamil' ? (
                     <span lang="ta" className="text-muted">
                       குறள்
@@ -153,8 +166,10 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
                 </label>
               ))}
               <p className="m-0 text-xs text-muted">
-                The Tamil couplet always keeps its standard two lines — four சீர் on top, three below —
-                whatever size, spacing or contrast you choose.
+                {t(
+                  'settings.coupletNote',
+                  'The Tamil couplet always keeps its standard two lines — four சீர் on top, three below — whatever size, spacing or contrast you choose.',
+                )}
               </p>
             </fieldset>
 
@@ -165,7 +180,7 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
                 checked={reduceMotion}
                 onChange={(event) => setReduceMotion(event.target.checked)}
               />
-              <span>Reduce motion</span>
+              <span>{t('settings.motion', 'Reduce motion')}</span>
             </label>
 
             <label className="flex min-h-[44px] items-center gap-3 text-[15px]">
@@ -175,7 +190,7 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
                 checked={highContrast}
                 onChange={(event) => setHighContrast(event.target.checked)}
               />
-              <span>Higher contrast</span>
+              <span>{t('settings.contrast', 'Higher contrast')}</span>
             </label>
           </div>
         </Dialog.Content>
