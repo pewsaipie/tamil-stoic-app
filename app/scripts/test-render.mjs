@@ -115,9 +115,13 @@ window.IntersectionObserver = class {
     return []
   }
 }
+const modelJson = fs.readFileSync(path.join(root, 'public', 'data', 'intents.json'), 'utf8')
 window.fetch = async (url) => {
   if (String(url).includes('kurals.json')) {
     return { ok: true, status: 200, json: async () => JSON.parse(corpusJson) }
+  }
+  if (String(url).includes('intents.json')) {
+    return { ok: true, status: 200, json: async () => JSON.parse(modelJson) }
   }
   return { ok: false, status: 404, json: async () => ({}) }
 }
@@ -323,6 +327,49 @@ check(
 delete window.document.documentElement.dataset.fontSize
 delete window.document.documentElement.dataset.lineSpacing
 
+/* ---------- Ask Valluvar ---------- */
+await navigate('#/ask', () => document.querySelector('#ask-input') !== null)
+console.log('ask route:')
+check(document.querySelector('#ask-input') !== null, 'the composer is present')
+const promptChips = [...document.querySelectorAll('button')].filter((button) =>
+  (button.textContent ?? '').trim().length > 0 && button.closest('[role="log"]') !== null,
+)
+check(promptChips.length > 0, 'opening prompts are offered before the reader types')
+
+// Type a Tamil situation and send it: the reply must be a corpus couplet.
+const input = document.querySelector('#ask-input')
+const setValue = (element, value) => {
+  const setter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set
+  setter?.call(element, value)
+  element.dispatchEvent(new window.Event('input', { bubbles: true }))
+}
+setValue(input, 'எனக்கு கோபம் வருகிறது')
+await wait(30)
+const send = [...document.querySelectorAll('form button[type="submit"]')][0]
+send?.click()
+await waitFor(() => document.querySelector('[role="log"] [data-verse-line]') !== null)
+const askLines = [...document.querySelectorAll('[role="log"] [data-verse-line]')].map((node) => node.textContent?.trim())
+const askKural = corpusKurals.find((kural) => kural.ta[0] === askLines[0])
+check(askLines.length === 2 && askKural !== undefined, 'a Tamil question about anger answers with a corpus couplet')
+check(
+  askKural !== undefined && document.body.textContent?.includes(`குறள் ${askKural.n}`) === true,
+  'the reply names the couplet it is quoting',
+)
+check(
+  document.querySelectorAll('[role="log"] button[aria-label="Listen"]').length > 0 ||
+    document.querySelectorAll('[role="log"] button[aria-label^="Listen"]').length > 0,
+  'the reply can be read aloud',
+)
+
+// A support phrase must reach the helplines, never a couplet.
+setValue(input, 'I want to end my life')
+await wait(30)
+;[...document.querySelectorAll('form button[type="submit"]')][0]?.click()
+await waitFor(() => document.body.textContent?.includes('14416') === true)
+check(document.body.textContent?.includes('14416') === true, 'a crisis phrase shows Tele-MANAS 14416')
+check(document.body.textContent?.includes('1800-599-0019') === true, 'it also shows KIRAN')
+check(document.body.textContent?.includes('findahelpline.com') === true, 'and findahelpline.com')
+
 /* ---------- saved ---------- */
 await navigate('#/saved', () => document.querySelector('h1')?.textContent?.includes('Saved') === true)
 console.log('saved route:')
@@ -391,6 +438,8 @@ await navigate('#/', () => text().includes('பால்கள்') || text().in
 await scan('/')
 await navigate('#/credits', () => text().includes('Credits'))
 await scan('/credits')
+await navigate('#/ask', () => document.querySelector('#ask-input') !== null)
+await scan('/ask')
 
 /* ---------- runtime errors ---------- */
 console.log('runtime:')

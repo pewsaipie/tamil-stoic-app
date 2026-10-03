@@ -1,5 +1,30 @@
 # Plan — Standard couplet layout + **Ask Valluvar** (வள்ளுவரைக் கேள்)
 
+## 0. Status — what shipped
+
+Both features and the React migration are implemented on
+`arena/01a0ffe1-tamil-stoic-app` (M1–M6 parity + live flip, then the features).
+
+| item | where it landed | evidence |
+| --- | --- | --- |
+| Standard couplet layout, all 1,330 couplets | `app/src/lib/couplet.ts`, `app/src/components/kural/KuralVerse.tsx` | `docs/couplet-line-contract.md`, `app/scripts/test-couplet.mjs`, `test-render.mjs` |
+| Ask Valluvar (on-device traditional NLP) | `app/src/lib/{intents,lexicon,intentFeatures,intentClassifier,askValluvar}.ts`, `app/src/views/AskValluvar.tsx` | `docs/ask-valluvar.md`, `app/scripts/test-intent.mjs` |
+| React app is the deployed reader | `.github/workflows/deploy.yml` publishes `app/dist` | `app/scripts/test-pwa.mjs` |
+
+Two numbers differ from this plan's estimates, and both were decided during
+implementation:
+
+1. **Exceptions are 29, not ~15.** §D1 assumed the ~11–13 spacing defects would be
+   corrected (A3). Rewriting corpus text — even a space inside a word — was
+   rejected instead: the app presents Thirukkural, it does not edit it. So
+   **1,301** couplets read four words over three, and **29** keep the standard
+   4 சீர்/3 சீர் split with a documented reason and sources. The full table is in
+   `docs/couplet-line-contract.md` §3.
+2. **Intents are 38, not 40.** The appendix's 40-intent catalogue merged into 37
+   subject/support intents plus the out-of-scope `smalltalk` class added during
+   evaluation (an open-set classifier answers greetings with scripture without it).
+   See `docs/ask-valluvar.md` §2.
+
 **Status:** revised after your answers · **Target:** `arena/01a0ffe1-tamil-stoic-app` → PR → merge → live
 **Two features, one direction:** everything ships in the **React app** (`app/`), and the
 **live site becomes the React build**.

@@ -11,6 +11,7 @@ export const TA: Record<string, string> = {
   'nav.today': 'இன்று',
   'nav.chapters': 'அத்தியாயங்கள்',
   'nav.saved': 'சேமித்தவை',
+  'nav.ask': 'வள்ளுவரைக் கேள்',
   'nav.backHome': 'முகப்புக்குத் திரும்ப',
   'nav.main': 'முதன்மை வழிசெலுத்தல்',
   'nav.prev': 'முந்தையது',

@@ -3,7 +3,7 @@
  * Fixed to the bottom on phones, hidden in print. Touch targets clear 44 px.
  */
 import { Link, useLocation } from 'react-router-dom'
-import { Bookmark, BookOpen, Home } from 'lucide-react'
+import { Bookmark, BookOpen, Home, Sparkles } from 'lucide-react'
 import { useT } from '../../i18n'
 import { cn } from '../../lib/cn'
 
@@ -16,6 +16,14 @@ const ITEMS = [
     en: 'Chapters',
     icon: BookOpen,
     match: (path: string) => path.startsWith('/chapters') || path.startsWith('/kural'),
+  },
+  {
+    to: '/ask',
+    labelKey: 'nav.ask',
+    label: 'வள்ளுவரைக் கேள்',
+    en: 'Ask',
+    icon: Sparkles,
+    match: (path: string) => path.startsWith('/ask'),
   },
   {
     to: '/saved',

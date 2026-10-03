@@ -4,7 +4,9 @@ dist/
 # React app (app/) — generated at build time, never committed:
 #   app/src/assets/*  mirrored from the repository's canonical assets/
 #   app/public/*      icons + the JSON corpus derived from data/kurals.js
-# Both are produced by `npm run sync`, and CI verifies parity with --check.
+#                     + the trained Ask Valluvar model (data/intents.json)
+# Both are produced by `npm run sync`, and CI verifies parity with --check
+# (the model is regenerated and compared by `train-intent.mjs --check`).
 app/src/assets/
 app/public/icons/
 app/public/data/

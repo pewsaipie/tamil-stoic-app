@@ -60,12 +60,17 @@ console.log('offline cache:')
 const files = fs.readdirSync(path.join(dist, 'assets'))
 const sw = fs.readFileSync(path.join(dist, 'sw.js'), 'utf8')
 check(/kurals\.json/.test(sw), 'the built worker precaches the kural corpus')
+check(/intents\.json/.test(sw), 'the built worker precaches the Ask Valluvar model (offline answers)')
 check(/\.woff2/.test(sw), 'the built worker precaches the fonts (offline typography)')
 check(/index\.html/.test(sw), 'the built worker precaches the app shell')
 check(files.some((file) => file.endsWith('.css')), 'the built stylesheet is part of the bundle')
 check(
   fs.readdirSync(path.join(dist, 'data')).includes('kurals.json'),
   'the corpus ships as data/kurals.json',
+)
+check(
+  fs.existsSync(path.join(dist, 'data', 'intents.json')),
+  'the intent model ships as data/intents.json',
 )
 
 console.log('update flow:')

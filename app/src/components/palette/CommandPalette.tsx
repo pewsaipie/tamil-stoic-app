@@ -81,6 +81,14 @@ export function CommandPalette({ open, onOpenChange, onOpenSettings, onOpenShort
         run: go('/chapters'),
       },
       {
+        id: 'ask',
+        label: t('nav.ask', 'Ask Valluvar'),
+        hint: 'வள்ளுவரைக் கேள்',
+        group: 'Go to',
+        icon: <Sparkles size={16} strokeWidth={1.6} />,
+        run: go('/ask'),
+      },
+      {
         id: 'saved',
         label: t('nav.saved', 'Saved Kurals'),
         group: 'Go to',
