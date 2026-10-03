@@ -14,7 +14,8 @@
  *   #browse, #main → /chapters
  *   #saved, #ask   → reserved for the features landing in M2/M3
  *
- * The manifest's `share_target` also delivers `?q=…`; that becomes a search.
+ * The manifest's `share_target` also delivers shared text (`?text=…`, or the
+ * older `?q=…`); that becomes a search.
  */
 const KURAL = /^#kural-(\d{1,4})$/
 const THEME = /^#theme-([a-z-]+)$/
@@ -42,12 +43,13 @@ export function upgradeLegacyUrl(): void {
     }
   }
 
-  // Shared text arrives as ?q=… and should land on a search.
+  // Shared text — `?text=` from the manifest's share_target, or `?q=` from the
+  // links the shipped reader published — lands on a search.
   if (!hash) {
     const params = new URLSearchParams(search)
-    const q = params.get('q')
-    if (q) {
-      window.history.replaceState(null, '', `${pathname}#/chapters?q=${encodeURIComponent(q)}`)
+    const shared = params.get('text') ?? params.get('q')
+    if (shared) {
+      window.history.replaceState(null, '', `${pathname}#/chapters?q=${encodeURIComponent(shared)}`)
     }
   }
 }

@@ -36,11 +36,26 @@ jobs:
       - name: Validate content before publishing
         run: node scripts/test-content.mjs
 
+      # The published site is the React app (app/), which mirrors the canonical
+      # corpus and assets at build time. `npm run build` runs the sync + tsc +
+      # vite build, so a broken mirror fails the deploy instead of shipping.
+      - name: Install the app workspace
+        run: npm ci
+        working-directory: app
+
+      - name: Build the reader
+        run: npm run build
+        working-directory: app
+
+      - name: Verify the built site (couplets, PWA contract, axe)
+        run: npm test
+        working-directory: app
+
       - name: Gather site files
         run: |
           mkdir -p _site
-          cp index.html manifest.webmanifest sw.js LICENSE THIRD_PARTY_NOTICES.md _site/
-          cp -r css js data assets _site/
+          cp -r app/dist/. _site/
+          cp LICENSE THIRD_PARTY_NOTICES.md _site/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

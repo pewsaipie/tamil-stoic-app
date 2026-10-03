@@ -8,6 +8,7 @@ import { Credits } from './views/Credits'
 import { BottomNav } from './components/layout/BottomNav'
 import { Toasts } from './components/ui/Toasts'
 import { OfflineBanner } from './components/ui/OfflineBanner'
+import { UpdateBanner } from './components/ui/UpdateBanner'
 import { CommandPalette } from './components/palette/CommandPalette'
 import { ShortcutsDialog } from './components/palette/ShortcutsDialog'
 import { OnboardingDialog } from './components/onboarding/OnboardingDialog'
@@ -74,6 +75,7 @@ export function App() {
       <SettingsSheet open={settingsOpen} onOpenChange={setSettingsOpen} />
       <OnboardingDialog />
       <Toasts />
+      <UpdateBanner />
       <OfflineBanner />
     </>
   )
