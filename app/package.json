@@ -15,9 +15,10 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test:tokens": "node scripts/test-tokens.mjs",
-    "test": "npm run check-assets && npm run check-data && npm run test:tokens && npm run test:reader && npm run test:render && npm run typecheck",
+    "test": "npm run check-assets && npm run check-data && npm run test:tokens && npm run test:reader && npm run test:speech && npm run test:render && npm run typecheck",
     "test:reader": "node --experimental-strip-types scripts/test-reader.mjs",
-    "test:render": "node scripts/test-render.mjs"
+    "test:render": "node scripts/test-render.mjs",
+    "test:speech": "node --experimental-strip-types scripts/test-speech.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.20",

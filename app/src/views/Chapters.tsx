@@ -27,9 +27,12 @@ import {
 import { ChapterMap } from '../components/chapters/ChapterMap'
 import { SearchBar } from '../components/chapters/SearchBar'
 import { KuralCard } from '../components/kural/KuralCard'
+import { ReflectionDialog } from '../components/kural/ReflectionDialog'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
+import { TopBar } from '../components/layout/TopBar'
 import { SITUATIONS } from '../lib/situations'
 import { useReaderStore } from '../store/appStore'
+import type { Kural } from '../lib/types'
 
 const BOOKS: readonly { id: number | 'all'; label: string }[] = [
   { id: 'all', label: 'அனைத்தும் · All' },
@@ -58,6 +61,7 @@ export function Chapters() {
   const [searchInput, setSearchInput] = useState(query)
   const [recents, setRecents] = useState<string[]>(() => readRecentSearches())
   const [mapOpen, setMapOpen] = useState(false)
+  const [reflectionFor, setReflectionFor] = useState<Kural | null>(null)
 
   const read = useReaderStore((state) => state.read)
   const visited = useReaderStore((state) => state.chapters)
@@ -209,6 +213,7 @@ export function Chapters() {
 
   return (
     <main id="main" className="mx-auto max-w-[var(--content-max)] px-4 pt-[var(--space-5)] pb-[var(--space-7)]">
+      <TopBar className="mb-[var(--space-3)]" />
       <nav aria-label="Breadcrumb" className="mb-[var(--space-3)]">
         <Link to="/" className="text-sm text-muted no-underline hover:text-ink">
           ← Today
@@ -381,6 +386,7 @@ export function Chapters() {
             chapter={entry.chapter}
             section={entry.section}
             theme={entry.theme}
+            onReflect={(kural) => setReflectionFor(kural)}
           />
         ))}
 
@@ -397,6 +403,14 @@ export function Chapters() {
           </div>
         ) : null}
       </section>
+
+      <ReflectionDialog
+        kural={reflectionFor}
+        open={reflectionFor !== null}
+        onOpenChange={(open) => {
+          if (!open) setReflectionFor(null)
+        }}
+      />
     </main>
   )
 }

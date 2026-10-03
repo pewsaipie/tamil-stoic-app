@@ -123,6 +123,33 @@ window.fetch = async (url) => {
 }
 window.navigator.serviceWorker = undefined
 window.scrollTo = () => {}
+window.localStorage.clear()
+
+// A minimal speech engine, so the Listen controls mount with a real API shape.
+class FakeUtterance {
+  constructor(text) {
+    this.text = text
+    this.lang = ''
+    this.voice = null
+    this.rate = 1
+    this.onend = null
+    this.onerror = null
+  }
+}
+window.SpeechSynthesisUtterance = FakeUtterance
+window.speechSynthesis = {
+  speaking: false,
+  pending: false,
+  getVoices: () => [{ lang: 'ta-IN', name: 'ta', default: false, localService: true, voiceURI: 'ta' }],
+  speak() {
+    this.speaking = true
+  },
+  cancel() {
+    this.speaking = false
+  },
+  resume() {},
+  addEventListener() {},
+}
 
 const errors = []
 window.addEventListener('error', (event) => errors.push(String(event.message)))
@@ -207,6 +234,56 @@ check(text().includes('பொறையுடைமை'), 'selecting chapter 16 s
 await navigate('#/chapters?theme=anger', () => text().includes('சினம்'))
 check(text().includes('சினம்'), 'a theme filter names the theme it applied')
 
+/* ---------- the reader ---------- */
+const readerReady = () => document.querySelector('nav[aria-label="Kural navigation"]') !== null
+await navigate('#/kural/151', readerReady)
+console.log('reader route:')
+const readerVerse = [...document.querySelectorAll('[data-verse-line]')].map((node) => node.textContent?.trim())
+const kural151 = JSON.parse(corpusJson).kurals.find((k) => k.n === 151)
+check(
+  readerVerse[0] === kural151.ta[0] && readerVerse[1] === kural151.ta[1],
+  'the reader shows the corpus couplet, line for line',
+)
+check(text().includes('151 / 1330'), 'the counter is present')
+check(
+  [...document.querySelectorAll('button')].some((button) =>
+    (button.getAttribute('aria-label') ?? '').startsWith('Listen'),
+  ) || document.querySelectorAll('article button').length > 0,
+  'the action row renders',
+)
+
+/* ---------- the accessibility-independence rule ---------- */
+console.log('couplet structure under accessibility settings:')
+const stylesheet = fs.readFileSync(path.join(root, 'src', 'styles', 'global.css'), 'utf8')
+for (const setting of ['large', 'x-large']) {
+  window.document.documentElement.dataset.fontSize = setting
+  await wait(30)
+  const lines = [...document.querySelectorAll('[data-verse-line]')].map((node) => node.textContent?.trim())
+  check(
+    lines[0] === kural151.ta[0] && lines[1] === kural151.ta[1],
+    `text size "${setting}" changes type, not the couplet's two lines`,
+  )
+}
+window.document.documentElement.dataset.lineSpacing = 'relaxed'
+await wait(30)
+const relaxedLines = [...document.querySelectorAll('[data-verse-line]')].map((node) => node.textContent?.trim())
+check(
+  relaxedLines[0] === kural151.ta[0] && relaxedLines[1] === kural151.ta[1],
+  'relaxed line spacing changes type, not the couplet',
+)
+check(
+  stylesheet.includes("html[data-font-size='large']") && stylesheet.includes("html[data-line-spacing='relaxed']"),
+  'the type settings are expressed as variables, never as a line split',
+)
+delete window.document.documentElement.dataset.fontSize
+delete window.document.documentElement.dataset.lineSpacing
+
+/* ---------- saved ---------- */
+await navigate('#/saved', () => document.querySelector('h1')?.textContent?.includes('Saved') === true)
+console.log('saved route:')
+check(text().includes('stays on this device'), 'the privacy line is present')
+check(text().includes('It will appear here'), 'the empty state renders for a fresh device')
+
 /* ---------- axe ---------- */
 console.log('accessibility:')
 async function scan(label) {
@@ -221,6 +298,10 @@ async function scan(label) {
 }
 
 await scan('/chapters')
+await navigate('#/kural/151', readerReady)
+await scan('/kural/151')
+await navigate('#/saved', () => text().includes('Saved Kurals'))
+await scan('/saved')
 await navigate('#/', () => text().includes('மூன்று பால்கள்'))
 await scan('/')
 

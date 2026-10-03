@@ -17,6 +17,7 @@ import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
 import { BookTiles } from '../components/home/BookTiles'
 import { SituationDoors } from '../components/home/SituationDoors'
+import { TopBar } from '../components/layout/TopBar'
 import { Link } from 'react-router-dom'
 import type { Kural } from '../lib/types'
 
@@ -73,6 +74,9 @@ export function Home() {
         }}
       >
         <HeroCanvas />
+        <div className="relative z-10 mx-auto mb-3 max-w-[var(--content-max)]">
+          <TopBar title="தமிழ் ஸ்டோயிக் · Tamil Stoic" />
+        </div>
         <div className="relative z-10 mx-auto flex max-w-[var(--content-max)] flex-col items-center gap-[var(--space-4)] text-center">
           <h1
             lang="ta"

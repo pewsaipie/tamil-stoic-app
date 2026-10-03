@@ -43,6 +43,36 @@
 }
 
 @layer base {
+  /* Reader type scale. `data-font-size` / `data-line-spacing` on <html> are the
+     reader's own choices; the couplet's two-line structure is unaffected. */
+  :root {
+    --verse-size: clamp(19px, 2.6vw, 25px);
+    --verse-size-focus: clamp(22px, 3.4vw, 32px);
+    --body-size: clamp(15px, 2vw, 17px);
+    --verse-leading: 1.85;
+    --body-leading: 1.75;
+    --translit-size: 13px;
+  }
+
+  html[data-font-size='large'] {
+    --verse-size: clamp(22px, 3.1vw, 30px);
+    --verse-size-focus: clamp(25px, 4vw, 37px);
+    --body-size: clamp(16px, 2.2vw, 19px);
+    --translit-size: 15px;
+  }
+
+  html[data-font-size='x-large'] {
+    --verse-size: clamp(25px, 3.6vw, 34px);
+    --verse-size-focus: clamp(28px, 4.6vw, 42px);
+    --body-size: clamp(17px, 2.4vw, 21px);
+    --translit-size: 16px;
+  }
+
+  html[data-line-spacing='relaxed'] {
+    --verse-leading: 2.08;
+    --body-leading: 1.9;
+  }
+
   *,
   *::before,
   *::after {
@@ -181,24 +211,31 @@
    * ------------------------------------------------------------------------ */
   .verse {
     font-family: var(--font-tamil);
-    font-size: clamp(18px, 2.5vw, 24px);
-    line-height: 1.85;
+    font-size: var(--verse-size);
+    line-height: var(--verse-leading);
     letter-spacing: 0.01em;
     color: var(--ink-primary);
     text-wrap: pretty;
+    /* The couplet keeps its two lines. Nothing here may hyphenate, split or
+       re-flow one அடி into the other — only the type around it scales. */
+    overflow-wrap: break-word;
+  }
+
+  .verse--focus {
+    font-size: var(--verse-size-focus);
   }
 
   .transliteration {
     font-family: var(--font-ui);
-    font-size: 13px;
+    font-size: var(--translit-size);
     font-style: italic;
     color: var(--ink-secondary);
   }
 
   .meaning {
     font-family: var(--font-ui);
-    font-size: clamp(15px, 2vw, 17px);
-    line-height: 1.75;
+    font-size: var(--body-size);
+    line-height: var(--body-leading);
     color: var(--ink-primary);
   }
 
@@ -340,5 +377,27 @@
     border: 1px solid #999;
     background: #fff;
     backdrop-filter: none;
+  }
+
+  /* A printed kural is a study page: the couplet keeps its two lines, the
+     action row steps aside, and the type stays legible at 100%. */
+  .verse {
+    font-size: 20pt;
+    line-height: 1.7;
+  }
+
+  .verse--focus {
+    font-size: 24pt;
+  }
+
+  .meaning,
+  .transliteration {
+    font-size: 11pt;
+  }
+
+  .chip,
+  button,
+  [role='group'] {
+    display: none !important;
   }
 }

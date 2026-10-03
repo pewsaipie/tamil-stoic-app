@@ -3,7 +3,7 @@
  * Fixed to the bottom on phones, hidden in print. Touch targets clear 44 px.
  */
 import { Link, useLocation } from 'react-router-dom'
-import { BookOpen, Home } from 'lucide-react'
+import { Bookmark, BookOpen, Home } from 'lucide-react'
 import { cn } from '../../lib/cn'
 
 const ITEMS = [
@@ -14,6 +14,13 @@ const ITEMS = [
     en: 'Chapters',
     icon: BookOpen,
     match: (path: string) => path.startsWith('/chapters') || path.startsWith('/kural'),
+  },
+  {
+    to: '/saved',
+    label: 'சேமித்தவை',
+    en: 'Saved',
+    icon: Bookmark,
+    match: (path: string) => path.startsWith('/saved'),
   },
 ] as const
 

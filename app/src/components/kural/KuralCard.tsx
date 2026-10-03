@@ -6,9 +6,10 @@
  * two-line block from KuralVerse. Actions: save, share/copy and open the reader.
  */
 import { Link } from 'react-router-dom'
-import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Share2 } from 'lucide-react'
+import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, PenLine, Share2 } from 'lucide-react'
 import { KuralVerse } from './KuralVerse'
 import { Button } from '../ui/Button'
+import { ListenButton } from './ListenButton'
 import { GlassCard } from '../ui/GlassCard'
 import { LAYER_LABELS, type Chapter, type Kural, type Section, type ThemeTag } from '../../lib/types'
 import { selectIsSaved, useReaderStore } from '../../store/appStore'
@@ -23,6 +24,7 @@ export interface KuralCardProps {
   theme?: ThemeTag | undefined
   /** Prev/next links stay visible in browse lists, hidden in dense grids. */
   showNavigation?: boolean
+  onReflect?: (kural: Kural) => void
   className?: string
 }
 
@@ -32,6 +34,7 @@ export function KuralCard({
   section,
   theme,
   showNavigation = true,
+  onReflect,
   className,
 }: KuralCardProps) {
   const layers = useReaderStore((state) => state.layers)
@@ -122,6 +125,19 @@ export function KuralCard({
         >
           Share
         </Button>
+
+        <ListenButton kural={kural} />
+
+        {onReflect ? (
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<PenLine size={17} strokeWidth={1.5} />}
+            onClick={() => onReflect(kural)}
+          >
+            Reflect
+          </Button>
+        ) : null}
 
         <Link
           to={`/kural/${kural.n}`}
