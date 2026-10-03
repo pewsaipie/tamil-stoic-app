@@ -15,7 +15,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test:tokens": "node scripts/test-tokens.mjs",
-    "test": "npm run check-assets && npm run check-data && npm run test:tokens && npm run typecheck"
+    "test": "npm run check-assets && npm run check-data && npm run test:tokens && npm run test:reader && npm run typecheck",
+    "test:reader": "node --experimental-strip-types scripts/test-reader.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.20",

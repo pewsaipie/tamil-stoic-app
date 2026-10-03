@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Home } from './views/Home'
 import { KuralView } from './views/KuralView'
+import { Chapters } from './views/Chapters'
+import { BottomNav } from './components/layout/BottomNav'
 import { Toasts } from './components/ui/Toasts'
 import { OfflineBanner } from './components/ui/OfflineBanner'
 import { hydrateLibrary } from './store/appStore'
@@ -27,10 +29,12 @@ export function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/chapters" element={<Chapters />} />
         <Route path="/kural/:number" element={<KuralView />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
+      <BottomNav />
       <Toasts />
       <OfflineBanner />
     </>

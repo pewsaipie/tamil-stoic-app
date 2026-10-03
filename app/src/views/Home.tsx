@@ -13,9 +13,11 @@ import { useCorpus, useReducedMotion } from '../hooks/useReader'
 import { useReaderStore } from '../store/appStore'
 import { TodayKuralCard } from '../components/today/TodayKuralCard'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
-import { Button } from '../components/ui/Button'
 import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
+import { BookTiles } from '../components/home/BookTiles'
+import { SituationDoors } from '../components/home/SituationDoors'
+import { Link } from 'react-router-dom'
 import type { Kural } from '../lib/types'
 
 function pickAnother(kurals: readonly Kural[], current: Kural): Kural {
@@ -122,43 +124,37 @@ export function Home() {
           </AnimatePresence>
         ) : null}
 
-        {/* Design-system proof: the primitives this app is built from. */}
-        <section aria-labelledby="system-title" className="mt-[var(--space-7)]">
-          <h2 id="system-title" className="m-0 text-lg text-ink">
-            Design system
-          </h2>
-          <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
-            Buttons, chips and loading states as they will appear across the app.
-          </p>
+        {/* Three books */}
+        {corpus ? (
+          <section aria-labelledby="books-title" className="mt-[var(--space-7)]">
+            <h2 id="books-title" className="m-0 text-lg text-ink">
+              <span lang="ta">மூன்று பால்கள்</span> · The three books
+            </h2>
+            <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
+              The Kural is arranged in three books. Open one and read it whole.
+            </p>
+            <BookTiles sections={corpus.sections} chapters={corpus.chapters} kurals={corpus.kurals} />
+          </section>
+        ) : null}
 
-          <div className="glass-panel grain space-y-[var(--space-4)] p-5">
-            <div className="flex flex-wrap gap-3">
-              <Button variant="primary">Primary</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="secondary" disabled>
-                Disabled
-              </Button>
-            </div>
+        {/* Situation doors */}
+        {corpus ? (
+          <section aria-labelledby="situations-title" className="mt-[var(--space-7)]">
+            <h2 id="situations-title" className="m-0 text-lg text-ink">
+              <span lang="ta">சூழ்நிலை</span> · Where are you today?
+            </h2>
+            <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
+              Pick the door that fits — or search the whole book.
+            </p>
+            <SituationDoors themes={corpus.themes} />
+            <p className="mt-[var(--space-4)] mb-0">
+              <Link to="/chapters" className="text-sm text-accent-text no-underline">
+                Search all 1,330 kurals →
+              </Link>
+            </p>
+          </section>
+        ) : null}
 
-            <div className="flex flex-wrap gap-2">
-              <button type="button" className="chip" aria-pressed="true">
-                அறம் · Virtue
-              </button>
-              <button type="button" className="chip" aria-pressed="false">
-                பொருள் · Wealth
-              </button>
-              <button type="button" className="chip" aria-pressed="false">
-                காமம் · Love
-              </button>
-            </div>
-
-            <div className="space-y-2" aria-hidden="true">
-              <div className="skeleton h-3 w-2/3" />
-              <div className="skeleton h-3 w-1/2" />
-            </div>
-          </div>
-        </section>
       </main>
     </div>
   )
