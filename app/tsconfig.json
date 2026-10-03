@@ -4,6 +4,9 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
+    /* The Node test suites load these modules directly, and Node's ESM resolver
+       needs the explicit extension; Vite and esbuild accept it too. */
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "useDefineForClassFields": true,
 

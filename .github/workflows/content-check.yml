@@ -36,3 +36,22 @@ jobs:
           node scripts/test-speech.mjs
       - name: axe-core accessibility scan
         run: node scripts/test-a11y.mjs
+
+  # The published reader is the React app (app/). This job proves the mirror of
+  # the canonical corpus is in step, the couplet contract holds, the speech
+  # personas still behave, axe finds nothing, and the built PWA precaches the
+  # whole library.
+  app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the app workspace
+        run: npm ci
+      - name: Typecheck, corpus mirror, tokens, couplets, speech, render + axe, build, PWA contract
+        run: npm test

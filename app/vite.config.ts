@@ -57,6 +57,7 @@ export default defineConfig(({ command }) => {
           display: 'standalone',
           background_color: '#F5EDD6',
           theme_color: '#F5EDD6',
+          categories: ['books', 'education', 'lifestyle'],
           icons: [
             { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
             { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },
@@ -65,6 +66,37 @@ export default defineConfig(({ command }) => {
               sizes: '512x512',
               type: 'image/png',
               purpose: 'maskable',
+            },
+          ],
+          // The OS share sheet can hand text straight to the reader's search.
+          // `text` is what the platform types model; the reader also accepts the
+          // older `?q=` links the shipped app published.
+          share_target: {
+            action: '.',
+            method: 'GET',
+            params: { text: 'text' },
+          },
+          shortcuts: [
+            {
+              name: "Today's Kural",
+              short_name: 'Today',
+              description: "Open today's Thirukkural couplet",
+              url: './#/',
+              icons: [{ src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' }],
+            },
+            {
+              name: 'Saved Kurals',
+              short_name: 'Saved',
+              description: 'Open your private saved Kurals',
+              url: './#/saved',
+              icons: [{ src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' }],
+            },
+            {
+              name: 'Browse chapters',
+              short_name: 'Browse',
+              description: 'Search all 1,330 kurals',
+              url: './#/chapters',
+              icons: [{ src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' }],
             },
           ],
         },

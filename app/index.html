@@ -29,6 +29,10 @@
           var theme = map[stored.colorScheme] || 'night'
           var root = document.documentElement
           root.dataset.theme = theme
+          // Type settings must be on <html> before first paint, or the verse
+          // visibly reflows once React mounts.
+          root.dataset.fontSize = (stored.fontSize === 'large' || stored.fontSize === 'x-large') ? stored.fontSize : 'standard'
+          root.dataset.lineSpacing = stored.lineSpacing === 'relaxed' ? 'relaxed' : 'comfortable'
           if (stored.reduceMotion === true) root.dataset.motion = 'reduced'
           if (stored.highContrast === true) root.dataset.contrast = 'high'
         } catch (error) {

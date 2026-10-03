@@ -40,5 +40,22 @@ for (const file of ["assets/licenses/MIT.txt", "assets/licenses/Apache-2.0.txt",
 assert.match(notices, /tk120404\/thirukkural[\s\S]*Apache License, Version 2\.0/);
 assert.match(notices, /G\. U\. Pope[\s\S]*public domain/);
 assert.match(notices, /SIL Open Font License/);
-assert.match(workflow, /cp index\.html manifest\.webmanifest sw\.js LICENSE THIRD_PARTY_NOTICES\.md _site/);
+// The deploy publishes the React app (app/dist), and ships the licences with it.
+assert.match(workflow, /working-directory: app/);
+assert.match(workflow, /run: npm run build/);
+assert.match(workflow, /cp -r app\/dist\/\. _site\//);
+assert.match(workflow, /cp LICENSE THIRD_PARTY_NOTICES\.md _site\//);
+// The shipped reader's own credits screen must name the same sources.
+const creditsView = read("app/src/views/Credits.tsx");
+for (const phrase of [
+  "tk120404",
+  "Pope",
+  "Apache-2.0",
+  "OFL-1.1",
+  "Fontsource",
+  "THIRD_PARTY_NOTICES.md",
+  "LICENSE",
+]) {
+  assert.ok(creditsView.includes(phrase), `the React credits screen names ${phrase}`);
+}
 console.log("open-source credits and license checks passed ✓");

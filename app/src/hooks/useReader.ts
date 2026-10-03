@@ -4,6 +4,8 @@
  */
 import { useEffect, useMemo, useState } from 'react'
 import { loadCorpus } from '../lib/corpus'
+import { loadClassifier } from '../lib/intentModel'
+import type { Classifier } from '../lib/intentClassifier'
 import type { Corpus } from '../lib/types'
 import { useReaderStore } from '../store/appStore'
 
@@ -37,6 +39,52 @@ export function useCorpus(): CorpusState {
             status: 'error',
             corpus: null,
             error: error instanceof Error ? error : new Error('unable to load the kurals'),
+          })
+        }
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  return state
+}
+
+type ClassifierState =
+  | { status: 'loading'; classifier: null; error: null }
+  | { status: 'ready'; classifier: Classifier; error: null }
+  | { status: 'error'; classifier: null; error: Error }
+
+let cachedClassifier: Classifier | null = null
+
+/**
+ * Load the Ask Valluvar model once per session. Kept separate from the corpus
+ * hook so the reader never waits on the classifier, and the classifier never
+ * waits on a couplet.
+ */
+export function useClassifier(): ClassifierState {
+  const [state, setState] = useState<ClassifierState>(() =>
+    cachedClassifier
+      ? { status: 'ready', classifier: cachedClassifier, error: null }
+      : { status: 'loading', classifier: null, error: null },
+  )
+
+  useEffect(() => {
+    if (cachedClassifier) return
+    let active = true
+
+    loadClassifier()
+      .then((classifier) => {
+        cachedClassifier = classifier
+        if (active) setState({ status: 'ready', classifier, error: null })
+      })
+      .catch((error: unknown) => {
+        if (active) {
+          setState({
+            status: 'error',
+            classifier: null,
+            error: error instanceof Error ? error : new Error('unable to load the intent model'),
           })
         }
       })
@@ -142,15 +190,21 @@ export function useInstallPrompt(): { canInstall: boolean; promptInstall: () => 
   )
 }
 
-/** Apply the reader's theme / motion / contrast choice to <html>. */
+/** Apply the reader's theme / type / motion / contrast choices to <html>. */
 export function useAppliedAppearance(): void {
   const theme = useReaderStore((state) => state.theme)
+  const fontSize = useReaderStore((state) => state.fontSize)
+  const lineSpacing = useReaderStore((state) => state.lineSpacing)
   const reduceMotion = useReaderStore((state) => state.reduceMotion)
   const highContrast = useReaderStore((state) => state.highContrast)
 
   useEffect(() => {
     const root = document.documentElement
     root.dataset['theme'] = theme
+    // Type settings scale the reader's faces through CSS variables — they never
+    // touch how a couplet is divided into lines.
+    root.dataset['fontSize'] = fontSize
+    root.dataset['lineSpacing'] = lineSpacing
     root.dataset['motion'] = reduceMotion ? 'reduced' : 'full'
     root.dataset['contrast'] = highContrast ? 'high' : 'normal'
 
@@ -158,5 +212,5 @@ export function useAppliedAppearance(): void {
     const base = getComputedStyle(root).getPropertyValue('--bg-base').trim()
     const meta = document.querySelector('meta[name="theme-color"]')
     if (base && meta) meta.setAttribute('content', base)
-  }, [theme, reduceMotion, highContrast])
+  }, [theme, fontSize, lineSpacing, reduceMotion, highContrast])
 }
