@@ -30,7 +30,6 @@ import { KuralCard } from '../components/kural/KuralCard'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { SITUATIONS } from '../lib/situations'
 import { useReaderStore } from '../store/appStore'
-import { cn } from '../lib/cn'
 
 const BOOKS: readonly { id: number | 'all'; label: string }[] = [
   { id: 'all', label: 'அனைத்தும் · All' },
@@ -209,7 +208,7 @@ export function Chapters() {
     : []
 
   return (
-    <main className="mx-auto max-w-[var(--content-max)] px-4 pt-[var(--space-5)] pb-[var(--space-7)]">
+    <main id="main" className="mx-auto max-w-[var(--content-max)] px-4 pt-[var(--space-5)] pb-[var(--space-7)]">
       <nav aria-label="Breadcrumb" className="mb-[var(--space-3)]">
         <Link to="/" className="text-sm text-muted no-underline hover:text-ink">
           ← Today
@@ -224,22 +223,15 @@ export function Chapters() {
       {/* Books */}
       <div role="group" aria-label="Filter by book" className="mb-[var(--space-3)] flex flex-wrap gap-2">
         {BOOKS.map((item) => (
-          <Link
+          <button
             key={String(item.id)}
-            to={item.id === 'all' ? '/chapters' : `/chapters?book=${item.id}`}
+            type="button"
             aria-pressed={book === item.id}
-            className={cn(
-              'chip no-underline',
-              book === item.id ? 'text-on-accent' : 'text-muted',
-            )}
-            data-active={book === item.id}
-            onClick={(event) => {
-              event.preventDefault()
-              updateParam({ book: item.id === 'all' ? null : String(item.id) })
-            }}
+            className="chip"
+            onClick={() => updateParam({ book: item.id === 'all' ? null : String(item.id) })}
           >
             <span lang="ta">{item.label}</span>
-          </Link>
+          </button>
         ))}
       </div>
 

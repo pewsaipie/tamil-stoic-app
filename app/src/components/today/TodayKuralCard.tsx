@@ -7,6 +7,7 @@
 import { motion } from 'framer-motion'
 import { Bookmark, BookmarkCheck, Share2, Sparkles } from 'lucide-react'
 import { GlassCard } from '../ui/GlassCard'
+import { KuralVerse } from '../kural/KuralVerse'
 import { Button } from '../ui/Button'
 import { useReducedMotion } from '../../hooks/useReader'
 import { useReaderStore, selectIsSaved } from '../../store/appStore'
@@ -45,12 +46,7 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
       </p>
 
       <div className="mt-[var(--space-5)] space-y-[var(--space-5)]">
-        {layers.tamil ? (
-          <div className="verse" lang="ta">
-            <p className="m-0">{kural.ta[0]}</p>
-            <p className="m-0">{kural.ta[1]}</p>
-          </div>
-        ) : null}
+        {layers.tamil ? <KuralVerse kural={kural} /> : null}
 
         {layers.translit ? (
           <p className="transliteration m-0" lang="en">

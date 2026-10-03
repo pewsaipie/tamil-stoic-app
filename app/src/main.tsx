@@ -18,7 +18,7 @@ if (!container) throw new Error('root container is missing from index.html')
 
 createRoot(container).render(
   <StrictMode>
-    <HashRouter>
+    <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <App />
     </HashRouter>
   </StrictMode>,

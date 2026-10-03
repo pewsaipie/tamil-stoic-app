@@ -87,7 +87,7 @@ export function Home() {
         </div>
       </header>
 
-      <main className="mx-auto -mt-[var(--space-6)] max-w-[var(--content-max)] px-4 pb-[var(--space-9)]">
+      <main id="main" className="mx-auto -mt-[var(--space-6)] max-w-[var(--content-max)] px-4 pb-[var(--space-9)]">
         {status === 'loading' ? <SkeletonKuralCard /> : null}
 
         {status === 'error' ? (

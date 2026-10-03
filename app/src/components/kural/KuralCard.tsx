@@ -54,13 +54,13 @@ export function KuralCard({
       className={cn('scroll-mt-[var(--space-7)] p-5 sm:p-6', className)}
     >
       <header className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs tracking-wide text-muted uppercase">
-        <a
-          href={`#kural-${kural.n}`}
+        <Link
+          to={`/kural/${kural.n}`}
           className="text-accent-text no-underline"
-          aria-label={`Link to kural ${kural.n}`}
+          aria-label={`Open kural ${kural.n}`}
         >
           #{String(kural.n).padStart(3, '0')}
-        </a>
+        </Link>
         <span aria-hidden="true">·</span>
         <span lang="ta">{chapter?.ta ?? ''}</span>
         <span aria-hidden="true">·</span>

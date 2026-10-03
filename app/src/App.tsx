@@ -20,12 +20,14 @@ export function App() {
 
   return (
     <>
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[var(--z-overlay)] focus:rounded-[var(--radius-sm)] focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
-      >
-        Skip to content
-      </a>
+      <nav aria-label="Skip links">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[var(--z-overlay)] focus:rounded-[var(--radius-sm)] focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
+        >
+          Skip to content
+        </a>
+      </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />

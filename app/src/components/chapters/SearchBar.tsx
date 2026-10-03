@@ -87,11 +87,13 @@ export function SearchBar({
             id={`${listId}-input`}
             type="search"
             role="combobox"
-            aria-expanded={visible}
-            aria-controls={listId}
+            aria-expanded={open && visible}
+            aria-controls={open && visible ? listId : undefined}
             aria-autocomplete="list"
             aria-describedby={statusId}
-            aria-activedescendant={activeIndex >= 0 ? optionIds[activeIndex] : undefined}
+            aria-activedescendant={
+              open && visible && activeIndex >= 0 ? optionIds[activeIndex] : undefined
+            }
             autoComplete="off"
             value={value}
             placeholder="151, பொறுத்தல், patience…"
