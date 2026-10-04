@@ -183,13 +183,60 @@ const navigate = async (hash, predicate) => {
 }
 const { document } = window
 // Wait for the corpus fetch + first render rather than sleeping a fixed time.
-await waitFor(() => document.querySelector('[data-verse-line]') !== null, 8000)
+// On a fresh device today's couplet arrives *sealed*, so the first thing to
+// appear is the leaf, not the verse.
+const sealedLeaf = () =>
+  document.querySelector('button[aria-controls="daily-couplet"][aria-expanded="false"]')
+await waitFor(() => sealedLeaf() !== null, 8000)
 await waitFor(() => document.body.textContent?.includes('மூன்று பால்கள்') === true, 8000)
 const text = () => document.body.textContent ?? ''
 
 console.log('today route:')
 check(document.querySelector('#root') !== null, 'the app mounts into #root')
 check(text().includes('திருக்குறள்'), 'the Tamil title renders')
+
+/* ---------- onboarding: a modal traps focus and hides the rest of the page,
+ * ---------- so it has to be dismissed before anything behind it is tested. -- */
+const skipTour = [...document.querySelectorAll('button')].find(
+  (button) => button.textContent?.trim() === 'Skip',
+)
+check(skipTour !== undefined, 'a first-time reader is offered a short tour')
+skipTour?.click()
+await waitFor(() => document.querySelector('[role="dialog"]') === null, 4000)
+check(
+  document.querySelector('[role="dialog"]') === null,
+  'and can dismiss it, which hands the page back',
+)
+
+/* ---------- the daily ritual ---------- */
+console.log('the daily ritual:')
+check(sealedLeaf() !== null, 'a fresh device greets the reader with a sealed leaf')
+check(
+  document.querySelectorAll('[data-verse-line]').length === 0,
+  'the couplet is not rendered while the leaf is sealed',
+)
+check(
+  text().includes('Open without the ceremony'),
+  'the ceremony can be skipped without hunting through settings',
+)
+
+sealedLeaf()?.click()
+const opened = await waitFor(() => document.querySelectorAll('[data-verse-line]').length >= 2, 8000)
+check(opened, "opening the leaf renders today's couplet on two Tamil lines")
+check(
+  document.querySelector('#daily-couplet') !== null,
+  'the revealed couplet carries the id the sealed leaf pointed at',
+)
+check(
+  document.querySelector('button[aria-controls="daily-couplet"]') === null,
+  'the sealed leaf is gone once opened',
+)
+check(
+  document.activeElement === document.querySelector('#daily-couplet'),
+  'focus moves to the revealed couplet, not back to the top of the page',
+)
+check(text().includes('Sit with it'), 'a minute of quiet is offered under the opened couplet')
+
 const todayVerse = document.querySelectorAll('[data-verse-line]')
 check(todayVerse.length >= 2, "today's couplet renders two Tamil lines")
 check(text().includes('மூன்று பால்கள்'), 'the three books section renders')
@@ -418,6 +465,9 @@ document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubb
 
 /* ---------- axe ---------- */
 console.log('accessibility:')
+// Closing a modal tears down its aria-hidden asynchronously; give React's
+// effect cleanup a beat so axe scans the settled page rather than a teardown.
+await wait(200)
 async function scan(label) {
   const results = await window.eval(axe.source + ';axe.run(document, { rules: { "color-contrast": { enabled: false } } })')
   const violations = results.violations.filter((violation) => violation.impact !== 'minor')

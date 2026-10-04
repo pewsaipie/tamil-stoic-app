@@ -44,14 +44,21 @@ export function OnboardingDialog() {
   const [step, setStep] = useState(0)
   const t = useT()
 
-  if (onboarded) return null
-
   const current = STEPS[step] ?? STEPS[0]
   const Icon = current.icon
   const last = step === STEPS.length - 1
 
   return (
-    <Dialog.Root open onOpenChange={(open) => (!open ? completeOnboarding() : undefined)}>
+    // Controlled rather than unmounted: a Radix dialog that disappears while
+    // it is still open never runs its cleanup, which leaves `aria-hidden`
+    // stranded on the app shell — the whole page goes mute to a screen reader
+    // the moment a reader dismisses the tour.
+    <Dialog.Root
+      open={!onboarded}
+      onOpenChange={(open) => {
+        if (!open) completeOnboarding()
+      }}
+    >
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[var(--z-overlay)] bg-[var(--scrim)] backdrop-blur-sm" />
         <Dialog.Content

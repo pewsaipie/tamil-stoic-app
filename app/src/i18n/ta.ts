@@ -149,4 +149,43 @@ export const TA: Record<string, string> = {
   // credits
   'credits.title': 'பங்களிப்பும் திறந்த மூலமும்',
   'credits.eyebrow': 'திறந்த மூல · மூலக் குறிப்புகள்',
+
+  // the daily ritual — the sealed leaf, the quiet minute, the reminder
+  'ritual.sealed.eyebrow': 'இன்றைய குறள்',
+  'ritual.sealed.title': 'ஓலை இன்னும் முத்திரையிட்டுள்ளது',
+  'ritual.sealed.hint': 'விரிக்கத் தட்டவும்',
+  'ritual.sealed.skip': 'சடங்கு இல்லாமல் திற',
+  'ritual.sealed.sr':
+    'இன்றைய குறள் பனையோலைக்குள் முத்திரையிடப்பட்டுள்ளது. விரித்துப் படிக்கச் செயல்படுத்தவும்.',
+  'ritual.late': 'நீங்கள் குறித்த நேரம் கடந்துவிட்டது. ஓலை இன்னும் மூடியே உள்ளது.',
+  'ritual.sit.ta': 'அமைதி',
+  'ritual.sit.title': 'அதனுடன் அமருங்கள்',
+  'ritual.sit.sub': 'ஒரு நிமிடம் குறளோடு — வேறொன்றுமில்லை.',
+  'ritual.sit.done': 'இன்றைய குறளோடு நீங்கள் அமர்ந்துவிட்டீர்கள்.',
+  'ritual.sit.streak': '{s} நாள் அமர்ந்தது',
+  'ritual.sit.start': 'தொடங்கு',
+  'ritual.sit.pause': 'இடைநிறுத்தம்',
+  'ritual.sit.resume': 'தொடர்',
+  'ritual.sit.reset': 'மீட்டமை',
+  'ritual.sit.length': 'நேரம்',
+  'ritual.sit.toast': 'நீங்கள் அதனுடன் அமர்ந்தீர்கள் ✓',
+  'ritual.sit.recorded': 'இன்றைக்குப் பதிவாகிவிட்டது. மீண்டும் அமர்வது உங்கள் விருப்பம்.',
+  'reminder.title': 'திருக்குறள் · Thirukkural',
+  'reminder.body': 'இன்றைய குறள் உங்களுக்காகக் காத்திருக்கிறது.',
+  'reminder.next': 'அடுத்தது',
+  'reminder.today': 'இன்று',
+  'reminder.tomorrow': 'நாளை',
+  'reminder.enable': 'இந்தச் சாதனத்தில் அறிவிப்புகளை அனுமதி',
+  'reminder.granted': 'நினைவூட்டல் இயக்கப்பட்டது ✓',
+  'reminder.denied': 'அறிவிப்புகள் இல்லை — ஓலை இங்கேயே காத்திருக்கும்',
+  'reminder.armed': 'இந்தச் சாதனத்திலேயே திட்டமிடப்பட்டது — எதுவும் அனுப்பப்படுவதில்லை.',
+  'reminder.fallback':
+    'இங்கு அறிவிப்புகள் இல்லை. நீங்கள் திறக்கும்போது ஓலை காத்திருக்கும்.',
+  'settings.ritual': 'நாள்தோறும் சடங்கு',
+  'settings.seal': 'நான் திறக்கும்வரை இன்றைய குறளை முத்திரையிடு',
+  'settings.reseal': 'இன்றைய ஓலையை மீண்டும் முத்திரையிடு',
+  'settings.reminder': 'திறக்க நினைவூட்டு',
+  'settings.reminderHour': 'நினைவூட்டல் நேரம்',
+  'settings.ritualNote':
+    'சடங்கு ஒருபோதும் குறளை மறைக்காது — «சடங்கு இல்லாமல் திற» எப்போதும் உள்ளது. அனைத்தும் இந்தச் சாதனத்திலேயே.',
 }

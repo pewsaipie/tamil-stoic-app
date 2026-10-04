@@ -25,6 +25,17 @@ import {
   type UiLanguage,
 } from '../lib/preferences'
 import { listSaved, putSaved, removeSaved, type SavedRecord } from '../lib/library'
+import { localDayKey } from '../lib/dayKey'
+import {
+  markSat,
+  readRitual,
+  resealToday,
+  setReminder,
+  setSeal,
+  unrollToday,
+  type ReminderSettings,
+  type RitualState,
+} from '../lib/ritual'
 
 export interface Toast {
   id: number
@@ -57,6 +68,17 @@ interface JourneyState {
   markRead: (n: number, chapter: number) => void
 }
 
+interface RitualSlice extends RitualState {
+  /** Open today's leaf. Idempotent — the day is the unit, not the tap. */
+  unroll: () => void
+  /** Record a finished minute of sitting with today's couplet. */
+  sit: () => void
+  /** Forget today's opening, so the leaf can be arrived at again. */
+  reseal: () => void
+  setCeremony: (seal: boolean) => void
+  updateReminder: (reminder: ReminderSettings) => void
+}
+
 interface AppState {
   onboarded: boolean
   installDismissed: boolean
@@ -71,10 +93,15 @@ interface AppState {
   dismissToast: (id: number) => void
 }
 
-export type ReaderStore = ReaderPreferencesState & LibraryState & JourneyState & AppState
+export type ReaderStore = ReaderPreferencesState &
+  LibraryState &
+  JourneyState &
+  RitualSlice &
+  AppState
 
 const bootPreferences = readPreferences()
 const bootJourney = readJourney()
+const bootRitual = readRitual()
 
 let toastSequence = 0
 
@@ -99,7 +126,7 @@ export const useReaderStore = create<ReaderStore>((set, get) => {
       read: state.read,
       chapters: state.chapters,
       streak: state.streak,
-      last: new Date().toISOString().slice(0, 10),
+      last: localDayKey(),
     })
   }
 
@@ -182,6 +209,30 @@ export const useReaderStore = create<ReaderStore>((set, get) => {
       })
       persistJourney()
     },
+
+    /* ---------- the daily ritual ---------- */
+    ...bootRitual,
+    unrolled: { ...bootRitual.unrolled },
+    sat: { ...bootRitual.sat },
+    reminder: { ...bootRitual.reminder },
+
+    // Each transition below writes storage and returns the next state; only the
+    // fields it actually changed are pushed back into the store, so a ritual
+    // update can never disturb preferences, library or journey.
+    unroll: () => set({ unrolled: unrollToday(get()).unrolled }),
+
+    sit: () => {
+      set({ sat: markSat(get()).sat })
+      if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+        navigator.vibrate([8, 60, 12])
+      }
+    },
+
+    reseal: () => set({ unrolled: resealToday(get()).unrolled }),
+
+    setCeremony: (seal) => set({ seal: setSeal(get(), seal).seal }),
+
+    updateReminder: (reminder) => set({ reminder: setReminder(get(), reminder).reminder }),
 
     /* ---------- app-level transient state ---------- */
     onboarded: readFlag(ONBOARDING_KEY),
