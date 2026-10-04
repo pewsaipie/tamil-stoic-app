@@ -14,6 +14,23 @@ import { useReaderStore } from '../../store/appStore'
 import { useT } from '../../i18n'
 import { cn } from '../../lib/cn'
 import { ReminderSettings } from './ReminderSettings'
+import { useMaterials } from '../../materials/useMaterials.ts'
+
+/**
+ * How much of the physical world to render.
+ *
+ * `Auto` is the recommended setting and the default; the other three exist so
+ * the choice is never made *for* the reader without a way to overrule it. The
+ * tier the device actually lands on is reported underneath, in the same
+ * language a person would use — "Your browser is in data-saving mode", not
+ * "tier: still".
+ */
+const MATERIAL_MODES = [
+  { value: 'auto', label: 'Auto' },
+  { value: 'full', label: 'Every detail' },
+  { value: 'still', label: 'Still' },
+  { value: 'plain', label: 'Flat reader' },
+] as const
 
 const TEXT_SIZES = [
   { value: 'standard', label: 'Standard' },
@@ -89,6 +106,7 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
   const setReduceMotion = useReaderStore((state) => state.setReduceMotion)
   const highContrast = useReaderStore((state) => state.highContrast)
   const setHighContrast = useReaderStore((state) => state.setHighContrast)
+  const { mode: materialMode, setMode: setMaterialMode, decision, sound, setSound } = useMaterials()
   const t = useT()
 
   return (
@@ -192,6 +210,28 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
                 onChange={(event) => setHighContrast(event.target.checked)}
               />
               <span>{t('settings.contrast', 'Higher contrast')}</span>
+            </label>
+
+            <div className="space-y-2">
+              <ChoiceGroup
+                legend={t('settings.materials', 'The lamp and the leaf')}
+                value={materialMode}
+                options={MATERIAL_MODES}
+                onChange={setMaterialMode}
+              />
+              <p className="m-0 text-xs text-muted" role="status">
+                {decision.reason}
+              </p>
+            </div>
+
+            <label className="flex min-h-[44px] items-center gap-3 text-[15px]">
+              <input
+                type="checkbox"
+                className="h-5 w-5 accent-[var(--accent)]"
+                checked={sound}
+                onChange={(event) => setSound(event.target.checked)}
+              />
+              <span>{t('settings.sound', 'Sound — wax, paper, brass')}</span>
             </label>
 
             <ReminderSettings />
