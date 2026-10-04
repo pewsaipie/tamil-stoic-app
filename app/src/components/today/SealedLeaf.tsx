@@ -36,6 +36,7 @@ import { taNumeral } from '../../lib/shareCard'
 import { useT } from '../../i18n'
 import { cn } from '../../lib/cn'
 import { readSoundEnabled } from '../../materials/preference.ts'
+import { Css3dStage } from '../canvas/Css3dStage.tsx'
 import { primeSound, setSoundEnabled } from '../../materials/sound.ts'
 import { beginSeal } from '../../materials/scenes/seal/events.ts'
 import { useMaterials } from '../../materials/useMaterials.ts'
@@ -214,7 +215,23 @@ export function SealedLeaf({ kuralNumber, onOpen, reducedMotion, className }: Se
    * a couplet they can open.
    */
   const [scene, setScene] = useState<'pending' | 'ready' | 'failed'>('pending')
-  const live = (tier === 'full' || tier === 'still') && scene !== 'failed'
+  const live = (tier === 'full' || tier === 'still' || tier === 'contrast') && scene !== 'failed'
+  /**
+   * The tier the scene is allowed to be told about.
+   *
+   * `css3d` and `plain` never mount a scene, so they never reach this prop — but
+   * the type cannot see that, and narrowing here is what keeps the scene's
+   * `quality` union small enough that adding a tier is a compile error in every
+   * scene rather than a runtime question.
+   */
+  const sceneQuality = tier === 'contrast' ? 'contrast' : tier === 'still' ? 'still' : 'full'
+  /**
+   * No canvas exists at all on `css3d`, so the depth comes from CSS instead.
+   * This is the one branch that is not a failure path: it renders for readers
+   * whose browser cannot give them anything else, and it renders the same object
+   * the flat seal is already drawing, at an angle in a room.
+   */
+  const cssDepth = tier === 'css3d' && scene !== 'failed'
 
   useEffect(() => {
     if (!live || scene !== 'pending') return
@@ -310,6 +327,7 @@ export function SealedLeaf({ kuralNumber, onOpen, reducedMotion, className }: Se
         existing tests working.
       */}
       <div className="relative overflow-hidden rounded-[var(--radius-lg)] border border-line">
+        {cssDepth ? <Css3dStage reducedMotion={reducedMotion} /> : null}
         {live ? (
           <>
             {/* The room is dark in every theme on this screen. The lamp inside
@@ -324,7 +342,7 @@ export function SealedLeaf({ kuralNumber, onOpen, reducedMotion, className }: Se
               <SceneBoundary onFailed={() => setScene('failed')}>
                 <Suspense fallback={null}>
                   <SealScene
-                    quality={tier}
+                    quality={sceneQuality}
                     reducedMotion={reducedMotion}
                     onRevealed={handleRevealed}
                     onBreak={handleBreak}

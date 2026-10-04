@@ -167,6 +167,19 @@ export function getMaterial(
     ...params,
   })
 
+  /**
+   * Every material carries its substance's name, and `clone()` keeps it.
+   *
+   * That is not decoration and it is not debugging: it is how the forced-colours
+   * pass knows what an object *is*. The pass walks a mounted scene rather than
+   * threading a role through 22 components, so a material that cannot say what
+   * it is made of gets a default tone instead of the right one.
+   * `leafSurface.ts` clones this material to inject its fibre shading, and the
+   * clone arriving still named `ola` is the whole reason that scene needs no
+   * special case.
+   */
+  material.name = name
+
   materialCache.set(key, material)
   return material
 }
