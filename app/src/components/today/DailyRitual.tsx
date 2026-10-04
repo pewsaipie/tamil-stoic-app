@@ -66,15 +66,19 @@ export function DailyRitual({ kural, chapter, section, onAnother, onShare }: Dai
     }
   }, [])
 
-  /** Only ever says the leaf is waiting; never what is behind it. */
+  /**
+   * Only ever says the leaf is waiting; never what is behind it.
+   *
+   * The haptic that used to live here now belongs to the seal itself: it fires
+   * when the wax actually fails, which is the moment worth feeling. Vibrating
+   * here as well would double it on devices that render the scene, and fire it
+   * in the wrong place on devices that do not.
+   */
   const open = useCallback(
     (options?: { instant?: boolean }) => {
       setInstant(options?.instant === true || reducedMotion)
       pendingFocusRef.current = true
       unroll()
-      if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-        navigator.vibrate([6, 40, 10])
-      }
     },
     [unroll, reducedMotion],
   )

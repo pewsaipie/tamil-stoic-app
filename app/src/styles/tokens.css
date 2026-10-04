@@ -87,6 +87,12 @@
   --hero-tint-c: #6b4a1c;
   --hero-blend: multiply;
 
+  /* The seal scene's backdrop. Palm-leaf Day is a room with the door open:
+     warm, bright, high contrast. It is still a *room* — the scene is lit by
+     one lamp against it, which is what makes the leaf read as a real object
+     sitting in a real place rather than as a graphic on a page. */
+  --stage-room: radial-gradient(120% 90% at 62% 18%, #6b5330 0%, #3b2c17 55%, #211609 100%);
+
   --shadow-sm: 0 1px 3px rgba(28, 18, 8, 0.12);
   --shadow-md: 0 4px 16px rgba(28, 18, 8, 0.16);
   --shadow-lg: 0 12px 40px rgba(28, 18, 8, 0.22);
