@@ -13,6 +13,7 @@ import { LAYER_LABELS, LAYER_ORDER, type LayerKey } from '../../lib/types'
 import { useReaderStore } from '../../store/appStore'
 import { useT } from '../../i18n'
 import { cn } from '../../lib/cn'
+import { ReminderSettings } from './ReminderSettings'
 
 const TEXT_SIZES = [
   { value: 'standard', label: 'Standard' },
@@ -192,6 +193,8 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
               />
               <span>{t('settings.contrast', 'Higher contrast')}</span>
             </label>
+
+            <ReminderSettings />
           </div>
         </Dialog.Content>
       </Dialog.Portal>

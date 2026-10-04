@@ -12,7 +12,7 @@ import { chapterOf, kuralOfTheDay, sectionOf } from '../lib/corpus'
 import { shareKural } from '../lib/share'
 import { useCorpus, useReducedMotion } from '../hooks/useReader'
 import { useReaderStore } from '../store/appStore'
-import { TodayKuralCard } from '../components/today/TodayKuralCard'
+import { DailyRitual } from '../components/today/DailyRitual'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
@@ -116,7 +116,7 @@ export function Home() {
               exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -16, filter: 'blur(4px)' }}
               transition={{ duration: reducedMotion ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
-              <TodayKuralCard
+              <DailyRitual
                 kural={current}
                 chapter={chapterOf(corpus.chapters, current)}
                 section={sectionOf(corpus.sections, current)}
