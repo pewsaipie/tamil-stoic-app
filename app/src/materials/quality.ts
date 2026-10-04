@@ -5,14 +5,21 @@
  * the flat UI is a real, supported mode — not a broken fallback. That promise
  * lives here, in one place, as three tiers:
  *
- *   **full**  — live WebGL surfaces, physics, light, sound.
- *   **still** — the *same* objects, pre-rendered, with instant state swaps.
- *               Chosen for reduced motion, no WebGL, a weak GPU, save-data, or
- *               by preference. It is a deliberate design, not a degraded one:
- *               the reader still sees a wax seal break and a leaf unroll.
- *   **plain** — the flat, AA-verified typographic UI that shipped before the
- *               rework. Kept forever. Forced-colors and print land here, and a
- *               reader may choose it at any time.
+ *   **full**     — live WebGL surfaces, physics, light, sound.
+ *   **still**    — the *same* live scene with the moving parts stopped: no
+ *                  shadows, no post. Chosen for reduced motion, a weak GPU,
+ *                  save-data, or by preference.
+ *   **contrast** — forced colours. Same geometry, same light, **no maps and no
+ *                  colour of our own**: every surface is a tone mixed between
+ *                  the system's `Canvas` and `CanvasText`. See
+ *                  `forcedColours.ts`, which is where the rules live.
+ *   **css3d**    — no canvas at all. Real CSS perspective with parallax, over
+ *                  the baked plates when they exist. This is the tier that needs
+ *                  no GPU, which is what makes it the honest answer to a device
+ *                  that cannot run `still`.
+ *   **plain**    — the flat, AA-verified typographic UI that shipped before the
+ *                  rework. No longer an accessibility landing: it is reached by
+ *                  an explicit choice, or by print. Kept, not demoted.
  *
  * Nothing in the scene layer reads `window` directly; everything asks this
  * module, so the decision is made once, is inspectable, and is testable.
@@ -20,7 +27,7 @@
 import { MATERIALS_KEY, readMaterialsMode, writeMaterialsMode } from './preference.ts'
 
 export type MaterialMode = 'auto' | 'full' | 'still' | 'plain'
-export type MaterialTier = 'full' | 'still' | 'plain'
+export type MaterialTier = 'full' | 'still' | 'contrast' | 'css3d' | 'plain'
 
 export interface CapabilityReport {
   webgl: boolean
@@ -95,19 +102,31 @@ export function reportCapabilities(): CapabilityReport {
  * "The flat reader" and "Still images" are always available and always
  * honoured, on any device.
  *
- * **2. Accessibility, and impossibility.** These outrank everything, including
- * an explicit request for the full experience — which is the non-obvious part,
- * and the part worth defending. A WebGL canvas cannot participate in forced
- * colours, so a reader whose system demands them would get a scene that
- * silently ignores the setting; the flat reader is the only honest answer. No
- * WebGL at all is not a preference, it is a fact. Reduced motion is a
- * documented request not to move things, and the still tier satisfies it
- * without taking the objects away.
+ * **2. Accessibility, and impossibility.** These outrank everything, including an
+ * explicit request for the full experience — but *how* they outrank it changed,
+ * and that change is the whole difference between this doctrine and the first
+ * cut of the brief.
  *
- * **3. Heuristics, and they yield to the reader.** Memory and core count are
- * guesses about what a device can cope with. They are good enough to pick a
- * default and nowhere near good enough to overrule someone who has gone into
- * settings and asked for every detail.
+ * A reader in forced colours used to be handed the flat DOM reader, on the
+ * reasoning that a canvas cannot be recoloured by the browser and so rendering
+ * the scene would silently ignore their setting. That reasoning was correct and
+ * the conclusion was a dodge: it made an accessibility setting the reason a
+ * person gets no objects at all. Now the canvas answers — `contrast` keeps the
+ * form, the light and the material response, and gives up colour and texture,
+ * which is exactly what the platform asked for and nothing more. An explicit
+ * `"Every detail"` still cannot win, because forced colours is not a preference
+ * about detail. It is a requirement about legibility.
+ *
+ * No WebGL at all is a fact rather than a preference, and it lands on `css3d`:
+ * perspective, parallax and the baked plates, with no canvas anywhere. This band
+ * also closes a bug the old matrix shipped. A WebGL 1-only browser was sent to
+ * `still`, and `still` is a live scene — three.js dropped WebGL 1 in r163, so
+ * that reader was promised a tier that cannot render. `css3d` is the first
+ * fallback in this file that needs no GPU at all, which is the property a
+ * fallback was always supposed to have.
+ *
+ * Reduced motion is a documented request not to move things, and `still`
+ * satisfies it without taking the objects away.
  */
 export function decideTier(mode: MaterialMode, caps: CapabilityReport): TierDecision {
   // -- Band 1: quieter is always allowed.
@@ -121,18 +140,27 @@ export function decideTier(mode: MaterialMode, caps: CapabilityReport): TierDeci
   // -- Band 2: accessibility and hard limits.
   if (caps.forcedColors) {
     return {
-      tier: 'plain',
-      reason: 'Your system asks for forced colours.',
+      tier: 'contrast',
+      reason: 'Your system asks for forced colours, so the objects keep their form and give up their colour.',
       byChoice: false,
     }
   }
   if (!caps.webgl) {
-    return { tier: 'plain', reason: 'This device has no WebGL.', byChoice: false }
+    return {
+      tier: 'css3d',
+      reason: 'This device cannot run a canvas, so the objects are rendered in CSS depth.',
+      byChoice: false,
+    }
   }
-  // WebGL 1 is no longer enough: three.js dropped it in r163, so a WebGL1-only
-  // browser cannot run the scene at all and gets the still images.
+  // WebGL 1 is not enough: three.js dropped it in r163, so a WebGL1-only browser
+  // cannot run the scene at all. It gets the renderer that needs no GPU, not the
+  // one that only pretends to.
   if (!caps.webgl2) {
-    return { tier: 'still', reason: 'This browser only offers WebGL 1.', byChoice: false }
+    return {
+      tier: 'css3d',
+      reason: 'This browser offers only WebGL 1, which cannot run the scene.',
+      byChoice: false,
+    }
   }
   if (caps.reducedMotion) {
     return { tier: 'still', reason: 'You prefer reduced motion.', byChoice: false }

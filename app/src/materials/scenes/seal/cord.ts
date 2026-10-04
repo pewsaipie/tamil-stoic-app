@@ -67,9 +67,13 @@ export function createCord(options: CordOptions = {}): Cord {
     roughness: 0.92,
     metalness: 0,
     envMapIntensity: 0.25,
+    // Not from the library, so it has to say what it is made of for the
+    // forced-colours pass to be able to tell. See `library.getMaterial`.
+    name: 'cord',
   })
 
   const group = new THREE.Group()
+  group.name = 'cord'
 
   const mesh = new THREE.Mesh(new THREE.BufferGeometry(), material)
   mesh.castShadow = true

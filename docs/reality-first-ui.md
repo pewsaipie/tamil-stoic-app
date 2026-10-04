@@ -1,8 +1,22 @@
 # Reality-first UI — the intent, restated, feature by feature
 
-> **Status:** proposal for confirmation. Nothing in this document is built yet.
-> It exists to confirm one thing before any code moves: that we agree on what
-> "real, not 2D" means for **every** surface in the app.
+> **Status: confirmed, and partly built.** Phases 0 and 1 shipped in PR #20;
+> §6 records what was decided when this was put to the reader, and one decision
+> there **overrides this document** — the fallback model in §3 is no longer
+> "Full → Still → Plain". Read §6 as the current word on tiers, forced colours
+> and imagery; read §1–§5 as the intent, which stands.
+>
+> Two corrections worth making in the author's hand rather than leaving to
+> archaeology:
+>
+>   - §3 promised the *Still* tier would be **"pre-rendered photographs … baked
+>     from the real scene at build time."** What shipped is different: `still` is
+>     the live scene with shadows and post off (`SealScene`'s `quality` prop,
+>     "drops shadows and post effects, never the scene"). The baked-photograph
+>     tier did not exist until it was renamed `css3d` in Phase 2.
+>   - §4 says "that brief applied 27 times". One of the 27 has been built, and it
+>     found two defects no review caught (§4.2). Treat every remaining line in §4
+>     as a hypothesis about a device, not as a design already proven twice.
 
 ---
 
@@ -380,9 +394,88 @@ leaf look like it is obeying something rather than interpolating.
 
 ---
 
-## 6. What I want confirmed before writing code
+## 6. What was confirmed, and what it changed
 
-1. **Is §1 the intent?** Physically-simulated objects and real interactions, not photographic imagery and not merely richer 2D.
-2. **Is §2 the right world?** The temple scriptorium and its objects — or a different setting.
-3. **Is the fallback stance right?** Material-reality as the default experience, with the current flat UI kept as a real, supported *Plain* mode and pre-rendered *Still* tier.
-4. **Where to start?** The seal (Phase 1) first, as the reference that proves the architecture — or a different screen.
+Put to the reader as a question set rather than assumed. Answers are recorded
+with what each one costs, because four of these override sections above.
+
+**1. Is §1 the intent?** — **Yes, with one substitution.** Physical objects and
+physical actions, judged primarily on **render realism**: correct material
+response, real light falloff, contact shadow, bloom where a flame deserves it.
+The five-question test in §1 still governs *what an interaction is*; §1's
+rejection of "photographic imagery" was overruled, and the world is lit from
+image-based light rather than from authored approximations alone.
+
+**2. Is §2 the right world?** — **Yes, and the light *is* the theme.** One
+scriptorium, with a **day and a dusk variant per environment**, which promotes
+§4.16 from a CSS variable swap to a real lighting change: switching themes moves
+the sun and trims the wick.
+
+**3. Is the fallback stance right?** — **No. This is the decision that rewrote
+§3.** Material reality is mandatory: there is no flat alternative UI any more,
+and accessibility is answered *inside* the renderer instead of by removing it.
+
+| Situation | §3 promised | Ships |
+|---|---|---|
+| Capable device | Full | `full` — live, lit, post |
+| Reduced motion, weak GPU, save-data | Still (photographs) | `still` — live scene, no shadows, no post |
+| **Forced colours** | **Plain** | **`contrast`** — same geometry and light; **no maps, no colour of our own.** Every surface is a tone solved between the platform's `Canvas` and `CanvasText`. See `src/materials/forcedColours.ts` |
+| **No WebGL, or WebGL 1 only** | Plain / Still | **`css3d`** — real perspective and parallax on layered plates, no canvas to fail |
+| Reader's explicit choice, print | Plain | `plain`, unchanged and still first-class |
+
+Two consequences, both intended:
+
+- **A reader's *choice* still outranks a heuristic, and never outranks a
+  requirement.** Band 1 in `quality.ts` survives; what changed is that forced
+  colours and missing hardware are no longer in the same band as a preference.
+- **This fixed a live bug.** WebGL 1-only browsers were being sent to `still`,
+  and `still` needs WebGL 2 — three.js dropped WebGL 1 in r163. That reader was
+  handed a tier that cannot render. `css3d` is the first fallback in the matrix
+  that needs no GPU, which is the property a fallback was always supposed to have.
+
+**4. Where to start?** — **The engine first, then every surface at once.** All 22
+unbuilt surfaces in §4 get real geometry, including the sand tray, the bell and
+the inscription. Accepted cost: at the seal's measured footprint (4,637 lines for
+one interaction, of which ~860 shared and ~980 test amortise), this is a
+~35–45k line rework across 29 components and 6 views, cut as two PRs — engine,
+then surfaces — so the review has a place to start.
+
+### Imagery and rights
+
+The reader asked for stock photography "from the internet"; the confirmed answer
+is **baked plates and CC0 HDRI environments**, which serves the same purpose —
+photographic light on real-looking surfaces — without breaking the two promises
+`scripts/build-materials.mjs` exists to keep:
+
+> *"Nothing is downloaded and nothing is scanned, so there is no third-party
+> licence to honour and the PWA stays fully offline."*
+
+- **No runtime fetch.** Environment maps live in `assets/env/`, are committed, and
+  are precached. A photograph behind a CDN renders beautifully in a hotel room and
+  flat everywhere the reader actually is.
+- **CC0 only, until a ledger exists.** `THIRD_PARTY_NOTICES.md` gains one entry per
+  map. Attribution-licensed sources are not refused, but they require provenance
+  tracking that this app does not yet have, and an app whose whole privacy claim is
+  "nothing leaves the device" should not acquire a licence obligation quietly.
+- **Budget: 1.75 MB per environment** (`ENV_BUDGET_BYTES`). A 4k HDRI is ~34 MB —
+  bigger than this repository is today (16 MB) — so maps are baked down, not
+  exported from an authoring scene.
+- Until a vendored map exists, `resolveEnvironment` returns `source:
+  'procedural'` and says so, rather than pretending.
+
+### Per-surface definition of done
+
+Every §4 line ships with all of these, and `npm test` is the gate, not review:
+
+1. **Framing by projection** — the test that caught the seal's 10 cm loop (§4.2).
+2. **Forced-colours assertions** — the pass runs, every map slot ends `null`, and
+   every role meets its bar against the surface it rests on, on four palettes
+   including an inverted one and a deliberately cramped one.
+3. **Reduced-motion end state** — the final pose, never a missing feature.
+4. **Budget** — scene memory and draw calls inside the per-scene ceiling.
+5. **axe clean** on every tier, and no text baked into a texture.
+
+The rule that makes #2 mean something across 22 scenes is a source-tree
+assertion, not a review habit: **every file that mounts a `<Canvas>` must apply
+`applyContrastPass`.** A doctrine enforced by remembering is a doctrine that holds
+until the pull request is large.

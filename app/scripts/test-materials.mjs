@@ -474,25 +474,44 @@ check(
   'but reduced motion is a documented accessibility request and still outranks it',
 )
 
-// Accessibility outranks capability — and, for forced colours, an explicit
-// request, because a canvas cannot follow the setting.
-check(decideTier('auto', caps({ forcedColors: true })).tier === 'plain', 'forced colours fall to the flat reader')
+/**
+ * Accessibility outranks capability — and, for forced colours, an explicit
+ * request. What changed is what "outranks" *does*: the reader used to be moved
+ * out of the material world, and now the material world is moved to meet them.
+ *
+ * These three assertions are the doctrine in three lines. If a future change
+ * sends forced colours back to `plain`, it is not failing a preference test, it
+ * is removing a reader's objects because their OS asked for more contrast.
+ */
 check(
-  decideTier('full', caps({ forcedColors: true })).tier === 'plain',
-  'and still do when the reader asked for every detail, because a canvas cannot follow forced colours',
+  decideTier('auto', caps({ forcedColors: true })).tier === 'contrast',
+  'forced colours renders the scene without colour or maps',
+)
+check(
+  decideTier('full', caps({ forcedColors: true })).tier === 'contrast',
+  'and an explicit request for every detail cannot buy colour back',
 )
 check(
   decideTier('full', caps({ forcedColors: true })).reason.includes('forced colours'),
   'and the settings sheet says so rather than silently changing its mind',
 )
 check(
-  decideTier('full', caps({ webgl: false })).tier === 'plain',
-  'a device with no WebGL gets the flat reader even when asked for every detail',
+  decideTier('full', caps({ webgl: false })).tier === 'css3d',
+  'a device with no WebGL gets CSS depth even when asked for every detail',
 )
 
 // Capability.
-check(decideTier('auto', caps({ webgl: false })).tier === 'plain', 'no WebGL at all falls to the flat reader')
-check(decideTier('auto', caps({ webgl2: false })).tier === 'still', 'WebGL 1 only falls to the still images')
+check(decideTier('auto', caps({ webgl: false })).tier === 'css3d', 'no WebGL at all falls to the canvas-free renderer')
+/**
+ * This one is a bug fix, not a doctrine change, and it is worth stating plainly
+ * because it was invisible for a whole release: WebGL 1-only browsers were sent
+ * to `still`, and `still` is a live three.js scene. Three.js dropped WebGL 1 in
+ * r163, so the tier they were promised was the one tier they could not render.
+ * `css3d` is the first fallback here that needs no GPU at all, which is the
+ * property a fallback was always supposed to have.
+ */
+check(decideTier('auto', caps({ webgl2: false })).tier === 'css3d', 'WebGL 1 only falls to the renderer that needs no GPU')
+check(decideTier('auto', caps({})).tier === 'full', 'and a capable browser is never sent there by mistake')
 check(decideTier('auto', caps({ saveData: true })).tier === 'still', 'data-saving falls to the still images')
 
 // Motion. The important one: reduced motion is not "no materials", it is
@@ -528,7 +547,15 @@ for (const [mode, overrides] of [
 {
   const headless = reportCapabilities()
   check(headless.webgl === false, 'capability probing outside a browser reports no WebGL')
-  check(decideTier('auto', headless).tier === 'plain', 'and falls back to the flat reader')
+  /**
+   * The headless probe is also the "no GPU anywhere" case, and it has to land on
+   * the tier that needs none. `css3d` is that tier — and note it is *not* the
+   * flat reader any more, which is the point of the doctrine: the canvas-free
+   * path still shows the object, because CSS perspective asks nothing of a
+   * driver. The property being protected here is "no throw, no GL context".
+   */
+  check(decideTier('auto', headless).tier === 'css3d', 'and falls back to the renderer that needs no GPU at all')
+  check(headless.forcedColors === false, 'and does not claim a system setting it cannot see')
 }
 
 /* ---------------------------------------------------------------------------
@@ -953,6 +980,331 @@ console.log('\nthe material library:')
 /* ---------------------------------------------------------------------------
  * 8. Parts of a thousandth of a millimetre
  * ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+ * forced colours: the pass, and the ramp that makes it legible
+ *
+ * These are the gates the confirmed brief asked for *per surface*, written so a
+ * surface cannot opt out of them by accident. Two of them are deliberately
+ * unusual: one asserts a property of the source tree rather than of a
+ * computation, and one asserts a contrast ratio against a synthetic palette
+ * rather than a screenshot, because a screenshot would need a GPU and this file
+ * has to run in CI on a machine with none.
+ * ------------------------------------------------------------------------ */
+
+console.log('\nforced colours:')
+
+const {
+  SURFACE_GRAPH,
+  FOREGROUND_ROLES,
+  MIN_OBJECT_CONTRAST,
+  MIN_TEXT_CONTRAST,
+  MIN_SIBLING_RATIO,
+  contrastRatio,
+  flatSurface,
+  legibilityViolations,
+  luminanceAt,
+  mix,
+  parseColor,
+  relativeLuminance,
+  resolvePalette,
+  toneForLuminance,
+} = await import('../src/materials/forcedColours.ts')
+
+const { applyContrastPass, planForMaterial, roleForMaterial, DEFAULT_ROLE } = await import(
+  '../src/materials/contrastPass.ts'
+)
+
+const { resolveEnvironment, timeOfDayFor, ENV_BUDGET_BYTES } = await import('../src/materials/environment.ts')
+
+const BLACK = { r: 0, g: 0, b: 0 }
+const WHITE = { r: 255, g: 255, b: 255 }
+/** A real one: Windows' "Desert" high-contrast scheme, close enough to matter. */
+const DESERT_CANVAS = { r: 61, g: 49, b: 33 }
+const DESERT_TEXT = { r: 250, g: 241, b: 221 }
+/** The cramped case: a palette with barely any range to spend. */
+const NARROW = { canvas: { r: 40, g: 40, b: 40 }, text: { r: 150, g: 150, b: 150 } }
+
+/** Every palette a reader can actually be in, including the near-miss ones. */
+const PALETTES = [
+  { name: 'black on white', canvas: WHITE, text: BLACK },
+  { name: 'white on black', canvas: BLACK, text: WHITE },
+  { name: 'desert', canvas: DESERT_CANVAS, text: DESERT_TEXT },
+  { name: 'narrow', canvas: NARROW.canvas, text: NARROW.text },
+]
+
+check(parseColor('#0a141e')?.r === 10 && parseColor('rgb(10 20 30)')?.g === 20, 'colour parsing takes both forms a probe can return')
+check(parseColor('rebeccapurple') === null, 'and refuses a colour it cannot resolve, rather than guessing black')
+check(Math.abs(relativeLuminance(WHITE) - 1) < 1e-9 && relativeLuminance(BLACK) === 0, 'luminance is anchored at both ends')
+check(Math.abs(contrastRatio(BLACK, WHITE) - 21) < 1e-9, 'and the WCAG ratio for the pair is 21:1')
+
+check(
+  contrastRatio(mix(BLACK, WHITE, 0), BLACK) === 1 && contrastRatio(mix(BLACK, WHITE, 1), WHITE) === 1,
+  'the ramp starts and ends on the platform colours themselves, not near them',
+)
+/**
+ * The midpoint of a ramp mixed in *linear* light is 0.5 luminance. Take the
+ * same midpoint in sRGB space — 128, 128, 128, the number an author reaches for
+ * — and it is 0.216: barely a third of the way up. That asymmetry is why the
+ * hand-tuned table this module replaced bunched its objects at the dark end and
+ * failed its own contrast check, and it is worth asserting in both directions so
+ * the next person does not "fix" `mix` into the naive version.
+ */
+{
+  const mid = relativeLuminance(mix(BLACK, WHITE, 0.5))
+  check(
+    mid > 0.45 && mid < 0.52,
+    `mixed in linear light, the ramp midpoint is about half luminance (measured ${mid.toFixed(4)}; the shortfall is the 8-bit round trip)`,
+  )
+}
+check(
+  relativeLuminance({ r: 128, g: 128, b: 128 }) < 0.25,
+  'while the naive 50% sRGB grey is only 0.216 — the trap this ramp exists to avoid',
+)
+
+/**
+ * The closed form is the load-bearing claim: luminance is *exactly* linear in
+ * the blend parameter, which is what lets a ratio be solved instead of searched
+ * and lets an unreachable ratio be recognised instead of converged onto.
+ */
+for (const t of [0, 0.17, 0.5, 0.83, 1]) {
+  for (const palette of PALETTES) {
+    const system = { canvas: palette.canvas, text: palette.text }
+    const back = toneForLuminance(luminanceAt(t, system), system)
+    if (back === null || Math.abs(back - t) > 1e-9) {
+      check(false, `tone → luminance → tone is exact at t=${t} for ${palette.name} (got ${back})`)
+    }
+  }
+}
+check(true, 'tone ↔ luminance round-trips exactly on every palette, so the solver is arithmetic, not search')
+
+/**
+ * The ramp order, as relationships rather than numbers — these are the claims a
+ * reader of the scene would notice if they were broken.
+ */
+for (const palette of PALETTES) {
+  const system = { canvas: palette.canvas, text: palette.text }
+  const ola = flatSurface('ola', system)
+  const teak = flatSurface('teak', system)
+  const brass = flatSurface('brass', system)
+  check(
+    ola.contrastAgainstParent >= SURFACE_GRAPH.ola.minRatio - 1e-9,
+    `${palette.name}: the leaf stands off the table it lies on`,
+  )
+  check(
+    flatSurface('wax', system).contrastAgainstParent >= MIN_OBJECT_CONTRAST &&
+      flatSurface('ink', system).contrastAgainstParent >= MIN_TEXT_CONTRAST,
+    `${palette.name}: the seal and the ink are both separable from the leaf they sit on`,
+  )
+  /**
+   * "Metal is not the leaf" is a claim about the rendered pixels, not about
+   * brightness: which end of the ramp a palette puts "bright" on is the
+   * platform's choice, so `tone` order means nothing across themes. Two
+   * substances may only share a colour if the solver *said* the palette was too
+   * cramped to place them apart — a collision nobody reported is a defect, and a
+   * collision reported on a 40→150 palette is just physics.
+   */
+  check(
+    brass.color !== ola.color || brass.violated,
+    `${palette.name}: metal and leaf either differ, or the solver admitted it could not separate them`,
+  )
+  check(flatSurface('flame', system).emissive !== null, `${palette.name}: the flame keeps the accent, so it still pulls the eye`)
+  check(flatSurface('ola', system).emissive === null, `${palette.name}: and nothing else glows`)
+  check(
+    FOREGROUND_ROLES.every((role) => flatSurface(role, system).mapsBound === false),
+    `${palette.name}: no surface in this tier may bind a map, and none reports one`,
+  )
+}
+
+/**
+ * The guarantee, per palette: every substance clears its own bar against the
+ * surface it rests on — or the palette is reported as too cramped to hold it.
+ *
+ * `narrow` is in this loop deliberately, and it is allowed to fail. A palette
+ * with 40→150 of range cannot host fourteen substances three-to-one apart and no
+ * amount of code can make it so; what the code has to do is *say* which
+ * placements did not fit. The seal's own surfaces are held to the stricter rule
+ * below, because they are the ones a reader has to act on.
+ */
+const SEAL_SURFACES = ['stone', 'teak', 'ola', 'wax', 'ink', 'cord']
+for (const palette of PALETTES) {
+  const system = { canvas: palette.canvas, text: palette.text }
+  const violations = legibilityViolations(system)
+  for (const role of SEAL_SURFACES) {
+    const surface = flatSurface(role, system)
+    const needed = SURFACE_GRAPH[role].minRatio
+    check(
+      surface.contrastAgainstParent >= needed - 1e-9,
+      `${palette.name}: ${role} clears ${needed.toFixed(2)}:1 against ${SURFACE_GRAPH[role].restsOn ?? 'the void'} (got ${surface.contrastAgainstParent.toFixed(2)})`,
+    )
+  }
+  check(
+    violations.every((role) => !SEAL_SURFACES.includes(role)),
+    `${palette.name}: nothing the reader must act on is among the unplaceable (${violations.join(', ') || 'none'})`,
+  )
+  const onTheTable = ['ola', 'paper', 'clay', 'cloth', 'water', 'brass', 'copper', 'sand', 'ash']
+    .map((role) => flatSurface(role, system).tone)
+  const distinct = onTheTable.filter(
+    (tone) => onTheTable.filter((other) => Math.abs(other - tone) < 1e-6).length === 1,
+  ).length
+  /**
+   * Tabletop surfaces must not collapse onto one grey — unless the palette
+   * genuinely cannot hold them apart, in which case the solver has to have *said*
+   * so. That exemption is the whole difference between a documented limit and a
+   * silent bug: `narrow` spans 40→150 of luminance and cannot host nine
+   * substances at 3:1 and 1.15:1, and the run below proves it reported that
+   * rather than quietly rendering nine identical objects.
+   */
+  const cramped = violations.length > 0
+  check(
+    distinct >= 6 || cramped,
+    `${palette.name}: ${distinct} of ${onTheTable.length} tabletop surfaces keep their own tone${cramped ? ' — and the palette admitted it could not' : ''}`,
+  )
+  if (palette.name === 'narrow') {
+    check(violations.length > 0, 'a 40→150 palette is reported as too cramped rather than faked into working')
+  }
+}
+
+check(
+  Math.min(...PALETTES.slice(0, 3).map((palette) => flatSurface('wax', { canvas: palette.canvas, text: palette.text }).contrastAgainstParent)) >= MIN_OBJECT_CONTRAST,
+  'the seal against the leaf clears the object bar on every palette that can hold it',
+)
+check(
+  flatSurface('ink', { canvas: DESERT_CANVAS, text: DESERT_TEXT }).contrastAgainstParent >= MIN_TEXT_CONTRAST,
+  'the ink clears the text bar on the cramped real-world palette, not just on black-on-white',
+)
+check(
+  resolvePalette({}).text !== undefined && resolvePalette({}).accent !== undefined,
+  'a missing role is derived from Canvas/CanvasText, never from our own palette',
+)
+check(
+  Object.values(SURFACE_GRAPH).every((placement) => placement.minRatio >= 1),
+  'every placement asks for a real separation, including the residues',
+)
+
+/** A fake mount, in the shape `three` uses, so the pass can be verified at all. */
+function fakeSeal() {
+  const bound = (name) => ({
+    name,
+    color: { value: 0, set(v) { this.value = v } },
+    emissive: { value: 0, set(v) { this.value = v } },
+    emissiveIntensity: 0,
+    roughness: 0.5,
+    metalness: 0.9,
+    envMapIntensity: 0.55,
+    map: { textureId: `${name}-albedo` },
+    normalMap: { textureId: `${name}-normal` },
+    roughnessMap: { textureId: `${name}-rough` },
+  })
+  const mesh = (name, material, extra = {}) => ({ name, material, castShadow: true, receiveShadow: true, children: [], ...extra })
+  return {
+    name: 'Scene',
+    children: [
+      mesh('table', bound('table')),
+      mesh('leaf', bound('ola')),
+      mesh('seal', bound('wax')),
+      mesh('cord', bound('cord')),
+      // A shard material that never announced itself — the failure mode the
+      // report exists to make visible instead of silent.
+      mesh('shard-3', { ...bound(undefined), name: undefined }),
+      { name: 'lamp', isLight: true, color: { value: 0, set(v) { this.value = v } }, intensity: 5.4, castShadow: true, children: [] },
+      { name: 'room', isLight: true, isAmbientLight: true, color: { value: 0, set(v) { this.value = v } }, intensity: 0.14, children: [] },
+    ],
+    castShadow: false,
+    receiveShadow: false,
+  }
+}
+
+const system = { canvas: DESERT_CANVAS, text: DESERT_TEXT }
+const tree = fakeSeal()
+const report = applyContrastPass(tree, system)
+
+check(report.materials === 5 && report.objects >= 7, 'the pass walks the whole tree, including nested meshes')
+check(
+  tree.children.slice(0, 4).every((node) => node.material.map === null && node.material.normalMap === null && node.material.roughnessMap === null),
+  'and unbinds every map on every material it reaches',
+)
+check(
+  tree.children.every((node) => node.castShadow !== true && node.receiveShadow !== true),
+  'no object casts or receives a shadow in this tier',
+)
+check(report.unlabelled.length === 1 && report.unlabelled[0] === 'shard-3', 'an unnamed material is reported, not silently defaulted')
+check(roleForMaterial(undefined) === DEFAULT_ROLE, 'and the default is the tone that cannot be invisible')
+check(
+  tree.children.filter((n) => n.isLight).every((light) => light.color.value !== 0 || light.castShadow === false),
+  'lights are rewritten too: a warm lamp would push our colours back into a frame that is not allowed to have them',
+)
+check(tree.children.find((n) => n.name === 'lamp').castShadow === false, 'a light that cannot cast cannot leak a shadow either')
+check(
+  report.roles.includes('ola') && report.roles.includes('wax') && report.roles.includes('teak'),
+  'the frame still contains distinct substances after the pass',
+)
+check(planForMaterial({ name: 'brass' }, system).metalness > planForMaterial({ name: 'stone' }, system).metalness, 'metal is still metal, and stone is still matte')
+check(planForMaterial({ name: 'brass' }, system).envMapIntensity === 0, 'but the environment contributes no colour to either')
+
+/* ---------------------------------------------------------------------------
+ * the room's light
+ * ------------------------------------------------------------------------ */
+
+console.log('\nthe room:')
+
+check(timeOfDayFor('palm') === 'day' && timeOfDayFor('night') === 'dusk', 'the theme switch moves the sun, as §4.16 says')
+check(timeOfDayFor('system', true) === 'dusk' && timeOfDayFor('system', false) === 'day', 'and following the OS follows the OS')
+
+const full = resolveEnvironment({ timeOfDay: 'dusk', tier: 'full' })
+const still = resolveEnvironment({ timeOfDay: 'dusk', tier: 'still' })
+const contrast = resolveEnvironment({ timeOfDay: 'dusk', tier: 'contrast' })
+const css3d = resolveEnvironment({ timeOfDay: 'dusk', tier: 'css3d' })
+
+check(full.shadows === true && still.shadows === false, 'shadows are the first thing a weaker device stops paying for')
+check(full.bloom !== null && still.bloom === null && css3d.bloom === null, 'post is off everywhere the lamp is not live')
+check(contrast.url === null && contrast.source === 'procedural' && contrast.bloom === null, 'forced colours binds no environment map at all')
+check(contrast.shadows === false && contrast.keyIntensity > full.keyIntensity, 'and raises its key light to carry shape on its own')
+check(still.flicker === false && full.flicker === true, 'the flame stops moving in the still tiers, and only there')
+check(resolveEnvironment({ timeOfDay: 'day', tier: 'full' }).colorTemperature > full.colorTemperature, 'daylight is cooler than the lamp, physically')
+check(
+  resolveEnvironment({ timeOfDay: 'day', tier: 'full', hdriAvailable: { day: true } }).source === 'hdri',
+  'a vendored HDRI is picked up with no other edit',
+)
+check(
+  resolveEnvironment({ timeOfDay: 'day', tier: 'contrast', hdriAvailable: { day: true } }).source === 'procedural',
+  'and is still refused in forced colours, because that is a colour we did not earn',
+)
+check(ENV_BUDGET_BYTES * 2 < 4 * 1024 * 1024, 'the whole environment budget fits inside the app it belongs to')
+
+/**
+ * The rule that makes "every surface" mean something.
+ *
+ * A doctrine enforced by review is a doctrine that holds until the PR is
+ * large. This asserts it against the source tree instead: any file that mounts a
+ * `<Canvas>` must apply the pass. It costs nothing today and it is the only
+ * assertion here that still works when there are 22 scenes and nobody is
+ * reading the diff.
+ */
+const { readdirSync, readFileSync, statSync } = await import('node:fs')
+const { join } = await import('node:path')
+
+function sceneFiles(dir, found = []) {
+  for (const entry of readdirSync(dir)) {
+    const path = join(dir, entry)
+    if (statSync(path).isDirectory()) sceneFiles(path, found)
+    else if (/\.(tsx|ts)$/.test(entry)) found.push(path)
+  }
+  return found
+}
+
+const mountingCanvas = sceneFiles('src/materials/scenes').filter((file) =>
+  /<Canvas[\s>]/.test(readFileSync(file, 'utf8')),
+)
+const skippingPass = mountingCanvas.filter((file) => !readFileSync(file, 'utf8').includes('applyContrastPass'))
+
+check(mountingCanvas.length > 0, 'the scan found the scenes that mount a canvas')
+check(
+  skippingPass.length === 0,
+  skippingPass.length === 0
+    ? 'every scene that mounts a canvas also applies the forced-colours pass'
+    : `these scenes mount a canvas without the pass: ${skippingPass.join(', ')}`,
+)
 
 console.log('\nscale:')
 

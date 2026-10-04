@@ -27,6 +27,8 @@ import { createLeafMaterial } from './leafSurface.ts'
 import { createWaxSeal, type WaxSeal } from './waxSeal.ts'
 import { createCord, type Cord } from './cord.ts'
 import { getEnvironment, getMaterial } from '../../library.ts'
+import { applyContrastPass, contrastBackdrop } from '../../contrastPass.ts'
+import { readSystemPalette } from '../../forcedColours.ts'
 import { play } from '../../sound.ts'
 import { SEAL_BEGIN_EVENT } from './events.ts'
 import { SCENE_FOV_DEGREES, framingAt } from './framing.ts'
@@ -61,8 +63,12 @@ export interface SealSceneProps {
   onBreak?: () => void
   /** The reader's reduced-motion preference. */
   reducedMotion: boolean
-  /** Render quality: `still` drops shadows and post effects, never the scene. */
-  quality?: 'full' | 'still' | 'plain'
+  /**
+   * Render quality. `still` drops shadows and post effects, never the scene;
+   * `contrast` keeps the scene and hands the whole frame to the forced-colours
+   * pass — same objects, same one clock, no maps, no colour of ours.
+   */
+  quality?: 'full' | 'still' | 'contrast'
   /**
    * Fired once the renderer exists and has drawn. The caller uses it to fall
    * back to the flat seal if a canvas never comes up — a context that is
@@ -430,14 +436,50 @@ function ReadyOnce({ onReady }: { onReady: () => void }) {
  * Deliberately thin: it owns the renderer settings that protect the reader's
  * battery and colour pipeline, and decides nothing about app state.
  */
+/**
+ * The forced-colours pass, mounted inside the canvas.
+ *
+ * It has to be a sibling rendered *after* the contents, not an effect in the
+ * parent: React runs child effects before parent ones, so as a later sibling
+ * this sees a tree whose materials already exist. As a parent effect it would
+ * walk an empty group, report zero materials, and look like it had succeeded.
+ *
+ * The report is logged in development on purpose. A scene that silently renders
+ * in `DEFAULT_ROLE` because nobody named its material is a scene that is
+ * almost certainly wrong and will not look broken to the person who wrote it.
+ */
+function ForcedColoursPass({ enabled }: { enabled: boolean }) {
+  const scene = useThree((state) => state.scene)
+  useEffect(() => {
+    if (!enabled) return
+    const report = applyContrastPass(scene, readSystemPalette())
+    if (import.meta.env.DEV && (report.materials === 0 || report.unlabelled.length > 0)) {
+      console.warn('[contrast] seal scene:', report)
+    }
+  }, [enabled, scene])
+  return null
+}
+
 export function SealScene({ quality = 'full', onReady, ...props }: SealSceneProps) {
   const environment = useMemo(() => getEnvironment(), [])
   const full = quality === 'full'
+  const flat = quality === 'contrast'
   const announced = useRef(false)
 
   const onCreated = useCallback(
     ({ gl, scene }: { gl: THREE.WebGLRenderer; scene: THREE.Scene }) => {
       // ACES is what stops the lamp blowing out to white paper when it flares.
+      if (flat) {
+        // Tone mapping is a colour decision. ACES would bend the system palette
+        // back toward our own judgement, which is the one thing this tier is not
+        // allowed to do, so the renderer is left to pass its colours through.
+        const backdrop = contrastBackdrop(readSystemPalette())
+        gl.toneMapping = THREE.NoToneMapping
+        gl.toneMappingExposure = backdrop.exposure
+        gl.shadowMap.enabled = false
+        scene.background = new THREE.Color(backdrop.background)
+        return
+      }
       gl.toneMapping = THREE.ACESFilmicToneMapping
       gl.toneMappingExposure = 1.05
       gl.shadowMap.enabled = full
@@ -447,7 +489,7 @@ export function SealScene({ quality = 'full', onReady, ...props }: SealSceneProp
       // brightly as the lamp and everything flattens out.
       scene.environmentIntensity = 0.32
     },
-    [environment, full],
+    [environment, full, flat],
   )
 
   const handleReady = useCallback(() => {
@@ -478,6 +520,7 @@ export function SealScene({ quality = 'full', onReady, ...props }: SealSceneProp
     >
       <ReadyOnce onReady={handleReady} />
       <SceneContents quality={quality} {...props} />
+      <ForcedColoursPass enabled={flat} />
     </Canvas>
   )
 }

@@ -23,6 +23,7 @@ import {
   type StoredMaterialMode,
 } from './preference.ts'
 import { setSoundEnabled } from './sound.ts'
+import { isForcedColoursActive, subscribeForcedColours } from './forcedColours.ts'
 import { useReducedMotion } from '../hooks/useReader.ts'
 
 export interface MaterialsState {
@@ -44,9 +45,28 @@ export function useMaterials(): MaterialsState {
   // which is not something to do on every render.
   const capabilities = useMemo(() => reportCapabilities(), [])
 
+  /**
+   * Forced colours is the one capability that must not be frozen at mount.
+   *
+   * It is a live OS setting: a reader can turn it on with the app open, on a
+   * phone by covering the screen with a hand, and a scene that keeps rendering a
+   * warm lamp into a frame the platform has just declared high-contrast is not
+   * respecting a preference, it is overriding one. So the probe result is
+   * replaced here rather than trusted, and the whole app re-tiers through this
+   * hook because it is the only reader of `decideTier`.
+   */
+  const [forcedColors, setForcedColors] = useState<boolean>(() => isForcedColoursActive())
+
+  useEffect(() => subscribeForcedColours(setForcedColors), [])
+
   const decision = useMemo(
-    () => decideTier(mode, { ...capabilities, reducedMotion: capabilities.reducedMotion || reducedMotion }),
-    [mode, capabilities, reducedMotion],
+    () =>
+      decideTier(mode, {
+        ...capabilities,
+        forcedColors,
+        reducedMotion: capabilities.reducedMotion || reducedMotion,
+      }),
+    [mode, capabilities, forcedColors, reducedMotion],
   )
 
   const setMode = useCallback((next: StoredMaterialMode) => {
