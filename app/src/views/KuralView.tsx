@@ -24,6 +24,7 @@ import { KuralVerse } from '../components/kural/KuralVerse'
 import { ListenButton } from '../components/kural/ListenButton'
 import { ReflectionDialog } from '../components/kural/ReflectionDialog'
 import { GlassCard } from '../components/ui/GlassCard'
+import { BillaDivider, ZariEdge } from '../components/ambient/ornaments'
 import { Button } from '../components/ui/Button'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { shareKural } from '../lib/share'
@@ -129,8 +130,10 @@ export function KuralView() {
           {kural.n} / {corpus.kurals.length}
         </span>
       </header>
+      <BillaDivider className="mb-[var(--space-4)]" />
 
       <GlassCard as="article" grain aria-label={`Kural ${kural.n}`} className="p-5 sm:p-7">
+        <ZariEdge className="-mx-5 -mt-5 mb-4 sm:-mx-7 sm:-mt-7" />
         <p className="m-0 flex flex-wrap items-center gap-x-2 text-xs tracking-wide text-muted uppercase">
           <span>#{String(kural.n).padStart(3, '0')}</span>
           <span aria-hidden="true">·</span>

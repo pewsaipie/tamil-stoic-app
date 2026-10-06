@@ -10,8 +10,8 @@ import type { ThemeMode } from '../../lib/preferences'
 import { cn } from '../../lib/cn'
 
 const OPTIONS: ReadonlyArray<{ id: ThemeMode; label: string; ta: string; icon: typeof Sun }> = [
-  { id: 'palm', label: 'Palm-Leaf', ta: 'ஓலை', icon: Sun },
-  { id: 'night', label: 'Sangam Night', ta: 'இரவு', icon: Moon },
+  { id: 'day', label: 'Kurinji Day', ta: 'பகல்', icon: Sun },
+  { id: 'night', label: 'Kurinji Night', ta: 'இரவு', icon: Moon },
   { id: 'system', label: 'System', ta: 'கணினி', icon: MonitorSmartphone },
 ]
 

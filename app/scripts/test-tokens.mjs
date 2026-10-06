@@ -65,8 +65,8 @@ function readTheme(css, marker) {
 async function main() {
   const css = await readFile(TOKENS, 'utf8')
   const themes = {
-    'Palm-Leaf Day': readTheme(css, '[data-theme="palm"]'),
-    'Sangam Night': readTheme(css, '[data-theme="night"]'),
+    'Kurinji Day': readTheme(css, '[data-theme="day"]'),
+    'Kurinji Night': readTheme(css, '[data-theme="night"]'),
   }
 
   const failures = []

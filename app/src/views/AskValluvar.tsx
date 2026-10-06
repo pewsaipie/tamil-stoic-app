@@ -27,6 +27,7 @@ import {
 import { KuralVerse } from '../components/kural/KuralVerse'
 import { ListenButton } from '../components/kural/ListenButton'
 import { GlassCard } from '../components/ui/GlassCard'
+import { BillaDivider } from '../components/ambient/ornaments'
 import { Button } from '../components/ui/Button'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { useT } from '../i18n'
@@ -113,6 +114,7 @@ export function AskValluvar() {
           )}
         </p>
       </header>
+      <BillaDivider className="my-[var(--space-4)]" />
 
       {modelError !== null && modelStatus === 'error' && (
         <GlassCard>

@@ -89,7 +89,7 @@ void main() {
   vec3 color = mix(uColorA, uColorB, tone);
   color = mix(color, uColorC, ridges * 0.55);
 
-  // Ember glow — warm light pooling in the fibres on Sangam Night.
+  // Ember glow — warm light pooling in the fibres on Kurinji Night.
   float ember = smoothstep(0.55, 1.0, fibres) * uEmber;
   color += vec3(0.35, 0.16, 0.02) * ember;
 

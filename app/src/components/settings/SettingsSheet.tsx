@@ -44,8 +44,8 @@ const SPACINGS = [
 ] as const
 
 const THEMES = [
-  { value: 'palm', label: 'Palm-leaf day' },
-  { value: 'night', label: 'Sangam clay' },
+  { value: 'day', label: 'Kurinji day' },
+  { value: 'night', label: 'Kurinji night' },
   { value: 'system', label: 'Follow system' },
 ] as const
 

@@ -1248,7 +1248,7 @@ check(planForMaterial({ name: 'brass' }, system).envMapIntensity === 0, 'but the
 
 console.log('\nthe room:')
 
-check(timeOfDayFor('palm') === 'day' && timeOfDayFor('night') === 'dusk', 'the theme switch moves the sun, as §4.16 says')
+check(timeOfDayFor('day') === 'day' && timeOfDayFor('night') === 'dusk', 'the theme switch moves the sun, as §4.16 says')
 check(timeOfDayFor('system', true) === 'dusk' && timeOfDayFor('system', false) === 'day', 'and following the OS follows the OS')
 
 const full = resolveEnvironment({ timeOfDay: 'dusk', tier: 'full' })

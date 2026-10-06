@@ -1,0 +1,77 @@
+/* =============================================================================
+ * Ambient layer — the "living cover" motion grammar (Kurinji theme)
+ * =============================================================================
+ * The *Tamil Kalyanam Hits* cover is animated: petals drift, the scene
+ * breathes. This stylesheet carries that quality into the UI as native CSS
+ * motion — never literal GIFs — so it stays crisp, offline and accessible.
+ *
+ * Every rule here is decorative. Two independent kill-switches (the OS
+ * preference and the in-app toggle) silence all of it, and high contrast /
+ * forced colours remove the decorative layers entirely.
+ * ========================================================================== */
+
+/* Fixed particle canvas: above content, below chrome and overlays. */
+.ambient-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-ambient);
+  pointer-events: none;
+}
+
+/* ---------- Keyframes ------------------------------------------------------ */
+
+/* Clouds / sky sliding slowly across the hero (day). */
+@keyframes sky-drift {
+  from { background-position: 0% 0%; }
+  to   { background-position: 100% 0%; }
+}
+
+/* Jewellery glint — a soft brightness pulse, like gold under moving light. */
+@keyframes glint {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+/* The ceremony breathes — a barely-there scale on the hero stage. */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.012); }
+}
+
+/* Star twinkle for the midnight sky (night). */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 0.85; }
+}
+
+.anim-sky     { animation: sky-drift 90s linear infinite alternate; }
+.anim-glint   { animation: glint 5.5s ease-in-out infinite; }
+.anim-breathe { animation: breathe 9s ease-in-out infinite; }
+.anim-twinkle { animation: twinkle 4s ease-in-out infinite; }
+
+/* ---------- Kill-switches --------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-sky, .anim-glint, .anim-breathe, .anim-twinkle {
+    animation: none !important;
+  }
+}
+
+[data-motion='reduced'] .anim-sky,
+[data-motion='reduced'] .anim-glint,
+[data-motion='reduced'] .anim-breathe,
+[data-motion='reduced'] .anim-twinkle {
+  animation: none !important;
+}
+
+/* High contrast: ornament stays, but pure-decoration layers go. */
+[data-contrast='high'] .ambient-decor {
+  display: none !important;
+}
+
+@media (forced-colors: active) {
+  .ambient-canvas,
+  .ambient-decor {
+    display: none !important;
+  }
+}

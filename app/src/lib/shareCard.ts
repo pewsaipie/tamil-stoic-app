@@ -1,10 +1,16 @@
 /**
- * Bilingual share card — the canvas art the shipped reader draws, ported to the
- * React app: ola-paper ground, manuscript gold frame, corner rosettes, a wax seal
- * carrying the kural number, a Tamil-numeral watermark, the couplet on its two
- * standard lines, the simple meaning and the chapter it belongs to.
+ * Bilingual share card — Kurinji edition.
  *
- * Everything is drawn in code — no image assets, no network.
+ * The card is the cover's grammar in miniature (docs/kurinji-ui-plan.md):
+ * an open sky (day) or starlit midnight (night) ground, a kantal-red band
+ * edged with a woven zari diamond row, a double gold manuscript frame, a
+ * jada-billai plaque cascade down the left spine, the surya/chandra medallion
+ * carrying the kural number, a Tamil-numeral watermark, hill silhouettes and
+ * a few drifting petals — with the couplet on its two standard lines, the
+ * simple meaning and the chapter it belongs to.
+ *
+ * Everything is drawn in code — no image assets, no network. The mode follows
+ * the reader's active theme at share time.
  */
 import { coupletLines } from './couplet'
 import type { Chapter, Kural } from './types'
@@ -12,14 +18,56 @@ import type { Chapter, Kural } from './types'
 const WIDTH = 1080
 const HEIGHT = 1920
 
-const PALM = '#f8f1e2'
-const DEEP = '#efe3c8'
-const INK = '#2a241f'
-const GOLD = '#b48630'
-const GREEN = '#26614f'
-const MADDER = '#a94f31'
-const MUTED = '#5c5249'
-const CREAM = '#fffdf7'
+interface Palette {
+  skyTop: string
+  skyBottom: string
+  ink: string
+  muted: string
+  gold: string
+  goldBright: string
+  red: string
+  redFill: string
+  cream: string
+  hill: string
+  night: boolean
+}
+
+const DAY: Palette = {
+  skyTop: '#a8d8ef',
+  skyBottom: '#eef6fb',
+  ink: '#10202e',
+  muted: '#3d5666',
+  gold: '#c9971c',
+  goldBright: '#e6b93f',
+  red: '#9c2024',
+  redFill: '#b3242a',
+  cream: '#ffffff',
+  hill: '#27506b',
+  night: false,
+}
+
+const NIGHT: Palette = {
+  skyTop: '#16263f',
+  skyBottom: '#0c1322',
+  ink: '#eaf2fb',
+  muted: '#a7b8cc',
+  gold: '#e0b34c',
+  goldBright: '#f0cf7a',
+  red: '#d05a4e',
+  redFill: '#b3242a',
+  cream: '#eaf2fb',
+  hill: '#050a14',
+  night: true,
+}
+
+/** Which mode is live right now — explicit theme wins, else the OS. */
+function activePalette(): Palette {
+  if (typeof document === 'undefined') return DAY
+  const mode = document.documentElement.dataset.theme
+  if (mode === 'night') return NIGHT
+  if (mode === 'day') return DAY
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? NIGHT : DAY
+}
 
 const TAMIL_DIGITS = '௦௧௨௩௪௫௬௭௮௯'
 
@@ -34,19 +82,91 @@ export function paddedKural(n: number): string {
   return String(n).padStart(3, '0')
 }
 
-function drawRosette(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, colour: string): void {
-  const previous = ctx.fillStyle
-  ctx.fillStyle = colour
+/** Tiny seeded LCG so the sky's stars/petals are stable per kural. */
+function rng(seed: number): () => number {
+  let s = seed >>> 0
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0
+    return s / 4294967296
+  }
+}
+
+/** One jada-billai plaque — the shield shape from the cover's braid axis. */
+function drawPlaque(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, p: Palette): void {
   ctx.beginPath()
-  ctx.arc(cx, cy, r * 0.3, 0, Math.PI * 2)
+  ctx.moveTo(x + w / 2, y)
+  ctx.lineTo(x + w, y + h * 0.24)
+  ctx.lineTo(x + w, y + h * 0.66)
+  ctx.quadraticCurveTo(x + w, y + h * 0.9, x + w / 2, y + h)
+  ctx.quadraticCurveTo(x, y + h * 0.9, x, y + h * 0.66)
+  ctx.lineTo(x, y + h * 0.24)
+  ctx.closePath()
+  ctx.fillStyle = p.gold
   ctx.fill()
-  for (let i = 0; i < 8; i++) {
-    const angle = (i / 8) * Math.PI * 2
+  ctx.strokeStyle = p.goldBright
+  ctx.lineWidth = 2
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.arc(x + w / 2, y + h * 0.45, w * 0.16, 0, Math.PI * 2)
+  ctx.fillStyle = p.goldBright
+  ctx.fill()
+}
+
+/** Zari row — woven gold diamonds on a kantal-red band. */
+function drawZari(ctx: CanvasRenderingContext2D, y: number, h: number, p: Palette): void {
+  ctx.fillStyle = p.redFill
+  ctx.fillRect(0, y, WIDTH, h)
+  ctx.fillStyle = p.gold
+  for (let x = 10; x < WIDTH; x += 28) {
     ctx.beginPath()
-    ctx.arc(cx + Math.cos(angle) * r * 0.62, cy + Math.sin(angle) * r * 0.62, r * 0.22, 0, Math.PI * 2)
+    ctx.moveTo(x + 9, y + 2)
+    ctx.lineTo(x + 18, y + h / 2)
+    ctx.lineTo(x + 9, y + h - 2)
+    ctx.lineTo(x, y + h / 2)
+    ctx.closePath()
     ctx.fill()
   }
-  ctx.fillStyle = previous
+}
+
+/** Surya/chandra medallion — sun rays, gold ring, moon crescent, number. */
+function drawMedallion(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, p: Palette, n: number): void {
+  ctx.save()
+  ctx.fillStyle = p.gold
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2
+    ctx.save()
+    ctx.translate(cx, cy)
+    ctx.rotate(a)
+    ctx.beginPath()
+    ctx.moveTo(0, -r - 16)
+    ctx.lineTo(7, -r + 2)
+    ctx.lineTo(-7, -r + 2)
+    ctx.closePath()
+    ctx.fill()
+    ctx.restore()
+  }
+  ctx.beginPath()
+  ctx.arc(cx, cy, r, 0, Math.PI * 2)
+  ctx.fillStyle = p.skyBottom
+  ctx.fill()
+  ctx.lineWidth = 6
+  ctx.strokeStyle = p.gold
+  ctx.stroke()
+  // Chandra crescent on the left half of the ring.
+  ctx.beginPath()
+  ctx.arc(cx, cy, r - 4, Math.PI / 2, (3 * Math.PI) / 2)
+  ctx.arc(cx, cy, r - 16, (3 * Math.PI) / 2, Math.PI / 2, true)
+  ctx.closePath()
+  ctx.fillStyle = p.gold
+  ctx.fill()
+  ctx.fillStyle = p.goldBright
+  ctx.font = `700 ${Math.round(r * 0.72)}px 'Noto Serif Tamil', serif`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(String(n), cx, cy + 4)
+  ctx.restore()
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'alphabetic'
 }
 
 /** Wrap text to a width, measuring with the *current* font. Never merges lines. */
@@ -95,113 +215,157 @@ export async function createShareCard({ kural, chapter, footer }: ShareCardOptio
     }
   }
 
+  const p = activePalette()
+  const rand = rng(kural.n * 7919 + 13)
+
   const canvas = document.createElement('canvas')
   canvas.width = WIDTH
   canvas.height = HEIGHT
   const ctx = canvas.getContext('2d')
   if (!ctx) throw new Error('This browser cannot create a share image')
 
-  // Ola-paper ground.
-  const background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT)
-  background.addColorStop(0, PALM)
-  background.addColorStop(1, DEEP)
-  ctx.fillStyle = background
+  // Sky ground — the cover's open cerulean, or midnight indigo.
+  const sky = ctx.createLinearGradient(0, 0, 0, HEIGHT)
+  sky.addColorStop(0, p.skyTop)
+  sky.addColorStop(1, p.skyBottom)
+  ctx.fillStyle = sky
   ctx.fillRect(0, 0, WIDTH, HEIGHT)
 
-  // Palm-leaf fibre grain, drawn in code so the card needs no assets.
-  ctx.fillStyle = 'rgba(150, 120, 70, 0.05)'
-  for (let fibre = 0; fibre < 46; fibre++) {
-    ctx.fillRect(0, 60 + fibre * 41, WIDTH, 1.5)
+  if (p.night) {
+    // Star field, stable per kural.
+    for (let i = 0; i < 90; i++) {
+      const x = rand() * WIDTH
+      const y = rand() * HEIGHT * 0.7
+      const r = 0.8 + rand() * 1.6
+      ctx.globalAlpha = 0.25 + rand() * 0.6
+      ctx.fillStyle = p.goldBright
+      ctx.beginPath()
+      ctx.arc(x, y, r, 0, Math.PI * 2)
+      ctx.fill()
+    }
+    ctx.globalAlpha = 1
+  } else {
+    // Two soft clouds.
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
+    for (const [cx, cy, rx] of [
+      [240, 420, 190],
+      [840, 300, 150],
+    ] as const) {
+      ctx.beginPath()
+      ctx.ellipse(cx, cy, rx, rx * 0.36, 0, 0, Math.PI * 2)
+      ctx.fill()
+    }
   }
 
-  // Header band and the terracotta spine.
-  ctx.fillStyle = GREEN
-  ctx.fillRect(0, 0, WIDTH, 132)
-  ctx.fillStyle = GOLD
-  ctx.fillRect(0, 132, WIDTH, 12)
-  ctx.fillStyle = MADDER
-  ctx.fillRect(0, 144, 18, 1640)
+  // Hill silhouettes at the foot of the sky.
+  ctx.fillStyle = p.hill
+  ctx.beginPath()
+  ctx.moveTo(0, HEIGHT - 260)
+  ctx.quadraticCurveTo(WIDTH * 0.28, HEIGHT - 470, WIDTH * 0.55, HEIGHT - 250)
+  ctx.quadraticCurveTo(WIDTH * 0.8, HEIGHT - 90, WIDTH, HEIGHT - 300)
+  ctx.lineTo(WIDTH, HEIGHT)
+  ctx.lineTo(0, HEIGHT)
+  ctx.closePath()
+  ctx.fill()
 
-  // Manuscript gold frame.
-  ctx.strokeStyle = GOLD
-  ctx.lineWidth = 2
+  // Drifting petals (day) or rising gold sparks (night).
+  for (let i = 0; i < 14; i++) {
+    const x = rand() * WIDTH
+    const y = 180 + rand() * (HEIGHT - 500)
+    if (p.night) {
+      ctx.globalAlpha = 0.3 + rand() * 0.5
+      ctx.fillStyle = p.goldBright
+      ctx.beginPath()
+      ctx.arc(x, y, 1.5 + rand() * 2, 0, Math.PI * 2)
+      ctx.fill()
+    } else {
+      ctx.save()
+      ctx.translate(x, y)
+      ctx.rotate(rand() * Math.PI)
+      ctx.globalAlpha = 0.4 + rand() * 0.4
+      ctx.fillStyle = '#c0392b'
+      ctx.beginPath()
+      ctx.ellipse(0, 0, 10 + rand() * 8, 5 + rand() * 3, 0, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.restore()
+    }
+  }
+  ctx.globalAlpha = 1
+
+  // Kantal-red header band with its zari row.
+  ctx.fillStyle = p.redFill
+  ctx.fillRect(0, 0, WIDTH, 120)
+  drawZari(ctx, 120, 22, p)
+
+  // Double gold manuscript frame.
+  ctx.strokeStyle = p.gold
+  ctx.lineWidth = 3
   ctx.strokeRect(34, 34, WIDTH - 68, HEIGHT - 68)
+  ctx.lineWidth = 1.5
+  ctx.strokeRect(52, 52, WIDTH - 104, HEIGHT - 104)
 
-  // Wax seal.
-  ctx.fillStyle = CREAM
-  ctx.beginPath()
-  ctx.arc(924, 282, 116, 0, Math.PI * 2)
-  ctx.fill()
-  ctx.fillStyle = GOLD
-  ctx.beginPath()
-  ctx.arc(924, 282, 84, 0, Math.PI * 2)
-  ctx.fill()
-  ctx.fillStyle = GREEN
-  ctx.beginPath()
-  ctx.arc(924, 282, 56, 0, Math.PI * 2)
-  ctx.fill()
-  drawRosette(ctx, 924, 282, 44, '#f4ead2')
+  // The braid axis: a billa cascade down the left spine.
+  for (let i = 0; i < 12; i++) {
+    drawPlaque(ctx, 66, 220 + i * 118, 34, 74, p)
+  }
 
-  // Corner rosettes.
-  drawRosette(ctx, 70, 1846, 24, GOLD)
-  drawRosette(ctx, 1010, 1846, 24, GOLD)
+  // Surya/chandra medallion with the kural number.
+  drawMedallion(ctx, 900, 300, 108, p, kural.n)
 
   ctx.textAlign = 'left'
-  ctx.fillStyle = CREAM
+  ctx.fillStyle = p.cream
   ctx.font = '600 34px Inter, Arial, sans-serif'
-  ctx.fillText('TAMIL STOIC · திருக்குறள்', 76, 81)
+  ctx.fillText('TAMIL STOIC · திருக்குறள்', 76, 78)
 
-  ctx.fillStyle = MADDER
+  ctx.fillStyle = p.night ? p.goldBright : p.red
   ctx.font = '600 28px Inter, Arial, sans-serif'
-  ctx.fillText(`KURAL #${paddedKural(kural.n)}`, 76, 246)
+  ctx.fillText(`KURAL #${paddedKural(kural.n)}`, 140, 268)
 
   // Ghost Tamil-numeral watermark.
-  ctx.fillStyle = 'rgba(169, 79, 49, 0.08)'
+  ctx.fillStyle = p.night ? 'rgba(224, 179, 76, 0.10)' : 'rgba(156, 32, 36, 0.08)'
   ctx.font = "700 340px 'Noto Serif Tamil', serif"
   ctx.fillText(taNumeral(kural.n), 560, 1560)
 
   // The couplet — always its two standard lines on two single lines, in order.
   const [top, bottom] = coupletLines(kural)
-  let y = 378
-  ctx.fillStyle = INK
+  let y = 400
+  ctx.fillStyle = p.ink
   let versePx = 54
   ctx.font = `600 ${versePx}px 'Noto Serif Tamil', serif`
-  while (
-    versePx > 28 &&
-    Math.max(ctx.measureText(top).width, ctx.measureText(bottom).width) > 900
-  ) {
+  while (versePx > 28 && Math.max(ctx.measureText(top).width, ctx.measureText(bottom).width) > 830) {
     versePx -= 2
     ctx.font = `600 ${versePx}px 'Noto Serif Tamil', serif`
   }
   const verseLineHeight = Math.round(versePx * 1.65)
-  ctx.fillText(top, 76, y)
+  ctx.fillText(top, 140, y)
   y += verseLineHeight
-  ctx.fillText(bottom, 76, y)
+  ctx.fillText(bottom, 140, y)
   y += verseLineHeight + 64
 
-  ctx.fillStyle = GOLD
-  ctx.fillRect(76, y, 108, 4)
-  drawRosette(ctx, 204, y + 2, 15, GOLD)
+  // Gold rule with a plaque rosette.
+  ctx.fillStyle = p.gold
+  ctx.fillRect(140, y, 108, 4)
+  drawPlaque(ctx, 268, y - 16, 24, 36, p)
   y += 92
 
-  ctx.fillStyle = MUTED
+  ctx.fillStyle = p.muted
   ctx.font = '600 24px Inter, Arial, sans-serif'
-  ctx.fillText('SIMPLE MEANING', 76, y)
+  ctx.fillText('SIMPLE MEANING', 140, y)
   y += 64
 
-  ctx.fillStyle = INK
+  ctx.fillStyle = p.ink
   ctx.font = '400 42px Georgia, serif'
-  drawLines(ctx, wrap(ctx, kural.s, 850), 76, y, 62)
+  drawLines(ctx, wrap(ctx, kural.s, 790), 140, y, 62)
 
-  // Footer.
-  ctx.fillStyle = GREEN
-  ctx.fillRect(76, 1670, 928, 1)
-  ctx.fillStyle = MUTED
+  // Footer over the hills.
+  ctx.fillStyle = p.gold
+  ctx.fillRect(140, 1670, 800, 1)
+  ctx.fillStyle = p.cream
   ctx.font = 'italic 30px Georgia, serif'
-  ctx.fillText(chapter ? `${chapter.ta} · ${chapter.en}` : 'Thirukkural', 76, 1740)
-  ctx.fillStyle = GREEN
+  ctx.fillText(chapter ? `${chapter.ta} · ${chapter.en}` : 'Thirukkural', 140, 1740)
+  ctx.fillStyle = p.goldBright
   ctx.font = '600 27px Inter, Arial, sans-serif'
-  ctx.fillText(footer ?? 'A calm corner for Tamil wisdom', 76, 1810)
+  ctx.fillText(footer ?? 'A calm corner for Tamil wisdom', 140, 1810)
 
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob((blob) => {

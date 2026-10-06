@@ -7,6 +7,7 @@
 import { motion } from 'framer-motion'
 import { Bookmark, BookmarkCheck, ImageDown, Share2, Sparkles } from 'lucide-react'
 import { GlassCard } from '../ui/GlassCard'
+import { SuryaChandra, ZariEdge } from '../ambient/ornaments'
 import { KuralVerse } from '../kural/KuralVerse'
 import { Button } from '../ui/Button'
 import { useReducedMotion } from '../../hooks/useReader'
@@ -44,13 +45,22 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
       data-kural={kural.n}
       className="overflow-hidden p-6 sm:p-8"
     >
-      {/* Breadcrumb: book › chapter · number */}
+      {/* The kanjeevaram zari edge along the card's top. */}
+      <ZariEdge className="-mx-6 -mt-6 mb-5 sm:-mx-8 sm:-mt-8" />
+
+      {/* Surya/chandra medallion carrying the kural number. */}
+      <div className="pointer-events-none absolute top-5 right-5 h-16 w-16">
+        <SuryaChandra className="anim-glint h-full w-full" />
+        <span className="absolute inset-0 grid place-items-center text-sm font-semibold text-accent-text">
+          {kural.n}
+        </span>
+      </div>
+
+      {/* Breadcrumb: book › chapter */}
       <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs tracking-wide text-muted uppercase">
         <span lang="ta">{section?.ta ?? ''}</span>
         <span aria-hidden="true">›</span>
         <span lang="ta">{chapter?.ta ?? ''}</span>
-        <span aria-hidden="true">·</span>
-        <span>#{kural.n}</span>
       </p>
 
       <div className="mt-[var(--space-5)] space-y-[var(--space-5)]">

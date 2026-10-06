@@ -6,6 +6,7 @@
 import { Link } from 'react-router-dom'
 import { useT } from '../i18n'
 import { GlassCard } from '../components/ui/GlassCard'
+import { BillaDivider } from '../components/ambient/ornaments'
 
 const REPO = 'https://github.com/pewsaipie/tamil-stoic-app'
 const DATASET = 'https://github.com/tk120404/thirukkural'
@@ -28,10 +29,11 @@ export function Credits() {
       <h1 className="mt-1 mb-2 text-2xl text-ink">
         {t('credits.title', 'Credits & open source')}
       </h1>
-      <p className="mt-0 mb-[var(--space-5)] text-sm text-muted">
+      <p className="mt-0 mb-[var(--space-4)] text-sm text-muted">
         Tamil Stoic is built with respect for the people and projects behind it. The source code and
         licensing are open for anyone to read, reuse and improve.
       </p>
+      <BillaDivider className="mb-[var(--space-5)]" />
 
       <div className="space-y-[var(--space-4)]">
         <GlassCard quiet className="p-5">
