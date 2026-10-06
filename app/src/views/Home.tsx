@@ -17,6 +17,7 @@ import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
 import { BookTiles } from '../components/home/BookTiles'
+import { BillaDivider, ZariEdge } from '../components/ambient/ornaments'
 import { SituationDoors } from '../components/home/SituationDoors'
 import { TopBar } from '../components/layout/TopBar'
 import { JourneyCard } from '../components/journey/JourneyCard'
@@ -75,6 +76,28 @@ export function Home() {
         }}
       >
         <HeroCanvas />
+        {/* Kurinji sky life: drifting cloud by day, twinkling stars at night.
+            Both read from theme tokens — `--star` is transparent at day and
+            `--cloud` near-transparent at night, so each mode shows its own. */}
+        <div
+          aria-hidden="true"
+          className="ambient-decor anim-sky absolute inset-0"
+          style={{
+            backgroundImage:
+              'radial-gradient(55% 38% at 22% 30%, var(--cloud) 0%, transparent 62%), radial-gradient(45% 32% at 74% 18%, var(--cloud) 0%, transparent 60%)',
+            backgroundSize: '220% 100%',
+            opacity: 0.55,
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="ambient-decor anim-twinkle absolute inset-0"
+          style={{
+            backgroundImage:
+              'radial-gradient(1.6px 1.6px at 14% 24%, var(--star) 50%, transparent 51%), radial-gradient(1.2px 1.2px at 38% 12%, var(--star) 50%, transparent 51%), radial-gradient(1.8px 1.8px at 62% 30%, var(--star) 50%, transparent 51%), radial-gradient(1.2px 1.2px at 82% 16%, var(--star) 50%, transparent 51%), radial-gradient(1.4px 1.4px at 92% 38%, var(--star) 50%, transparent 51%)',
+            opacity: 0.9,
+          }}
+        />
         <div className="relative z-10 mx-auto mb-3 max-w-[var(--content-max)]">
           <TopBar title="தமிழ் ஸ்டோயிக் · Tamil Stoic" onOpenPalette={() => setPaletteOpen(true)} />
         </div>
@@ -92,6 +115,10 @@ export function Home() {
             )}
           </p>
           <ThemeSwitcher className="justify-center" />
+        </div>
+        {/* The kanjeevaram zari edge where the sky meets the page. */}
+        <div className="absolute inset-x-0 bottom-0 z-10">
+          <ZariEdge />
         </div>
       </header>
 
@@ -144,6 +171,7 @@ export function Home() {
         {/* Three books */}
         {corpus ? (
           <section aria-labelledby="books-title" className="mt-[var(--space-7)]">
+            <BillaDivider className="mb-[var(--space-5)]" />
             <h2 id="books-title" className="m-0 text-lg text-ink">
               <span lang="ta">மூன்று பால்கள்</span> · {t('books.title', 'The three books')}
             </h2>
@@ -157,6 +185,7 @@ export function Home() {
         {/* Situation doors */}
         {corpus ? (
           <section aria-labelledby="situations-title" className="mt-[var(--space-7)]">
+            <BillaDivider className="mb-[var(--space-5)]" />
             <h2 id="situations-title" className="m-0 text-lg text-ink">
               <span lang="ta">சூழ்நிலை</span> · {t('situations.title', 'Where are you today?')}
             </h2>

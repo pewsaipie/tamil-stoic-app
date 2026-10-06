@@ -19,7 +19,7 @@ export const JOURNEY_KEY = 'tamil-stoic-journey-v1'
 export const ONBOARDING_KEY = 'tamil-stoic-onboarding-seen-v1'
 export const INSTALL_DISMISSED_KEY = 'tamil-stoic-install-dismissed-v1'
 
-export type ThemeMode = 'palm' | 'night' | 'system'
+export type ThemeMode = 'day' | 'night' | 'system'
 export type FontSize = 'standard' | 'large' | 'x-large'
 export type LineSpacing = 'comfortable' | 'relaxed'
 export type UiLanguage = 'en' | 'ta'
@@ -44,12 +44,13 @@ export interface Journey {
 /** Legacy vocabulary → React vocabulary. */
 const THEME_FROM_LEGACY: Record<string, ThemeMode> = {
   dark: 'night', // "Sangam clay" shipped in the dark slot
-  light: 'palm',
+  light: 'day',
+  palm: 'day', // pre-Kurinji day theme id
   system: 'system',
 }
 const THEME_TO_LEGACY: Record<ThemeMode, string> = {
   night: 'dark',
-  palm: 'light',
+  day: 'light',
   system: 'system',
 }
 

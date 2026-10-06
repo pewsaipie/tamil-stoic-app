@@ -5,6 +5,7 @@
  */
 import { useReaderStore } from '../../store/appStore'
 import { useT } from '../../i18n'
+import { BillaSpine } from '../ambient/ornaments'
 
 export interface JourneyCardProps {
   totalKurals: number
@@ -93,6 +94,9 @@ export function JourneyCard({ totalKurals, totalChapters, className }: JourneyCa
           </div>
         </dl>
       </div>
+
+      {/* The braid axis: one lit plaque per tenth of the journey. */}
+      <BillaSpine progress={progress} className="ml-auto hidden sm:flex" />
     </section>
   )
 }

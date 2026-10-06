@@ -33,7 +33,7 @@ import type { MaterialTier } from './quality.ts'
 export type TimeOfDay = 'day' | 'dusk'
 
 /** The app's theme ids, as they are stored today (`lib/preferences.ts`). */
-export type StoredTheme = 'palm' | 'night' | 'system'
+export type StoredTheme = 'day' | 'night' | 'system'
 
 /**
  * Where an HDRI would live if we had vendored one.
@@ -90,7 +90,7 @@ export interface EnvironmentSpec {
 
 /** Theme storage → the light in the room. */
 export function timeOfDayFor(theme: StoredTheme | 'system', prefersDark = false): TimeOfDay {
-  if (theme === 'palm') return 'day'
+  if (theme === 'day') return 'day'
   if (theme === 'night') return 'dusk'
   return prefersDark ? 'dusk' : 'day'
 }

@@ -32,7 +32,7 @@ function readColors(): LeafColors {
     a: read('--hero-tint-a', '#e8d9b0'),
     b: read('--hero-tint-b', '#b98f4a'),
     c: read('--hero-tint-c', '#6b4a1c'),
-    // Sangam Night pools ember light; Palm-Leaf does not.
+    // Kurinji Night pools ember light; Kurinji Day does not.
     ember: isNight ? 1 : 0,
   }
 }

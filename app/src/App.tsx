@@ -7,6 +7,7 @@ import { Saved } from './views/Saved'
 import { Credits } from './views/Credits'
 import { AskValluvar } from './views/AskValluvar'
 import { BottomNav } from './components/layout/BottomNav'
+import { Atmosphere } from './components/ambient/Atmosphere'
 import { Toasts } from './components/ui/Toasts'
 import { OfflineBanner } from './components/ui/OfflineBanner'
 import { UpdateBanner } from './components/ui/UpdateBanner'
@@ -47,6 +48,8 @@ export function App() {
 
   return (
     <>
+      {/* The living-cover layer: petals by day, fireflies at midnight. */}
+      <Atmosphere />
       <nav aria-label="Skip links">
         <a
           href="#main"

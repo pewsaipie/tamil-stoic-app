@@ -124,12 +124,12 @@ export function CommandPalette({ open, onOpenChange, onOpenSettings, onOpenShort
       },
       {
         id: 'theme',
-        label: theme === 'palm' ? 'Switch to Sangam clay' : 'Switch to Palm-leaf day',
+        label: theme === 'night' ? 'Switch to Kurinji day' : 'Switch to Kurinji night',
         group: 'Appearance',
         icon:
-          theme === 'palm' ? <Moon size={16} strokeWidth={1.6} /> : <Sun size={16} strokeWidth={1.6} />,
+          theme === 'night' ? <Sun size={16} strokeWidth={1.6} /> : <Moon size={16} strokeWidth={1.6} />,
         run: () => {
-          setTheme(theme === 'palm' ? 'night' : 'palm')
+          setTheme(theme === 'night' ? 'day' : 'night')
           onOpenChange(false)
         },
       },

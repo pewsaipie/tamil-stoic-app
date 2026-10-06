@@ -1,9 +1,16 @@
 /* =============================================================================
- * Design tokens — Tamil Stoic
+ * Design tokens — Tamil Stoic · Kurinji (குறிஞ்சி)
  * =============================================================================
  * Single source of truth for colour, space, radius, shadow and motion.
  * Tailwind utilities are bridged to these variables in global.css via
  * `@theme inline`, so a theme switch is a pure CSS variable swap.
+ *
+ * THE THEME — derived from the *Tamil Kalyanam Hits* cover read through Sangam
+ * research (docs/kurinji-ui-plan.md): one design language, two modes.
+ *   · Kurinji Day    — the cover's open cerulean sky, kantal red, temple gold.
+ *   · Kurinji Night  — the Sangam-canonical midnight of union: indigo starlit
+ *     sky, dewy cool blues, glowing gold ornament.
+ * Gold is always *object*, sky is always *field*: gold never carries small text.
  *
  * CONTRAST: every text/background pair below has been measured against
  * WCAG 2.2 AA (4.5:1 body text, 3:1 large text and UI boundaries).
@@ -46,6 +53,7 @@
   /* ---------- Elevation --------------------------------------------------- */
   --z-canvas: 0;
   --z-content: 10;
+  --z-ambient: 15;
   --z-sticky: 20;
   --z-nav: 30;
   --z-overlay: 40;
@@ -53,85 +61,113 @@
 }
 
 /* =============================================================================
- * Palm-Leaf Day
+ * Kurinji Day — the cover's bright ceremony: open sky, kantal red, temple gold
  * ========================================================================== */
 :root,
-[data-theme="palm"] {
-  --bg-base: #f5edd6;
-  --bg-surface: #ede0c0;
-  --bg-glass: rgba(245, 237, 214, 0.55);
-  --bg-elevated: rgba(255, 252, 244, 0.72);
+[data-theme="day"] {
+  --bg-base: #eef6fb; /* cloud-sky */
+  --bg-surface: #dcecf6; /* deeper sky */
+  --bg-glass: rgba(238, 246, 251, 0.55);
+  --bg-elevated: rgba(255, 255, 255, 0.78);
 
-  --ink-primary: #1c1208; /* 15.8:1 on base */
-  --ink-secondary: #5c4a1e; /* 7.3:1 on base · 6.5:1 on surface */
+  --ink-primary: #10202e; /* 15.2:1 on base */
+  --ink-secondary: #3d5666; /* 7.1:1 on base · 6.4:1 on surface */
 
-  --accent: #8b5e1a; /* 4.8:1 on base · 4.3:1 on surface (marks, not body text) */
-  --accent-text: #7a4f12; /* 6.1:1 on base · 5.4:1 on surface — safe for text */
-  --on-accent: #ffffff; /* 5.7:1 on accent */
-  --accent-glow: rgba(139, 94, 26, 0.35);
+  --accent: #b3242a; /* kantal red — filled marks */
+  --accent-text: #7a5a10; /* ochre gold, text-safe: 5.8:1 base · 5.3:1 surface */
+  --on-accent: #ffffff; /* 6.6:1 on accent */
+  --accent-glow: rgba(201, 151, 28, 0.35);
 
-  --border-color: rgba(28, 18, 8, 0.14);
-  --border-strong: rgba(28, 18, 8, 0.3);
-  --glass-border: rgba(255, 255, 255, 0.55);
-  --glass-highlight: rgba(255, 255, 255, 0.4);
+  --border-color: rgba(16, 32, 46, 0.16);
+  --border-strong: rgba(16, 32, 46, 0.34);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-highlight: rgba(255, 255, 255, 0.5);
 
-  --danger: #a32a1e; /* 6.2:1 on base */
-  --success: #2f6b3a; /* 5.5:1 on base */
+  --danger: #a32a1e; /* 6.6:1 on base */
+  --success: #2f6b3a; /* 5.9:1 on base */
 
-  --focus-ring: #8b5e1a; /* 4.8:1 on base */
-  --scrim: rgba(28, 18, 8, 0.5);
+  --focus-ring: #1f6f74; /* peacock, 5.4:1 on base */
+  --scrim: rgba(16, 32, 46, 0.5);
 
-  /* Hero material: warm aged leaf */
-  --hero-tint-a: #e8d9b0;
-  --hero-tint-b: #b98f4a;
-  --hero-tint-c: #6b4a1c;
-  --hero-blend: multiply;
+  /* ---------- Kurinji ornament voices ------------------------------------ */
+  --gold: #c9971c; /* temple gold — lines, fills, ornament ONLY */
+  --gold-bright: #e6b93f; /* glints, shimmer highlights */
+  --kantal: #9c2024; /* text-safe celebration red */
+  --kantal-fill: #b3242a; /* fills, saved state */
+  --petal: #c0392b; /* drifting petals */
+  --peacock: #1f6f74; /* secondary accent */
+  --sky-a: #a8d8ef; /* high sky */
+  --sky-b: #5fb2dc; /* cerulean */
+  --sky-c: #27506b; /* far hill */
+  --cloud: #f2f9fd;
+  --star: rgba(0, 0, 0, 0); /* no stars at day */
 
-  /* The seal scene's backdrop. Palm-leaf Day is a room with the door open:
-     warm, bright, high contrast. It is still a *room* — the scene is lit by
-     one lamp against it, which is what makes the leaf read as a real object
-     sitting in a real place rather than as a graphic on a page. */
-  --stage-room: radial-gradient(120% 90% at 62% 18%, #6b5330 0%, #3b2c17 55%, #211609 100%);
+  /* Hero material: open kurinji sky over the far hill */
+  --hero-tint-a: #a8d8ef;
+  --hero-tint-b: #5fb2dc;
+  --hero-tint-c: #27506b;
+  --hero-blend: normal;
 
-  --shadow-sm: 0 1px 3px rgba(28, 18, 8, 0.12);
-  --shadow-md: 0 4px 16px rgba(28, 18, 8, 0.16);
-  --shadow-lg: 0 12px 40px rgba(28, 18, 8, 0.22);
+  /* The seal scene's backdrop. Day is the cover's open sky: the sealed leaf
+     sits under daylight, hills behind — a ceremony outdoors. */
+  --stage-room: linear-gradient(180deg, #8ecdea 0%, #cfeaf7 62%, #eef7fc 100%);
+
+  --shadow-sm: 0 1px 3px rgba(23, 48, 66, 0.12);
+  --shadow-md: 0 4px 16px rgba(23, 48, 66, 0.16);
+  --shadow-lg: 0 12px 40px rgba(23, 48, 66, 0.22);
   --shadow-glow: 0 0 32px var(--accent-glow);
 }
 
 /* =============================================================================
- * Sangam Night
+ * Kurinji Night — the Sangam-canonical midnight of union: indigo, starlit,
+ * dewy cool blues; the gold ornament glows like jewellery under moonlight.
  * ========================================================================== */
 [data-theme="night"] {
-  --bg-base: #0d0a06;
-  --bg-surface: #1a1407;
-  --bg-glass: rgba(13, 10, 6, 0.6);
-  --bg-elevated: rgba(26, 20, 7, 0.72);
+  --bg-base: #0c1322; /* midnight indigo */
+  --bg-surface: #142036; /* dew-dark blue */
+  --bg-glass: rgba(12, 19, 34, 0.6);
+  --bg-elevated: rgba(20, 32, 54, 0.72);
 
-  --ink-primary: #f0e6c8; /* 15.9:1 on base · 14.7:1 on surface */
-  --ink-secondary: #a89060; /* 6.4:1 on base · 5.9:1 on surface */
+  --ink-primary: #eaf2fb; /* 16.4:1 on base */
+  --ink-secondary: #a7b8cc; /* 9.2:1 on base · 8.0:1 on surface */
 
-  --accent: #c8922a; /* 7.2:1 on base · 6.6:1 on surface */
-  --accent-text: #c8922a; /* same pair — safe for text on night */
-  --on-accent: #0d0a06; /* 7.2:1 on accent — white would be 2.8:1 */
-  --accent-glow: rgba(200, 146, 42, 0.4);
+  --accent: #d1a02c; /* glowing temple gold */
+  --accent-text: #e3b64f; /* 9.8:1 on base · 8.6:1 on surface */
+  --on-accent: #171106; /* 7.8:1 on accent */
+  --accent-glow: rgba(224, 179, 76, 0.4);
 
-  --border-color: rgba(240, 230, 200, 0.14);
-  --border-strong: rgba(240, 230, 200, 0.32);
+  --border-color: rgba(234, 242, 251, 0.16);
+  --border-strong: rgba(234, 242, 251, 0.34);
   --glass-border: rgba(255, 255, 255, 0.18);
   --glass-highlight: rgba(255, 255, 255, 0.14);
 
-  --danger: #e2705f; /* 6.3:1 on base */
-  --success: #7fbf8a; /* 9.2:1 on base */
+  --danger: #e2705f; /* 5.9:1 on base */
+  --success: #7fbf8a; /* 8.6:1 on base */
 
-  --focus-ring: #c8922a; /* 7.2:1 on base */
+  --focus-ring: #e3b64f; /* 9.8:1 on base */
   --scrim: rgba(0, 0, 0, 0.7);
 
-  /* Hero material: burnt sienna with ember glow */
-  --hero-tint-a: #2a1a0a;
-  --hero-tint-b: #7a4210;
-  --hero-tint-c: #c9721f;
+  /* ---------- Kurinji ornament voices ------------------------------------ */
+  --gold: #e0b34c;
+  --gold-bright: #f0cf7a;
+  --kantal: #e07a6d; /* moonlit kantal */
+  --kantal-fill: #d05a4e;
+  --petal: #d05a4e;
+  --peacock: #6fbdb4;
+  --sky-a: #16263f;
+  --sky-b: #0e1a30;
+  --sky-c: #050a14;
+  --cloud: rgba(234, 242, 251, 0.08);
+  --star: #f0cf7a; /* star glints */
+
+  /* Hero material: starlit indigo, moonlight on the hills */
+  --hero-tint-a: #16263f;
+  --hero-tint-b: #0e1a30;
+  --hero-tint-c: #050a14;
   --hero-blend: normal;
+
+  /* The seal scene's backdrop at midnight: one moonlit clearing. */
+  --stage-room: radial-gradient(120% 90% at 62% 18%, #24365c 0%, #101a30 55%, #070d1a 100%);
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
@@ -141,39 +177,53 @@
 
 /* =============================================================================
  * System — follows the OS, mobile-first (light first paint, dark if asked)
- * Explicit `data-theme="palm"` / `"night"` blocks sit later in the cascade and
+ * Explicit `data-theme="day"` / `"night"` blocks sit later in the cascade and
  * therefore always win over this mapping.
  * ========================================================================== */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="palm"]):not([data-theme="night"]) {
-    --bg-base: #0d0a06;
-    --bg-surface: #1a1407;
-    --bg-glass: rgba(13, 10, 6, 0.6);
-    --bg-elevated: rgba(26, 20, 7, 0.72);
+  :root:not([data-theme="day"]):not([data-theme="night"]) {
+    --bg-base: #0c1322;
+    --bg-surface: #142036;
+    --bg-glass: rgba(12, 19, 34, 0.6);
+    --bg-elevated: rgba(20, 32, 54, 0.72);
 
-    --ink-primary: #f0e6c8;
-    --ink-secondary: #a89060;
+    --ink-primary: #eaf2fb;
+    --ink-secondary: #a7b8cc;
 
-    --accent: #c8922a;
-    --accent-text: #c8922a;
-    --on-accent: #0d0a06;
-    --accent-glow: rgba(200, 146, 42, 0.4);
+    --accent: #d1a02c;
+    --accent-text: #e3b64f;
+    --on-accent: #171106;
+    --accent-glow: rgba(224, 179, 76, 0.4);
 
-    --border-color: rgba(240, 230, 200, 0.14);
-    --border-strong: rgba(240, 230, 200, 0.32);
+    --border-color: rgba(234, 242, 251, 0.16);
+    --border-strong: rgba(234, 242, 251, 0.34);
     --glass-border: rgba(255, 255, 255, 0.18);
     --glass-highlight: rgba(255, 255, 255, 0.14);
 
     --danger: #e2705f;
     --success: #7fbf8a;
 
-    --focus-ring: #c8922a;
+    --focus-ring: #e3b64f;
     --scrim: rgba(0, 0, 0, 0.7);
 
-    --hero-tint-a: #2a1a0a;
-    --hero-tint-b: #7a4210;
-    --hero-tint-c: #c9721f;
+    --gold: #e0b34c;
+    --gold-bright: #f0cf7a;
+    --kantal: #e07a6d;
+    --kantal-fill: #d05a4e;
+    --petal: #d05a4e;
+    --peacock: #6fbdb4;
+    --sky-a: #16263f;
+    --sky-b: #0e1a30;
+    --sky-c: #050a14;
+    --cloud: rgba(234, 242, 251, 0.08);
+    --star: #f0cf7a;
+
+    --hero-tint-a: #16263f;
+    --hero-tint-b: #0e1a30;
+    --hero-tint-c: #050a14;
     --hero-blend: normal;
+
+    --stage-room: radial-gradient(120% 90% at 62% 18%, #24365c 0%, #101a30 55%, #070d1a 100%);
 
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);

@@ -33,6 +33,7 @@ import { TopBar } from '../components/layout/TopBar'
 import { SITUATIONS } from '../lib/situations'
 import { useReaderStore } from '../store/appStore'
 import { useT } from '../i18n'
+import { BillaDivider } from '../components/ambient/ornaments'
 import type { Kural } from '../lib/types'
 
 const BOOKS: readonly { id: number | 'all'; label: string }[] = [
@@ -231,6 +232,7 @@ export function Chapters() {
           'Search by number or word, pick a chapter, or open a door that fits your day.',
         )}
       </p>
+      <BillaDivider className="mb-[var(--space-5)]" />
 
       {/* Books */}
       <div role="group" aria-label="Filter by book" className="mb-[var(--space-3)] flex flex-wrap gap-2">
