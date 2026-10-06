@@ -1,6 +1,11 @@
 /**
- * The daily ritual — day boundaries, the sealed leaf's state machine, and the
- * reminder's scheduling arithmetic.
+ * The daily ritual — day boundaries, the minute sat with, and the reminder's
+ * scheduling arithmetic.
+ *
+ * The seal ceremony that used to be asserted here was withdrawn on the reader's
+ * instruction, so its state machine is gone. What remains is asserted harder:
+ * old states that still carry `seal` and `unrolled` must be read *and ignored*
+ * rather than resurrecting the ceremony or corrupting the rest of the record.
  *
  *   npm run test:ritual
  *
@@ -35,15 +40,11 @@ const {
   DEFAULT_RITUAL,
   readRitual,
   writeRitual,
-  wasUnrolled,
   didSit,
-  isSealed,
   satStreak,
   satDays,
-  unrollToday,
+  daysSinceLastSit,
   markSat,
-  resealToday,
-  setSeal,
   setReminder,
   REMINDER_HOURS,
 } = await import('../src/lib/ritual.ts')
@@ -119,20 +120,33 @@ console.log('\nritual storage:')
 
 resetStorage()
 const fresh = readRitual()
-check(fresh.seal === true, 'a new reader starts with the ceremony on')
-check(Object.keys(fresh.unrolled).length === 0, 'a new reader has opened nothing')
+check(Object.keys(fresh.sat).length === 0, 'a new reader has sat with nothing')
 check(fresh.reminder.enabled === false, 'a new reader has asked for no reminder')
 check(fresh.reminder.hour === DEFAULT_RITUAL.reminder.hour, 'the reminder hour has a sensible default')
 
-resetStorage({ seal: false, unrolled: { '2026-10-04': true, nonsense: true }, sat: {}, reminder: {} })
-const stored = readRitual()
-check(stored.seal === false, 'a reader who turned the ceremony off stays off')
-check(wasUnrolled(stored.unrolled, '2026-10-04'), 'a recorded unroll is read back')
-check(
-  Object.keys(stored.unrolled).length === 1,
-  'a malformed day key in storage is dropped rather than believed',
-)
-check(stored.reminder.hour === DEFAULT_RITUAL.reminder.hour, 'a missing hour falls back to the default')
+/**
+ * A state written by the *previous* version of the app — the one with the seal.
+ * It must be read without complaint, and the retired fields must be dropped:
+ * nothing may resurrect a ceremony the reader has retired.
+ */
+resetStorage({
+  seal: true,
+  unrolled: { '2026-10-04': true, nonsense: true },
+  sat: { '2026-10-04': true, nonsense: true },
+  reminder: {},
+})
+const migrated = readRitual()
+check(!('seal' in migrated), 'a retired field is not read back into the state')
+check(!('unrolled' in migrated), 'and neither is the day-map that went with it')
+check(didSit(migrated.sat, '2026-10-04'), 'while the minute still sat is kept')
+check(Object.keys(migrated.sat).length === 1, 'a malformed day key is dropped rather than believed')
+check(migrated.reminder.hour === DEFAULT_RITUAL.reminder.hour, 'a missing hour falls back to the default')
+
+// What the app writes from now on must not carry the retired fields either.
+resetStorage()
+const written = writeRitual({ ...DEFAULT_RITUAL, sat: {}, reminder: DEFAULT_RITUAL.reminder })
+const onDisk = JSON.parse(store.get(RITUAL_KEY))
+check(!('seal' in onDisk) && !('unrolled' in onDisk), 'and the app stops writing them')
 
 resetStorage({ reminder: { enabled: true, hour: 99, minute: -5 } })
 const clamped = readRitual()
@@ -143,60 +157,23 @@ check(clamped.reminder.minute === 0, 'a negative minute is clamped into range')
 resetStorage('this is not json')
 try {
   const recovered = readRitual()
-  check(recovered.seal === true && Object.keys(recovered.unrolled).length === 0, 'corrupt storage falls back to a fresh state')
+  check(Object.keys(recovered.sat).length === 0, 'corrupt storage falls back to a fresh state')
 } catch (error) {
   check(false, `corrupt storage must not throw (${error.message})`)
 }
 
 resetStorage({ seal: 'yes', unrolled: 'no', sat: null, reminder: null })
 const typed = readRitual()
-check(typed.seal === true, 'a non-boolean seal falls back to on')
-check(Object.keys(typed.unrolled).length === 0, 'a non-object day map falls back to empty')
+check(Object.keys(typed.sat).length === 0, 'a non-object day map falls back to empty')
 check(typed.reminder.enabled === false, 'a null reminder falls back to off')
 
 /* ---------------------------------------------------------------------------
- * 3. The state machine: sealed, unrolled, sat.
+ * 3. The minute, and the streak it makes.
  * ------------------------------------------------------------------------ */
-
-console.log('\nthe seal:')
-
-const sealedState = { seal: true, unrolled: {}, sat: {}, reminder: DEFAULT_RITUAL.reminder }
-check(isSealed(sealedState, '2026-10-04'), 'a couplet that was never opened is sealed')
-check(!wasUnrolled(sealedState.unrolled, '2026-10-04'), 'and the day records nothing')
-
-const openedState = unrollToday(sealedState, '2026-10-04')
-check(wasUnrolled(openedState.unrolled, '2026-10-04'), 'opening records the day')
-check(!isSealed(openedState, '2026-10-04'), 'and the leaf is no longer sealed')
-check(isSealed(openedState, '2026-10-05'), 'tomorrow it is sealed again')
-
-const twiceState = unrollToday(openedState, '2026-10-04')
-check(
-  Object.keys(twiceState.unrolled).length === 1,
-  'opening twice in a day records one day, not two',
-)
-
-const unsealedState = setSeal(sealedState, false)
-check(!isSealed(unsealedState, '2026-10-04'), 'turning the ceremony off leaves the couplet open')
-check(
-  isSealed(setSeal(unsealedState, true), '2026-10-04'),
-  'turning it back on restores the seal',
-)
-
-const resealed = resealToday(openedState, '2026-10-04')
-check(!wasUnrolled(resealed.unrolled, '2026-10-04'), 'sealing again forgets today’s opening')
-check(isSealed(resealed, '2026-10-04'), 'and the leaf is sealed once more')
-check(
-  wasUnrolled(resealToday(openedState, '2026-10-04').unrolled, '2026-10-03') === false,
-  'resealing touches today only, never another day',
-)
-check(
-  resealToday(sealedState, '2026-10-04') === sealedState,
-  'resealing a sealed leaf changes nothing at all',
-)
 
 console.log('\nsitting with the couplet:')
 
-const satState = markSat(sealedState, '2026-10-04')
+const satState = markSat({ ...DEFAULT_RITUAL }, '2026-10-04')
 check(didSit(satState.sat, '2026-10-04'), 'finishing a minute records the day')
 check(Object.keys(markSat(satState, '2026-10-04').sat).length === 1, 'sitting twice records one day')
 check(!didSit(satState.sat, '2026-10-03'), 'a day not sat with is not claimed')
@@ -226,18 +203,19 @@ check(denseStreak >= 730, 'a long unbroken history is counted')
 check(Date.now() - started < 1000, 'and counted quickly')
 
 check(satDays({ '2026-10-01': true, '2026-10-04': true })[0] === '2026-10-04', 'sat days come back newest first')
+check(daysSinceLastSit({}, '2026-10-04') === null, 'a reader who has never sat has no gap to measure')
+check(daysSinceLastSit({ '2026-10-01': true }, '2026-10-04') === 3, 'and the gap is counted in local days')
 
 console.log('\npersistence:')
 
 resetStorage()
-const persisted = unrollToday(readRitual(), '2026-10-04')
-check(store.has(RITUAL_KEY), 'opening the leaf writes storage')
-check(readRitual().unrolled['2026-10-04'] === true, 'and the write survives a re-read')
+const persisted = markSat(readRitual(), '2026-10-04')
+check(store.has(RITUAL_KEY), 'finishing a minute writes storage')
+check(readRitual().sat['2026-10-04'] === true, 'and the write survives a re-read')
 check(
-  JSON.parse(store.get(RITUAL_KEY)).unrolled['2026-10-04'] === true,
+  JSON.parse(store.get(RITUAL_KEY)).sat['2026-10-04'] === true,
   'the stored shape is the one the app documents',
 )
-check(markSat(persisted, '2026-10-04').sat['2026-10-04'] === true, 'a finished minute is persisted too')
 check(setReminder(persisted, { enabled: true, hour: 6, minute: 0 }).reminder.enabled === true, 'reminder changes persist')
 
 // Private browsing: every write can fail, and the app must keep working.
@@ -254,8 +232,8 @@ globalThis.window = {
   },
 }
 try {
-  const denied = unrollToday(readRitual(), '2026-10-04')
-  check(denied.unrolled['2026-10-04'] === true, 'denied storage still opens the leaf in memory')
+  const denied = markSat(readRitual(), '2026-10-04')
+  check(denied.sat['2026-10-04'] === true, 'denied storage still records the minute in memory')
 } catch (error) {
   check(false, `denied storage must not throw (${error.message})`)
 }
@@ -265,8 +243,8 @@ globalThis.window = realWindow
 delete globalThis.window
 try {
   const headless = readRitual()
-  check(headless.seal === true, 'a module imported outside a browser still has a valid state')
-  check(unrollToday(headless, '2026-10-04').unrolled['2026-10-04'] === true, 'and can still be opened')
+  check(Object.keys(headless.sat).length === 0, 'a module imported outside a browser still has a valid state')
+  check(markSat(headless, '2026-10-04').sat['2026-10-04'] === true, 'and can still record a minute')
 } catch (error) {
   check(false, `a headless import must not throw (${error.message})`)
 }
@@ -340,4 +318,4 @@ if (failed > 0) {
   console.error(`\n✗ daily ritual: ${failed} failure(s)`)
   process.exit(1)
 }
-console.log('\n✓ daily ritual: local day keys, seal state machine, persistence and reminder arithmetic\n')
+console.log('\n✓ daily ritual: local day keys, the minute sat with, persistence and reminder arithmetic\n')

@@ -18,8 +18,26 @@ import { SettingsSheet } from './components/settings/SettingsSheet'
 import { useGlobalShortcuts } from './hooks/useGlobalShortcuts'
 import { hydrateLibrary } from './store/appStore'
 import { useAppliedAppearance, useInstallPrompt } from './hooks/useReader'
+import { MotionProvider, useMotionSuspended } from './motion'
 
+/**
+ * App is the provider and nothing else.
+ *
+ * The room's motion state has to sit above the router's outlet — `data-motion`
+ * on `<html>` is what the stylesheet's kill-switch reads, and the route decides
+ * the register — so the shell is split in two: this wrapper owns the provider,
+ * and `Room` below is free to call `useMotionSuspended` for the dialogs it
+ * opens.
+ */
 export function App() {
+  return (
+    <MotionProvider>
+      <Room />
+    </MotionProvider>
+  )
+}
+
+function Room() {
   // Node between the store and the document: theme, motion, contrast, chrome.
   useAppliedAppearance()
   useInstallPrompt()
@@ -31,6 +49,16 @@ export function App() {
   useEffect(() => {
     void hydrateLibrary()
   }, [])
+
+  /**
+   * A modal dialog pauses the room behind it.
+   *
+   * Not a nicety: an open sheet already stops the page from scrolling, and a pot
+   * still turning behind it is motion the reader did not ask for and cannot
+   * stop. Counted, so the palette handing over to settings does not resume
+   * mid-dialog.
+   */
+  useMotionSuspended(paletteOpen || helpOpen || settingsOpen)
 
   // `/` jumps to the browse screen's search field.
   const openSearch = useCallback(() => {

@@ -3,15 +3,16 @@
  *
  * Two rules govern this file, and they come straight out of the brief:
  *
- *   **One material per substance, shared by every object made of it.** A wax
- *   seal on the daily leaf and a wax seal on a share card are the same wax.
+ *   **One material per substance, shared by every object made of it.** The ola
+ *   leaf on the table and the leaf a reader shares are the same ola; the pot's
+ *   red slip and the pot's black interior are two finishes of one clay.
  *   `THREE.Material` objects are therefore created once, lazily, and handed
  *   out; nothing in a scene may construct its own.
  *
  *   **Every substance is lit and described the same way.** Albedo, normal,
  *   roughness and an environment map, from the same baked set (see
- *   `scripts/build-materials.mjs`), so a leaf and a wax seal in the same frame
- *   cannot drift into two different lighting models.
+ *   `scripts/build-materials.mjs`), so a clay pot and a brass lamp in the same
+ *   frame cannot drift into two different lighting models.
  *
  * Textures are loaded once and reference-counted by the cache, never disposed
  * by a consumer; `disposeMaterials()` exists for tests and for a full teardown.
@@ -27,7 +28,30 @@ import waxRoughUrl from '../assets/materials/wax-rough.png'
 import tableNormalUrl from '../assets/materials/table-normal.png'
 import lampEnvUrl from '../assets/materials/lamp-env.png'
 
-export type MaterialName = 'ola' | 'wax' | 'table'
+/**
+ * Every substance in the library, as a value rather than only as a type.
+ *
+ * It is a list because three things need to agree about it and a union type
+ * enforces none of them across a module boundary: `SURFACES` below (typed
+ * `Record<MaterialName, Surface>`, so a name without a description will not
+ * compile), the forced-colours pass in `contrastPass.ts`, and
+ * `scripts/test-materials.mjs`, which walks this array to prove that no
+ * substance quietly falls through to the default role. A reader in forced
+ * colours whose pot renders the colour of paper is not a small bug; it is the
+ * pot being deleted from the frame, and a union alone cannot look for it.
+ */
+export const MATERIAL_NAMES = [
+  'ola',
+  'wax',
+  'table',
+  'clay',
+  'clayBlack',
+  'brass',
+  'water',
+  'stone',
+] as const
+
+export type MaterialName = (typeof MATERIAL_NAMES)[number]
 
 interface Surface {
   map?: string
@@ -37,6 +61,18 @@ interface Surface {
   repeat: [number, number]
   /** How strongly the normal map is applied. */
   normalScale: number
+  /**
+   * Constant finish, for substances whose baked set has not been cut yet.
+   *
+   * The doctrine is that a substance is described once — albedo, normal,
+   * roughness — and every object made of it shares that description. A
+   * substance with no baked maps is still described here rather than in a
+   * scene, so the day its maps land in `build-materials.mjs` there is exactly
+   * one place to add them. Black-and-red ware is the reason `clay` has two
+   * entries: the same pot is red slip outside and reduction-fired black inside,
+   * and those are two finishes, not two objects.
+   */
+  finish?: THREE.MeshStandardMaterialParameters
 }
 
 const SURFACES: Record<MaterialName, Surface> = {
@@ -61,6 +97,71 @@ const SURFACES: Record<MaterialName, Surface> = {
     normalMap: tableNormalUrl,
     repeat: [6, 6],
     normalScale: 0.35,
+  },
+
+  /* ---------- the pot, the lamp and the water ------------------------------
+   * Sangam-era pottery is **black-and-red ware**: wheel-thrown, red slip
+   * outside (hematite), black inside (carbon, from a reduction fire at about
+   * 1100 °C — the Keeladi sherds). So `clay` is the outside of the pot and
+   * `clayBlack` is its inside. Same substance, two finishes.
+   */
+  clay: {
+    repeat: [2, 2],
+    normalScale: 0.5,
+    finish: {
+      color: new THREE.Color('#a8563a'),
+      roughness: 0.62,
+      metalness: 0,
+      envMapIntensity: 0.4,
+    },
+  },
+  clayBlack: {
+    repeat: [2, 2],
+    normalScale: 0.5,
+    finish: {
+      color: new THREE.Color('#1c1713'),
+      roughness: 0.88,
+      metalness: 0,
+      envMapIntensity: 0.15,
+    },
+  },
+  // A brass oil lamp, lit. Metal is the one place a strong environment earns
+  // its keep: without reflected light, brass is a brown shape.
+  brass: {
+    repeat: [1, 1],
+    normalScale: 0.2,
+    finish: {
+      color: new THREE.Color('#b98a34'),
+      roughness: 0.34,
+      metalness: 1,
+      envMapIntensity: 1.15,
+    },
+  },
+  // Water is mostly a *shape*: it takes the colour of what it reflects. The
+  // ripple material in `objects/waterSurface.ts` clones this and injects the
+  // surface motion, so the level, the rings and the colour are one object.
+  water: {
+    repeat: [1, 1],
+    normalScale: 0,
+    finish: {
+      color: new THREE.Color('#2b4a5c'),
+      roughness: 0.06,
+      metalness: 0.1,
+      envMapIntensity: 1.4,
+      transparent: true,
+      opacity: 0.92,
+    },
+  },
+  // The floor the kolam is drawn on, and the wall the inscription is cut into.
+  stone: {
+    repeat: [3, 3],
+    normalScale: 0.3,
+    finish: {
+      color: new THREE.Color('#7d7266'),
+      roughness: 0.82,
+      metalness: 0,
+      envMapIntensity: 0.3,
+    },
   },
 }
 
@@ -137,7 +238,7 @@ export function getEnvironment(): THREE.Texture {
  * The base material for a substance.
  *
  * `params` are merged onto a fresh clone rather than the cached original, so a
- * consumer can tint or roughen one object (a scorched leaf, a dried-out seal)
+ * consumer can vary one object (the pot's two skins, a leaf lit differently)
  * without changing the substance for everyone else. The clones share the same
  * texture objects — which is the point.
  */
@@ -164,6 +265,7 @@ export function getMaterial(
     roughness: 1,
     metalness: 0,
     envMapIntensity: 0.55,
+    ...surface.finish,
     ...params,
   })
 
@@ -196,8 +298,8 @@ export function disposeMaterials(): void {
 /**
  * Warm the cache before a scene is shown.
  *
- * The first frame of the seal must not pop: textures arrive asynchronously, so
- * the stage resolves this promise and only then starts the reveal. A failure
+ * The first frame of the table must not pop: textures arrive asynchronously,
+ * so the stage resolves this promise and only then starts the reveal. A failure
  * here is not fatal — a missing map means a flatter surface, and the stage
  * decides that, not this function.
  */

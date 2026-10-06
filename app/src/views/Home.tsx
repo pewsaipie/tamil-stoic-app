@@ -1,12 +1,14 @@
 /**
  * Home — the reader's landing screen.
  *
- * Scope so far (scaffold step): the design system, the real corpus pipeline and
- * a working Today's Kural card. The Three.js hero canvas, the books tabs, the
- * situation doors and the command palette arrive in the next steps; the hero
- * zone below already renders the documented CSS fallback so the layout is final.
+ * The room, in one scroll: the kurinji sky and its weather, the table with the
+ * pot, the lamp and the ola leaf on it, today's couplet under the lamp, the
+ * journey as water level, the three books as bundles and the twelve situation
+ * doors as weather. Every moving thing here asks the motion runtime whether the
+ * room is alive before it draws a frame, and every one of them has a still end
+ * state — the pot settled and full, the lamp steady, the sky a fixed gradient.
  */
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { chapterOf, kuralOfTheDay, sectionOf } from '../lib/corpus'
 import { shareKural } from '../lib/share'
@@ -18,10 +20,12 @@ import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
 import { BookTiles } from '../components/home/BookTiles'
 import { BillaDivider, ZariEdge } from '../components/ambient/ornaments'
+import { TableStage } from '../components/canvas/TableStage'
 import { SituationDoors } from '../components/home/SituationDoors'
 import { TopBar } from '../components/layout/TopBar'
 import { JourneyCard } from '../components/journey/JourneyCard'
 import { useT } from '../i18n'
+import { useMotionSuspended } from '../motion'
 import { Link } from 'react-router-dom'
 import { CommandPalette } from '../components/palette/CommandPalette'
 import { ShortcutsDialog } from '../components/palette/ShortcutsDialog'
@@ -43,7 +47,19 @@ export function Home() {
   const reducedMotion = useReducedMotion()
   const markRead = useReaderStore((state) => state.markRead)
   const pushToast = useReaderStore((state) => state.pushToast)
+  const read = useReaderStore((state) => state.read)
   const [override, setOverride] = useState<Kural | null>(null)
+  /**
+   * The room's own numbers.
+   *
+   * `progress` is the water level in the pot; `ripple` counts kurals marked read
+   * so the scene can drop one ring per kural. `forming` is the pot being thrown —
+   * it happens while the corpus loads, and for a reader whose pot is still empty,
+   * because a vessel that has never held anything is a vessel being made.
+   */
+  const readCount = Object.keys(read).length
+  const [ripple, setRipple] = useState(0)
+  const seenReads = useRef(readCount)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [helpOpen, setHelpOpen] = useState(false)
@@ -55,6 +71,22 @@ export function Home() {
   useEffect(() => {
     if (current && corpus) markRead(current.n, current.ch)
   }, [current, corpus, markRead])
+
+  useEffect(() => {
+    if (readCount === seenReads.current) return
+    seenReads.current = readCount
+    setRipple((count) => count + 1)
+  }, [readCount])
+
+  /**
+   * Home's own dialogs pause the room, like the shell's do.
+   *
+   * The shell already tracks its palette and sheets; these are the ones this
+   * view owns (the TopBar's palette button opens the local pair). Counting in
+   * the runtime means it does not matter which of the two opened — the room
+   * waits for the last one to close.
+   */
+  useMotionSuspended(paletteOpen || settingsOpen || helpOpen)
 
   const share = useCallback(async () => {
     if (!current) return
@@ -87,6 +119,17 @@ export function Home() {
               'radial-gradient(55% 38% at 22% 30%, var(--cloud) 0%, transparent 62%), radial-gradient(45% 32% at 74% 18%, var(--cloud) 0%, transparent 60%)',
             backgroundSize: '220% 100%',
             opacity: 0.55,
+          }}
+        />
+        {/* Mist on the far hills: the kurinji register's own weather, slow
+            enough to be noticed only when looked at. */}
+        <div
+          aria-hidden="true"
+          className="ambient-decor anim-mist absolute inset-x-0 bottom-0 h-2/3"
+          style={{
+            backgroundImage:
+              'radial-gradient(60% 40% at 30% 78%, var(--cloud) 0%, transparent 70%), radial-gradient(50% 34% at 72% 86%, var(--cloud) 0%, transparent 72%)',
+            opacity: 0.4,
           }}
         />
         <div
@@ -122,7 +165,22 @@ export function Home() {
         </div>
       </header>
 
-      <main id="main" className="mx-auto -mt-[var(--space-6)] max-w-[var(--content-max)] px-4 pb-[var(--space-9)]">
+      {/*
+        The table. The sky above is a shader material; everything here is an
+        object — a pot holding the reader's progress as water, a brass lamp the
+        minute burns in, and the ola leaf the app is about. Decorative to the
+        accessibility tree: the same numbers live in the journey card below.
+      */}
+      <div className="relative mx-auto -mt-[var(--space-7)] max-w-[var(--content-max)] px-4">
+        <TableStage
+          className="rounded-[var(--radius-lg)]"
+          forming={status === 'loading' || (corpus !== null && readCount === 0)}
+          progress={corpus ? readCount / corpus.kurals.length : 0}
+          ripple={ripple}
+        />
+      </div>
+
+      <main id="main" className="mx-auto mt-[var(--space-5)] max-w-[var(--content-max)] px-4 pb-[var(--space-9)]">
         {status === 'loading' ? <SkeletonKuralCard /> : null}
 
         {status === 'error' ? (

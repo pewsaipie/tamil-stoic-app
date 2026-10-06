@@ -41,6 +41,7 @@
 
   --ease-out: var(--ease-out), ease;
   --ease-spring: var(--ease-spring), ease;
+  --ease-in-out: var(--ease-in-out), ease;
 }
 
 @layer base {

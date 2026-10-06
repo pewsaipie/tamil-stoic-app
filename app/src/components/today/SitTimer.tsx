@@ -14,6 +14,7 @@ import { Check, Pause, Play, RotateCcw, Timer } from 'lucide-react'
 import { GlassCard } from '../ui/GlassCard'
 import { Button } from '../ui/Button'
 import { useReaderStore } from '../../store/appStore'
+import { publishLamp } from '../../materials/objects/lampBus.ts'
 import { didSit, satStreak } from '../../lib/ritual'
 import { localDayKey } from '../../lib/dayKey'
 import { useT } from '../../i18n'
@@ -53,11 +54,19 @@ export function SitTimer({ className }: SitTimerProps) {
   useEffect(() => {
     if (running) return
     setRemaining(minutes * 60_000)
+    publishLamp({ lit: false, burn: 1 })
   }, [minutes, running])
+
+  // A reader who navigates away mid-minute has not failed at anything: the
+  // lamp is simply not lit in a room nobody is standing in.
+  useEffect(() => () => publishLamp({ lit: false, burn: 1 }), [])
 
   const complete = useCallback(() => {
     setRunning(false)
     setRemaining(0)
+    // The minute is over: the lamp goes out on its own, and nothing scolds
+    // anyone for stopping. See `materials/objects/lamp.ts`.
+    publishLamp({ lit: false, burn: 0 })
     sit()
     pushToast(t('ritual.sit.toast', 'You sat with it ✓'), 'success')
   }, [sit, pushToast, t])
@@ -69,26 +78,34 @@ export function SitTimer({ className }: SitTimerProps) {
       if (deadline === null) return
       const left = Math.max(0, deadline - Date.now())
       setRemaining(left)
+      // The oil burns down with the clock: the lamp is the visualiser.
+      publishLamp({ lit: true, burn: left / (minutes * 60_000) })
       if (left <= 0) complete()
     }, TICK_MS)
     return () => window.clearInterval(id)
-  }, [running, complete])
+  }, [running, complete, minutes])
 
   const start = (): void => {
     if (remaining <= 0) setRemaining(minutes * 60_000)
     deadlineRef.current = Date.now() + (remaining > 0 ? remaining : minutes * 60_000)
     setRunning(true)
+    // Striking the match: the flame catches in the table scene.
+    publishLamp({ lit: true, burn: remaining > 0 ? remaining / (minutes * 60_000) : 1 })
   }
 
   const pause = (): void => {
     deadlineRef.current = null
     setRunning(false)
+    // Cupping a hand over the flame: it shrinks, it does not die.
+    publishLamp({ lit: false })
   }
 
   const reset = (): void => {
     deadlineRef.current = null
     setRunning(false)
     setRemaining(minutes * 60_000)
+    // Snuffed, and the bowl is full again.
+    publishLamp({ lit: false, burn: 1 })
   }
 
   const progress = 1 - remaining / (minutes * 60_000)
@@ -136,7 +153,7 @@ export function SitTimer({ className }: SitTimerProps) {
           <p className="mt-1 mb-0 text-sm text-muted" aria-live="polite">
             {alreadySat && !running
               ? t('ritual.sit.done', 'You sat with today’s couplet.')
-              : t('ritual.sit.sub', 'One minute with the couplet, and nothing else.')}
+              : t('ritual.sit.sub', 'One minute under the lamp, and nothing else.')}
           </p>
           {alreadySat ? (
             <p className="mt-1 mb-0 text-xs text-muted">
@@ -149,7 +166,7 @@ export function SitTimer({ className }: SitTimerProps) {
       <div className="mt-[var(--space-4)] flex flex-wrap items-center gap-3">
         {running ? (
           <Button variant="primary" onClick={pause} icon={<Pause size={18} strokeWidth={1.5} />}>
-            {t('ritual.sit.pause', 'Pause')}
+            {t('ritual.sit.pause', 'Cup the flame')}
           </Button>
         ) : (
           <Button
@@ -165,15 +182,15 @@ export function SitTimer({ className }: SitTimerProps) {
           >
             {remaining > 0 && remaining < minutes * 60_000
               ? t('ritual.sit.resume', 'Resume')
-              : t('ritual.sit.start', 'Start')}
+              : t('ritual.sit.start', 'Light the lamp')}
           </Button>
         )}
 
         <Button variant="ghost" onClick={reset} icon={<RotateCcw size={18} strokeWidth={1.5} />}>
-          {t('ritual.sit.reset', 'Reset')}
+          {t('ritual.sit.reset', 'Snuff it')}
         </Button>
 
-        <div className="ml-auto flex items-center gap-2" role="group" aria-label={t('ritual.sit.length', 'Length')}>
+        <div className="ml-auto flex items-center gap-2" role="group" aria-label={t('ritual.sit.length', 'How much oil')}>
           {DURATIONS.map((value) => (
             <button
               key={value}

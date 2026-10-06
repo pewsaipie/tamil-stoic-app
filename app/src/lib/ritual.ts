@@ -6,17 +6,26 @@
  * state, and a state written by a future version that adds fields is read
  * without complaint.
  *
- *   tamil-stoic-ritual-v1   { seal, unrolled, sat, reminder }
+ *   tamil-stoic-ritual-v1   { sat, reminder, [retired: seal, unrolled] }
  *
  * Three promises shape the design:
  *
- *   1. **The ritual never gates the text.** A sealed leaf is an invitation, not
- *      a lock. "Open without the ceremony" is always one tap away, and the
- *      ceremony can be switched off entirely.
+ *   1. **Nothing gates the text.** The couplet is simply there when the reader
+ *      arrives; the ritual is the *minute* spent with it, not a lock on it.
  *   2. **Nothing here is a streak to protect.** `satStreak` counts *days sat
  *      with*, and nothing in the app ever says a chain was broken. A missed day
  *      is a day, not a failure.
  *   3. **Day boundaries are local** — see `lib/dayKey.ts`.
+ *
+ * ## What was retired, and why the reader sees nothing missing
+ *
+ * This module used to carry a `seal: boolean` and an `unrolled` day-map: today's
+ * couplet arrived behind a rolled ola leaf with a wax seal, and the reader
+ * broke the seal to unroll it. The ceremony was withdrawn on the reader's
+ * instruction — *"a waste for an idea"* — so the couplet is now always open.
+ * Old states that still contain `seal` and `unrolled` are read and ignored:
+ * `writeRitual` simply stops writing them, so a reader who downgrades is not
+ * asked to migrate anything.
  */
 import { daysBetweenKeys, isDayKey, localDayKey, shiftDayKey } from './dayKey.ts'
 
@@ -31,10 +40,6 @@ export interface ReminderSettings {
 }
 
 export interface RitualState {
-  /** False once the reader turns the ceremony off; it then always opens. */
-  seal: boolean
-  /** Day keys on which the leaf was unrolled. */
-  unrolled: Record<string, true>
   /** Day keys on which the reader finished sitting with the couplet. */
   sat: Record<string, true>
   reminder: ReminderSettings
@@ -44,8 +49,6 @@ export interface RitualState {
 export const REMINDER_HOURS: readonly number[] = [6, 9, 12, 18, 21]
 
 export const DEFAULT_RITUAL: RitualState = {
-  seal: true,
-  unrolled: {},
   sat: {},
   reminder: { enabled: false, hour: 6, minute: 0 },
 }
@@ -101,11 +104,11 @@ function readReminder(value: unknown): ReminderSettings {
 
 export function readRitual(): RitualState {
   const stored = readRaw()
-  if (!stored) return { ...DEFAULT_RITUAL, unrolled: {}, sat: {}, reminder: { ...DEFAULT_RITUAL.reminder } }
+  if (!stored) return { ...DEFAULT_RITUAL, sat: {}, reminder: { ...DEFAULT_RITUAL.reminder } }
 
+  // `seal` and `unrolled` are read as absent regardless of what is on disk:
+  // a state written by the previous version must not resurrect the ceremony.
   return {
-    seal: stored['seal'] !== false,
-    unrolled: readDays(stored['unrolled']),
     sat: readDays(stored['sat']),
     reminder: readReminder(stored['reminder']),
   }
@@ -115,27 +118,9 @@ export function readRitual(): RitualState {
  * Queries — pure, so the test suite can exercise them without a browser.
  * ------------------------------------------------------------------------ */
 
-/**
- * Has the leaf been opened on this day?
- *
- * Takes the day map rather than the whole state so components can subscribe to
- * `unrolled` alone instead of re-rendering on every store change.
- */
-export function wasUnrolled(days: Record<string, true>, day: string = localDayKey()): boolean {
-  return days[day] === true
-}
-
 /** Has the reader sat with the couplet on this day? */
 export function didSit(days: Record<string, true>, day: string = localDayKey()): boolean {
   return days[day] === true
-}
-
-/**
- * True when the couplet should still be sealed: the ceremony is on and today's
- * leaf has not been opened.
- */
-export function isSealed(state: RitualState, day: string = localDayKey()): boolean {
-  return state.seal && !wasUnrolled(state.unrolled, day)
 }
 
 /**
@@ -158,25 +143,20 @@ export function satStreak(days: Record<string, true>, day: string = localDayKey(
   return streak
 }
 
-/** Days on which the leaf was opened, most recent first. */
-export function unrolledDays(days: Record<string, true>): string[] {
-  return Object.keys(days).sort().reverse()
-}
-
 /** Days on which the reader sat with the couplet, most recent first. */
 export function satDays(days: Record<string, true>): string[] {
   return Object.keys(days).sort().reverse()
 }
 
 /**
- * Whole days since the leaf was last opened — `null` when it never was.
- * Used only to decide how warm a greeting to offer; never to chide.
+ * Whole days since the reader last sat with a couplet — `null` when they never
+ * have. Used only to decide how warm a greeting to offer; never to chide.
  */
-export function daysSinceLastUnroll(
+export function daysSinceLastSit(
   days: Record<string, true>,
   day: string = localDayKey(),
 ): number | null {
-  const latest = unrolledDays(days).find((key) => daysBetweenKeys(key, day) >= 0)
+  const latest = satDays(days).find((key) => daysBetweenKeys(key, day) >= 0)
   if (latest === undefined) return null
   return daysBetweenKeys(latest, day)
 }
@@ -185,41 +165,10 @@ export function daysSinceLastUnroll(
  * Transitions — read, return a new state, and persist it.
  * ------------------------------------------------------------------------ */
 
-/** Open today's leaf. Idempotent: opening twice is still one day. */
-export function unrollToday(state: RitualState, day: string = localDayKey()): RitualState {
-  if (wasUnrolled(state.unrolled, day)) return state
-  const next: RitualState = { ...state, unrolled: { ...state.unrolled, [day]: true } }
-  writeRitual(next)
-  return next
-}
-
 /** Record that the reader finished sitting with today's couplet. */
 export function markSat(state: RitualState, day: string = localDayKey()): RitualState {
   if (didSit(state.sat, day)) return state
   const next: RitualState = { ...state, sat: { ...state.sat, [day]: true } }
-  writeRitual(next)
-  return next
-}
-
-/**
- * Seal today's leaf again.
- *
- * A reader who opened it on the way to work, or by accident, may want the
- * moment back — the minute of quiet is worth arriving at properly. This forgets
- * today's opening only; every other day's record is untouched.
- */
-export function resealToday(state: RitualState, day: string = localDayKey()): RitualState {
-  if (!wasUnrolled(state.unrolled, day)) return state
-  const unrolled = { ...state.unrolled }
-  delete unrolled[day]
-  const next: RitualState = { ...state, unrolled }
-  writeRitual(next)
-  return next
-}
-
-/** Turn the ceremony on or off. The couplet is never hidden either way. */
-export function setSeal(state: RitualState, seal: boolean): RitualState {
-  const next: RitualState = { ...state, seal }
   writeRitual(next)
   return next
 }
