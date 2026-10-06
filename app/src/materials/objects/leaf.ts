@@ -149,13 +149,13 @@ function edgeLift(s: number): number {
 
 /**
  * Where the roll's axis is, and how high its crest sits — measured from the
- * generated geometry rather than derived from the constants, so the seal
- * cannot end up floating above the leaf if the roll is ever retuned.
+ * generated geometry rather than derived from the constants, so a band tied
+ * round the coil cannot end up floating above the leaf if the roll is retuned.
  */
 export interface RollMetrics {
   /** Height of the roll's axis above the table, in metres. */
   axisY: number
-  /** The highest point of the sealed roll, in table coordinates. */
+  /** The highest point of the coiled roll, in table coordinates. */
   crest: { y: number; z: number }
   /** Outer radius of the coil. */
   outerRadius: number
@@ -177,7 +177,7 @@ export interface LeafSurface {
   geometry: THREE.BufferGeometry
   /** 0 = fully rolled, 1 = flat. Values slightly above 1 spring past flat. */
   setUnroll(value: number): void
-  /** Only meaningful while rolled; the seal is placed from this. */
+  /** Only meaningful while rolled; anything laid against the coil uses this. */
   metrics: RollMetrics
   dispose(): void
 }
@@ -512,10 +512,10 @@ export function createLeaf(options: LeafOptions = {}): LeafSurface {
    * Measure the rolled leaf.
    *
    * Everything the caller needs in order to *place* something against the coil
-   * — the seal, the cord — is either derived from the coil law or measured from
+   * — a band, a cord — is either derived from the coil law or measured from
    * the real vertices, never re-derived by hand at the call site. The crest in
    * particular is measured rather than computed, because it is the one number a
-   * reader will notice being wrong: the wax seal sits on it.
+   * reader will notice being wrong: whatever binds the roll rests on it.
    */
   const metrics: RollMetrics = (() => {
     let crestY = -Infinity

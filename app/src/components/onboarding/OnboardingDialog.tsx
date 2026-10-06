@@ -9,6 +9,7 @@ import { BookOpen, Bookmark, Sparkles } from 'lucide-react'
 import { useReaderStore } from '../../store/appStore'
 import { useT } from '../../i18n'
 import { Button } from '../ui/Button'
+import { useMotionSuspended } from '../../motion'
 import { cn } from '../../lib/cn'
 
 const STEPS = [
@@ -42,6 +43,9 @@ export function OnboardingDialog() {
   const onboarded = useReaderStore((state) => state.onboarded)
   const completeOnboarding = useReaderStore((state) => state.completeOnboarding)
   const [step, setStep] = useState(0)
+
+  // The first-run dialog is a modal like any other: the room waits behind it.
+  useMotionSuspended(!onboarded)
   const t = useT()
 
   const current = STEPS[step] ?? STEPS[0]

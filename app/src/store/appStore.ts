@@ -29,10 +29,7 @@ import { localDayKey } from '../lib/dayKey'
 import {
   markSat,
   readRitual,
-  resealToday,
   setReminder,
-  setSeal,
-  unrollToday,
   type ReminderSettings,
   type RitualState,
 } from '../lib/ritual'
@@ -69,13 +66,8 @@ interface JourneyState {
 }
 
 interface RitualSlice extends RitualState {
-  /** Open today's leaf. Idempotent — the day is the unit, not the tap. */
-  unroll: () => void
   /** Record a finished minute of sitting with today's couplet. */
   sit: () => void
-  /** Forget today's opening, so the leaf can be arrived at again. */
-  reseal: () => void
-  setCeremony: (seal: boolean) => void
   updateReminder: (reminder: ReminderSettings) => void
 }
 
@@ -212,25 +204,18 @@ export const useReaderStore = create<ReaderStore>((set, get) => {
 
     /* ---------- the daily ritual ---------- */
     ...bootRitual,
-    unrolled: { ...bootRitual.unrolled },
     sat: { ...bootRitual.sat },
     reminder: { ...bootRitual.reminder },
 
     // Each transition below writes storage and returns the next state; only the
     // fields it actually changed are pushed back into the store, so a ritual
     // update can never disturb preferences, library or journey.
-    unroll: () => set({ unrolled: unrollToday(get()).unrolled }),
-
     sit: () => {
       set({ sat: markSat(get()).sat })
       if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
         navigator.vibrate([8, 60, 12])
       }
     },
-
-    reseal: () => set({ unrolled: resealToday(get()).unrolled }),
-
-    setCeremony: (seal) => set({ seal: setSeal(get(), seal).seal }),
 
     updateReminder: (reminder) => set({ reminder: setReminder(get(), reminder).reminder }),
 

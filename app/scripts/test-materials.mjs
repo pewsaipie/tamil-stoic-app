@@ -3,11 +3,11 @@
  *
  *   npm run test:materials
  *
- * A renderer cannot be asserted against — "does the seal look like wax" is not
- * a test. But almost everything *under* the picture is mathematics, and
- * mathematics can be tested: a fracture either partitions the seal or it does
- * not, a prism either has closed faces or it does not, a rolled leaf either
- * rests on the table or sinks through it.
+ * A renderer cannot be asserted against — "does the pot look like fired clay" is
+ * not a test. But almost everything *under* the picture is mathematics, and
+ * mathematics can be tested: a thrown pot either stands on its foot or sinks
+ * through the table, a rolled leaf either rests on it or tears, a substance
+ * either keeps its own tone in forced colours or silently becomes paper.
  *
  * These are the properties that, when they break, are invisible in code review
  * and obvious to a reader. Each one below was written after a real defect:
@@ -21,7 +21,6 @@
  * Runs on Node's type stripping against the modules the app ships, so there is
  * no duplicated fixture: the numbers tested here are the numbers rendered.
  */
-import assert from 'node:assert/strict'
 
 let failed = 0
 function check(condition, message) {
@@ -32,18 +31,13 @@ function check(condition, message) {
   }
 }
 
-const { createLeaf } = await import('../src/materials/scenes/seal/leafGeometry.ts')
-const {
-  sealOutline,
-  polygonArea,
-  clipToBisector,
-  fractureSeeds,
-  cellOf,
-  isDegenerate,
-  buildShardGeometry,
-  triangulatePolygon,
-  mulberry32,
-} = await import('../src/materials/scenes/seal/waxFracture.ts')
+const { createLeaf } = await import('../src/materials/objects/leaf.ts')
+/*
+ * The wax-fracture fixture used to be imported here. The seal ceremony was
+ * withdrawn on the reader's instruction ("a waste for an idea") and its module
+ * with it; the leaf, the pot, the writing side, the tiers, the library, the
+ * forced-colours pass and the room's light are all still asserted below.
+ */
 
 /* ---------------------------------------------------------------------------
  * 1. The leaf's shape
@@ -234,198 +228,6 @@ leaf.setUnroll(1)
 }
 
 /* ---------------------------------------------------------------------------
- * 3. The fracture
- * ------------------------------------------------------------------------ */
-
-console.log('\nthe wax fracture:')
-
-const RADIUS = 0.0135
-const outline = sealOutline(RADIUS, 12, 0.045)
-const outlineArea = polygonArea(outline)
-
-// A circle of this radius would be π r²; the scallops make it a little smaller.
-check(
-  outlineArea > Math.PI * RADIUS * RADIUS * 0.94 && outlineArea < Math.PI * RADIUS * RADIUS * 1.01,
-  'the seal outline has the area of a scalloped disc',
-)
-
-const random = mulberry32(20261004)
-const seeds = fractureSeeds(RADIUS, 13, random)
-check(seeds.length === 13, 'thirteen seeds are placed')
-
-const cells = []
-for (const seed of seeds) {
-  const cell = cellOf(seed, seeds, outline)
-  if (!isDegenerate(cell, RADIUS)) cells.push(cell)
-}
-check(cells.length >= 10, `the seal breaks into ${cells.length} real pieces`)
-
-// -- The cells tile the seal. This is the property that a flipped clipping
-//    sign destroys, and nothing else would notice.
-const totalArea = cells.reduce((sum, cell) => sum + polygonArea(cell), 0)
-const coverage = totalArea / outlineArea
-check(
-  Math.abs(coverage - 1) < 0.02,
-  `the pieces partition the seal exactly (${(coverage * 100).toFixed(1)}% of its area)`,
-)
-
-/**
- * -- The triangulation covers each piece exactly.
- *
- * Two earlier versions of this check were wrong in instructive ways. The first
- * asserted convexity and failed on every rim-touching cell — correct behaviour,
- * not a bug: the seal's outline is *scalloped* (wax bulges between the die's
- * points), so it has twelve convex lobes and twelve concave valleys, and any
- * cell that includes part of the rim inherits both. A convexity assertion was
- * always going to fail on a shape deliberately modelled with concave features.
- *
- * The second asserted that each cell is star-shaped about its centroid. That
- * also failed — by 7.3% of the cell's area — and *that* one was a real defect:
- * a centroid fan folds over on a concave cell, and on screen the wax chip had
- * a nick in it exactly where the reader had just broken it. The fix was to
- * triangulate properly by ear clipping (see `triangulatePolygon`).
- *
- * So the property to assert is the one the renderer depends on: the triangles
- * must reconstruct the piece's area exactly.
- */
-let worstFanError = 0
-for (const cell of cells) {
-  const triangles = triangulatePolygon(cell)
-  let area = 0
-  for (let i = 0; i < triangles.length; i += 3) {
-    const a = cell[triangles[i]]
-    const b = cell[triangles[i + 1]]
-    const c = cell[triangles[i + 2]]
-    area += Math.abs((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)) / 2
-  }
-  worstFanError = Math.max(worstFanError, Math.abs(area - polygonArea(cell)) / polygonArea(cell))
-}
-check(
-  worstFanError < 1e-9,
-  `every piece triangulates to exactly its own area (worst error ${(worstFanError * 100).toExponential(1)}%)`,
-)
-
-// -- And the triangulation of a deliberately concave shape is still exact,
-//    which is the case the fan could not handle. An L-shape: six vertices,
-//    one reflex corner.
-{
-  const lShape = [
-    { x: 0, y: 0 },
-    { x: 2, y: 0 },
-    { x: 2, y: 1 },
-    { x: 1, y: 1 },
-    { x: 1, y: 2 },
-    { x: 0, y: 2 },
-  ]
-  const triangles = triangulatePolygon(lShape)
-  let area = 0
-  for (let i = 0; i < triangles.length; i += 3) {
-    const a = lShape[triangles[i]]
-    const b = lShape[triangles[i + 1]]
-    const c = lShape[triangles[i + 2]]
-    area += Math.abs((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)) / 2
-  }
-  check(
-    triangles.length === 12 && Math.abs(area - 3) < 1e-12,
-    'a concave L-shape triangulates to its true area (3) with 4 triangles',
-  )
-}
-
-// -- And the clipping itself does preserve convexity, which is the property
-//    the whole construction rests on. (The seal's rim is the only source of
-//    concavity, and it is not the clipper's doing.)
-{
-  const convex = sealOutline(RADIUS, 0, 0) // the same disc, unscalloped
-  let preserves = true
-  for (const seed of seeds) {
-    const cell = cellOf(seed, seeds, convex)
-    let sign = 0
-    for (let i = 0; i < cell.length; i += 1) {
-      const a = cell[i]
-      const b = cell[(i + 1) % cell.length]
-      const c = cell[(i + 2) % cell.length]
-      const cross = (b.x - a.x) * (c.y - b.y) - (b.y - a.y) * (c.x - b.x)
-      if (Math.abs(cross) < 1e-14) continue
-      const next = cross > 0 ? 1 : -1
-      if (sign !== 0 && next !== sign) preserves = false
-      sign = next
-    }
-  }
-  check(preserves, 'clipping a convex disc always yields convex cells')
-}
-
-// -- Every piece is a closed solid: each edge is shared by exactly two faces.
-//    A chip with a hole catches the light wrong on its fracture face, which is
-//    the one place a reader looks when they have just broken it.
-let allSealed = true
-let openEdges = 0
-for (const cell of cells) {
-  const geometry = buildShardGeometry(cell, RADIUS, 0.0045)
-  const index = geometry.getIndex().array
-  const edges = new Map()
-  for (let i = 0; i < index.length; i += 3) {
-    const tri = [index[i], index[i + 1], index[i + 2]]
-    for (let e = 0; e < 3; e += 1) {
-      const a = tri[e]
-      const b = tri[(e + 1) % 3]
-      const key = a < b ? `${a}:${b}` : `${b}:${a}`
-      edges.set(key, (edges.get(key) ?? 0) + 1)
-    }
-  }
-  for (const count of edges.values()) {
-    if (count !== 2) {
-      allSealed = false
-      openEdges += 1
-    }
-  }
-  geometry.dispose()
-}
-check(allSealed, `every chip is a closed solid (${openEdges} unshared edges)`)
-
-// -- And the pieces do not overlap each other's centres: each seed is inside
-//    its own cell, which is the definition the clipping is meant to implement.
-let seedsInside = 0
-for (let i = 0; i < cells.length; i += 1) {
-  const cell = cells[i]
-  const seed = seeds[i]
-  const inside = cell.every((p) => {
-    // Signed area of the triangle (p, p+1, seed) must not disagree with the
-    // cell's orientation for a convex polygon.
-    return true
-  })
-  void inside
-  const distanceToCell = Math.min(...cell.map((p) => Math.hypot(p.x - seed.x, p.y - seed.y)))
-  if (distanceToCell >= 0) seedsInside += 1
-}
-check(seedsInside === cells.length, 'every piece contains the seed it grew from')
-
-// -- Determinism: the same seed produces the same break, every reload.
-const again = fractureSeeds(RADIUS, 13, mulberry32(20261004))
-check(
-  again.every((s, i) => Math.abs(s.x - seeds[i].x) < 1e-12 && Math.abs(s.y - seeds[i].y) < 1e-12),
-  'the same seed produces the same fracture',
-)
-
-// -- Clipping sanity: a bisector between two points keeps the nearer half.
-{
-  const square = [
-    { x: -1, y: -1 },
-    { x: 1, y: -1 },
-    { x: 1, y: 1 },
-    { x: -1, y: 1 },
-  ]
-  const half = clipToBisector(square, { x: -1, y: 0 }, { x: 1, y: 0 })
-  check(
-    Math.abs(polygonArea(half) - 2) < 1e-9,
-    'clipping a square by a bisector halves it exactly',
-  )
-  check(
-    half.every((p) => p.x <= 1e-9),
-    'and keeps the side nearer the seed',
-  )
-}
-
-/* ---------------------------------------------------------------------------
  * 4. Which tier a device lands on
  * ------------------------------------------------------------------------ */
 
@@ -559,314 +361,6 @@ for (const [mode, overrides] of [
 }
 
 /* ---------------------------------------------------------------------------
- * 5. Is it in the picture?
- * ------------------------------------------------------------------------ */
-
-console.log('\nframing:')
-
-const { framingAt, subjectAt, SCENE_FOV_DEGREES } = await import('../src/materials/scenes/seal/framing.ts')
-const THREE = await import('three')
-
-/**
- * The stage the scene is drawn in is `h-[clamp(280px,46vw,400px)] w-full`, so
- * its aspect swings with the viewport: about 1.2 on a small phone up to about 2
- * on a desktop. Every check below runs at each of them, because a camera that is
- * right on one is wrong on the others.
- */
-const ASPECTS = [1.2, 1.4, 1.75, 2.1]
-
-/** A bounding sphere around a set of world-space points. */
-function sphereAround(points) {
-  const min = [Infinity, Infinity, Infinity]
-  const max = [-Infinity, -Infinity, -Infinity]
-  for (const point of points) {
-    for (let k = 0; k < 3; k += 1) {
-      min[k] = Math.min(min[k], point[k])
-      max[k] = Math.max(max[k], point[k])
-    }
-  }
-  const centre = min.map((value, k) => (value + max[k]) / 2)
-  let radius = 0
-  for (const point of points) {
-    radius = Math.max(radius, Math.hypot(point[0] - centre[0], point[1] - centre[1], point[2] - centre[2]))
-  }
-  return { centre, radius }
-}
-
-/** Project world-space points the way the real camera would, to NDC. */
-function project(points, opening, aspect) {
-  const { position, look } = framingAt(opening, aspect)
-  const eye = new THREE.Vector3(...position)
-  const forward = new THREE.Vector3(...look).sub(eye).normalize()
-  const right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize()
-  const up = new THREE.Vector3().crossVectors(right, forward).normalize()
-  const tan = Math.tan(((SCENE_FOV_DEGREES * Math.PI) / 180) / 2)
-
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity, behind = 0
-  for (const point of points) {
-    const relative = new THREE.Vector3(point[0], point[1], point[2]).sub(eye)
-    const depth = relative.dot(forward)
-    if (depth <= 0.001) { behind += 1; continue }
-    const x = relative.dot(right) / (depth * tan * aspect)
-    const y = relative.dot(up) / (depth * tan)
-    minX = Math.min(minX, x); maxX = Math.max(maxX, x)
-    minY = Math.min(minY, y); maxY = Math.max(maxY, y)
-  }
-  return { minX, maxX, minY, maxY, behind, width: maxX - minX, height: maxY - minY }
-}
-
-/** Every vertex of the leaf at a given point in the unroll. */
-function leafPoints(roll) {
-  const leaf = createLeaf({ length: 0.34, width: 0.075 })
-  leaf.setUnroll(roll)
-  const position = leaf.geometry.getAttribute('position')
-  const points = []
-  for (let i = 0; i < position.count; i += 1) {
-    points.push([position.getX(i), position.getY(i), position.getZ(i)])
-  }
-  leaf.dispose()
-  return points
-}
-
-const rolledPoints = leafPoints(0)
-const flatPoints = leafPoints(1)
-
-/**
- * The framing constants are measured from the real geometry, and this is the
- * check that keeps them measured. The whole camera is solved from these two
- * radii; if the leaf is re-tuned and the radius is not, the subject quietly
- * stops fitting the frame, on the device whose aspect nobody tested.
- */
-{
-  const sealedSphere = sphereAround(rolledPoints)
-  const sealedSubject = subjectAt(0)
-  const openSphere = sphereAround(flatPoints)
-  const openSubject = subjectAt(1)
-
-  check(
-    sealedSubject.radius >= sealedSphere.radius * 0.98 && sealedSubject.radius < sealedSphere.radius * 1.6,
-    `the sealed framing radius (${(sealedSubject.radius * 1000).toFixed(0)} mm) matches the coil it frames (${(sealedSphere.radius * 1000).toFixed(0)} mm)`,
-  )
-  check(
-    openSubject.radius >= openSphere.radius * 0.98 && openSubject.radius < openSphere.radius * 1.6,
-    `the open framing radius (${(openSubject.radius * 1000).toFixed(0)} mm) matches the leaf it frames (${(openSphere.radius * 1000).toFixed(0)} mm)`,
-  )
-  for (let k = 0; k < 3; k += 1) {
-    const drift = Math.abs(sealedSubject.centre[k] - sealedSphere.centre[k])
-    check(drift < 0.02, `the sealed framing looks at the coil, not beside it (axis ${'xyz'[k]} off by ${(drift * 1000).toFixed(1)} mm)`)
-    const openDrift = Math.abs(openSubject.centre[k] - openSphere.centre[k])
-    check(openDrift < 0.03, `the open framing looks at the leaf, not beside it (axis ${'xyz'[k]} off by ${(openDrift * 1000).toFixed(1)} mm)`)
-  }
-  check(
-    sealedSubject.radius < openSubject.radius,
-    'and the reveal is a move from something small to something large',
-  )
-}
-
-// --- Sealed: the coil has to be the subject, not a speck -------------------
-for (const aspect of ASPECTS) {
-  const view = project(rolledPoints, 0, aspect)
-  check(view.behind === 0, `at aspect ${aspect} the sealed coil is in front of the camera`)
-  check(
-    view.minX > -1.02 && view.maxX < 1.02 && view.minY > -1.02 && view.maxY < 1.02,
-    `at aspect ${aspect} the sealed coil is entirely in shot (x ${view.minX.toFixed(2)}…${view.maxX.toFixed(2)}, y ${view.minY.toFixed(2)}…${view.maxY.toFixed(2)})`,
-  )
-  check(
-    Math.max(view.width, view.height) > 0.55,
-    `and is the subject rather than a detail (${(Math.max(view.width, view.height) * 100).toFixed(0)}% of the frame)`,
-  )
-}
-
-// --- Open: the whole 341 mm strip must be readable, on every stage ---------
-for (const aspect of ASPECTS) {
-  const view = project(flatPoints, 1, aspect)
-  check(view.behind === 0, `at aspect ${aspect} the open leaf is in front of the camera`)
-  check(
-    view.minX > -1.02 && view.maxX < 1.02 && view.minY > -1.02 && view.maxY < 1.02,
-    `at aspect ${aspect} the whole unrolled leaf is in shot (x ${view.minX.toFixed(2)}…${view.maxX.toFixed(2)}, y ${view.minY.toFixed(2)}…${view.maxY.toFixed(2)})`,
-  )
-  check(
-    view.width > 0.5,
-    `at aspect ${aspect} the open leaf is the subject (${(view.width * 100).toFixed(0)}% of the frame wide)`,
-  )
-}
-
-// --- Mid-unroll: the camera is travelling and the leaf is still moving ------
-for (const aspect of ASPECTS) {
-  let worst = 0
-  for (const roll of [0.15, 0.3, 0.45, 0.6, 0.75, 0.9]) {
-    const view = project(leafPoints(roll), roll, aspect)
-    check(view.behind === 0, `at aspect ${aspect} and roll ${roll} the leaf is in front of the camera`)
-    worst = Math.max(worst, Math.abs(view.minX), Math.abs(view.maxX), Math.abs(view.minY), Math.abs(view.maxY))
-  }
-  check(
-    worst < 1.02,
-    `at aspect ${aspect} the leaf never leaves the frame during the unroll (worst ${worst.toFixed(2)})`,
-  )
-}
-
-// --- Degenerate stages -----------------------------------------------------
-{
-  const square = framingAt(1, 1)
-  check(Number.isFinite(square.position[2]) && square.position[2] > 0.1, 'a square stage still frames the leaf')
-  check(Number.isFinite(framingAt(1, 0).position[2]), 'and a zero-width stage does not produce an infinite camera')
-  check(
-    framingAt(1, 0.5).position[2] > framingAt(1, 3).position[2],
-    'the narrower the stage, the further back the camera stands',
-  )
-  // Distance from the subject, not the camera's z coordinate: once the reveal
-  // swings the camera 60° round, z stops being a proxy for how far away it is.
-  const distanceFrom = (framing) =>
-    Math.hypot(
-      framing.position[0] - framing.look[0],
-      framing.position[1] - framing.look[1],
-      framing.position[2] - framing.look[2],
-    )
-  check(
-    distanceFrom(framingAt(0, 1.6)) < distanceFrom(framingAt(1, 1.6)),
-    'and the camera pulls back as the leaf opens, never the reverse',
-  )
-  check(
-    distanceFrom(framingAt(0.5, 1.6)) > distanceFrom(framingAt(0, 1.6)) &&
-      distanceFrom(framingAt(0.5, 1.6)) < distanceFrom(framingAt(1, 1.6)),
-    'and does it gradually, so there is no jump halfway through the reveal',
-  )
-  const straightOn = framingAt(0, 1.6)
-  const around = framingAt(1, 1.6)
-  check(
-    Math.abs(around.position[0]) > Math.abs(straightOn.position[0]) + 0.1,
-    'the reveal swings the camera round to the side, so the strip lies across the picture',
-  )
-  check(
-    Math.hypot(...straightOn.position) < 0.5 && Math.hypot(...around.position) < 1.5,
-    'and both framings are close enough to see a 30 mm object without a telescope',
-  )
-}
-
-/* ---------------------------------------------------------------------------
- * 6. The ceremony's clock
- * ------------------------------------------------------------------------ */
-
-console.log('\nthe clock:')
-
-const {
-  T_BREAK,
-  T_CORD_RELEASE,
-  T_PRESS_END,
-  T_REVEAL,
-  T_UNROLL_END,
-  T_UNROLL_START,
-  SEAL_TIMELINE_SECONDS,
-  openingAt,
-  phaseAt,
-  unrollAt,
-} = await import('../src/materials/scenes/seal/timeline.ts')
-
-// The boundaries, one either side. A phase that ends on `<=` instead of `<`
-// is a frame of the wrong animation, which is exactly the kind of thing a
-// running scene hides and a table does not.
-const BOUNDARIES = [
-  [-1, 'sealed'],
-  [0, 'pressing'],
-  [T_PRESS_END - 1e-9, 'pressing'],
-  [T_PRESS_END, 'pressing'],
-  [T_BREAK - 1e-9, 'pressing'],
-  [T_BREAK, 'breaking'],
-  [T_UNROLL_START - 1e-9, 'breaking'],
-  [T_UNROLL_START, 'unrolling'],
-  [T_REVEAL - 1e-9, 'unrolling'],
-  [T_REVEAL, 'open'],
-  [T_REVEAL + 10, 'open'],
-]
-for (const [t, expected] of BOUNDARIES) {
-  check(phaseAt(t) === expected, `at t=${t.toFixed(4)} the scene is "${expected}"`)
-}
-
-// Every phase must be reachable, and the sequence must never run backwards.
-{
-  const seen = []
-  for (let t = -0.2; t <= SEAL_TIMELINE_SECONDS + 0.2; t += 0.01) {
-    const phase = phaseAt(t)
-    if (seen[seen.length - 1] !== phase) seen.push(phase)
-  }
-  check(
-    seen.join(' → ') === 'sealed → pressing → breaking → unrolling → open',
-    `the ceremony runs through its phases in order (${seen.join(' → ')})`,
-  )
-}
-
-// The cord is released during the break, not after it — that is what forced the
-// single clock in the first place.
-check(
-  T_CORD_RELEASE > T_BREAK && T_CORD_RELEASE < T_UNROLL_START,
-  'the cord starts to fall after the wax fails and before the leaf is let go',
-)
-
-// The pull. Steady while the strip is coming off the coil, then easing.
-{
-  check(unrollAt(0) === 0, 'nothing has unrolled before the leaf is let go')
-  check(unrollAt(T_UNROLL_START) === 0, 'and still nothing at the instant it is let go')
-  check(unrollAt(0.5) === 0, 'and nothing midway through the fracture either')
-
-  const half = (T_UNROLL_START + T_UNROLL_END) / 2
-  const quarter = T_UNROLL_START + (T_UNROLL_END - T_UNROLL_START) / 4
-  const threeQuarters = T_UNROLL_START + ((T_UNROLL_END - T_UNROLL_START) * 3) / 4
-  check(
-    Math.abs(unrollAt(threeQuarters) - 3 * unrollAt(quarter)) < 1e-9,
-    'the strip comes off the coil at a steady rate, not an eased one',
-  )
-  check(unrollAt(half) > 0.4 && unrollAt(half) < 0.6, 'and halfway through the pull, half the strip is free')
-
-  const settled = unrollAt(T_REVEAL)
-  check(settled > 0.999, `by the reveal the leaf is flat (${settled.toFixed(4)})`)
-  check(unrollAt(T_UNROLL_END) < 1, 'but it is not flat when the pull ends — the last curl is still to straighten')
-  check(unrollAt(T_UNROLL_END) > 0.9, 'and it is nearly flat, so the settle is a relaxation rather than a second pull')
-
-  // Monotonic and bounded over the whole timeline, including past the end.
-  let previous = -1
-  let monotonic = true
-  for (let t = -1; t <= T_REVEAL + 1; t += 0.005) {
-    const value = unrollAt(t)
-    if (value < previous - 1e-12) monotonic = false
-    if (value < 0 || value > 1) monotonic = false
-    previous = value
-  }
-  check(monotonic, 'the leaf only ever unrolls, and never past flat')
-
-  // Continuous: no step anywhere, at any resolution.
-  let worstJump = 0
-  for (let t = -0.5; t <= T_REVEAL + 0.5; t += 0.001) {
-    worstJump = Math.max(worstJump, Math.abs(unrollAt(t + 0.001) - unrollAt(t)))
-  }
-  check(worstJump < 0.002, `and it never jumps (largest step ${(worstJump * 100).toFixed(3)}% per millisecond)`)
-
-  check(unrollAt(T_REVEAL + 5) === 1, 'long after the ceremony, the leaf is exactly flat')
-}
-
-// Opening drives the camera, and it must be finished before the leaf settles.
-{
-  check(openingAt(T_UNROLL_START) === 0, 'the camera has not started moving before the pull')
-  check(openingAt(T_UNROLL_END) === 1, 'the camera arrives when the strip comes off the coil')
-  check(openingAt(T_REVEAL) === 1, 'and holds still while the leaf relaxes')
-  check(openingAt(-1) === 0 && openingAt(99) === 1, 'and is clamped at both ends')
-}
-
-// The timeline's own shape: every beat is reachable, in order, and the whole
-// thing is short enough that nobody waits for it.
-{
-  check(
-    T_PRESS_END < T_BREAK && T_BREAK < T_CORD_RELEASE && T_CORD_RELEASE < T_UNROLL_START && T_UNROLL_START < T_UNROLL_END && T_UNROLL_END < T_REVEAL,
-    'every beat happens after the one before it',
-  )
-  check(SEAL_TIMELINE_SECONDS === T_REVEAL, 'and the published duration is the reveal')
-  check(
-    SEAL_TIMELINE_SECONDS > 2.5 && SEAL_TIMELINE_SECONDS < 5,
-    `the whole ceremony is a few seconds, not a screensaver (${SEAL_TIMELINE_SECONDS.toFixed(2)} s)`,
-  )
-  check(T_UNROLL_END - T_UNROLL_START > 1.5, 'and the unroll itself gets the most time, because it is the point')
-}
-
-/* ---------------------------------------------------------------------------
  * 7. One material per substance
  * ------------------------------------------------------------------------ */
 
@@ -921,6 +415,30 @@ console.log('\nthe material library:')
   check(varied.normalMap === plain.normalMap, 'and the normal map with it')
   check(getMaterial('ola', { roughness: 0.62 }) === varied, 'and is itself cached, not rebuilt per call')
 
+  /**
+   * The pot's two skins, verbatim from `potGeometry.ts`.
+   *
+   * This is the case a cache keyed on the substance name alone would get wrong,
+   * and it would get it wrong invisibly: `clay` and `clayBlack` share a queue
+   * position, so the second call would be handed the first call's material and
+   * the pot would come out red on the inside — or black on the outside — with a
+   * valid-looking scene and nothing in the log. The key has to carry the
+   * parameters, not just the name.
+   */
+  const { FrontSide, BackSide, EquirectangularReflectionMapping } = await import('three')
+  const slip = getMaterial('clay', { side: FrontSide, flatShading: false })
+  const ware = getMaterial('clayBlack', { side: BackSide, flatShading: false })
+  check(slip !== ware, 'the pot\'s red slip and its black interior are two materials')
+  check(slip.side === FrontSide && ware.side === BackSide, 'and each keeps the side it was asked for')
+  check(
+    getMaterial('clay', { side: FrontSide, flatShading: false }) === slip,
+    'while the same substance with the same parameters is still one shared material',
+  )
+  check(
+    getMaterial('clay', { side: BackSide }) !== slip,
+    'a different side on the same substance is a different material, not a silently flipped one',
+  )
+
   // Colour space. Getting this wrong is the classic way a lit scene looks flat.
   check(plain.map !== null && plain.map.colorSpace === 'srgb', 'the albedo map is sRGB, because it is a picture')
   check(
@@ -965,10 +483,33 @@ console.log('\nthe material library:')
   check(environment === getEnvironment(), 'the room is one environment map, shared')
   // Compared against three's own constant rather than a literal: the mapping
   // is a number, and a literal would silently start passing for the wrong one.
-  const { EquirectangularReflectionMapping } = await import('three')
   check(
     environment.mapping === EquirectangularReflectionMapping,
     'and is mapped as an equirectangular sky',
+  )
+
+  /**
+   * The cross-module invariant: a substance exists ⇒ it has a tone.
+   *
+   * `MATERIAL_NAMES` is exported as a value precisely so this can be walked.
+   * The pass matches materials to roles by name and defaults to `paper` when a
+   * name is unknown, which is the right *behaviour* — a nameless shard still has
+   * to be visible — and the wrong *silence*. A substance added to the library
+   * and forgotten in `ROLE_BY_MATERIAL_NAME` renders as a page: still legible,
+   * still lit, and no longer the pot it was.
+   */
+  const { MATERIAL_NAMES } = library
+  const { roleForMaterial: roleFor, DEFAULT_ROLE: fallback } = await import(
+    '../src/materials/contrastPass.ts'
+  )
+  const unroled = MATERIAL_NAMES.filter((name) => roleFor(name) === fallback)
+  check(
+    unroled.length === 0,
+    `every substance in the library answers the forced-colours pass by name (unmapped: ${unroled.join(', ') || 'none'})`,
+  )
+  check(
+    roleFor('clayBlack') === roleFor('clay'),
+    'and the reduction-fired interior shares the clay body\'s role rather than inventing a second tone',
   )
 
   // Teardown. The app never needs this; the tests do.
@@ -1092,9 +633,16 @@ for (const palette of PALETTES) {
     `${palette.name}: the leaf stands off the table it lies on`,
   )
   check(
-    flatSurface('wax', system).contrastAgainstParent >= MIN_OBJECT_CONTRAST &&
-      flatSurface('ink', system).contrastAgainstParent >= MIN_TEXT_CONTRAST,
-    `${palette.name}: the seal and the ink are both separable from the leaf they sit on`,
+    flatSurface('ink', system).contrastAgainstParent >= MIN_TEXT_CONTRAST,
+    `${palette.name}: the ink is separable from the leaf it is written on`,
+  )
+  check(
+    flatSurface('clay', system).contrastAgainstParent >= MIN_OBJECT_CONTRAST,
+    `${palette.name}: and the pot from the table it stands on`,
+  )
+  check(
+    flatSurface('brass', system).contrastAgainstParent >= MIN_OBJECT_CONTRAST,
+    `${palette.name}: the lamp is a thing the reader acts on, so it clears the object bar too`,
   )
   /**
    * "Metal is not the leaf" is a claim about the rendered pixels, not about
@@ -1121,16 +669,24 @@ for (const palette of PALETTES) {
  * surface it rests on — or the palette is reported as too cramped to hold it.
  *
  * `narrow` is in this loop deliberately, and it is allowed to fail. A palette
- * with 40→150 of range cannot host fourteen substances three-to-one apart and no
+ * with 40→150 of range cannot host fifteen substances three-to-one apart and no
  * amount of code can make it so; what the code has to do is *say* which
- * placements did not fit. The seal's own surfaces are held to the stricter rule
- * below, because they are the ones a reader has to act on.
+ * placements did not fit. That is the first assertion below, and it is made of
+ * every role rather than a chosen few: a substance added to the room later
+ * inherits the gate instead of being added outside it.
+ *
+ * The second assertion is the stricter one, and it is deliberately short. A role
+ * may only be *reported* as unplaceable when the palette itself is cramped
+ * (40→150 of luminance is the honest case, and it is named above). The reading
+ * surface and what it rests on are the exception: if the leaf, the ink on it,
+ * the table or the ground cannot be separated, the app has stopped being a
+ * reader in that theme, and no palette may claim that is merely cramped.
  */
-const SEAL_SURFACES = ['stone', 'teak', 'ola', 'wax', 'ink', 'cord']
+const READING_SURFACES = ['stone', 'teak', 'ola', 'ink']
 for (const palette of PALETTES) {
   const system = { canvas: palette.canvas, text: palette.text }
   const violations = legibilityViolations(system)
-  for (const role of SEAL_SURFACES) {
+  for (const role of Object.keys(SURFACE_GRAPH)) {
     const surface = flatSurface(role, system)
     const needed = SURFACE_GRAPH[role].minRatio
     check(
@@ -1139,8 +695,8 @@ for (const palette of PALETTES) {
     )
   }
   check(
-    violations.every((role) => !SEAL_SURFACES.includes(role)),
-    `${palette.name}: nothing the reader must act on is among the unplaceable (${violations.join(', ') || 'none'})`,
+    violations.every((role) => !READING_SURFACES.includes(role)),
+    `${palette.name}: the reading surface and its ground are always placeable (unplaceable: ${violations.join(', ') || 'none'})`,
   )
   const onTheTable = ['ola', 'paper', 'clay', 'cloth', 'water', 'brass', 'copper', 'sand', 'ash']
     .map((role) => flatSurface(role, system).tone)
@@ -1153,7 +709,9 @@ for (const palette of PALETTES) {
    * so. That exemption is the whole difference between a documented limit and a
    * silent bug: `narrow` spans 40→150 of luminance and cannot host nine
    * substances at 3:1 and 1.15:1, and the run below proves it reported that
-   * rather than quietly rendering nine identical objects.
+   * rather than quietly rendering nine identical objects. The nine are the pot,
+   * the lamp, the water in it, the leaf, the paper under it: the room's objects,
+   * which is why the list is spelled out here rather than derived.
    */
   const cramped = violations.length > 0
   check(
@@ -1166,8 +724,8 @@ for (const palette of PALETTES) {
 }
 
 check(
-  Math.min(...PALETTES.slice(0, 3).map((palette) => flatSurface('wax', { canvas: palette.canvas, text: palette.text }).contrastAgainstParent)) >= MIN_OBJECT_CONTRAST,
-  'the seal against the leaf clears the object bar on every palette that can hold it',
+  Math.min(...PALETTES.slice(0, 3).map((palette) => flatSurface('clay', { canvas: palette.canvas, text: palette.text }).contrastAgainstParent)) >= MIN_OBJECT_CONTRAST,
+  'the pot against the table clears the object bar on every palette that can hold it',
 )
 check(
   flatSurface('ink', { canvas: DESERT_CANVAS, text: DESERT_TEXT }).contrastAgainstParent >= MIN_TEXT_CONTRAST,
@@ -1182,8 +740,17 @@ check(
   'every placement asks for a real separation, including the residues',
 )
 
-/** A fake mount, in the shape `three` uses, so the pass can be verified at all. */
-function fakeSeal() {
+/**
+ * A fake mount, in the shape `three` uses, so the pass can be verified at all.
+ *
+ * The tree is the room as `TableScene` actually builds it, substance for
+ * substance: ground, table, leaf, the pot's two skins, the water in it and the
+ * brass lamp. That is the point of re-authoring it here rather than keeping a
+ * fixture that matched the deleted scene: the pass is only proven against the
+ * objects the app really mounts, and `clayBlack` in particular is a name that
+ * would have gone in unnoticed if this tree had not carried it.
+ */
+function fakeRoom() {
   const bound = (name) => ({
     name,
     color: { value: 0, set(v) { this.value = v } },
@@ -1200,14 +767,17 @@ function fakeSeal() {
   return {
     name: 'Scene',
     children: [
+      mesh('ground', bound('stone')),
       mesh('table', bound('table')),
       mesh('leaf', bound('ola')),
-      mesh('seal', bound('wax')),
-      mesh('cord', bound('cord')),
+      mesh('pot', bound('clay')),
+      mesh('pot-interior', bound('clayBlack')),
+      mesh('water', bound('water')),
+      mesh('lamp', bound('brass')),
       // A shard material that never announced itself — the failure mode the
       // report exists to make visible instead of silent.
       mesh('shard-3', { ...bound(undefined), name: undefined }),
-      { name: 'lamp', isLight: true, color: { value: 0, set(v) { this.value = v } }, intensity: 5.4, castShadow: true, children: [] },
+      { name: 'lamp-light', isLight: true, color: { value: 0, set(v) { this.value = v } }, intensity: 5.4, castShadow: true, children: [] },
       { name: 'room', isLight: true, isAmbientLight: true, color: { value: 0, set(v) { this.value = v } }, intensity: 0.14, children: [] },
     ],
     castShadow: false,
@@ -1216,12 +786,19 @@ function fakeSeal() {
 }
 
 const system = { canvas: DESERT_CANVAS, text: DESERT_TEXT }
-const tree = fakeSeal()
+const tree = fakeRoom()
 const report = applyContrastPass(tree, system)
 
-check(report.materials === 5 && report.objects >= 7, 'the pass walks the whole tree, including nested meshes')
+check(report.materials === 8 && report.objects >= 9, 'the pass walks the whole tree, including nested meshes')
 check(
-  tree.children.slice(0, 4).every((node) => node.material.map === null && node.material.normalMap === null && node.material.roughnessMap === null),
+  tree.children
+    .filter((node) => node.material)
+    .every(
+      (node) =>
+        node.material.map === null &&
+        node.material.normalMap === null &&
+        node.material.roughnessMap === null,
+    ),
   'and unbinds every map on every material it reaches',
 )
 check(
@@ -1234,10 +811,14 @@ check(
   tree.children.filter((n) => n.isLight).every((light) => light.color.value !== 0 || light.castShadow === false),
   'lights are rewritten too: a warm lamp would push our colours back into a frame that is not allowed to have them',
 )
-check(tree.children.find((n) => n.name === 'lamp').castShadow === false, 'a light that cannot cast cannot leak a shadow either')
+check(tree.children.find((n) => n.name === 'lamp-light').castShadow === false, 'a light that cannot cast cannot leak a shadow either')
 check(
-  report.roles.includes('ola') && report.roles.includes('wax') && report.roles.includes('teak'),
+  ['stone', 'teak', 'ola', 'clay', 'water', 'brass'].every((role) => report.roles.includes(role)),
   'the frame still contains distinct substances after the pass',
+)
+check(
+  report.roles.filter((role) => role === 'clay').length === 1,
+  'and the pot is one substance in the report, whatever it was fired to',
 )
 check(planForMaterial({ name: 'brass' }, system).metalness > planForMaterial({ name: 'stone' }, system).metalness, 'metal is still metal, and stone is still matte')
 check(planForMaterial({ name: 'brass' }, system).envMapIntensity === 0, 'but the environment contributes no colour to either')
@@ -1314,8 +895,6 @@ check(
 )
 check(rolled.maxY < 0.045, `and rolls into something that fits in a palm (${(rolled.maxY * 100).toFixed(1)} cm tall)`)
 
-assert.ok(cells.length > 0)
-
 /* ---------------------------------------------------------------------------
  * report
  * ------------------------------------------------------------------------ */
@@ -1325,5 +904,5 @@ if (failed > 0) {
   process.exit(1)
 }
 console.log(
-  '\n✓ material world: the leaf rolls and unrolls without sinking, tearing or popping; the wax seals, fractures and tiles exactly\n',
+  '\n✓ material world: the leaf rolls and unrolls without sinking, tearing or popping; every substance is named, and every scene answers forced colours\n',
 )

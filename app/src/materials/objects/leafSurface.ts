@@ -26,7 +26,7 @@
  *      more worn, slightly rougher.
  */
 import * as THREE from 'three'
-import { getMaterial } from '../../library.ts'
+import { getMaterial } from '../library.ts'
 
 /** The extra uniforms the injected code reads. */
 export interface LeafUniforms {
@@ -50,6 +50,14 @@ export interface LeafMaterial {
  * The noise is the usual hash-based value noise, but the *sampling* is what
  * matters: the fibre field is stretched roughly 40:1 along the leaf, so it
  * resolves into strands rather than blobs.
+ *
+ * **This block must compile in a vertex stage**, so it contains no derivative
+ * functions: GLSL ES 3.00 allows `dFdx`/`dFdy` in fragment shaders only, and
+ * ANGLE enforces that even in code the compiler would dead-strip. The cotangent
+ * frame that needs them lives in `LEAF_FRAME_GLSL` below and is injected into
+ * the fragment stage alone. (The first version shared one block between both
+ * stages; it compiled on some drivers and failed on SwiftShader, which is the
+ * worst possible way for a shader to be wrong.)
  */
 const LEAF_GLSL = /* glsl */ `
   varying float vFace;
@@ -85,11 +93,18 @@ const LEAF_GLSL = /* glsl */ `
     // ridged form of the field turns the soft blobs into crests and troughs.
     return 1.0 - abs(2.0 * f - 1.0);
   }
+`
 
-  /**
-   * Cotangent frame — the standard way to turn a height gradient into a
-   * perturbation of the shading normal without shipping tangent attributes.
-   */
+/**
+ * The cotangent frame — fragment-stage only.
+ *
+ * The standard way to turn a height gradient into a perturbation of the
+ * shading normal without shipping tangent attributes. It needs screen-space
+ * derivatives, which is exactly why it cannot live in the shared block: a
+ * vertex shader that merely *contains* the call fails to link on strict GLSL ES
+ * 3.00 compilers.
+ */
+const LEAF_FRAME_GLSL = /* glsl */ `
   mat3 leafFrame(vec3 N, vec3 p, vec2 uv) {
     vec3 dp1 = dFdx(p);
     vec3 dp2 = dFdy(p);
@@ -141,7 +156,7 @@ export function createLeafMaterial(): LeafMaterial {
 
     // ---- fragment --------------------------------------------------------
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', `#include <common>\n${LEAF_GLSL}`)
+      .replace('#include <common>', `#include <common>\n${LEAF_GLSL}\n${LEAF_FRAME_GLSL}`)
       // Albedo: the two faces are the same leaf, differently used.
       .replace(
         '#include <color_fragment>',
@@ -203,7 +218,7 @@ export function createLeafMaterial(): LeafMaterial {
 
   // Without this the program cache hands the injected material to every other
   // MeshStandardMaterial in the scene that happens to share its parameters.
-  material.customProgramCacheKey = () => 'leaf-fibre-v1'
+  material.customProgramCacheKey = () => 'leaf-fibre-v2'
 
   return {
     material,

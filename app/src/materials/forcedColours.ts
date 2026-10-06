@@ -83,7 +83,7 @@ export const MIN_SIBLING_RATIO = 1.15
  *
  * Defining the relationships instead makes the numbers portable: Windows
  * `Desert`, black-on-white and an inverted scheme each get their own tones, all
- * meeting the same bar. It also makes the honest admission possible — fourteen
+ * meeting the same bar. It also makes the honest admission possible — fifteen
  * substances cannot each sit a factor of three above their parent inside one
  * channel, so `computeTones` reports what could not be placed rather than
  * pretending it fitted.
@@ -115,8 +115,9 @@ export const SURFACE_GRAPH: Record<ObjectRole, SurfacePlacement> = {
   // on a light surface looks like, and it is also the only direction with room.
   ink: { restsOn: 'ola', side: 'darker', minRatio: MIN_TEXT_CONTRAST },
   // Wax has to beat the leaf by the control bar, and it can only do that by
-  // being darker than it. That is not a style preference for dark sealing wax:
-  // the leaf already spent the headroom above the table.
+  // being darker than it. That is forced rather than chosen: the leaf is the
+  // brightest large surface in the room and has already spent the headroom
+  // above the table, so anything laid on the leaf goes down, not up.
   wax: { restsOn: 'ola', side: 'darker', minRatio: MIN_OBJECT_CONTRAST },
   cord: { restsOn: 'ola', side: 'darker', minRatio: MIN_OBJECT_CONTRAST },
 
@@ -128,7 +129,8 @@ export const SURFACE_GRAPH: Record<ObjectRole, SurfacePlacement> = {
   copper: { restsOn: 'teak', side: 'lighter', minRatio: MIN_OBJECT_CONTRAST },
 
   // Residues. Nothing in the app is gated on a reader seeing spilled ash, and
-  // spending 3:1 on it would steal separation from the seal.
+  // spending 3:1 on it would steal separation from the objects that carry the
+  // reader's progress.
   sand: { restsOn: 'teak', side: 'lighter', minRatio: 1.6 },
   ash: { restsOn: 'teak', side: 'lighter', minRatio: 1.5 },
 
@@ -356,8 +358,8 @@ export interface PlacedTone {
  * in Windows' default dark scheme `CanvasText` is light, and "lighter than the
  * table" means "toward `CanvasText`"; in black-on-white the same words point the
  * other way, so the first version of this solver asked for a luminance above the
- * top of the range, found none, and reported the leaf and the seal as
- * unplaceable in the single most common high-contrast theme there is. When the
+ * top of the range, found none, and reported the leaf as unplaceable in the
+ * single most common high-contrast theme there is. When the
  * declared side has no room, the placement flips to the other side of the parent
  * — which still delivers the separation the bar is actually about — and only
  * reports a violation when *both* sides are out of range.

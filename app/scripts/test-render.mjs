@@ -183,11 +183,9 @@ const navigate = async (hash, predicate) => {
 }
 const { document } = window
 // Wait for the corpus fetch + first render rather than sleeping a fixed time.
-// On a fresh device today's couplet arrives *sealed*, so the first thing to
-// appear is the leaf, not the verse.
-const sealedLeaf = () =>
-  document.querySelector('button[aria-controls="daily-couplet"][aria-expanded="false"]')
-await waitFor(() => sealedLeaf() !== null, 8000)
+// On a fresh device today's couplet is simply there: the seal ceremony was
+// withdrawn, so the first thing to appear is the verse.
+await waitFor(() => document.querySelector('#daily-couplet') !== null, 8000)
 await waitFor(() => document.body.textContent?.includes('மூன்று பால்கள்') === true, 8000)
 const text = () => document.body.textContent ?? ''
 
@@ -210,32 +208,22 @@ check(
 
 /* ---------- the daily ritual ---------- */
 console.log('the daily ritual:')
-check(sealedLeaf() !== null, 'a fresh device greets the reader with a sealed leaf')
-check(
-  document.querySelectorAll('[data-verse-line]').length === 0,
-  'the couplet is not rendered while the leaf is sealed',
-)
-check(
-  text().includes('Open without the ceremony'),
-  'the ceremony can be skipped without hunting through settings',
-)
-
-sealedLeaf()?.click()
 const opened = await waitFor(() => document.querySelectorAll('[data-verse-line]').length >= 2, 8000)
-check(opened, "opening the leaf renders today's couplet on two Tamil lines")
+check(opened, "a fresh device is given today's couplet on two Tamil lines, with nothing to open")
 check(
   document.querySelector('#daily-couplet') !== null,
-  'the revealed couplet carries the id the sealed leaf pointed at',
+  'and it arrives under the id the rest of the app links to',
 )
 check(
   document.querySelector('button[aria-controls="daily-couplet"]') === null,
-  'the sealed leaf is gone once opened',
+  'there is no seal to break, and so no ceremony to skip',
 )
 check(
-  document.activeElement === document.querySelector('#daily-couplet'),
-  'focus moves to the revealed couplet, not back to the top of the page',
+  !text().includes('sealed'),
+  'and nothing on the screen mentions sealing at all',
 )
-check(text().includes('Sit with it'), 'a minute of quiet is offered under the opened couplet')
+check(text().includes('Sit with it'), 'a minute under the lamp is offered beneath the couplet')
+check(text().includes('Light the lamp'), 'and lighting it is the action it says it is')
 
 const todayVerse = document.querySelectorAll('[data-verse-line]')
 check(todayVerse.length >= 2, "today's couplet renders two Tamil lines")

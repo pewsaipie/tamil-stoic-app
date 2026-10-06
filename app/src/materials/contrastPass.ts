@@ -74,13 +74,15 @@ export interface ObjectLike {
  *
  * Keyed by what `library.ts` stamps, with the scene-local names an authored
  * scene is likely to use alongside it, so a scene does not have to know this
- * table exists in order to get a sensible answer.
+ * table exists in order to get a sensible answer. Every name in
+ * `MATERIAL_NAMES` must appear here or reach a role here — a substance that
+ * maps to nothing gets `DEFAULT_ROLE`, and `test-materials.mjs` fails on the
+ * attempt rather than waiting for someone to notice a grey pot.
  */
 export const ROLE_BY_MATERIAL_NAME: Record<string, ObjectRole> = {
   ola: 'ola',
   leaf: 'ola',
   wax: 'wax',
-  seal: 'wax',
   cord: 'cord',
   fibre: 'cord',
   thread: 'cord',
@@ -94,6 +96,17 @@ export const ROLE_BY_MATERIAL_NAME: Record<string, ObjectRole> = {
   copper: 'copper',
   vessel: 'copper',
   clay: 'clay',
+  /**
+   * Reduction-fired black inside the same pot that is red slip outside.
+   *
+   * It shares `clay`'s role on purpose. Two roles would be two tones, and two
+   * tones for one object is how a pot in forced colours stops looking thrown
+   * and starts looking broken: the interior is the *same* substance, fired
+   * differently, and the tier's job is shape and separation, not chemistry.
+   * What it must not do is fall through to `paper`, which is what a missing
+   * entry here would have done — the pot would have lost its inside entirely.
+   */
+  clayBlack: 'clay',
   cloth: 'cloth',
   bundle: 'cloth',
   water: 'water',
@@ -148,8 +161,22 @@ export const MAP_SLOTS_CLEARED: readonly string[] = MAP_SLOTS
 /** Substance for a material name, falling back to `DEFAULT_ROLE`. */
 export function roleForMaterial(materialName: string | undefined): ObjectRole {
   if (!materialName) return DEFAULT_ROLE
-  const key = materialName.trim().toLowerCase()
-  return ROLE_BY_MATERIAL_NAME[key] ?? DEFAULT_ROLE
+  const key = materialName.trim()
+  /**
+   * Exact match first, then a case-insensitive fallback.
+   *
+   * The fallback exists so an authored scene can call a mesh `Leaf` and still
+   * be understood. The exact test exists because the fallback on its own was a
+   * silent trap: it lower-cased the incoming name, so `clayBlack` — the name
+   * `library.ts` actually stamps on the pot's interior — could never match a
+   * correctly-spelled entry in the table above, and the pot would have been
+   * painted as `paper`. `test-materials.mjs` walks every `MATERIAL_NAMES`
+   * entry through this function precisely because that failure is invisible:
+   * the scene still renders, the interior is just the colour of a page.
+   */
+  return (
+    ROLE_BY_MATERIAL_NAME[key] ?? ROLE_BY_MATERIAL_NAME[key.toLowerCase()] ?? DEFAULT_ROLE
+  )
 }
 
 /**

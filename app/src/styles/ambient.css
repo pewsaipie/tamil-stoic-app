@@ -44,34 +44,164 @@
   50%      { opacity: 0.85; }
 }
 
+/* The water line in the journey's vessel: one slow swell. The *level* is data
+   and never animates; only the surface does. */
+@keyframes water-swell {
+  0%, 100% { transform: translate3d(-1px, 0, 0); }
+  50%      { transform: translate3d(1px, 0.4px, 0); }
+}
+
+/* Mist on the far hills — the kurinji register's slow weather. */
+@keyframes mist-drift {
+  0%, 100% { transform: translate3d(-1.5%, 0, 0) scale(1); opacity: 0.34; }
+  50%      { transform: translate3d(1.5%, -1%, 0) scale(1.03); opacity: 0.5; }
+}
+
 .anim-sky     { animation: sky-drift 90s linear infinite alternate; }
 .anim-glint   { animation: glint 5.5s ease-in-out infinite; }
 .anim-breathe { animation: breathe 9s ease-in-out infinite; }
 .anim-twinkle { animation: twinkle 4s ease-in-out infinite; }
+.anim-mist    { animation: mist-drift 26s ease-in-out infinite; }
+.anim-water   { animation: water-swell 7s ease-in-out infinite; }
+
+/* =============================================================================
+ * Situation doors — each door carries its own weather
+ * =============================================================================
+ * The twelve doors are states of a reader, and in the Sangam frame a state is a
+ * landscape, so each door is given the weather of the thinai it belongs to:
+ *
+ *   love · friends            → குறிஞ்சி  kantal petals drift
+ *   patience · starting ·
+ *   learning · words          → முல்லை   the first rain on leaves
+ *   anger · family · wealth   → மருதம்   pond ripples, out and out
+ *   grief                     → நெய்தல்  the tide, receding
+ *   fear                      → பாலை     heat shimmer over dry ground
+ *
+ * The mapping is by *feeling*, not by keyword — see `SituationDoors.tsx`.
+ * All five are decorative, all five are silenced by the kill-switches below.
+ * ========================================================================== */
+
+.door-weather {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.door-weather::before,
+.door-weather::after {
+  content: '';
+  position: absolute;
+  inset: -25% -10%;
+  background-repeat: repeat;
+}
+
+/* குறிஞ்சி — petals on the hillside wind. */
+.door-weather[data-register='kurinji']::before {
+  background-image:
+    radial-gradient(4px 2.4px at 18% 12%, var(--petal) 62%, transparent 63%),
+    radial-gradient(3px 1.8px at 62% 34%, var(--petal) 62%, transparent 63%),
+    radial-gradient(3.6px 2.2px at 84% 8%, var(--kantal-fill) 62%, transparent 63%);
+  animation: petal-fall 15s linear infinite;
+}
+.door-weather[data-register='kurinji']::after {
+  background-image: radial-gradient(2.6px 1.6px at 40% 68%, var(--petal) 60%, transparent 61%);
+  animation: petal-fall 21s linear infinite reverse;
+}
+@keyframes petal-fall {
+  from { transform: translate3d(0, -12%, 0) rotate(0.001deg); }
+  to   { transform: translate3d(3%, 12%, 0) rotate(0.001deg); }
+}
+
+/* முல்லை — the first rain. */
+.door-weather[data-register='mullai']::before {
+  background-image: repeating-linear-gradient(
+    104deg,
+    transparent 0 7px,
+    color-mix(in srgb, var(--cloud) 70%, transparent) 7px 8px,
+    transparent 8px 15px
+  );
+  animation: rain-fall 2.6s linear infinite;
+}
+@keyframes rain-fall {
+  from { transform: translate3d(0, -14%, 0); }
+  to   { transform: translate3d(-3%, 14%, 0); }
+}
+
+/* மருதம் — the pond, still rippling. */
+.door-weather[data-register='marutham']::before {
+  background-image:
+    radial-gradient(circle at 34% 62%, transparent 0 6px, color-mix(in srgb, var(--peacock) 45%, transparent) 6px 7px, transparent 7px),
+    radial-gradient(circle at 70% 34%, transparent 0 4px, color-mix(in srgb, var(--peacock) 40%, transparent) 4px 5px, transparent 5px);
+  animation: ripple-pond 8s ease-out infinite;
+}
+@keyframes ripple-pond {
+  0%   { transform: scale(0.96); opacity: 0.25; }
+  70%  { transform: scale(1.04); opacity: 0.6; }
+  100% { transform: scale(1.06); opacity: 0; }
+}
+
+/* நெய்தல் — the tide, in and out. */
+.door-weather[data-register='neytal']::before {
+  inset: auto -10% -30% -10%;
+  height: 70%;
+  background:
+    radial-gradient(120% 100% at 50% 100%, color-mix(in srgb, var(--peacock) 55%, transparent) 0%, transparent 62%);
+  animation: tide 13s ease-in-out infinite;
+}
+@keyframes tide {
+  0%, 100% { transform: translateY(14%) scaleY(0.92); }
+  50%      { transform: translateY(-2%) scaleY(1.04); }
+}
+
+/* பாலை — heat over dry ground. */
+.door-weather[data-register='palai']::before {
+  background-image: repeating-linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--kantal) 22%, transparent) 0 1px,
+    transparent 1px 6px
+  );
+  animation: heat-shimmer 3.4s ease-in-out infinite;
+}
+@keyframes heat-shimmer {
+  0%, 100% { transform: translate3d(0, 0, 0) skewX(0deg); opacity: 0.3; }
+  50%      { transform: translate3d(0, -1.5%, 0) skewX(0.4deg); opacity: 0.5; }
+}
 
 /* ---------- Kill-switches --------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .anim-sky, .anim-glint, .anim-breathe, .anim-twinkle {
+  .anim-sky, .anim-glint, .anim-breathe, .anim-twinkle, .anim-mist, .anim-water,
+  .door-weather::before, .door-weather::after {
     animation: none !important;
   }
+  .door-weather { opacity: 0.28; }
 }
 
 [data-motion='reduced'] .anim-sky,
 [data-motion='reduced'] .anim-glint,
 [data-motion='reduced'] .anim-breathe,
-[data-motion='reduced'] .anim-twinkle {
+[data-motion='reduced'] .anim-twinkle,
+[data-motion='reduced'] .anim-mist,
+[data-motion='reduced'] .anim-water,
+[data-motion='reduced'] .door-weather::before,
+[data-motion='reduced'] .door-weather::after {
   animation: none !important;
 }
 
+[data-motion='reduced'] .door-weather { opacity: 0.28; }
+
 /* High contrast: ornament stays, but pure-decoration layers go. */
-[data-contrast='high'] .ambient-decor {
+[data-contrast='high'] .ambient-decor,
+[data-contrast='high'] .door-weather {
   display: none !important;
 }
 
 @media (forced-colors: active) {
   .ambient-canvas,
-  .ambient-decor {
+  .ambient-decor,
+  .door-weather {
     display: none !important;
   }
 }
