@@ -28,6 +28,12 @@ export const TA: Record<string, string> = {
   'header.tagline':
     'ஒரு நாளைக்கு ஒரு குறள், எளிய பொருளுடன். அனைத்தும் உங்கள் சாதனத்திலேயே.',
   'daily.title': 'இன்றைய குறள்',
+  // vāsal — the dawn threshold home (docs/DESIGN-LANGUAGE-VASAL.md)
+  'vasal.today': 'திருக்குறள் · இன்றைய குறள்',
+  'vasal.open': 'முழுக் குறள்',
+  'vasal.loading': 'குறள் வருகிறது…',
+  'vasal.offline':
+    'குறள்கள் உங்கள் சாதனத்திலேயே சேமிக்கப்படுகின்றன — ஒருமுறை இணையத்தில் இணைத்தால் போதும்.',
   'daily.shuffle': 'வேறு ஒன்று',
   'daily.shuffleTitle': 'வேறு ஒரு குறளைக் காட்டு',
   'daily.share': 'இன்றைய குறளைப் பகிர்',

@@ -1,0 +1,283 @@
+/* =============================================================================
+ * Vāsal (வாசல்) — the dawn kolam threshold
+ * =============================================================================
+ * The approved home design language (docs/DESIGN-LANGUAGE-VASAL.md):
+ * a red-oxide earthen floor, white rice-flour kolam as structure, one marigold
+ * dawn glow from the top edge, and the Tamil couplet as the hero ornament.
+ *
+ * Hard rules encoded here:
+ *   · no browns, tans, parchment or black floors — red oxide only;
+ *   · kolam line-work inherits `currentColor` (the flour white);
+ *   · a single light source (dawn) at the top edge;
+ *   · night is the same floor under shadow — never a different palette family.
+ * ========================================================================== */
+
+:root {
+  --vasal-floor-mid: #8a2e1b;
+  --vasal-floor-deep: #832a1a;
+  --vasal-floor-lit: #bb4e33;
+  --vasal-floor-low: #99331f;
+  --vasal-dawn: #d8903b;
+  --vasal-flour: #f7f1e6;
+  --vasal-flour-dim: rgba(247, 241, 230, 0.72);
+  --vasal-flour-faint: rgba(247, 241, 230, 0.45);
+}
+
+/* Night: the same red floor under night shadow — deeper, the glow banked. */
+[data-theme='night'] {
+  --vasal-floor-mid: #5e1e12;
+  --vasal-floor-deep: #4a170d;
+  --vasal-floor-lit: #7c2c1a;
+  --vasal-floor-low: #6b2415;
+  --vasal-dawn: rgba(216, 144, 59, 0.45);
+}
+
+/* ---------- The field ------------------------------------------------------ */
+
+.vasal-root {
+  position: relative;
+  min-height: 100dvh;
+  overflow: clip;
+  color: var(--vasal-flour);
+  background:
+    /* the one dawn glow, top centre */
+    radial-gradient(90% 42% at 50% -6%, var(--vasal-dawn) 0%, rgba(216, 144, 59, 0) 62%),
+    /* the raking light band from the top-left */
+    linear-gradient(118deg, rgba(255, 236, 200, 0.14) 0%, rgba(255, 236, 200, 0.05) 22%, rgba(0, 0, 0, 0) 42%),
+    /* the floor itself: lit centre, shadowed edges */
+    radial-gradient(150% 120% at 50% 38%, var(--vasal-floor-lit) 0%, var(--vasal-floor-low) 46%, var(--vasal-floor-mid) 68%, var(--vasal-floor-deep) 100%);
+}
+
+/* Faint horizontal earth grain, like a smoothed manai floor. */
+.vasal-root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 1px,
+    rgba(0, 0, 0, 0) 1px,
+    rgba(0, 0, 0, 0) 9px
+  );
+  opacity: 0.5;
+}
+
+.vasal-root > * {
+  position: relative;
+}
+
+/* ---------- Top row -------------------------------------------------------- */
+
+.vasal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+}
+
+.vasal-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--vasal-flour-dim);
+}
+
+.vasal-top-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.vasal-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--vasal-flour-dim);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.vasal-icon-btn:hover {
+  color: var(--vasal-flour);
+  background: rgba(247, 241, 230, 0.1);
+}
+
+/* ---------- The framed couplet --------------------------------------------- */
+
+.vasal-label {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--vasal-flour-dim);
+}
+
+.vasal-frame-wrap {
+  position: relative;
+  width: min(92vw, 560px);
+  margin-inline: auto;
+  color: var(--vasal-flour);
+}
+
+.vasal-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.95;
+}
+
+.vasal-frame-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  aspect-ratio: 1;
+  padding: 19%;
+  text-align: center;
+}
+
+.vasal-couplet {
+  margin: 0;
+  font-family: 'Noto Serif Tamil', 'Inter', serif;
+  font-size: clamp(22px, 6.2vw, 34px);
+  line-height: 2.05;
+  font-weight: 500;
+  color: var(--vasal-flour);
+  text-shadow: 0 1px 12px rgba(70, 18, 8, 0.35);
+}
+
+.vasal-couplet .vasal-line {
+  display: block;
+}
+
+.vasal-actions {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.vasal-actions button,
+.vasal-actions a {
+  border: 0;
+  background: transparent;
+  padding: var(--space-1) var(--space-2);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--vasal-flour-dim);
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.vasal-actions button:hover,
+.vasal-actions a:hover {
+  color: var(--vasal-flour);
+}
+
+/* ---------- Destinations ---------------------------------------------------- */
+
+.vasal-doors {
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 9vw, 72px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.vasal-door {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--vasal-flour);
+  text-decoration: none;
+}
+
+.vasal-door-ring {
+  position: relative;
+  width: clamp(84px, 24vw, 116px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.vasal-door-ring > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vasal-door-glyph {
+  position: relative;
+  font-family: 'Noto Serif Tamil', serif;
+  font-size: clamp(24px, 6vw, 30px);
+  line-height: 1;
+}
+
+.vasal-door-glyph svg {
+  width: clamp(22px, 6vw, 28px);
+  height: clamp(22px, 6vw, 28px);
+  stroke-width: 1.8;
+}
+
+.vasal-door-label {
+  font-size: 14px;
+  color: var(--vasal-flour);
+}
+
+.vasal-door-sub {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--vasal-flour-dim);
+  margin-top: calc(-1 * var(--space-2));
+}
+
+.vasal-door:hover .vasal-door-ring,
+.vasal-door:focus-visible .vasal-door-ring {
+  transform: translateY(-2px);
+}
+
+.vasal-door-ring {
+  transition: transform var(--dur) var(--ease-out);
+}
+
+/* ---------- Bottom anchor & states ------------------------------------------ */
+
+.vasal-motif {
+  width: 120px;
+  color: var(--vasal-flour-faint);
+  margin-inline: auto;
+  display: block;
+}
+
+.vasal-status {
+  margin: 0 auto;
+  max-width: 40ch;
+  text-align: center;
+  color: var(--vasal-flour-dim);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.vasal-status [role='alert'] {
+  color: var(--vasal-flour);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vasal-door-ring {
+    transition: none;
+  }
+}

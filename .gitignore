@@ -11,3 +11,4 @@ app/src/assets/
 app/public/icons/
 app/public/data/
 *.tsbuildinfo
+design/*.png
