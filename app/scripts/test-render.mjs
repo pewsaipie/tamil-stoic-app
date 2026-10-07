@@ -186,7 +186,7 @@ const { document } = window
 // On a fresh device today's couplet is simply there: the seal ceremony was
 // withdrawn, so the first thing to appear is the verse.
 await waitFor(() => document.querySelector('#daily-couplet') !== null, 8000)
-await waitFor(() => document.body.textContent?.includes('மூன்று பால்கள்') === true, 8000)
+await waitFor(() => document.body.textContent?.includes('அத்தியாயங்கள்') === true, 8000)
 const text = () => document.body.textContent ?? ''
 
 console.log('today route:')
@@ -222,13 +222,14 @@ check(
   !text().includes('sealed'),
   'and nothing on the screen mentions sealing at all',
 )
-check(text().includes('Sit with it'), 'a minute under the lamp is offered beneath the couplet')
-check(text().includes('Light the lamp'), 'and lighting it is the action it says it is')
+check(text().includes('Share'), "sharing the day's couplet is offered beneath it")
+check(text().includes('Another'), 'and a quieter next-couplet action sits beside it')
 
 const todayVerse = document.querySelectorAll('[data-verse-line]')
 check(todayVerse.length >= 2, "today's couplet renders two Tamil lines")
-check(text().includes('மூன்று பால்கள்'), 'the three books section renders')
-check(text().includes('சூழ்நிலை'), 'the situation doors render')
+check(document.querySelector('.vasal-frame') !== null, 'the couplet is held in a kolam frame')
+check(text().includes('அத்தியாயங்கள்'), 'the kolam doors offer the chapters')
+check(text().includes('சேமித்தவை'), 'and the saved shelf')
 
 /* ---------- navigate to the chapters route ---------- */
 await navigate('#/chapters', () => document.querySelector('input[type="search"]') !== null)

@@ -1,36 +1,31 @@
 /**
- * Home — the reader's landing screen.
+ * Home — the vāsal (வாசல்), the dawn kolam threshold.
  *
- * The room, in one scroll: the kurinji sky and its weather, the table with the
- * pot, the lamp and the ola leaf on it, today's couplet under the lamp, the
- * journey as water level, the three books as bundles and the twelve situation
- * doors as weather. Every moving thing here asks the motion runtime whether the
- * room is alive before it draws a frame, and every one of them has a still end
- * state — the pot settled and full, the lamp steady, the sky a fixed gradient.
+ * The approved concept (docs/DESIGN-LANGUAGE-VASAL.md, reference image
+ * design/home-concept-kolam.jpg): one red-oxide field, one dawn glow, the
+ * day's couplet held in a white kolam frame, three kolam-ringed doors and a
+ * small knot anchoring the bottom edge. Calm density — everything else the
+ * reader needs lives one tap away through the doors, the palette or settings.
+ *
+ * All of the old home's behaviour survives: the couplet of the day, "another",
+ * share, mark-read, loading and error states, and the view's own dialogs.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { chapterOf, kuralOfTheDay, sectionOf } from '../lib/corpus'
+import { Link } from 'react-router-dom'
+import { BookOpen, Bookmark, Search, Settings2, Sparkles } from 'lucide-react'
+import { kuralOfTheDay } from '../lib/corpus'
 import { shareKural } from '../lib/share'
 import { useCorpus, useReducedMotion } from '../hooks/useReader'
 import { useReaderStore } from '../store/appStore'
-import { DailyRitual } from '../components/today/DailyRitual'
-import { SkeletonKuralCard } from '../components/ui/Skeleton'
-import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
-import { HeroCanvas } from '../components/canvas/HeroCanvas'
-import { BookTiles } from '../components/home/BookTiles'
-import { BillaDivider, ZariEdge } from '../components/ambient/ornaments'
-import { TableStage } from '../components/canvas/TableStage'
-import { SituationDoors } from '../components/home/SituationDoors'
-import { TopBar } from '../components/layout/TopBar'
-import { JourneyCard } from '../components/journey/JourneyCard'
-import { useT } from '../i18n'
-import { useMotionSuspended } from '../motion'
-import { Link } from 'react-router-dom'
+import { KolamFrame, KolamMotif, KolamRing } from '../components/vasal/kolam'
 import { CommandPalette } from '../components/palette/CommandPalette'
 import { ShortcutsDialog } from '../components/palette/ShortcutsDialog'
 import { SettingsSheet } from '../components/settings/SettingsSheet'
+import { useT, useUiLanguage } from '../i18n'
+import { useMotionSuspended } from '../motion'
 import type { Kural } from '../lib/types'
+import '../styles/vasal.css'
 
 function pickAnother(kurals: readonly Kural[], current: Kural): Kural {
   if (kurals.length < 2) return current
@@ -42,28 +37,28 @@ function pickAnother(kurals: readonly Kural[], current: Kural): Kural {
   return next
 }
 
+/**
+ * Tamil-first, like the concept: the Tamil label is the label in both
+ * interface languages; the English line is a quiet sub-caption and only
+ * appears when the interface itself is English.
+ */
+const DOORS = [
+  { to: '/chapters', ta: 'அத்தியாயங்கள்', en: 'Chapters', Icon: BookOpen },
+  { to: '/ask', ta: 'வள்ளுவரைக் கேள்', en: 'Ask Valluvar', Icon: Sparkles },
+  { to: '/saved', ta: 'சேமித்தவை', en: 'Saved', Icon: Bookmark },
+] as const
+
 export function Home() {
   const { status, corpus, error } = useCorpus()
   const reducedMotion = useReducedMotion()
   const markRead = useReaderStore((state) => state.markRead)
   const pushToast = useReaderStore((state) => state.pushToast)
-  const read = useReaderStore((state) => state.read)
   const [override, setOverride] = useState<Kural | null>(null)
-  /**
-   * The room's own numbers.
-   *
-   * `progress` is the water level in the pot; `ripple` counts kurals marked read
-   * so the scene can drop one ring per kural. `forming` is the pot being thrown —
-   * it happens while the corpus loads, and for a reader whose pot is still empty,
-   * because a vessel that has never held anything is a vessel being made.
-   */
-  const readCount = Object.keys(read).length
-  const [ripple, setRipple] = useState(0)
-  const seenReads = useRef(readCount)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [helpOpen, setHelpOpen] = useState(false)
   const t = useT()
+  const uiLanguage = useUiLanguage()
 
   const today = useMemo(() => (corpus ? kuralOfTheDay(corpus.kurals) : null), [corpus])
   const current = override ?? today
@@ -72,199 +67,139 @@ export function Home() {
     if (current && corpus) markRead(current.n, current.ch)
   }, [current, corpus, markRead])
 
-  useEffect(() => {
-    if (readCount === seenReads.current) return
-    seenReads.current = readCount
-    setRipple((count) => count + 1)
-  }, [readCount])
-
-  /**
-   * Home's own dialogs pause the room, like the shell's do.
-   *
-   * The shell already tracks its palette and sheets; these are the ones this
-   * view owns (the TopBar's palette button opens the local pair). Counting in
-   * the runtime means it does not matter which of the two opened — the room
-   * waits for the last one to close.
-   */
   useMotionSuspended(paletteOpen || settingsOpen || helpOpen)
 
   const share = useCallback(async () => {
     if (!current) return
     const outcome = await shareKural(current)
-    if (outcome === 'copied') pushToast('Kural copied to the clipboard ✓', 'success')
-    if (outcome === 'failed') pushToast('Sharing is unavailable on this device', 'danger')
-  }, [current, pushToast])
+    if (outcome === 'copied') pushToast(t('vasal.toastCopied', 'Kural copied to the clipboard ✓'), 'success')
+    if (outcome === 'failed') pushToast(t('vasal.toastFail', 'Sharing is unavailable on this device'), 'danger')
+  }, [current, pushToast, t])
 
   return (
-    <div className="min-h-dvh">
-      {/* Hero zone. The gradient is the documented no-WebGL fallback; when the
-          device can render it, the AgedLeaf shader paints over it. */}
-      <header
-        className="relative isolate overflow-hidden px-4 pt-[var(--space-7)] pb-[var(--space-6)]"
-        style={{
-          minHeight: '240px',
-          backgroundImage:
-            'radial-gradient(120% 90% at 50% 0%, var(--hero-tint-a) 0%, var(--hero-tint-b) 55%, var(--hero-tint-c) 100%)',
-        }}
-      >
-        <HeroCanvas />
-        {/* Kurinji sky life: drifting cloud by day, twinkling stars at night.
-            Both read from theme tokens — `--star` is transparent at day and
-            `--cloud` near-transparent at night, so each mode shows its own. */}
-        <div
-          aria-hidden="true"
-          className="ambient-decor anim-sky absolute inset-0"
-          style={{
-            backgroundImage:
-              'radial-gradient(55% 38% at 22% 30%, var(--cloud) 0%, transparent 62%), radial-gradient(45% 32% at 74% 18%, var(--cloud) 0%, transparent 60%)',
-            backgroundSize: '220% 100%',
-            opacity: 0.55,
-          }}
-        />
-        {/* Mist on the far hills: the kurinji register's own weather, slow
-            enough to be noticed only when looked at. */}
-        <div
-          aria-hidden="true"
-          className="ambient-decor anim-mist absolute inset-x-0 bottom-0 h-2/3"
-          style={{
-            backgroundImage:
-              'radial-gradient(60% 40% at 30% 78%, var(--cloud) 0%, transparent 70%), radial-gradient(50% 34% at 72% 86%, var(--cloud) 0%, transparent 72%)',
-            opacity: 0.4,
-          }}
-        />
-        <div
-          aria-hidden="true"
-          className="ambient-decor anim-twinkle absolute inset-0"
-          style={{
-            backgroundImage:
-              'radial-gradient(1.6px 1.6px at 14% 24%, var(--star) 50%, transparent 51%), radial-gradient(1.2px 1.2px at 38% 12%, var(--star) 50%, transparent 51%), radial-gradient(1.8px 1.8px at 62% 30%, var(--star) 50%, transparent 51%), radial-gradient(1.2px 1.2px at 82% 16%, var(--star) 50%, transparent 51%), radial-gradient(1.4px 1.4px at 92% 38%, var(--star) 50%, transparent 51%)',
-            opacity: 0.9,
-          }}
-        />
-        <div className="relative z-10 mx-auto mb-3 max-w-[var(--content-max)]">
-          <TopBar title="தமிழ் ஸ்டோயிக் · Tamil Stoic" onOpenPalette={() => setPaletteOpen(true)} />
-        </div>
-        <div className="relative z-10 mx-auto flex max-w-[var(--content-max)] flex-col items-center gap-[var(--space-4)] text-center">
-          <h1
-            lang="ta"
-            className="m-0 text-[clamp(28px,6vw,44px)] text-ink drop-shadow-[0_1px_0_rgba(255,255,255,0.25)]"
-          >
-            திருக்குறள்
-          </h1>
-          <p className="m-0 max-w-[36ch] text-sm text-ink/80">
-            {t(
-              'header.tagline',
-              'One couplet a day, with a plain-English meaning. Everything stays on your device.',
-            )}
-          </p>
-          <ThemeSwitcher className="justify-center" />
-        </div>
-        {/* The kanjeevaram zari edge where the sky meets the page. */}
-        <div className="absolute inset-x-0 bottom-0 z-10">
-          <ZariEdge />
+    <div className="vasal-root">
+      {/* Quiet top row: eyebrow + the two utility doors. */}
+      <header className="mx-auto w-full max-w-[var(--content-max)] px-4">
+        <div className="vasal-top">
+          <span className="vasal-eyebrow" lang="ta">
+            {t('header.eyebrow', 'தமிழ் ஸ்டோயிக் · Tamil Stoic')}
+          </span>
+          <div className="vasal-top-actions">
+            <button
+              type="button"
+              className="vasal-icon-btn"
+              aria-label={t('action.palette', 'Search and commands')}
+              onClick={() => setPaletteOpen(true)}
+            >
+              <Search size={20} strokeWidth={1.7} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              className="vasal-icon-btn"
+              aria-label={t('action.settings', 'Reading settings')}
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Settings2 size={20} strokeWidth={1.7} aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </header>
 
-      {/*
-        The table. The sky above is a shader material; everything here is an
-        object — a pot holding the reader's progress as water, a brass lamp the
-        minute burns in, and the ola leaf the app is about. Decorative to the
-        accessibility tree: the same numbers live in the journey card below.
-      */}
-      <div className="relative mx-auto -mt-[var(--space-7)] max-w-[var(--content-max)] px-4">
-        <TableStage
-          className="rounded-[var(--radius-lg)]"
-          forming={status === 'loading' || (corpus !== null && readCount === 0)}
-          progress={corpus ? readCount / corpus.kurals.length : 0}
-          ripple={ripple}
-        />
-      </div>
-
-      <main id="main" className="mx-auto mt-[var(--space-5)] max-w-[var(--content-max)] px-4 pb-[var(--space-9)]">
-        {status === 'loading' ? <SkeletonKuralCard /> : null}
-
-        {status === 'error' ? (
-          <div className="glass-panel p-6 text-center" role="alert">
-            <p className="m-0 text-danger">{error.message}</p>
-            <p className="mt-2 mb-0 text-sm text-muted">
-              The kurals are stored offline after the first visit — reconnect once to fill the cache.
+      <main
+        id="main"
+        className="mx-auto flex w-full max-w-[var(--content-max)] flex-col items-center gap-[var(--space-7)] px-4 pt-[var(--space-6)] pb-[var(--space-7)]"
+      >
+        {/* The framed couplet. */}
+        <section className="vasal-frame-wrap" aria-busy={status === 'loading'}>
+          <KolamFrame className="vasal-frame" />
+          <div className="vasal-frame-inner">
+            <p className="vasal-label" lang="ta">
+              {t('vasal.today', 'திருக்குறள் · இன்றைய குறள்')}
             </p>
+
+            {status === 'loading' ? (
+              <p className="vasal-status" lang="ta">
+                {t('vasal.loading', 'குறள் வருகிறது…')}
+              </p>
+            ) : null}
+
+            {status === 'error' ? (
+              <div className="vasal-status" role="alert">
+                <p>{error.message}</p>
+                <p>{t('vasal.offline', 'The kurals live on your device after the first visit — reconnect once to fill the cache.')}</p>
+              </div>
+            ) : null}
+
+            {current && corpus ? (
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.blockquote
+                  lang="ta"
+                  key={current.n}
+                  id="daily-couplet"
+                  className="vasal-couplet"
+                  initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <span className="vasal-line" data-verse-line="1">
+                    {current.ta[0]}
+                  </span>
+                  <span className="vasal-line" data-verse-line="2">
+                    {current.ta[1]}
+                  </span>
+                </motion.blockquote>
+              </AnimatePresence>
+            ) : null}
+
+            {current && corpus ? (
+              <div className="vasal-actions">
+                <button
+                  type="button"
+                  lang="ta"
+                  onClick={() => {
+                    setOverride(pickAnother(corpus.kurals, current))
+                    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+                      navigator.vibrate([6, 50, 6])
+                    }
+                  }}
+                >
+                  {t('daily.shuffle', 'Another')}
+                </button>
+                <button type="button" lang="ta" onClick={() => void share()}>
+                  {t('daily.share', 'Share')}
+                </button>
+                <Link to={`/kural/${current.n}`} lang="ta">
+                  {t('vasal.open', 'முழுக் குறள்')}
+                </Link>
+              </div>
+            ) : null}
           </div>
-        ) : null}
+        </section>
 
-        {current && corpus ? (
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={current.n}
-              initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -16, filter: 'blur(4px)' }}
-              transition={{ duration: reducedMotion ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <DailyRitual
-                kural={current}
-                chapter={chapterOf(corpus.chapters, current)}
-                section={sectionOf(corpus.sections, current)}
-                onAnother={() => {
-                  setOverride(pickAnother(corpus.kurals, current))
-                  if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-                    navigator.vibrate([6, 50, 6]) // haptic hint on swap
-                  }
-                }}
-                onShare={() => void share()}
-              />
-            </motion.div>
-          </AnimatePresence>
-        ) : null}
+        {/* Three kolam-ringed doors. */}
+        <nav aria-label={t('nav.main', 'Primary')}>
+          <ul className="vasal-doors">
+            {DOORS.map(({ to, ta, en, Icon }) => (
+              <li key={to}>
+                <Link to={to} className="vasal-door">
+                  <span className="vasal-door-ring">
+                    <KolamRing />
+                    <span className="vasal-door-glyph">
+                      <Icon aria-hidden="true" />
+                    </span>
+                  </span>
+                  <span className="vasal-door-label" lang="ta">
+                    {ta}
+                  </span>
+                  {uiLanguage === 'en' ? <span className="vasal-door-sub">{en}</span> : null}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-        {/* Reading journey */}
-        {corpus ? (
-          <JourneyCard
-            totalKurals={corpus.kurals.length}
-            totalChapters={corpus.chapters.length}
-            className="mt-[var(--space-6)]"
-          />
-        ) : null}
-
-        {/* Three books */}
-        {corpus ? (
-          <section aria-labelledby="books-title" className="mt-[var(--space-7)]">
-            <BillaDivider className="mb-[var(--space-5)]" />
-            <h2 id="books-title" className="m-0 text-lg text-ink">
-              <span lang="ta">மூன்று பால்கள்</span> · {t('books.title', 'The three books')}
-            </h2>
-            <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
-              {t('books.sub', 'The Kural is arranged in three books. Open one and read it whole.')}
-            </p>
-            <BookTiles sections={corpus.sections} chapters={corpus.chapters} kurals={corpus.kurals} />
-          </section>
-        ) : null}
-
-        {/* Situation doors */}
-        {corpus ? (
-          <section aria-labelledby="situations-title" className="mt-[var(--space-7)]">
-            <BillaDivider className="mb-[var(--space-5)]" />
-            <h2 id="situations-title" className="m-0 text-lg text-ink">
-              <span lang="ta">சூழ்நிலை</span> · {t('situations.title', 'Where are you today?')}
-            </h2>
-            <p className="mt-1 mb-[var(--space-4)] text-sm text-muted">
-              {t('situations.sub', 'Pick the door that fits — or search the whole book.')}
-            </p>
-            <SituationDoors themes={corpus.themes} />
-            <p className="mt-[var(--space-4)] mb-0">
-              <Link to="/chapters" className="text-sm text-accent-text no-underline">
-                {t('search.all', 'Search all 1,330 kurals')} →
-              </Link>
-              <span aria-hidden="true" className="mx-3 text-muted">
-                ·
-              </span>
-              <Link to="/credits" className="text-sm text-accent-text no-underline">
-                Credits & open source →
-              </Link>
-            </p>
-          </section>
-        ) : null}
-
+        <KolamMotif className="vasal-motif" />
       </main>
 
       <CommandPalette
