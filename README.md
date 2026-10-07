@@ -187,6 +187,12 @@ sync can be considered later without changing the reader experience.
 Deployed to **GitHub Pages** by `.github/workflows/deploy.yml` — it runs after each push to
 `main` and publishes the app files, manifest, service worker, and icons. The configured
 `github-pages` environment intentionally permits deployments from the default branch only.
+The workflow builds and uploads the site in a `build` job and publishes it from a separate
+`deploy` job: `deploy-pages` resolves the uploaded artifact by name, and that lookup is
+eventually consistent, so the two steps keep a job boundary between them
+([actions/deploy-pages#451](https://github.com/actions/deploy-pages/issues/451)). A failed
+deploy can therefore be retried with **Re-run failed jobs**, which re-runs only the deploy
+job and cannot add a second `github-pages` artifact to the same run.
 After the first successful run the site is at:
 
 **https://pewsaipie.github.io/tamil-stoic-app/**

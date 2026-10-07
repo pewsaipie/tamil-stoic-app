@@ -9,6 +9,9 @@ on:
 
 permissions:
   contents: read
+  # Read-only view of this run's artifact list, used by the deploy job's
+  # preflight step below. Publishing the site itself needs `pages`/`id-token`.
+  actions: read
   pages: write
   id-token: write
 
@@ -17,19 +20,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  # Building and uploading live in their own job, away from the deploy.
+  # `deploy-pages` resolves the uploaded artifact by name, and that lookup is
+  # eventually consistent: running the upload and the deploy back to back in a
+  # single job intermittently finds zero artifacts, even though the upload just
+  # succeeded (actions/deploy-pages#451). Giving the artifact store a job
+  # boundary to settle behind removes the race. The split also makes retries
+  # safe — "Re-run failed jobs" then re-runs only the deploy job, so it cannot
+  # add a second `github-pages` artifact to the run, which would fail the lookup
+  # with "Multiple artifacts named ... count is 2" (actions/deploy-pages#338).
+  build:
     # A manual dispatch can select another branch; skip rather than fail when
-    # github-pages protection rules reject non-main deployments.
+    # github-pages protection rules reject non-main deployments. The deploy job
+    # inherits the skip through `needs`.
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
 
@@ -58,13 +68,42 @@ jobs:
           cp LICENSE THIRD_PARTY_NOTICES.md _site/
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
+      # `_site` holds no dotfiles, so the uploader's default hidden-file
+      # exclusion publishes exactly the same tree as before.
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Best effort and never fatal: the uploaded artifact becomes visible to
+      # the artifacts API a moment after the upload finishes, so wait for that
+      # instead of racing it (#451). `deploy-pages` stays the authority on
+      # whether the site can publish.
+      - name: Wait for the uploaded artifact to be listed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          api="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts?name=github-pages"
+          for attempt in $(seq 1 30); do
+            count=$(curl -sS --fail-with-body -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" "$api" | jq -r '.total_count // 0' 2>/dev/null || echo 0)
+            if [ "${count:-0}" -gt 0 ]; then
+              echo "The github-pages artifact is listed (probe ${attempt})."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::warning::The github-pages artifact was not listed after 60s of probing; deploying anyway."
+
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
