@@ -68,6 +68,7 @@
       "tabs.aria": "மூன்று பால்கள்",
       "nav.backHome": "முகப்புக்குத் திரும்ப",
       "nav.main": "முதன்மை வழிசெலுத்தல்",
+      "nav.reader": "வாசிப்பு வழிசெலுத்தல்",
       "detail.actions": "குறள் செயல்கள்",
       "detail.save": "இந்தக் குறளைச் சேமி",
       "detail.unsave": "சேமித்ததிலிருந்து நீக்கு",
@@ -2239,6 +2240,13 @@
     var copy = nav.cloneNode(true);
     copy.removeAttribute("id");
     copy.classList.add("bottom-nav-inline");
+    // The clone is a second navigation landmark: give it its own translated
+    // name so axe's landmark-unique holds while the reader is open.
+    copy.removeAttribute("data-i18n-aria");
+    copy.setAttribute("aria-label", tf("nav.reader", "Reader navigation"));
+    languageChangeCallbacks.push(function () {
+      copy.setAttribute("aria-label", tf("nav.reader", "Reader navigation"));
+    });
     Array.prototype.forEach.call(copy.querySelectorAll("[id]"), function (el) {
       if (el.classList.contains("saved-count")) el.parentNode.removeChild(el);
       else el.removeAttribute("id");
