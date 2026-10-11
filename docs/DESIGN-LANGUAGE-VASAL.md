@@ -1,6 +1,14 @@
 # Design language — "Vāsal" (வாசல்) · the dawn kolam threshold
 
-Status: **approved direction** (chosen from concept images on 2026-10-07).
+Status: **NOT SHIPPED — rolled back on 2026-10-11.** The vāsal home was reverted to
+the previous Sangam "room" home (shader sky, table with pot/lamp/ola leaf, sealed-leaf
+daily ritual, journey card, three books, situation doors). The kolam implementation
+(`app/src/components/vasal/`, `app/src/styles/vasal.css`, the preview scripts and the
+`vasal.*` i18n keys) was removed with it. This document and
+`design/home-concept-kolam.jpg` are kept as a design record only — if this direction is
+picked up again, treat everything below as a proposal, not as the current look of the app.
+
+Original status: **approved direction** (chosen from concept images on 2026-10-07).
 Reference image: `design/home-concept-kolam.jpg` (full-res PNG kept locally, git-ignored).
 Supersedes, for new work, the earlier Sangam-clay / Kurinji cover looks wherever they conflict.
 

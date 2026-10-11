@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { Home } from './views/Home'
 import { KuralView } from './views/KuralView'
 import { Chapters } from './views/Chapters'
@@ -46,13 +46,6 @@ function Room() {
   const [helpOpen, setHelpOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
 
-  /**
-   * The vāsal is a still threshold: the old room's living cover and its sticky
-   * bottom nav stay out of it. The kolam doors carry navigation there.
-   */
-  const { pathname } = useLocation()
-  const onHome = pathname === '/'
-
   useEffect(() => {
     void hydrateLibrary()
   }, [])
@@ -84,7 +77,7 @@ function Room() {
   return (
     <>
       {/* The living-cover layer: petals by day, fireflies at midnight. */}
-      {!onHome && <Atmosphere />}
+      <Atmosphere />
       <nav aria-label="Skip links">
         <a
           href="#main"
@@ -104,7 +97,7 @@ function Room() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {!onHome && <BottomNav />}
+      <BottomNav />
       <CommandPalette
         open={paletteOpen}
         onOpenChange={setPaletteOpen}
