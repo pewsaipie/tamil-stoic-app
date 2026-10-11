@@ -30,6 +30,17 @@
   <!-- Self-hosted fonts: offline-complete, no third-party runtime requests -->
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/styles.css?v=7" />
+
+  <!--
+    Preload the faces first paint needs. fonts.css sets `font-display: block`,
+    so text never paints in a fallback face and swaps afterwards; these links
+    keep the pause before the Tamil verse face paints to a single frame.
+  -->
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-serif-tamil-tamil-600-normal.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-serif-tamil-latin-600-normal.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/noto-serif-tamil-tamil-400-normal.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-latin-400-normal.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-latin-600-normal.woff2" crossorigin />
 </head>
 <body data-view="home">
   <a class="skip-link" href="#daily" data-i18n="skip.daily">Skip to today's Kural</a>

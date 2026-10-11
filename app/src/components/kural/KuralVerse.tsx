@@ -3,9 +3,16 @@
  *
  * The standard layout is a fixed two-line block: the முதல் அடி (up to four words)
  * on the top line and the ஈற்றடி (up to three words) on the bottom line.
- * Each line is rendered with `white-space: nowrap` and automatically scaled to fit
- * its container width so a couplet never wraps into a multi-line paragraph, and
- * no accessibility setting changes the two-line split.
+ * Each line is rendered with `white-space: nowrap` and sized by the stylesheet
+ * alone — `min(--verse-size, 98cqi / --verse-em)` — so a couplet never wraps
+ * into a multi-line paragraph and no accessibility setting changes the
+ * two-line split.
+ *
+ * The block is sized by CSS; `lib/verseType` supplies `--verse-em`, the width of
+ * the longer line in ems. First paint uses its static estimate; the measured
+ * width lands at the moment the Tamil face becomes usable — which, under
+ * `font-display: block`, is before the verse is ever visible. Nothing measures
+ * the DOM or rescales the text after paint: the verse holds still on every page.
  *
  * `data-verse-line` is part of the contract: tests assert both lines exist, in
  * order, on every surface.
@@ -13,6 +20,7 @@
 import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import type { Kural } from '../../lib/types'
 import { coupletLines } from '../../lib/couplet'
+import { estimateVerseEm, measureVerseEm, verseFaceReady } from '../../lib/verseType'
 import { cn } from '../../lib/cn'
 
 export interface KuralVerseProps {
@@ -25,76 +33,46 @@ export interface KuralVerseProps {
 export function KuralVerse({ kural, size = 'card', className }: KuralVerseProps) {
   // The one and only place a couplet becomes lines — see lib/couplet.ts.
   const [top, bottom] = coupletLines(kural)
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const line1Ref = useRef<HTMLSpanElement | null>(null)
-  const line2Ref = useRef<HTMLSpanElement | null>(null)
 
-  const maxChars = Math.max(top.length, bottom.length)
-  const verseEm = Math.max(18, Math.ceil(maxChars * 0.6))
+  // First paint is sized by this estimate. React only writes `--verse-em` back
+  // to the DOM when the estimate itself changes (a different couplet), so the
+  // measured value applied below survives unrelated re-renders.
+  const estimate = estimateVerseEm(top, bottom)
+  const boxRef = useRef<HTMLDivElement | null>(null)
 
   useLayoutEffect(() => {
-    const box = containerRef.current
-    const first = line1Ref.current
-    const second = line2Ref.current
-    if (!box || !first || !second) return
-
-    const fit = (): void => {
-      box.style.fontSize = ''
-      const available = box.clientWidth
-      if (available <= 0) return
-      const needed = Math.max(first.scrollWidth, second.scrollWidth)
-      if (needed > available) {
-        const computed = Number.parseFloat(window.getComputedStyle(box).fontSize)
-        if (Number.isFinite(computed) && computed > 0) {
-          const scaled = Math.max(10, Math.floor((available / needed) * computed * 10) / 10)
-          box.style.fontSize = `${scaled}px`
-        }
-      }
-    }
-
-    fit()
-
+    const box = boxRef.current
+    if (!box) return
     let cancelled = false
-    if (typeof document !== 'undefined' && 'fonts' in document && document.fonts?.ready) {
-      void document.fonts.ready.then(() => {
-        if (!cancelled) fit()
-      })
+
+    const refine = (): void => {
+      const em = measureVerseEm(top, bottom)
+      if (em !== null && !cancelled) box.style.setProperty('--verse-em', String(em))
     }
 
-    const resizeObserver =
-      typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => fit()) : null
-    resizeObserver?.observe(box)
-
-    const mutationObserver =
-      typeof MutationObserver !== 'undefined'
-        ? new MutationObserver(() => fit())
-        : null
-    if (typeof document !== 'undefined' && document.documentElement) {
-      mutationObserver?.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['data-font-size', 'data-line-spacing'],
-      })
-    }
+    // Warm cache: the face is already usable, so the measurement replaces the
+    // estimate before first paint. Cold cache: it replaces it in the same
+    // moment the face becomes paintable — the size is right at first sight.
+    refine()
+    void verseFaceReady(top + bottom).then(refine)
 
     return () => {
       cancelled = true
-      resizeObserver?.disconnect()
-      mutationObserver?.disconnect()
     }
-  }, [top, bottom, size])
+  }, [top, bottom])
 
   return (
     <div
-      ref={containerRef}
+      ref={boxRef}
       className={cn('verse', size === 'focus' && 'verse--focus', className)}
       lang="ta"
       data-kural={kural.n}
-      style={{ '--verse-em': verseEm } as CSSProperties}
+      style={{ '--verse-em': estimate } as CSSProperties}
     >
-      <span ref={line1Ref} className="verse__line" data-verse-line="1">
+      <span className="verse__line" data-verse-line="1">
         {top}
       </span>
-      <span ref={line2Ref} className="verse__line" data-verse-line="2">
+      <span className="verse__line" data-verse-line="2">
         {bottom}
       </span>
     </div>

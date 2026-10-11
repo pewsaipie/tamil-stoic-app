@@ -40,6 +40,10 @@ The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
 - **Ancient-theme visual system** — palm-leaf (ola) daily card, wax-seal kural numbers,
   lotus-rosette rules, gopuram-niche book tiles, kolam borders, granite footer band,
   paper grain, and a temple-silhouette hero (see [docs/ui-ux-proposal.md](docs/ui-ux-proposal.md))
+- **Flicker-free typography** — the self-hosted faces are preloaded and precached and
+  render under `font-display: block`, and couplets are sized against the Tamil face's
+  real metrics (`app/src/lib/verseType.ts`) before first visible paint: Tamil text never
+  morphs from a fallback face or rescales after it appears, on any page
 - **Reading journey** — device-local read marks, visited-chapter marks on the 133-chapter
   map, a progress ring, and a gentle daily streak (never guilt-based)
 - **Focus reader** — read a single couplet full-screen with prev/next, plus per-card

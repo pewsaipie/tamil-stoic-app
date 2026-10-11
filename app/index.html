@@ -18,6 +18,49 @@
     <link rel="apple-touch-icon" href="%BASE_URL%icons/apple-touch-icon.png" />
 
     <!--
+      Preload the faces first paint needs. fonts.css sets `font-display: block`,
+      so a face still in flight paints nothing; these links are what keep that
+      pause to a frame — the Tamil verse face and its latin half (spaces and
+      digits inside a verse line run through it) download in parallel with the
+      app, and the service worker precaches them for every visit after.
+    -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/src/assets/fonts/noto-serif-tamil-tamil-600-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/src/assets/fonts/noto-serif-tamil-latin-600-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/src/assets/fonts/noto-serif-tamil-tamil-400-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/src/assets/fonts/inter-latin-400-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/src/assets/fonts/inter-latin-600-normal.woff2"
+      crossorigin
+    />
+
+    <!--
       Apply the stored theme before first paint. Without this the reader sees a
       flash of the wrong palette on every cold load.
     -->

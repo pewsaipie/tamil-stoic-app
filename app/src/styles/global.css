@@ -84,8 +84,8 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    /* No layout shift on font load: the fallback metrics are close and the
-       swap is `font-display: swap` with a clamped size. */
+    /* Faces load under `font-display: block` (see fonts.css): text waits for
+       its own face instead of painting in a fallback and swapping later. */
     text-rendering: optimizeLegibility;
   }
 
@@ -211,6 +211,10 @@
   /* ---------------------------------------------------------------------------
    * Reader typography
    * ------------------------------------------------------------------------ */
+  /* The couplet block sizes itself from its container and from `--verse-em` —
+     the measured width, in ems, of the longer line (lib/verseType.ts). One
+     formula, no post-paint rescaling: a couplet fits its column at every text
+     size, and the size it first paints at is the size it keeps. */
   .verse {
     container-type: inline-size;
     width: 100%;

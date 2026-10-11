@@ -10,13 +10,29 @@
  *
  * Only the subsets actually used ship: Latin (+ Latin-ext) for English/UI and
  * the Tamil block for the verse.
+ *
+ * Loading contract — type must never flicker on any page:
+ *
+ *   - `font-display: block` on every face. Text is never painted in a fallback
+ *     face and then swapped (the classic Tamil flicker: Latha morphing into
+ *     Noto Serif mid-load). A face still in flight paints nothing for the
+ *     instant it takes to arrive — and that instant is one frame or less,
+ *     because…
+ *   - `index.html` preloads the faces first paint needs, so they download in
+ *     parallel with the app instead of after it, and…
+ *   - the service worker precaches every face after the first visit, so the
+ *     "instant" is literal offline.
+ *
+ * Sizing follows the same contract: `lib/verseType.ts` measures couplets
+ * against the face itself once it is usable — never against fallback metrics —
+ * so the verse does not resize when the font arrives.
  */
 
 /* ---------- Inter (UI) — latin ---------- */
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/inter-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -26,7 +42,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 500;
   src: url("../assets/fonts/inter-latin-500-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -36,7 +52,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/inter-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -46,7 +62,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/inter-latin-700-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -56,7 +72,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/inter-latin-ext-400-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -66,7 +82,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 500;
   src: url("../assets/fonts/inter-latin-ext-500-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -76,7 +92,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/inter-latin-ext-600-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -86,7 +102,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/inter-latin-ext-700-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -94,11 +110,13 @@
     U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-/* ---------- Noto Serif Tamil (verse) — Tamil block ---------- */
+/* ---------- Noto Serif Tamil (verse) — Tamil block ----------
+ * The verse face: weight 600 for couplets, 400/700 for Tamil interface
+ * strings. Preloaded from index.html so it is in memory before first paint. */
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/noto-serif-tamil-tamil-400-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
@@ -106,7 +124,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/noto-serif-tamil-tamil-600-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
@@ -114,17 +132,19 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/noto-serif-tamil-tamil-700-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
 }
 
-/* ---------- Noto Serif Tamil (verse) — latin fallback ---------- */
+/* ---------- Noto Serif Tamil (verse) — latin fallback ----------
+ * Spaces, digits and the rare Latin word inside a Tamil run are served by the
+ * same family, so a mixed line changes face exactly once: never. */
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/noto-serif-tamil-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -134,7 +154,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/noto-serif-tamil-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -144,7 +164,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/noto-serif-tamil-latin-700-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -156,7 +176,7 @@
 @font-face {
   font-family: "Playfair Display";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/playfair-display-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -166,7 +186,7 @@
 @font-face {
   font-family: "Playfair Display";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/playfair-display-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,

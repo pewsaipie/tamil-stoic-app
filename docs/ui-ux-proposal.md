@@ -226,7 +226,9 @@ Formalize what dark mode already gestures at:
   first-visit-offline reader gets fallback fonts — a visible quality gap for an offline-first
   PWA and a third-party runtime dependency.
 - Consider **font-display: optional** for the display face after self-hosting to avoid FOUT
-  on repeat visits.
+  on repeat visits. *(Shipped as `font-display: block` on every face, with `<link
+  rel="preload">` for the faces first paint needs: text waits for its own face instead of
+  painting in a fallback and swapping — the Tamil verse never flickers on any page.)*
 
 ---
 
