@@ -41,10 +41,14 @@ fixed by the metre and is not a typographic choice:
   `<span class="verse__line" data-verse-line="2">`.
 - **Never a paragraph on screen:** `.verse__line` enforces `display: block;
   white-space: nowrap;` so neither the 4-word top line nor the 3-word bottom line
-  ever wraps into a 3- or 4-line paragraph. `.verse` uses CSS container-query
-  sizing (`cqi`) plus a `ResizeObserver` / `useLayoutEffect` measurement in
-  `KuralVerse.tsx` so the font size adapts cleanly to fit any screen width or
-  accessibility setting without horizontal clipping.
+  ever wraps into a 3- or 4-line paragraph. `.verse` uses one CSS container-query
+  formula — `font-size: min(--verse-size, 98cqi / --verse-em)` — where
+  `lib/verseType.ts` supplies `--verse-em`, the measured width of the longer line
+  in ems. First paint uses a static estimate; the measurement lands when the Tamil
+  face becomes usable (`font-display: block`, so before the verse is ever visible)
+  and never rescales the text afterwards. The font size therefore adapts to any
+  screen width or accessibility setting without horizontal clipping — and without
+  the verse ever visibly resizing.
 - **Accessibility never breaks the two-line couplet.** Text size (`standard`,
   `large`, `x-large`), line spacing (`comfortable`, `relaxed`), colour mode, reduced
   motion, higher contrast and the layer toggles scale the typography while keeping

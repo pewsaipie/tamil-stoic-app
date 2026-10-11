@@ -4,13 +4,19 @@
  * complete offline after the first install, with no third-party runtime.
  * Only the subsets actually used are shipped: Latin (+ ext) for the English
  * and UI layers, Tamil for the verse.
+ *
+ * `font-display: block` on every face is the anti-flicker contract: Tamil text
+ * is never painted in a fallback face and then swapped. A face still in flight
+ * paints nothing for the instant it takes to arrive — and index.html preloads
+ * the faces first paint needs, while the service worker precaches every face
+ * for each visit after the first.
  */
 
 /* ---------- Inter (UI) — latin ---------- */
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/inter-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -20,7 +26,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 500;
   src: url("../assets/fonts/inter-latin-500-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -30,7 +36,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/inter-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -40,7 +46,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/inter-latin-700-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -52,7 +58,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/inter-latin-ext-400-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -62,7 +68,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 500;
   src: url("../assets/fonts/inter-latin-ext-500-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -72,7 +78,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/inter-latin-ext-600-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -82,7 +88,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/inter-latin-ext-700-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
@@ -94,7 +100,7 @@
 @font-face {
   font-family: "EB Garamond";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/eb-garamond-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -104,7 +110,7 @@
 @font-face {
   font-family: "EB Garamond";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 500;
   src: url("../assets/fonts/eb-garamond-latin-500-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -114,7 +120,7 @@
 @font-face {
   font-family: "EB Garamond";
   font-style: italic;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/eb-garamond-latin-400-italic.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -124,7 +130,7 @@
 @font-face {
   font-family: "EB Garamond";
   font-style: italic;
-  font-display: swap;
+  font-display: block;
   font-weight: 500;
   src: url("../assets/fonts/eb-garamond-latin-500-italic.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -136,7 +142,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/noto-serif-tamil-tamil-400-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
@@ -144,7 +150,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/noto-serif-tamil-tamil-600-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
@@ -152,7 +158,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/noto-serif-tamil-tamil-700-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
@@ -160,7 +166,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/noto-serif-tamil-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -170,7 +176,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/noto-serif-tamil-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -180,7 +186,7 @@
 @font-face {
   font-family: "Noto Serif Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/noto-serif-tamil-latin-700-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
@@ -192,7 +198,7 @@
 @font-face {
   font-family: "Noto Sans Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   src: url("../assets/fonts/noto-sans-tamil-tamil-400-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
@@ -200,7 +206,7 @@
 @font-face {
   font-family: "Noto Sans Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 600;
   src: url("../assets/fonts/noto-sans-tamil-tamil-600-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
@@ -208,7 +214,7 @@
 @font-face {
   font-family: "Noto Sans Tamil";
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 700;
   src: url("../assets/fonts/noto-sans-tamil-tamil-700-normal.woff2") format("woff2");
   unicode-range: U+0964-0965, U+0B82-0BFA, U+200C-200D, U+25CC;
