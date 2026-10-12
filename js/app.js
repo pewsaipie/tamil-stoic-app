@@ -602,115 +602,10 @@
     }
   }
 
-  // ---------- reading journey (device-local) ----------
-  function loadJourney() {
-    var raw = safeGet(JOURNEY_KEY);
-    var data = { read: {}, chapters: {}, streak: 0, last: "" };
-    if (raw) {
-      try {
-        var parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === "object") {
-          data.read = parsed.read || {};
-          data.chapters = parsed.chapters || {};
-          data.streak = Number(parsed.streak) || 0;
-          data.last = String(parsed.last || "");
-        }
-      } catch (e) { /* start fresh */ }
-    }
-    // Gentle streak: continuing a chain, restarting it, or simply visiting.
-    var today = new Date().toISOString().slice(0, 10);
-    if (data.last !== today) {
-      var yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-      data.streak = data.last === yesterday ? data.streak + 1 : 1;
-      data.last = today;
-      persistJourney(data);
-    }
-    return data;
-  }
-
-  function persistJourney(data) {
-    safeSet(JOURNEY_KEY, JSON.stringify(data));
-  }
-
-  var journey = loadJourney();
-
-  function markRead(n) {
-    var key = String(n);
-    if (journey.read[key]) return;
-    journey.read[key] = true;
-    persistJourney(journey);
-    scheduleJourneyUpdate();
-  }
-
-  function markChapterVisited(n) {
-    var key = String(n);
-    if (journey.chapters[key]) return;
-    journey.chapters[key] = true;
-    persistJourney(journey);
-    scheduleJourneyUpdate();
-    paintVisitedChapters();
-  }
-
-  function journeyCounts() {
-    return {
-      read: Object.keys(journey.read).length,
-      chapters: Object.keys(journey.chapters).length,
-      streak: journey.streak || 0,
-    };
-  }
-
-  function scheduleJourneyUpdate() {
-    if (journeyRefreshScheduled) return;
-    journeyRefreshScheduled = true;
-    Promise.resolve().then(function () {
-      journeyRefreshScheduled = false;
-      updateJourneyUi();
-    });
-  }
-
-  function updateJourneyUi() {
-    if (!journeyTextEl) return;
-    var counts = journeyCounts();
-    var text;
-    if (counts.read === 0) {
-      text = t("journey.empty", "Your reading journey begins with one couplet.");
-    } else {
-      text = tf("journey.progress", "{r} couplets read · {c} chapters visited · {s}-day streak", {
-        r: counts.read,
-        c: counts.chapters,
-        s: counts.streak,
-      });
-    }
-    if (text !== lastJourneyText) {
-      journeyTextEl.textContent = text;
-      lastJourneyText = text;
-    }
-    if (journeyRingEl) {
-      var fraction = Math.min(1, counts.read / Math.max(1, KURALS.length));
-      journeyRingEl.style.strokeDashoffset = String(97.4 * (1 - fraction));
-    }
-  }
-
-  // Marks cards as read after they are comfortably in view. No-op where the
-  // IntersectionObserver API is unavailable (older WebViews, test shims).
-  var readObserver = null;
-  function observeReadMarks() {
-    if (!("IntersectionObserver" in window) || !listEl) return;
-    if (!readObserver) {
-      readObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
-            var match = (entry.target.id || "").match(/^kural-(\d+)$/);
-            if (match) markRead(Number(match[1]));
-            readObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: [0.55] });
-    }
-    Array.prototype.forEach.call(listEl.querySelectorAll(".kural-card"), function (card) {
-      readObserver.observe(card);
-    });
-  }
+  function markRead() {}
+  function markChapterVisited() {}
+  function updateJourneyUi() {}
+  function observeReadMarks() {}
 
   // ---------- matching ----------
   function matches(k) {
@@ -1108,13 +1003,7 @@
     syncFilterChrome();
   }
 
-  function paintVisitedChapters() {
-    if (!chapterMapBodyEl) return;
-    Array.prototype.forEach.call(chapterMapBodyEl.querySelectorAll(".map-cell"), function (el) {
-      var n = el.getAttribute("data-chapter");
-      el.classList.toggle("visited", !!journey.chapters[n]);
-    });
-  }
+  function paintVisitedChapters() {}
 
   function renderChapterMap() {
     if (!chapterMapBodyEl) return;
@@ -1159,14 +1048,10 @@
     var kurals = KURALS.filter(function (k) { return k.sec === activeTab; });
     var themes = {};
     kurals.forEach(function (k) { themes[k.th] = true; });
-    var read = kurals.filter(function (k) { return journey.read[String(k.n)]; }).length;
-    var visited = chs.filter(function (c) { return journey.chapters[String(c.n)]; }).length;
     var cards = [
       [chs.length, "stat.chapters", "அதிகாரங்கள்", "Chapters"],
       [kurals.length, "stat.kurals", "குறள்கள்", "Couplets"],
       [Object.keys(iyals).length, "stat.iyals", "இயல்கள்", "Divisions"],
-      [read, "stat.read", "படித்தவை", "Read"],
-      [visited, "stat.visited", "பார்த்தவை", "Visited"],
       [Object.keys(themes).length, "stat.themes", "தலைப்புகள்", "Themes"],
     ];
     grid.innerHTML = cards.map(function (c) {

@@ -46,8 +46,22 @@ export function KuralVerse({ kural, size = 'card', className }: KuralVerseProps)
     let cancelled = false
 
     const refine = (): void => {
+      if (cancelled) return
       const em = measureVerseEm(top, bottom)
-      if (em !== null && !cancelled) box.style.setProperty('--verse-em', String(em))
+      if (em !== null) box.style.setProperty('--verse-em', String(em))
+      if (box.clientWidth > 0) {
+        const lines = box.querySelectorAll<HTMLElement>('.verse__line')
+        let maxLinePx = 0
+        lines.forEach((line) => {
+          if (line.scrollWidth > maxLinePx) maxLinePx = line.scrollWidth
+        })
+        if (maxLinePx > box.clientWidth) {
+          const currentEm =
+            Number.parseFloat(box.style.getPropertyValue('--verse-em')) || em || estimate
+          const fittedEm = Math.ceil((currentEm * (maxLinePx / (box.clientWidth * 0.96))) * 10) / 10
+          box.style.setProperty('--verse-em', String(fittedEm))
+        }
+      }
     }
 
     // Warm cache: the face is already usable, so the measurement replaces the

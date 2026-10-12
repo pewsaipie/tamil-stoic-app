@@ -59,23 +59,6 @@ export function BillaDivider({ className }: { className?: string }) {
 }
 
 /**
- * Vertical billa spine — the cover's braid axis, as a progress ornament.
- * Lit plaques follow reading progress; the surya/chandra disc crowns it.
- */
-export function BillaSpine({ progress, className }: { progress: number; className?: string }) {
-  const total = 9
-  const lit = Math.min(total, Math.round(progress * total))
-  return (
-    <div aria-hidden="true" className={cn('ambient-decor flex flex-col items-center gap-1', className)}>
-      <SuryaChandra className="anim-glint h-6 w-6" />
-      {Array.from({ length: total }, (_, i) => (
-        <Plaque key={i} lit={i < lit} className="h-5 w-3.5" />
-      ))}
-    </div>
-  )
-}
-
-/**
  * Surya/chandra medallion — the sun-and-moon disc that crowns a bridal braid.
  * Decorative ring; callers overlay their own content (e.g. the kural number).
  */

@@ -31,7 +31,6 @@ import { ReflectionDialog } from '../components/kural/ReflectionDialog'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { TopBar } from '../components/layout/TopBar'
 import { SITUATIONS } from '../lib/situations'
-import { useReaderStore } from '../store/appStore'
 import { useT } from '../i18n'
 import { BillaDivider } from '../components/ambient/ornaments'
 import type { Kural } from '../lib/types'
@@ -66,9 +65,6 @@ export function Chapters() {
   const [reflectionFor, setReflectionFor] = useState<Kural | null>(null)
 
   const t = useT()
-  const read = useReaderStore((state) => state.read)
-  const visited = useReaderStore((state) => state.chapters)
-  const markRead = useReaderStore((state) => state.markRead)
 
   const index = useMemo(() => (corpus ? buildIndex(corpus) : []), [corpus])
 
@@ -98,31 +94,6 @@ export function Chapters() {
   useEffect(() => {
     setSearchInput(query)
   }, [query])
-
-  // Mark kurals read as their cards scroll into view — the chapter map's visited
-  // marks and the gentle streak grow from real reading, not from page loads.
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return
-    const nodes = document.querySelectorAll<HTMLElement>('[data-kural]:not([data-read])')
-    if (nodes.length === 0) return
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-          const element = entry.target as HTMLElement
-          const n = Number(element.getAttribute('data-kural'))
-          if (Number.isInteger(n) && n > 0) {
-            markRead(n, Math.ceil(n / 10))
-            element.dataset['read'] = 'true'
-          }
-          observer.unobserve(entry.target)
-        }
-      },
-      { rootMargin: '0px 0px -20% 0px' },
-    )
-    nodes.forEach((node) => observer.observe(node))
-    return () => observer.disconnect()
-  }, [results, markRead])
 
   const updateParam = useCallback(
     (changes: Record<string, string | null>) => {
@@ -249,14 +220,12 @@ export function Chapters() {
         ))}
       </div>
 
-      {/* Stats — derived from the corpus and the reader's own journey. */}
-      <dl className="mb-[var(--space-5)] grid grid-cols-3 gap-2 text-center">
+      {/* Stats — derived from the corpus. */}
+      <dl className="mb-[var(--space-5)] grid grid-cols-2 gap-2 text-center sm:grid-cols-4">
         {[
           { label: 'அதிகாரங்கள்', value: corpus.chapters.length },
           { label: 'குறள்கள்', value: corpus.kurals.length },
           { label: 'இயல்கள்', value: new Set(corpus.chapters.map((chapter) => chapter.iyal)).size },
-          { label: 'படித்தவை', value: Object.keys(read).length },
-          { label: 'பார்த்தவை', value: Object.keys(visited).length },
           { label: 'தலைப்புகள்', value: corpus.themes.length - 1 },
         ].map((stat) => (
           <div key={stat.label} className="glass-panel glass-panel--quiet p-2">
@@ -357,7 +326,6 @@ export function Chapters() {
           <ChapterMap
             chapters={corpus.chapters}
             sections={corpus.sections}
-            visited={visited}
             activeBook={book}
             activeChapter={activeChapter}
             onSelect={selectChapter}

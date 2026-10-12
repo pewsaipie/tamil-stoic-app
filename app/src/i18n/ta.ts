@@ -37,12 +37,7 @@ export const TA: Record<string, string> = {
   'situations.sub': 'இன்று நீங்கள் எங்கே? பொருந்தும் வாயிலைத் தேர்ந்தெடுங்கள்; வள்ளுவர் அதற்குப் பேசுவார்.',
   'search.all': '1,330 குறள்களையும் தேடுங்கள்',
 
-  // journey
-  'journey.title': 'உங்கள் வாசிப்புப் பயணம்',
-  'journey.empty': 'உங்கள் வாசிப்புப் பயணம் ஒரு குறளில் தொடங்குகிறது.',
-  'journey.progress': '{r} குறள்கள் படித்தவை · {c} அதிகாரங்கள் பார்த்தவை · {s} நாள் தொடர்',
-  'stat.read': 'படித்தவை',
-  'stat.visited': 'பார்த்தவை',
+  // corpus stats
   'stat.chapters': 'அதிகாரங்கள்',
   'stat.kurals': 'குறள்கள்',
   'stat.iyals': 'இயல்கள்',
@@ -150,20 +145,8 @@ export const TA: Record<string, string> = {
   'credits.title': 'பங்களிப்பும் திறந்த மூலமும்',
   'credits.eyebrow': 'திறந்த மூல · மூலக் குறிப்புகள்',
 
-  // the daily ritual — today's leaf, the lit minute, the reminder
+  // the daily ritual — today's leaf and the reminder
   'ritual.late': 'நீங்கள் குறித்த நேரம் கடந்துவிட்டது. குறள் எப்போதும் இங்கே இருக்கிறது.',
-  'ritual.sit.ta': 'அமைதி',
-  'ritual.sit.title': 'அதனுடன் அமருங்கள்',
-  'ritual.sit.sub': 'விளக்கின் கீழ் ஒரு நிமிடம் — வேறொன்றுமில்லை.',
-  'ritual.sit.done': 'இன்றைய குறளோடு நீங்கள் அமர்ந்துவிட்டீர்கள்.',
-  'ritual.sit.streak': '{s} நாள் அமர்ந்தது',
-  'ritual.sit.start': 'விளக்கை ஏற்று',
-  'ritual.sit.pause': 'தழலை மூடு',
-  'ritual.sit.resume': 'தொடர்',
-  'ritual.sit.reset': 'அணைத்துவிடு',
-  'ritual.sit.length': 'எவ்வளவு எண்ணெய்',
-  'ritual.sit.toast': 'நீங்கள் அதனுடன் அமர்ந்தீர்கள் ✓',
-  'ritual.sit.recorded': 'இன்றைக்குப் பதிவாகிவிட்டது. மீண்டும் அமர்வது உங்கள் விருப்பம்.',
   'reminder.title': 'திருக்குறள் · Thirukkural',
   'reminder.body': 'இன்றைய குறள் உங்களுக்குத் தயாராக இருக்கிறது.',
   'reminder.next': 'அடுத்தது',

@@ -1,14 +1,10 @@
 /**
  * Home — the reader's landing screen.
  *
- * The room, in one scroll: the kurinji sky and its weather, the table with the
- * pot, the lamp and the ola leaf on it, today's couplet under the lamp, the
- * journey as water level, the three books as bundles and the twelve situation
- * doors as weather. Every moving thing here asks the motion runtime whether the
- * room is alive before it draws a frame, and every one of them has a still end
- * state — the pot settled and full, the lamp steady, the sky a fixed gradient.
+ * The room, in one scroll: the kurinji sky and its weather, today's couplet,
+ * the three books as bundles and the twelve situation doors as weather.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { chapterOf, kuralOfTheDay, sectionOf } from '../lib/corpus'
 import { shareKural } from '../lib/share'
@@ -20,10 +16,8 @@ import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
 import { BookTiles } from '../components/home/BookTiles'
 import { BillaDivider, ZariEdge } from '../components/ambient/ornaments'
-import { TableStage } from '../components/canvas/TableStage'
 import { SituationDoors } from '../components/home/SituationDoors'
 import { TopBar } from '../components/layout/TopBar'
-import { JourneyCard } from '../components/journey/JourneyCard'
 import { useT } from '../i18n'
 import { useMotionSuspended } from '../motion'
 import { Link } from 'react-router-dom'
@@ -45,21 +39,8 @@ function pickAnother(kurals: readonly Kural[], current: Kural): Kural {
 export function Home() {
   const { status, corpus, error } = useCorpus()
   const reducedMotion = useReducedMotion()
-  const markRead = useReaderStore((state) => state.markRead)
   const pushToast = useReaderStore((state) => state.pushToast)
-  const read = useReaderStore((state) => state.read)
   const [override, setOverride] = useState<Kural | null>(null)
-  /**
-   * The room's own numbers.
-   *
-   * `progress` is the water level in the pot; `ripple` counts kurals marked read
-   * so the scene can drop one ring per kural. `forming` is the pot being thrown —
-   * it happens while the corpus loads, and for a reader whose pot is still empty,
-   * because a vessel that has never held anything is a vessel being made.
-   */
-  const readCount = Object.keys(read).length
-  const [ripple, setRipple] = useState(0)
-  const seenReads = useRef(readCount)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [helpOpen, setHelpOpen] = useState(false)
@@ -67,16 +48,6 @@ export function Home() {
 
   const today = useMemo(() => (corpus ? kuralOfTheDay(corpus.kurals) : null), [corpus])
   const current = override ?? today
-
-  useEffect(() => {
-    if (current && corpus) markRead(current.n, current.ch)
-  }, [current, corpus, markRead])
-
-  useEffect(() => {
-    if (readCount === seenReads.current) return
-    seenReads.current = readCount
-    setRipple((count) => count + 1)
-  }, [readCount])
 
   /**
    * Home's own dialogs pause the room, like the shell's do.
@@ -165,22 +136,7 @@ export function Home() {
         </div>
       </header>
 
-      {/*
-        The table. The sky above is a shader material; everything here is an
-        object — a pot holding the reader's progress as water, a brass lamp the
-        minute burns in, and the ola leaf the app is about. Decorative to the
-        accessibility tree: the same numbers live in the journey card below.
-      */}
-      <div className="relative mx-auto -mt-[var(--space-7)] max-w-[var(--content-max)] px-4">
-        <TableStage
-          className="rounded-[var(--radius-lg)]"
-          forming={status === 'loading' || (corpus !== null && readCount === 0)}
-          progress={corpus ? readCount / corpus.kurals.length : 0}
-          ripple={ripple}
-        />
-      </div>
-
-      <main id="main" className="mx-auto mt-[var(--space-5)] max-w-[var(--content-max)] px-4 pb-[var(--space-9)]">
+      <main id="main" className="mx-auto mt-[var(--space-6)] max-w-[var(--content-max)] px-4 pb-[var(--space-9)]">
         {status === 'loading' ? <SkeletonKuralCard /> : null}
 
         {status === 'error' ? (
@@ -215,15 +171,6 @@ export function Home() {
               />
             </motion.div>
           </AnimatePresence>
-        ) : null}
-
-        {/* Reading journey */}
-        {corpus ? (
-          <JourneyCard
-            totalKurals={corpus.kurals.length}
-            totalChapters={corpus.chapters.length}
-            className="mt-[var(--space-6)]"
-          />
         ) : null}
 
         {/* Three books */}
@@ -264,7 +211,6 @@ export function Home() {
             </p>
           </section>
         ) : null}
-
       </main>
 
       <CommandPalette

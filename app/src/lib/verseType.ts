@@ -45,17 +45,59 @@ function fontSet(): FontFaceSet | null {
   }
 }
 
+/** Wide Tamil base consonants/vowels in Noto Serif Tamil SemiBold. */
+const WIDE_TAMIL_LETTERS = new Set([
+  0x0b94, // ஔ
+  0x0b99, // ங
+  0x0b9e, // ஞ
+  0x0ba3, // ண
+  0x0bb3, // ள
+  0x0bb4, // ழ
+  0x0bb1, // ற
+  0x0ba9, // ன
+])
+
+function estimateLineEm(line: string): number {
+  let em = 0
+  for (const ch of line) {
+    const code = ch.charCodeAt(0)
+    if (ch === ' ') {
+      em += 0.36
+    } else if (code === 0x0bca || code === 0x0bcb || code === 0x0bcc) {
+      // Two-part dependent vowel signs (ொ, ோ, ௌ) render two spacing glyphs
+      em += 1.32
+    } else if (code === 0x0bbe || code === 0x0bc6 || code === 0x0bc7 || code === 0x0bc8) {
+      // Spacing dependent vowel signs (ா, ெ, ே, ை)
+      em += 0.72
+    } else if (code === 0x0bbf || code === 0x0bc0 || code === 0x0bc1 || code === 0x0bc2) {
+      // Dependent vowel signs that widen the base consonant (ி, ீ, ு, ூ)
+      em += 0.18
+    } else if (code === 0x0bcd) {
+      // Pulli (்)
+      em += 0.05
+    } else if (WIDE_TAMIL_LETTERS.has(code)) {
+      em += 1.02
+    } else if (code >= 0x0b80 && code <= 0x0bff) {
+      // Standard Tamil vowel/consonant/sign
+      em += 0.88
+    } else {
+      em += 0.55
+    }
+  }
+  return em * 1.04
+}
+
 /**
  * A conservative first-paint width for a couplet, in ems.
  *
- * Tamil runs are dense in combining marks, so per-character advance stays well
- * under the estimate; when it occasionally overshoots, the couplet is simply
- * set a little smaller. It is replaced by the measured width as soon as the
- * face is usable.
+ * Accounts for Tamil two-part vowel signs (`ொ`, `ோ`, `ௌ`), spacing vowel signs
+ * (`ா`, `ெ`, `ே`, `ை`), and wide SemiBold consonants so first paint never
+ * underestimates the 4-word top line. It is replaced by the measured width as
+ * soon as the face is usable.
  */
 export function estimateVerseEm(top: string, bottom: string): number {
-  const maxChars = Math.max(top.length, bottom.length)
-  return Math.max(18, Math.ceil(maxChars * 0.6))
+  const raw = Math.ceil(Math.max(estimateLineEm(top), estimateLineEm(bottom)))
+  return Math.min(32, Math.max(18, raw))
 }
 
 /** True when the Tamil verse face can render `sample` right now. */
@@ -104,6 +146,7 @@ function measureProbe(): HTMLSpanElement | null {
   probe = null
   try {
     const el = document.createElement('span')
+    el.lang = 'ta'
     el.setAttribute('aria-hidden', 'true')
     el.style.cssText = [
       'position: absolute',

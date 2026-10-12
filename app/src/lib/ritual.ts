@@ -27,8 +27,6 @@
  * `writeRitual` simply stops writing them, so a reader who downgrades is not
  * asked to migrate anything.
  */
-import { daysBetweenKeys, isDayKey, localDayKey, shiftDayKey } from './dayKey.ts'
-
 export const RITUAL_KEY = 'tamil-stoic-ritual-v1'
 
 export interface ReminderSettings {
@@ -40,8 +38,6 @@ export interface ReminderSettings {
 }
 
 export interface RitualState {
-  /** Day keys on which the reader finished sitting with the couplet. */
-  sat: Record<string, true>
   reminder: ReminderSettings
 }
 
@@ -49,7 +45,6 @@ export interface RitualState {
 export const REMINDER_HOURS: readonly number[] = [6, 9, 12, 18, 21]
 
 export const DEFAULT_RITUAL: RitualState = {
-  sat: {},
   reminder: { enabled: false, hour: 6, minute: 0 },
 }
 
@@ -73,19 +68,10 @@ function readRaw(): Record<string, unknown> | null {
 export function writeRitual(state: RitualState): void {
   if (typeof window === 'undefined') return
   try {
-    window.localStorage.setItem(RITUAL_KEY, JSON.stringify(state))
+    window.localStorage.setItem(RITUAL_KEY, JSON.stringify({ reminder: state.reminder }))
   } catch {
     // Private mode: the ritual lives for this session only.
   }
-}
-
-function readDays(value: unknown): Record<string, true> {
-  const out: Record<string, true> = {}
-  if (typeof value !== 'object' || value === null) return out
-  for (const key of Object.keys(value as Record<string, unknown>)) {
-    if (isDayKey(key)) out[key] = true
-  }
-  return out
 }
 
 function readReminder(value: unknown): ReminderSettings {
@@ -104,74 +90,18 @@ function readReminder(value: unknown): ReminderSettings {
 
 export function readRitual(): RitualState {
   const stored = readRaw()
-  if (!stored) return { ...DEFAULT_RITUAL, sat: {}, reminder: { ...DEFAULT_RITUAL.reminder } }
+  if (!stored) return { reminder: { ...DEFAULT_RITUAL.reminder } }
 
-  // `seal` and `unrolled` are read as absent regardless of what is on disk:
-  // a state written by the previous version must not resurrect the ceremony.
+  // `seal`, `unrolled`, and `sat` are read as absent regardless of what is on
+  // disk: states written by previous versions upgrade cleanly.
   return {
-    sat: readDays(stored['sat']),
     reminder: readReminder(stored['reminder']),
   }
 }
 
 /* ---------------------------------------------------------------------------
- * Queries — pure, so the test suite can exercise them without a browser.
- * ------------------------------------------------------------------------ */
-
-/** Has the reader sat with the couplet on this day? */
-export function didSit(days: Record<string, true>, day: string = localDayKey()): boolean {
-  return days[day] === true
-}
-
-/**
- * Consecutive days ending at `day` on which the reader sat with the couplet.
- *
- * Walks backwards rather than storing a counter, so a counter can never drift
- * out of step with the days it claims. Ends quietly at the first gap — the app
- * never reports that a chain ended.
- */
-export function satStreak(days: Record<string, true>, day: string = localDayKey()): number {
-  if (!isDayKey(day)) return 0
-  let streak = didSit(days, day) ? 1 : 0
-  let cursor = day
-  // A long history is bounded: two years of daily sitting is already generosity.
-  for (let step = 0; step < 730; step += 1) {
-    cursor = shiftDayKey(cursor, -1)
-    if (!didSit(days, cursor)) break
-    streak += 1
-  }
-  return streak
-}
-
-/** Days on which the reader sat with the couplet, most recent first. */
-export function satDays(days: Record<string, true>): string[] {
-  return Object.keys(days).sort().reverse()
-}
-
-/**
- * Whole days since the reader last sat with a couplet — `null` when they never
- * have. Used only to decide how warm a greeting to offer; never to chide.
- */
-export function daysSinceLastSit(
-  days: Record<string, true>,
-  day: string = localDayKey(),
-): number | null {
-  const latest = satDays(days).find((key) => daysBetweenKeys(key, day) >= 0)
-  if (latest === undefined) return null
-  return daysBetweenKeys(latest, day)
-}
-
-/* ---------------------------------------------------------------------------
  * Transitions — read, return a new state, and persist it.
  * ------------------------------------------------------------------------ */
-
-/** Record that the reader finished sitting with today's couplet. */
-export function markSat(state: RitualState, day: string = localDayKey()): RitualState {
-  if (didSit(state.sat, day)) return state
-  const next: RitualState = { ...state, sat: { ...state.sat, [day]: true } }
-  writeRitual(next)
-  return next
-}
 
 export function setReminder(state: RitualState, reminder: ReminderSettings): RitualState {
   const next: RitualState = { ...state, reminder }

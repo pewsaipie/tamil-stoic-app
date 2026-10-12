@@ -212,15 +212,16 @@
    * Reader typography
    * ------------------------------------------------------------------------ */
   /* The couplet block sizes itself from its container and from `--verse-em` —
-     the measured width, in ems, of the longer line (lib/verseType.ts). One
-     formula, no post-paint rescaling: a couplet fits its column at every text
-     size, and the size it first paints at is the size it keeps. */
+     the measured width, in ems, of the longer line (lib/verseType.ts).
+     `cqi` is evaluated on `.verse__line` (a child of `.verse`'s inline-size
+     container) so it queries `.verse`'s own inner width rather than the
+     viewport, keeping all four words of the top line cleanly inside the card. */
   .verse {
     container-type: inline-size;
     width: 100%;
     max-width: 100%;
     font-family: var(--font-tamil);
-    font-size: min(var(--verse-size), calc(98cqi / var(--verse-em, 24)));
+    font-size: min(var(--verse-size), calc(96cqi / var(--verse-em, 26)));
     font-weight: 600;
     line-height: var(--verse-leading);
     letter-spacing: 0.01em;
@@ -228,7 +229,7 @@
   }
 
   .verse--focus {
-    font-size: min(var(--verse-size-focus), calc(98cqi / var(--verse-em, 24)));
+    font-size: min(var(--verse-size-focus), calc(96cqi / var(--verse-em, 26)));
   }
 
   /* One அடி per single horizontal line, always. The top line (at most four
@@ -238,6 +239,11 @@
     display: block;
     white-space: nowrap;
     hyphens: none;
+    font-size: min(var(--verse-size), calc(96cqi / var(--verse-em, 26)));
+  }
+
+  .verse--focus .verse__line {
+    font-size: min(var(--verse-size-focus), calc(96cqi / var(--verse-em, 26)));
   }
 
   .verse__line + .verse__line {

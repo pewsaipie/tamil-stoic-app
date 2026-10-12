@@ -44,8 +44,6 @@ The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
   render under `font-display: block`, and couplets are sized against the Tamil face's
   real metrics (`app/src/lib/verseType.ts`) before first visible paint: Tamil text never
   morphs from a fallback face or rescales after it appears, on any page
-- **Reading journey** — device-local read marks, visited-chapter marks on the 133-chapter
-  map, a progress ring, and a gentle daily streak (never guilt-based)
 - **Focus reader** — read a single couplet full-screen with prev/next, plus per-card
   next/previous navigation within the current results
 - **Command palette (⌘K / Ctrl+K)** and keyboard shortcuts (`/` `j` `k` `s` `l` `?`)

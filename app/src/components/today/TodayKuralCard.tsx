@@ -26,8 +26,6 @@ export interface TodayKuralCardProps {
   onShare: () => void
 }
 
-
-
 export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: TodayKuralCardProps) {
   const layers = useReaderStore((state) => state.layers)
   const toggleSaved = useReaderStore((state) => state.toggleSaved)
@@ -35,7 +33,6 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
   const reducedMotion = useReducedMotion()
   const t = useT()
   const pushToast = useReaderStore((state) => state.pushToast)
-
 
   return (
     <GlassCard
@@ -48,20 +45,28 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
       {/* The kanjeevaram zari edge along the card's top. */}
       <ZariEdge className="-mx-6 -mt-6 mb-5 sm:-mx-8 sm:-mt-8" />
 
-      {/* Surya/chandra medallion carrying the kural number. */}
-      <div className="pointer-events-none absolute top-5 right-5 h-16 w-16">
-        <SuryaChandra className="anim-glint h-full w-full" />
-        <span className="absolute inset-0 grid place-items-center text-sm font-semibold text-accent-text">
-          {kural.n}
-        </span>
-      </div>
+      {/* Header row: eyebrow + book › chapter on the left, kural medallion on
+          the right in normal flow so it never overlaps the couplet below. */}
+      <header className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <p className="m-0 text-xs font-medium tracking-wide text-accent-text uppercase">
+            <span lang="ta">{t('daily.title', "Today's Kural · இன்றைய குறள்")}</span>
+          </p>
+          <p className="mt-1 mb-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs tracking-wide text-muted uppercase">
+            <span lang="ta">{section?.ta ?? ''}</span>
+            <span aria-hidden="true">›</span>
+            <span lang="ta">{chapter?.ta ?? ''}</span>
+          </p>
+        </div>
 
-      {/* Breadcrumb: book › chapter */}
-      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs tracking-wide text-muted uppercase">
-        <span lang="ta">{section?.ta ?? ''}</span>
-        <span aria-hidden="true">›</span>
-        <span lang="ta">{chapter?.ta ?? ''}</span>
-      </p>
+        {/* Surya/chandra medallion carrying the kural number. */}
+        <div className="pointer-events-none relative h-14 w-14 shrink-0">
+          <SuryaChandra className="anim-glint h-full w-full" />
+          <span className="absolute inset-0 grid place-items-center text-xs font-semibold text-accent-text">
+            {kural.n}
+          </span>
+        </div>
+      </header>
 
       <div className="mt-[var(--space-5)] space-y-[var(--space-5)]">
         {layers.tamil ? <KuralVerse kural={kural} size="focus" /> : null}
@@ -96,7 +101,7 @@ export function TodayKuralCard({ kural, chapter, section, onAnother, onShare }: 
         ) : null}
       </div>
 
-      {/* Action row — Listen joins this row with the speech port (next step). */}
+      {/* Action row */}
       <div className="mt-[var(--space-6)] flex flex-wrap gap-3">
         <Button
           variant={saved ? 'primary' : 'secondary'}
