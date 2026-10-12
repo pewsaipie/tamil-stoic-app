@@ -1,10 +1,8 @@
 /**
- * The daily ritual — today's leaf, and the minute spent with it.
+ * The daily ritual — today's leaf, and the optional daily reminder.
  *
  * The reader arrives to find the couplet already on the table: no seal, no
- * ceremony to get past, nothing between them and the verse. What the screen
- * offers is *attention* — the lamp, and a minute of quiet under it — and the
- * reminder that says the leaf is waiting. That is the whole ritual.
+ * ceremony to get past, nothing between them and the verse.
  *
  * Two rules keep this honest:
  *
@@ -12,14 +10,9 @@
  *     hidden. Everything below it is optional.
  *   - **The reminder spoils nothing.** A notification says the couplet is
  *     ready; it never quotes it.
- *
- * The lamp in the table scene is driven from here, through `lampBus`, so a
- * reader who lights the lamp sees the *room* answer rather than a progress bar.
- * See `materials/objects/lampBus.ts`.
  */
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { SitTimer } from './SitTimer'
 import { TodayKuralCard } from './TodayKuralCard'
 import { useReaderStore } from '../../store/appStore'
 import { useReducedMotion } from '../../hooks/useReader'
@@ -95,8 +88,6 @@ export function DailyRitual({ kural, chapter, section, onAnother, onShare }: Dai
           {t('ritual.late', 'It is past the hour you set. The couplet is here whenever you are.')}
         </p>
       ) : null}
-
-      <SitTimer className="mt-[var(--space-5)]" />
     </>
   )
 }

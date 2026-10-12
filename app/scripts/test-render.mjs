@@ -222,11 +222,21 @@ check(
   !text().includes('sealed'),
   'and nothing on the screen mentions sealing at all',
 )
-check(text().includes('Sit with it'), 'a minute under the lamp is offered beneath the couplet')
-check(text().includes('Light the lamp'), 'and lighting it is the action it says it is')
+check(
+  !text().includes('Sit with it') && !text().includes('Light the lamp'),
+  'the Sit with it timer is retired and absent from the home page',
+)
+check(
+  !text().includes('Your reading journey') && !text().includes('உங்கள் வாசிப்புப் பயணம்'),
+  'the reading journey card is retired and absent from the home page',
+)
 
-const todayVerse = document.querySelectorAll('[data-verse-line]')
-check(todayVerse.length >= 2, "today's couplet renders two Tamil lines")
+const todayVerse = document.querySelectorAll('#daily-couplet [data-verse-line]')
+check(todayVerse.length === 2, "today's couplet renders two Tamil lines inside #daily-couplet")
+check(
+  document.querySelector('#daily-couplet header') !== null,
+  "today's couplet card places its header and medallion in a dedicated header row above the verse",
+)
 check(text().includes('மூன்று பால்கள்'), 'the three books section renders')
 check(text().includes('சூழ்நிலை'), 'the situation doors render')
 
@@ -430,11 +440,11 @@ check(
   'the saved destination is translated too',
 )
 
-console.log('journey:')
+console.log('home return:')
 await navigate('#/', () => text().includes('பால்கள்') || text().includes('books'))
 check(
-  text().includes('படித்தவை') || text().includes('kurals read') || text().includes('journey'),
-  "the reading journey reflects the kural the reader opened",
+  !text().includes('படித்தவை') && !text().includes('kurals read') && !text().includes(' வாசிப்புப் பயணம்'),
+  'returning home does not render a reading journey section',
 )
 
 console.log('credits:')

@@ -13,10 +13,8 @@ import {
   ONBOARDING_KEY,
   INSTALL_DISMISSED_KEY,
   readFlag,
-  readJourney,
   readPreferences,
   writeFlag,
-  writeJourney,
   writePreferences,
   type FontSize,
   type LineSpacing,
@@ -25,9 +23,7 @@ import {
   type UiLanguage,
 } from '../lib/preferences'
 import { listSaved, putSaved, removeSaved, type SavedRecord } from '../lib/library'
-import { localDayKey } from '../lib/dayKey'
 import {
-  markSat,
   readRitual,
   setReminder,
   type ReminderSettings,
@@ -58,16 +54,7 @@ interface LibraryState {
   setNote: (n: number, note: string) => Promise<void>
 }
 
-interface JourneyState {
-  read: Record<string, true>
-  chapters: Record<string, true>
-  streak: number
-  markRead: (n: number, chapter: number) => void
-}
-
 interface RitualSlice extends RitualState {
-  /** Record a finished minute of sitting with today's couplet. */
-  sit: () => void
   updateReminder: (reminder: ReminderSettings) => void
 }
 
@@ -87,12 +74,10 @@ interface AppState {
 
 export type ReaderStore = ReaderPreferencesState &
   LibraryState &
-  JourneyState &
   RitualSlice &
   AppState
 
 const bootPreferences = readPreferences()
-const bootJourney = readJourney()
 const bootRitual = readRitual()
 
 let toastSequence = 0
@@ -109,16 +94,6 @@ export const useReaderStore = create<ReaderStore>((set, get) => {
       layers: state.layers,
       reduceMotion: state.reduceMotion,
       highContrast: state.highContrast,
-    })
-  }
-
-  const persistJourney = (): void => {
-    const state = get()
-    writeJourney({
-      read: state.read,
-      chapters: state.chapters,
-      streak: state.streak,
-      last: localDayKey(),
     })
   }
 
@@ -185,37 +160,9 @@ export const useReaderStore = create<ReaderStore>((set, get) => {
       set({ saved: [...get().saved.filter((item) => item.n !== n), record] })
     },
 
-    /* ---------- reading journey ---------- */
-    read: { ...bootJourney.read },
-    chapters: { ...bootJourney.chapters },
-    streak: bootJourney.streak,
-
-    markRead: (n, chapter) => {
-      const key = String(n)
-      const chapterKey = String(chapter)
-      const { read, chapters } = get()
-      if (read[key] && chapters[chapterKey]) return
-      set({
-        read: { ...read, [key]: true },
-        chapters: { ...chapters, [chapterKey]: true },
-      })
-      persistJourney()
-    },
-
     /* ---------- the daily ritual ---------- */
     ...bootRitual,
-    sat: { ...bootRitual.sat },
     reminder: { ...bootRitual.reminder },
-
-    // Each transition below writes storage and returns the next state; only the
-    // fields it actually changed are pushed back into the store, so a ritual
-    // update can never disturb preferences, library or journey.
-    sit: () => {
-      set({ sat: markSat(get()).sat })
-      if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-        navigator.vibrate([8, 60, 12])
-      }
-    },
 
     updateReminder: (reminder) => set({ reminder: setReminder(get(), reminder).reminder }),
 
@@ -261,6 +208,3 @@ export async function hydrateLibrary(): Promise<void> {
  * ------------------------------------------------------------------------ */
 export const selectIsSaved = (n: number) => (state: ReaderStore): boolean =>
   state.saved.some((record) => record.n === n)
-
-export const selectReadCount = (state: ReaderStore): number => Object.keys(state.read).length
-export const selectChapterCount = (state: ReaderStore): number => Object.keys(state.chapters).length

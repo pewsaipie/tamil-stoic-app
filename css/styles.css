@@ -681,6 +681,9 @@ a.kural-num:hover { background: var(--btn-accent-bg); color: var(--btn-accent-in
   text-align: center;
   margin: 4px 0 10px;
 }
+.kural-ta .line {
+  font-size: min(clamp(16px, 3.2vw, 25px), 3.4cqi);
+}
 .kural-ta .line,
 .saved-item-verse .line,
 .reflection-verse .line {
@@ -1371,11 +1374,13 @@ body[data-show-transliteration="false"] .kural-transliteration-block,
 body[data-show-translation="false"] .kural-translation-block,
 body[data-show-simple="false"] .kural-meaning-block { display: none; }
 
-body[data-font-size="large"] .kural-ta { font-size: clamp(25px, 4.1vw, 32px); }
+body[data-font-size="large"] .kural-ta,
+body[data-font-size="large"] .kural-ta .line { font-size: min(clamp(25px, 4.1vw, 32px), 3.4cqi); }
 body[data-font-size="large"] .kural-translit { font-size: 17px; }
 body[data-font-size="large"] .kural-en { font-size: 21px; }
 body[data-font-size="large"] .kural-simple { font-size: 17px; }
-body[data-font-size="x-large"] .kural-ta { font-size: clamp(28px, 4.55vw, 36px); }
+body[data-font-size="x-large"] .kural-ta,
+body[data-font-size="x-large"] .kural-ta .line { font-size: min(clamp(28px, 4.55vw, 36px), 3.4cqi); }
 body[data-font-size="x-large"] .kural-translit { font-size: 18px; }
 body[data-font-size="x-large"] .kural-en { font-size: 23px; }
 body[data-font-size="x-large"] .kural-simple { font-size: 18px; }

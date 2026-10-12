@@ -9,8 +9,6 @@ import { cn } from '../../lib/cn'
 export interface ChapterMapProps {
   chapters: readonly Chapter[]
   sections: readonly Section[]
-  /** Chapter numbers the reader has visited. */
-  visited: Record<string, true>
   activeBook: number | 'all'
   activeChapter: number | null
   onSelect: (chapter: number) => void
@@ -19,7 +17,6 @@ export interface ChapterMapProps {
 export function ChapterMap({
   chapters,
   sections,
-  visited,
   activeBook,
   activeChapter,
   onSelect,
@@ -49,7 +46,6 @@ export function ChapterMap({
             </h4>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(44px,1fr))] gap-1">
               {group.map((chapter) => {
-                const isVisited = visited[String(chapter.n)] === true
                 const isActive = activeChapter === chapter.n
                 return (
                   <button
@@ -63,19 +59,11 @@ export function ChapterMap({
                       'border border-line bg-glass text-sm text-muted',
                       'transition-colors duration-[var(--dur)] hover:border-line-strong hover:text-ink',
                       isActive && 'border-accent bg-accent text-on-accent',
-                      !isActive && isVisited && 'text-accent-text',
                     )}
                   >
                     <span aria-hidden="true">{chapter.n}</span>
-                    {isVisited && !isActive ? (
-                      <span
-                        aria-hidden="true"
-                        className="absolute right-1 bottom-1 h-1.5 w-1.5 rounded-full bg-accent"
-                      />
-                    ) : null}
                     <span className="sr-only">
                       Chapter {chapter.n}: {chapter.ta} ({chapter.en})
-                      {isVisited ? ' — visited' : ''}
                     </span>
                   </button>
                 )

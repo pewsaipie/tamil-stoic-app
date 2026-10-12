@@ -15,7 +15,6 @@
 import type { LayerKey } from './types'
 
 export const PREF_KEY = 'tamil-stoic-reader-preferences-v1'
-export const JOURNEY_KEY = 'tamil-stoic-journey-v1'
 export const ONBOARDING_KEY = 'tamil-stoic-onboarding-seen-v1'
 export const INSTALL_DISMISSED_KEY = 'tamil-stoic-install-dismissed-v1'
 
@@ -32,13 +31,6 @@ export interface Preferences {
   layers: Record<LayerKey, boolean>
   reduceMotion: boolean
   highContrast: boolean
-}
-
-export interface Journey {
-  read: Record<string, true>
-  chapters: Record<string, true>
-  streak: number
-  last: string
 }
 
 /** Legacy vocabulary → React vocabulary. */
@@ -137,37 +129,6 @@ export function writePreferences(preferences: Preferences): void {
     reduceMotion: preferences.reduceMotion,
     highContrast: preferences.highContrast,
   })
-}
-
-function today(offsetDays = 0): string {
-  return new Date(Date.now() + offsetDays * 86_400_000).toISOString().slice(0, 10)
-}
-
-export function readJourney(): Journey {
-  const stored = readJson(JOURNEY_KEY) ?? {}
-  const read = typeof stored['read'] === 'object' && stored['read'] !== null ? stored['read'] : {}
-  const chapters =
-    typeof stored['chapters'] === 'object' && stored['chapters'] !== null ? stored['chapters'] : {}
-
-  const journey: Journey = {
-    read: read as Record<string, true>,
-    chapters: chapters as Record<string, true>,
-    streak: Number(stored['streak']) || 0,
-    last: typeof stored['last'] === 'string' ? stored['last'] : '',
-  }
-
-  // Gentle streak: continuing a chain, restarting it, or simply visiting.
-  if (journey.last !== today()) {
-    journey.streak = journey.last === today(-1) ? journey.streak + 1 : 1
-    journey.last = today()
-    writeJourney(journey)
-  }
-
-  return journey
-}
-
-export function writeJourney(journey: Journey): void {
-  writeJson(JOURNEY_KEY, journey)
 }
 
 export function readFlag(key: string): boolean {

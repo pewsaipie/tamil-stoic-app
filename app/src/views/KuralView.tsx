@@ -41,16 +41,10 @@ export function KuralView() {
   const saved = useReaderStore(selectIsSaved(kural?.n ?? -1))
   const toggleSaved = useReaderStore((state) => state.toggleSaved)
   const pushToast = useReaderStore((state) => state.pushToast)
-  const markRead = useReaderStore((state) => state.markRead)
   const layers = useReaderStore((state) => state.layers)
   const stopSpeech = useSpeechStore((state) => state.stop)
 
   const [reflectionOpen, setReflectionOpen] = useState(false)
-
-  // Landing on a kural counts as reading it — that is what grows the journey.
-  useEffect(() => {
-    if (kural) markRead(kural.n, kural.ch)
-  }, [kural, markRead])
 
   // A new kural starts at the top, and leaving the page stops any recitation.
   useEffect(() => {

@@ -40,11 +40,6 @@ const {
   DEFAULT_RITUAL,
   readRitual,
   writeRitual,
-  didSit,
-  satStreak,
-  satDays,
-  daysSinceLastSit,
-  markSat,
   setReminder,
   REMINDER_HOURS,
 } = await import('../src/lib/ritual.ts')
@@ -120,14 +115,13 @@ console.log('\nritual storage:')
 
 resetStorage()
 const fresh = readRitual()
-check(Object.keys(fresh.sat).length === 0, 'a new reader has sat with nothing')
 check(fresh.reminder.enabled === false, 'a new reader has asked for no reminder')
 check(fresh.reminder.hour === DEFAULT_RITUAL.reminder.hour, 'the reminder hour has a sensible default')
 
 /**
- * A state written by the *previous* version of the app — the one with the seal.
- * It must be read without complaint, and the retired fields must be dropped:
- * nothing may resurrect a ceremony the reader has retired.
+ * A state written by previous versions of the app — with `seal`, `unrolled`, and
+ * `sat`. It must be read without complaint, and the retired fields must be
+ * dropped: nothing may resurrect retired features.
  */
 resetStorage({
   seal: true,
@@ -138,15 +132,17 @@ resetStorage({
 const migrated = readRitual()
 check(!('seal' in migrated), 'a retired field is not read back into the state')
 check(!('unrolled' in migrated), 'and neither is the day-map that went with it')
-check(didSit(migrated.sat, '2026-10-04'), 'while the minute still sat is kept')
-check(Object.keys(migrated.sat).length === 1, 'a malformed day key is dropped rather than believed')
+check(!('sat' in migrated), 'and the retired sit-timer day-map is dropped as well')
 check(migrated.reminder.hour === DEFAULT_RITUAL.reminder.hour, 'a missing hour falls back to the default')
 
 // What the app writes from now on must not carry the retired fields either.
 resetStorage()
-const written = writeRitual({ ...DEFAULT_RITUAL, sat: {}, reminder: DEFAULT_RITUAL.reminder })
+writeRitual({ reminder: DEFAULT_RITUAL.reminder })
 const onDisk = JSON.parse(store.get(RITUAL_KEY))
-check(!('seal' in onDisk) && !('unrolled' in onDisk), 'and the app stops writing them')
+check(
+  !('seal' in onDisk) && !('unrolled' in onDisk) && !('sat' in onDisk),
+  'and the app stops writing them',
+)
 
 resetStorage({ reminder: { enabled: true, hour: 99, minute: -5 } })
 const clamped = readRitual()
@@ -157,66 +153,22 @@ check(clamped.reminder.minute === 0, 'a negative minute is clamped into range')
 resetStorage('this is not json')
 try {
   const recovered = readRitual()
-  check(Object.keys(recovered.sat).length === 0, 'corrupt storage falls back to a fresh state')
+  check(recovered.reminder.enabled === false, 'corrupt storage falls back to a fresh state')
 } catch (error) {
   check(false, `corrupt storage must not throw (${error.message})`)
 }
 
 resetStorage({ seal: 'yes', unrolled: 'no', sat: null, reminder: null })
 const typed = readRitual()
-check(Object.keys(typed.sat).length === 0, 'a non-object day map falls back to empty')
 check(typed.reminder.enabled === false, 'a null reminder falls back to off')
-
-/* ---------------------------------------------------------------------------
- * 3. The minute, and the streak it makes.
- * ------------------------------------------------------------------------ */
-
-console.log('\nsitting with the couplet:')
-
-const satState = markSat({ ...DEFAULT_RITUAL }, '2026-10-04')
-check(didSit(satState.sat, '2026-10-04'), 'finishing a minute records the day')
-check(Object.keys(markSat(satState, '2026-10-04').sat).length === 1, 'sitting twice records one day')
-check(!didSit(satState.sat, '2026-10-03'), 'a day not sat with is not claimed')
-
-check(satStreak({}, '2026-10-04') === 0, 'no history is a streak of zero')
-check(satStreak({ '2026-10-04': true }, '2026-10-04') === 1, 'one day is a streak of one')
-check(
-  satStreak({ '2026-10-02': true, '2026-10-03': true, '2026-10-04': true }, '2026-10-04') === 3,
-  'consecutive days count back to the last gap',
-)
-check(
-  satStreak({ '2026-10-01': true, '2026-10-04': true }, '2026-10-04') === 1,
-  'a gap ends the count without erasing history',
-)
-check(
-  satStreak({ '2026-10-03': true, '2026-10-04': true }, '2026-10-06') === 0,
-  'a streak is counted from the day asked about, not from the last entry',
-)
-check(satStreak({ '2026-10-04': true }, 'not-a-day') === 0, 'a malformed day yields no streak')
-
-// The walk is bounded: a state claiming every day for two years must not hang.
-const dense = {}
-for (let i = 0; i < 800; i += 1) dense[shiftDayKey('2026-10-04', -i)] = true
-const started = Date.now()
-const denseStreak = satStreak(dense, '2026-10-04')
-check(denseStreak >= 730, 'a long unbroken history is counted')
-check(Date.now() - started < 1000, 'and counted quickly')
-
-check(satDays({ '2026-10-01': true, '2026-10-04': true })[0] === '2026-10-04', 'sat days come back newest first')
-check(daysSinceLastSit({}, '2026-10-04') === null, 'a reader who has never sat has no gap to measure')
-check(daysSinceLastSit({ '2026-10-01': true }, '2026-10-04') === 3, 'and the gap is counted in local days')
 
 console.log('\npersistence:')
 
 resetStorage()
-const persisted = markSat(readRitual(), '2026-10-04')
-check(store.has(RITUAL_KEY), 'finishing a minute writes storage')
-check(readRitual().sat['2026-10-04'] === true, 'and the write survives a re-read')
-check(
-  JSON.parse(store.get(RITUAL_KEY)).sat['2026-10-04'] === true,
-  'the stored shape is the one the app documents',
-)
-check(setReminder(persisted, { enabled: true, hour: 6, minute: 0 }).reminder.enabled === true, 'reminder changes persist')
+const persisted = setReminder(readRitual(), { enabled: true, hour: 6, minute: 0 })
+check(store.has(RITUAL_KEY), 'updating reminder writes storage')
+check(persisted.reminder.enabled === true, 'reminder changes persist')
+check(readRitual().reminder.enabled === true, 'and the write survives a re-read')
 
 // Private browsing: every write can fail, and the app must keep working.
 const realWindow = globalThis.window
@@ -232,8 +184,8 @@ globalThis.window = {
   },
 }
 try {
-  const denied = markSat(readRitual(), '2026-10-04')
-  check(denied.sat['2026-10-04'] === true, 'denied storage still records the minute in memory')
+  const denied = setReminder(readRitual(), { enabled: true, hour: 9, minute: 0 })
+  check(denied.reminder.hour === 9, 'denied storage still updates the reminder in memory')
 } catch (error) {
   check(false, `denied storage must not throw (${error.message})`)
 }
@@ -243,8 +195,11 @@ globalThis.window = realWindow
 delete globalThis.window
 try {
   const headless = readRitual()
-  check(Object.keys(headless.sat).length === 0, 'a module imported outside a browser still has a valid state')
-  check(markSat(headless, '2026-10-04').sat['2026-10-04'] === true, 'and can still record a minute')
+  check(headless.reminder.enabled === false, 'a module imported outside a browser still has a valid state')
+  check(
+    setReminder(headless, { enabled: true, hour: 6, minute: 0 }).reminder.enabled === true,
+    'and can still update the reminder',
+  )
 } catch (error) {
   check(false, `a headless import must not throw (${error.message})`)
 }
