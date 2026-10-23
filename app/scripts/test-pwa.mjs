@@ -64,6 +64,19 @@ check(/intents\.json/.test(sw), 'the built worker precaches the Ask Valluvar mod
 check(/\.woff2/.test(sw), 'the built worker precaches the fonts (offline typography)')
 check(/index\.html/.test(sw), 'the built worker precaches the app shell')
 check(files.some((file) => file.endsWith('.css')), 'the built stylesheet is part of the bundle')
+// The ornament must ship on the ordinary browser URL as well as in the
+// installable cache: a source-only CSS rule does not make desktop art visible.
+const builtCss = files.filter((file) => file.endsWith('.css'))
+  .map((file) => fs.readFileSync(path.join(dist, 'assets', file), 'utf8')).join('\n')
+for (const name of ['bamboo-left', 'honeycomb', 'bloom-corner']) {
+  const asset = files.find((file) => file.startsWith(name + '-') && file.endsWith('.webp'))
+  check(Boolean(asset && builtCss.includes(asset) && sw.includes(asset)),
+    `${name} is referenced by browser CSS and precached for offline Home`)
+}
+check(builtCss.includes('var(--content-max) + 160px'),
+  'the wide desktop hero keeps its ornaments by the centered content')
+check(fs.readFileSync(path.join(root, 'src', 'views', 'Home.tsx'), 'utf8').includes('lg:min-h-[var(--hero-height)]'),
+  'desktop Home gives the tall ornament layers room to render')
 check(
   fs.readdirSync(path.join(dist, 'data')).includes('kurals.json'),
   'the corpus ships as data/kurals.json',

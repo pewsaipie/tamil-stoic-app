@@ -29,7 +29,7 @@
 
   <!-- Self-hosted fonts: offline-complete, no third-party runtime requests -->
   <link rel="stylesheet" href="css/fonts.css" />
-  <link rel="stylesheet" href="css/styles.css?v=7" />
+  <link rel="stylesheet" href="css/styles.css?v=8" />
 
   <!--
     Preload the faces first paint needs. fonts.css sets `font-display: block`,
@@ -57,6 +57,13 @@
   </div>
 
   <header class="site-header view-home">
+    <!-- The same Kurinji Vaikarai Home dressing as the React reader. Kept below
+         the heading and pot, with no hit targets or accessibility noise. -->
+    <div class="ornament-stage" data-ornament="kurinji-vaikarai" aria-hidden="true">
+      <div class="ornament-layer ornament-layer--bamboo"><div class="ornament-sway ornament-sway--bamboo"></div></div>
+      <div class="ornament-layer ornament-layer--honey"><div class="ornament-sway ornament-sway--honey"><div class="ornament-sheen"></div></div></div>
+      <div class="ornament-layer ornament-layer--bloom"><div class="ornament-sway ornament-sway--bloom"></div></div>
+    </div>
     <div class="hero-pot" aria-hidden="true">
       <img src="assets/img/sangam-pot.svg" alt="" class="hero-art" width="240" height="204" />
     </div>
@@ -489,6 +496,6 @@
   <script src="data/kurals.js?v=7" defer></script>
   <script src="js/storage.js?v=7" defer></script>
   <script src="js/app.js?v=7" defer></script>
-  <script src="js/companion.js?v=7" defer></script>
+  <script src="js/companion.js?v=8" defer></script>
 </body>
 </html>

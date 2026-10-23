@@ -81,7 +81,9 @@ npm run build      # static bundle in app/dist, published to Pages
 ```
 
 The original static reader (no build step) still runs from the repository root, and is
-kept as the parity reference the React app was verified against:
+kept as the parity reference the React app was verified against. Home’s Kurinji Vaikarai
+dressing is shared visually with this reader; the deployed React reader also keeps
+the ornament beside the content on wide desktop screens:
 
 ```bash
 python3 -m http.server 8000

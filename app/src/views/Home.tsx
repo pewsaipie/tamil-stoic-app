@@ -72,7 +72,7 @@ export function Home() {
       {/* Hero zone. The gradient is the documented no-WebGL fallback; when the
           device can render it, the AgedLeaf shader paints over it. */}
       <header
-        className="relative isolate overflow-hidden px-4 pt-[var(--space-7)] pb-[var(--space-6)]"
+        className="relative isolate overflow-hidden px-4 pt-[var(--space-7)] pb-[var(--space-6)] lg:flex lg:min-h-[var(--hero-height)] lg:flex-col lg:justify-center"
         style={{
           minHeight: '240px',
           backgroundImage:

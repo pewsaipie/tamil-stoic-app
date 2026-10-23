@@ -1076,8 +1076,32 @@
     }
   }
 
+  // The desktop reader shares Home's pointer response with the React app.
+  // The image layers are static without a fine pointer or when either motion
+  // preference is reduced; no animation frame or listener per layer is needed.
+  function initialiseHomeOrnament() {
+    var stage = document.querySelector('.site-header .ornament-stage');
+    if (!stage || !window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return;
+    var osReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var last = 0;
+    stage.parentElement.addEventListener('pointermove', function (event) {
+      if (osReduced.matches || document.body.dataset.reduceMotion === 'true') return;
+      var now = performance.now();
+      if (now - last < 48) return;
+      last = now;
+      var rect = stage.getBoundingClientRect();
+      stage.style.setProperty('--ornament-par-x', ((event.clientX - rect.left) / Math.max(1, rect.width) - 0.5).toFixed(3));
+      stage.style.setProperty('--ornament-par-y', ((event.clientY - rect.top) / Math.max(1, rect.height) - 0.5).toFixed(3));
+    }, { passive: true });
+    stage.parentElement.addEventListener('pointerleave', function () {
+      stage.style.removeProperty('--ornament-par-x');
+      stage.style.removeProperty('--ornament-par-y');
+    });
+  }
+
   var ready = (async function () {
     applyPreferences();
+    initialiseHomeOrnament();
     bindUi();
     initialiseInstallPrompt();
     initialiseServiceWorker();
