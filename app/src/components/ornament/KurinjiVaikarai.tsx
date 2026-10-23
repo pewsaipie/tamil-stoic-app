@@ -20,36 +20,14 @@
  *     tiers do not mount the dressing at all; every other quieting lives in
  *     the stylesheet with the rest of the decor.
  */
-import { useEffect, useRef } from 'react'
-import { useMedia, useMotionVerdict } from '../../motion'
+import { useRef } from 'react'
 import { useMaterials } from '../../materials/useMaterials.ts'
+import { useOrnamentParallax } from './useOrnamentParallax'
 
 export function KurinjiVaikarai() {
-  const { moving } = useMotionVerdict()
   const { tier } = useMaterials()
-  const finePointer = useMedia('(pointer: fine)')
   const stageRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    if (!moving || !finePointer) return
-    const stage = stageRef.current
-    if (!stage) return
-
-    let last = 0
-    const onMove = (event: PointerEvent): void => {
-      const now = performance.now()
-      if (now - last < 48) return
-      last = now
-      stage.style.setProperty('--ornament-par-x', ((event.clientX / window.innerWidth - 0.5) * 2).toFixed(3))
-      stage.style.setProperty(
-        '--ornament-par-y',
-        ((event.clientY / Math.max(1, window.innerHeight) - 0.5) * 1.2).toFixed(3),
-      )
-    }
-
-    window.addEventListener('pointermove', onMove, { passive: true })
-    return () => window.removeEventListener('pointermove', onMove)
-  }, [finePointer, moving])
+  useOrnamentParallax(stageRef)
 
   if (tier === 'plain' || tier === 'contrast') return null
 

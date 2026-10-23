@@ -6,7 +6,7 @@
 import { Link } from 'react-router-dom'
 import { useT } from '../i18n'
 import { GlassCard } from '../components/ui/GlassCard'
-import { BillaDivider } from '../components/ambient/ornaments'
+import { CanonDivider } from '../components/ornament/CanonDivider'
 
 const REPO = 'https://github.com/pewsaipie/tamil-stoic-app'
 const DATASET = 'https://github.com/tk120404/thirukkural'
@@ -33,7 +33,7 @@ export function Credits() {
         Tamil Stoic is built with respect for the people and projects behind it. The source code and
         licensing are open for anyone to read, reuse and improve.
       </p>
-      <BillaDivider className="mb-[var(--space-5)]" />
+      <CanonDivider className="mb-[var(--space-5)]" />
 
       <div className="space-y-[var(--space-4)]">
         <GlassCard quiet className="p-5">
@@ -130,6 +130,43 @@ export function Credits() {
               </a>
             </li>
           </ul>
+        </GlassCard>
+
+        <GlassCard quiet className="p-5">
+          <h2 className="m-0 text-base text-ink">Sangam visual canon &amp; archaeology</h2>
+          <p className="mt-2 mb-0 text-sm text-muted">
+            The six route landscapes are AI-assisted and procedural artistic reconstructions, not
+            photographs or scans of excavated objects. Archaeological sources ground material
+            classes such as clay lamps and carnelian beads; Sangam literature guides landscape and
+            mood. Palm-leaf objects represent continuous manuscript tradition. The uninscribed
+            naṭukal treatment is literature-informed, not an excavated Sangam-dated stone;
+            available hero-stone specimens date from the sixth century CE onward.
+          </p>
+          <ul className="mt-3 mb-0 list-disc space-y-2 pl-5 text-sm">
+            <li>
+              <a className="text-accent-text" href={`${REPO}/blob/main/docs/sangam-theme-canon.md`}>
+                Read the complete evidence and production register →
+              </a>
+            </li>
+            <li>
+              <a className="text-accent-text" href="https://www.tnarch.gov.in/tirunelveli-0">
+                Tamil Nadu Archaeology: Sangam-period terracotta lamps →
+              </a>
+            </li>
+            <li>
+              <a className="text-accent-text" href="https://www.tnarch.gov.in/kodumanal">
+                Tamil Nadu Archaeology: Kodumanal and carnelian beads →
+              </a>
+            </li>
+            <li>
+              <a className="text-accent-text" href="http://www.tnarch.gov.in/epi/ins11.htm">
+                Tamil Nadu Archaeology: memorial-stone evidence and dating caveat →
+              </a>
+            </li>
+          </ul>
+          <p className="mt-3 mb-0 text-xs text-muted">
+            No Chola bronze, gopuram or invented inscription is used in the five new route canons.
+          </p>
         </GlassCard>
 
         <GlassCard quiet className="p-5">

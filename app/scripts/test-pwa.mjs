@@ -68,10 +68,18 @@ check(files.some((file) => file.endsWith('.css')), 'the built stylesheet is part
 // installable cache: a source-only CSS rule does not make desktop art visible.
 const builtCss = files.filter((file) => file.endsWith('.css'))
   .map((file) => fs.readFileSync(path.join(dist, 'assets', file), 'utf8')).join('\n')
-for (const name of ['bamboo-left', 'honeycomb', 'bloom-corner']) {
+const canonAssets = [
+  'bamboo-left', 'honeycomb', 'bloom-corner',
+  'paddy-checks', 'paddy-bund', 'lotus-egret',
+  'agal-lamp', 'olai-stylus', 'palm-fibre',
+  'banyan-bough', 'olai-screen', 'jasmine-lamp',
+  'palai-branch', 'kalli-branch', 'cloth-bundle',
+  'light-shaft', 'stone-pod-beads',
+]
+for (const name of canonAssets) {
   const asset = files.find((file) => file.startsWith(name + '-') && file.endsWith('.webp'))
   check(Boolean(asset && builtCss.includes(asset) && sw.includes(asset)),
-    `${name} is referenced by browser CSS and precached for offline Home`)
+    `${name} is referenced by browser CSS and precached for its offline route`)
 }
 check(builtCss.includes('var(--content-max) + 160px'),
   'the wide desktop hero keeps its ornaments by the centered content')

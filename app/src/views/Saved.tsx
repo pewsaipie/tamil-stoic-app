@@ -18,7 +18,7 @@ import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { chapterOf, findKural, sectionOf } from '../lib/corpus'
 import { shareKural } from '../lib/share'
 import { useT } from '../i18n'
-import { BillaDivider } from '../components/ambient/ornaments'
+import { CanonDivider } from '../components/ornament/CanonDivider'
 import type { Kural } from '../lib/types'
 
 export function Saved() {
@@ -66,7 +66,7 @@ export function Saved() {
           'Saved kurals and reflections stay on this device. Nothing is posted or shared automatically.',
         )}
       </p>
-      <BillaDivider className="mb-[var(--space-5)]" />
+      <CanonDivider className="mb-[var(--space-5)]" />
 
       {entries.length === 0 ? (
         <GlassCard quiet className="p-6 text-center">

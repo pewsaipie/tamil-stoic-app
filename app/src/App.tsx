@@ -8,6 +8,7 @@ import { Credits } from './views/Credits'
 import { AskValluvar } from './views/AskValluvar'
 import { BottomNav } from './components/layout/BottomNav'
 import { Atmosphere } from './components/ambient/Atmosphere'
+import { SangamCanon } from './components/ornament/SangamCanon'
 import { Toasts } from './components/ui/Toasts'
 import { OfflineBanner } from './components/ui/OfflineBanner'
 import { UpdateBanner } from './components/ui/UpdateBanner'
@@ -78,6 +79,8 @@ function Room() {
     <>
       {/* The living-cover layer: petals by day, fireflies at midnight. */}
       <Atmosphere />
+      {/* One researched landscape per route; only the active canon downloads. */}
+      <SangamCanon />
       <nav aria-label="Skip links">
         <a
           href="#main"

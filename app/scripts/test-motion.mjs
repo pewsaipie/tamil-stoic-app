@@ -232,39 +232,49 @@ check(
   `the dressing fits under the route's loop ceiling (${ORNAMENT_BUDGET.layersPerRoute} ≤ ${LOOP_BUDGET.perRoute})`,
 )
 
-const ornamentDir = join('..', 'assets', 'img', 'ornaments', 'kurinji-vaikarai')
-const ornamentFiles = readdirSync(ornamentDir).filter((name) => name.endsWith('.webp'))
-const ornamentSizes = ornamentFiles.map((name) => statSync(join(ornamentDir, name)).size)
-const ornamentRouteBytes = ornamentSizes.reduce((sum, size) => sum + size, 0)
+const canonThemes = ['kurinji-vaikarai', 'marutham-vidiyal', 'olai-agal', 'mullai-erpaadu', 'palai-nanpagal', 'natukal']
+let allRoutesBytes = 0
+for (const theme of canonThemes) {
+  const ornamentDir = join('..', 'assets', 'img', 'ornaments', theme)
+  const ornamentFiles = readdirSync(ornamentDir).filter((name) => name.endsWith('.webp'))
+  const ornamentSizes = ornamentFiles.map((name) => statSync(join(ornamentDir, name)).size)
+  const ornamentRouteBytes = ornamentSizes.reduce((sum, size) => sum + size, 0)
+  allRoutesBytes += ornamentRouteBytes
 
+  check(
+    ornamentFiles.length > 0 && ornamentFiles.length <= ORNAMENT_BUDGET.layersPerRoute,
+    `${theme} wears ${ornamentFiles.length} layers, inside the budget (${ORNAMENT_BUDGET.layersPerRoute})`,
+  )
+  check(
+    ornamentSizes.length > 0 && Math.max(...ornamentSizes) <= ORNAMENT_BUDGET.maxLayerBytes,
+    `${theme}'s heaviest layer is ${Math.round(Math.max(...ornamentSizes) / 1024)} KB, under the ceiling (${Math.round(ORNAMENT_BUDGET.maxLayerBytes / 1024)} KB)`,
+  )
+  check(
+    ornamentRouteBytes <= ORNAMENT_BUDGET.maxRouteBytes,
+    `${theme}'s whole dressing is ${Math.round(ornamentRouteBytes / 1024)} KB, under the route ceiling (${Math.round(ORNAMENT_BUDGET.maxRouteBytes / 1024)} KB)`,
+  )
+}
 check(
-  ornamentFiles.length > 0 && ornamentFiles.length <= ORNAMENT_BUDGET.layersPerRoute,
-  `Home wears ${ornamentFiles.length} layers, inside the budget (${ORNAMENT_BUDGET.layersPerRoute})`,
+  allRoutesBytes <= ORNAMENT_BUDGET.maxAllRoutesBytes,
+  `all six canons total ${Math.round(allRoutesBytes / 1024)} KB, under the shared ceiling (${Math.round(ORNAMENT_BUDGET.maxAllRoutesBytes / 1024)} KB)`,
 )
-check(
-  ornamentSizes.length > 0 && Math.max(...ornamentSizes) <= ORNAMENT_BUDGET.maxLayerBytes,
-  `the heaviest layer is ${Math.round(Math.max(...ornamentSizes) / 1024)} KB, under the ceiling (${Math.round(ORNAMENT_BUDGET.maxLayerBytes / 1024)} KB)`,
-)
-check(
-  ornamentRouteBytes <= ORNAMENT_BUDGET.maxRouteBytes,
-  `the route's whole dressing is ${Math.round(ornamentRouteBytes / 1024)} KB, under the ceiling (${Math.round(ORNAMENT_BUDGET.maxRouteBytes / 1024)} KB)`,
-)
-check(
-  ornamentFiles.length >= 3 && ambient.includes('anim-ornament-'),
-  'and it sways on the kurinji beat, declared in ambient.css with every other loop',
-)
+check(ambient.includes('anim-ornament-') && ambient.includes('anim-canon-'), 'Home and the five route canons share the gated motion grammar')
 
-/* The dressing is decor: it must mount inside the hero, named, with its parts
-   hidden from the accessibility tree and from the reader's pointer. */
+/* The dressing is decor: it must mount on its assigned route, named, with its
+   parts hidden from the accessibility tree and from the reader's pointer. */
 const dressing = read('src/components/ornament/KurinjiVaikarai.tsx')
+const routeDressing = read('src/components/ornament/SangamCanon.tsx')
 check(
-  dressing.includes('aria-hidden="true"') && read('src/styles/ornament.css').includes('pointer-events: none'),
-  'the dressing is invisible to screen readers and to the pointer',
+  dressing.includes('aria-hidden="true"') && routeDressing.includes('aria-hidden="true"') &&
+    read('src/styles/ornament.css').includes('pointer-events: none'),
+  'all six dressings are invisible to screen readers and to the pointer',
 )
-check(
-  read('src/views/Home.tsx').includes('<KurinjiVaikarai />'),
-  'and it is mounted on the route the canon assigns it to',
-)
+check(read('src/views/Home.tsx').includes('<KurinjiVaikarai />'), 'Home mounts its hero-local Kurinji dressing')
+check(read('src/App.tsx').includes('<SangamCanon />'), 'the application shell mounts the route canon')
+for (const theme of canonThemes.slice(1)) {
+  check(routeDressing.includes(`'${theme}'`) && read('src/styles/ornament.css').includes(`canon-weather--${theme}`),
+    `${theme} has a named route stage and production CSS`)
+}
 
 /* ---------------------------------------------------------------------------
  * 4. The runtime — the grammar, the kill matrix, the ceiling
