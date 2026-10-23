@@ -75,8 +75,11 @@ for (const name of ['bamboo-left', 'honeycomb', 'bloom-corner']) {
 }
 check(builtCss.includes('var(--content-max) + 160px'),
   'the wide desktop hero keeps its ornaments by the centered content')
-check(fs.readFileSync(path.join(root, 'src', 'views', 'Home.tsx'), 'utf8').includes('lg:min-h-[var(--hero-height)]'),
-  'desktop Home gives the tall ornament layers room to render')
+const homeSource = fs.readFileSync(path.join(root, 'src', 'views', 'Home.tsx'), 'utf8')
+check(homeSource.includes('lg:min-h-[var(--hero-height)]') &&
+    !homeSource.includes("minHeight: '240px'") &&
+    builtCss.includes('min-height:var(--hero-height)'),
+  'desktop Home uses its responsive height instead of an overriding inline height')
 check(
   fs.readdirSync(path.join(dist, 'data')).includes('kurals.json'),
   'the corpus ships as data/kurals.json',

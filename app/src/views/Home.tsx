@@ -40,6 +40,7 @@ function pickAnother(kurals: readonly Kural[], current: Kural): Kural {
 export function Home() {
   const { status, corpus, error } = useCorpus()
   const reducedMotion = useReducedMotion()
+  const highContrast = useReaderStore((state) => state.highContrast)
   const pushToast = useReaderStore((state) => state.pushToast)
   const [override, setOverride] = useState<Kural | null>(null)
   const [paletteOpen, setPaletteOpen] = useState(false)
@@ -72,9 +73,8 @@ export function Home() {
       {/* Hero zone. The gradient is the documented no-WebGL fallback; when the
           device can render it, the AgedLeaf shader paints over it. */}
       <header
-        className="relative isolate overflow-hidden px-4 pt-[var(--space-7)] pb-[var(--space-6)] lg:flex lg:min-h-[var(--hero-height)] lg:flex-col lg:justify-center"
+        className="relative isolate min-h-[240px] overflow-hidden px-4 pt-[var(--space-7)] pb-[var(--space-6)] lg:flex lg:min-h-[var(--hero-height)] lg:flex-col lg:justify-center"
         style={{
-          minHeight: '240px',
           backgroundImage:
             'radial-gradient(120% 90% at 50% 0%, var(--hero-tint-a) 0%, var(--hero-tint-b) 55%, var(--hero-tint-c) 100%)',
         }}
@@ -135,6 +135,18 @@ export function Home() {
             )}
           </p>
           <ThemeSwitcher className="justify-center" />
+          {highContrast ? (
+            <p className="m-0 max-w-[36ch] text-sm text-muted" role="status">
+              {t('home.ornamentHidden', 'Higher contrast hides decorative art.')} {' '}
+              <button
+                type="button"
+                className="min-h-[44px] underline underline-offset-4"
+                onClick={() => setSettingsOpen(true)}
+              >
+                {t('action.settings', 'Reading settings')}
+              </button>
+            </p>
+          ) : null}
         </div>
         {/* The kanjeevaram zari edge where the sky meets the page. */}
         <div className="absolute inset-x-0 bottom-0 z-10">

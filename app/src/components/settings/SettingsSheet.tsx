@@ -209,7 +209,12 @@ export function SettingsSheet({ open, onOpenChange }: SettingsSheetProps) {
                 checked={highContrast}
                 onChange={(event) => setHighContrast(event.target.checked)}
               />
-              <span>{t('settings.contrast', 'Higher contrast')}</span>
+              <span className="flex flex-col">
+                <span>{t('settings.contrast', 'Higher contrast')}</span>
+                <span className="text-xs text-muted">
+                  {t('settings.contrastArtwork', 'Hides decorative art, including Home’s Kurinji landscape.')}
+                </span>
+              </span>
             </label>
 
             <div className="space-y-2">
