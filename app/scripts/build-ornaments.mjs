@@ -1,26 +1,17 @@
 #!/usr/bin/env node
 /**
- * Build the canon ornament layers from their painted masters.
+ * Build the six-route Sangam canon from painted masters and approved crops.
  *
- * The masters under `design/canon-masters/<theme>/` are photographed against a
- * seamless chroma background on purpose (see the prompts recorded in
- * docs/sangam-theme-canon.md). This script turns them into the layers the app
- * composites at the edges of a route:
+ * Keyed masters live under `design/canon-masters/<theme>/` against a seamless
+ * chroma field. The builder measures the field, derives alpha, de-spills edge
+ * pixels, trims, resizes and encodes WebP. A small second kind, `plate`, is used
+ * only for the already-approved Saved/Credits concept frames: it crops away
+ * every placeholder card and pseudo-letter, then feathers the crop into the
+ * route instead of pretending a rectangular screenshot is an isolated object.
  *
- *   1. **key**      every pixel's alpha from its distance to the measured
- *                   background colour (sampled from the four corners, so a
- *                   mild render vignette does not shift the key)
- *   2. **despill**  pull the key's dominant channels out of edge pixels, so
- *                   no indigo/sand halo survives on petal or leaf rims
- *   3. **trim**     the transparent border away, measured by alpha rather than
- *                   by colour, then **orient** (some layers serve flipped)
- *   4. **resize**   to the layer's only render width and encode WebP
- *
- * like `build-materials.mjs`, the outputs are committed under `assets/` and
- * mirrored into the app by `sync-assets.mjs`:
- *
- *   node --experimental-strip-types scripts/build-ornaments.mjs           # build
- *   node --experimental-strip-types scripts/build-ornaments.mjs --check   # verify committed bytes, exit 1 on drift
+ * Outputs are committed under root `assets/` and mirrored into the React app
+ * by sync-assets.mjs. Every route and the complete six-route set are checked
+ * against ORNAMENT_BUDGET on both build and --check.
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
@@ -36,55 +27,45 @@ const repoRoot = resolve(appRoot, '..')
 const check = process.argv.includes('--check')
 
 /**
- * The Kurinji Vaikarai set (Home). New routes append their own theme entries;
- * the budget assertions below then cover them automatically.
- *
- * `key`    — which channels of the axis the background favours ('cool' = the
- *            indigo masters, 'warm' = the sand master), used for despill.
- * `rotate180` — the sprig was painted arching one way; the corner wants it the
- *            other way. Flipping at build time keeps the master honest (the
- *            light in the master still reads correctly: it comes from above).
+ * `key`: which background family to de-spill ('cool' indigo / 'warm' sand).
+ * `rotate180`: orient a painted sprig for its final corner.
+ * `crop` + `fade`: a text-free plate from an approved concept, not a key.
  */
 const LAYERS = [
-  {
-    master: 'design/canon-masters/kurinji-vaikarai/bamboo-left.png',
-    out: 'assets/img/ornaments/kurinji-vaikarai/bamboo-left.webp',
-    key: 'cool',
-    // Foliage alpha compresses worst: the hero renders it far below this
-    // pixel width, and the leaf tips dissolve over the mist layer anyway.
-    maxWidth: 432,
-    quality: 72,
-    alphaQuality: 84,
-  },
-  {
-    master: 'design/canon-masters/kurinji-vaikarai/honeycomb.png',
-    out: 'assets/img/ornaments/kurinji-vaikarai/honeycomb.webp',
-    key: 'cool',
-    maxWidth: 576,
-    quality: 82,
-    alphaQuality: 92,
-  },
-  {
-    master: 'design/canon-masters/kurinji-vaikarai/bloom-corner.png',
-    out: 'assets/img/ornaments/kurinji-vaikarai/bloom-corner.webp',
-    key: 'warm',
-    rotate180: true,
-    maxWidth: 768,
-    quality: 80,
-    alphaQuality: 90,
-  },
+  // Home — Kurinji Vaikarai (PR #29).
+  { theme: 'kurinji-vaikarai', master: 'design/canon-masters/kurinji-vaikarai/bamboo-left.png', out: 'assets/img/ornaments/kurinji-vaikarai/bamboo-left.webp', key: 'cool', maxWidth: 432, quality: 72, alphaQuality: 84 },
+  { theme: 'kurinji-vaikarai', master: 'design/canon-masters/kurinji-vaikarai/honeycomb.png', out: 'assets/img/ornaments/kurinji-vaikarai/honeycomb.webp', key: 'cool', maxWidth: 576, quality: 82, alphaQuality: 92 },
+  { theme: 'kurinji-vaikarai', master: 'design/canon-masters/kurinji-vaikarai/bloom-corner.png', out: 'assets/img/ornaments/kurinji-vaikarai/bloom-corner.webp', key: 'warm', rotate180: true, maxWidth: 768, quality: 80, alphaQuality: 90 },
+
+  // Chapters — Marutham Vidiyal: field checks, paddy, lotus and egret.
+  { theme: 'marutham-vidiyal', master: 'design/canon-masters/marutham-vidiyal/paddy-checks.png', out: 'assets/img/ornaments/marutham-vidiyal/paddy-checks.webp', key: 'warm', maxWidth: 576, quality: 74, alphaQuality: 88 },
+  { theme: 'marutham-vidiyal', master: 'design/canon-masters/marutham-vidiyal/paddy-bund.png', out: 'assets/img/ornaments/marutham-vidiyal/paddy-bund.webp', key: 'cool', maxWidth: 576, quality: 74, alphaQuality: 88 },
+  { theme: 'marutham-vidiyal', master: 'design/canon-masters/marutham-vidiyal/lotus-egret.png', out: 'assets/img/ornaments/marutham-vidiyal/lotus-egret.webp', key: 'cool', maxWidth: 640, quality: 78, alphaQuality: 90 },
+
+  // Reader — Olai under the Agal. Leaves are deliberately blank.
+  { theme: 'olai-agal', master: 'design/canon-masters/olai-agal/agal-lamp.png', out: 'assets/img/ornaments/olai-agal/agal-lamp.webp', key: 'cool', maxWidth: 448, quality: 80, alphaQuality: 90 },
+  { theme: 'olai-agal', master: 'design/canon-masters/olai-agal/olai-stylus.png', out: 'assets/img/ornaments/olai-agal/olai-stylus.webp', key: 'cool', maxWidth: 640, quality: 78, alphaQuality: 90 },
+  { theme: 'olai-agal', master: 'design/canon-masters/olai-agal/palm-fibre.png', out: 'assets/img/ornaments/olai-agal/palm-fibre.webp', key: 'cool', maxWidth: 320, quality: 76, alphaQuality: 88 },
+
+  // Ask — Mullai Erpaadu: banyan, blank olai screen, jasmine and clay lamp.
+  { theme: 'mullai-erpaadu', master: 'design/canon-masters/mullai-erpaadu/banyan-bough.png', out: 'assets/img/ornaments/mullai-erpaadu/banyan-bough.webp', key: 'warm', maxWidth: 640, quality: 78, alphaQuality: 90 },
+  { theme: 'mullai-erpaadu', master: 'design/canon-masters/mullai-erpaadu/olai-screen.png', out: 'assets/img/ornaments/mullai-erpaadu/olai-screen.webp', key: 'cool', maxWidth: 512, quality: 78, alphaQuality: 90 },
+  { theme: 'mullai-erpaadu', master: 'design/canon-masters/mullai-erpaadu/jasmine-lamp.png', out: 'assets/img/ornaments/mullai-erpaadu/jasmine-lamp.webp', key: 'cool', maxWidth: 576, quality: 80, alphaQuality: 90 },
+
+  // Saved — Palai Nanpagal. The bundle crop excludes the concept's card.
+  { theme: 'palai-nanpagal', master: 'design/canon-masters/palai-nanpagal/palai-branch.png', out: 'assets/img/ornaments/palai-nanpagal/palai-branch.webp', key: 'cool', maxWidth: 640, quality: 78, alphaQuality: 90 },
+  { theme: 'palai-nanpagal', master: 'design/canon-masters/palai-nanpagal/kalli-branch.svg', out: 'assets/img/ornaments/palai-nanpagal/kalli-branch.webp', key: 'cool', maxWidth: 512, quality: 76, alphaQuality: 88 },
+  { theme: 'palai-nanpagal', master: 'design/canon-concepts/route-saved-palai-nanpagal.png', out: 'assets/img/ornaments/palai-nanpagal/cloth-bundle.webp', crop: { left: 1210, top: 1390, width: 566, height: 978 }, fade: { top: 0.12, left: 0.08 }, maxWidth: 440, quality: 78, alphaQuality: 90 },
+
+  // Credits — Natukal. The two crops contain no placeholder panel or script.
+  { theme: 'natukal', master: 'design/canon-concepts/route-credits-natukal.png', out: 'assets/img/ornaments/natukal/light-shaft.webp', crop: { left: 0, top: 0, width: 290, height: 900 }, fade: { right: 0.35, bottom: 0.25 }, maxWidth: 320, quality: 76, alphaQuality: 88 },
+  { theme: 'natukal', master: 'design/canon-concepts/route-credits-natukal.png', out: 'assets/img/ornaments/natukal/stone-pod-beads.webp', crop: { left: 0, top: 900, width: 1086, height: 260 }, fade: { top: 0.1, left: 0.03, right: 0.03 }, maxWidth: 960, quality: 78, alphaQuality: 90 },
 ]
 
-/** Sample the median RGB of the four corners — the measured key colour. */
 function cornerMedian(data, width, height) {
   const sample = 8
   const seen = []
-  for (const [cx, cy] of [
-    [0, 0],
-    [width - sample, 0],
-    [0, height - sample],
-    [width - sample, height - sample],
-  ]) {
+  for (const [cx, cy] of [[0, 0], [width - sample, 0], [0, height - sample], [width - sample, height - sample]]) {
     for (let y = 0; y < sample; y += 1) {
       for (let x = 0; x < sample; x += 1) {
         const i = ((cy + y) * width + (cx + x)) * 4
@@ -96,14 +77,6 @@ function cornerMedian(data, width, height) {
   return [median(0), median(1), median(2)]
 }
 
-/**
- * Distance-keyed alpha with despill.
- *
- * Below `hard` the pixel is background; above `soft` it is fully kept; between
- * the two the alpha ramps. Semi pixels get their colour de-spilled toward the
- * channel harsher light mix, so the feather never carries the backdrop's hue
- * into the scene it is composited over.
- */
 function keyAndDespill(data, width, height, key, flavour) {
   const [kr, kg, kb] = key
   const hard = 34
@@ -117,7 +90,6 @@ function keyAndDespill(data, width, height, key, flavour) {
       const dg = data[i + 1] - kg
       const db = data[i + 2] - kb
       const distance = Math.sqrt(dr * dr + dg * dg + db * db)
-
       let alpha = 0
       if (distance > soft) alpha = 255
       else if (distance > hard) alpha = Math.round(((distance - hard) / (soft - hard)) * 255)
@@ -125,18 +97,13 @@ function keyAndDespill(data, width, height, key, flavour) {
       if (alpha < 255) {
         const keep = alpha / 255
         if (flavour === 'cool') {
-          // the backdrop is indigo: clip the blue spill out of the feather
           data[i + 2] = Math.round(data[i + 2] * (0.35 + 0.65 * keep) + Math.min(data[i], data[i + 1]) * (0.65 * (1 - keep)))
         } else {
-          // the backdrop is warm sand: clip the red+green bias out of the feather
           const settle = Math.round(data[i + 2] * (1 - 0.5 * (1 - keep)))
           data[i] = Math.round(data[i] * (0.5 + 0.5 * keep) + settle * (0.5 * (1 - keep)))
           data[i + 1] = Math.round(data[i + 1] * (0.55 + 0.45 * keep) + settle * (0.45 * (1 - keep)))
         }
       }
-      // Posterise the feather ends: near-opaque becomes opaque, near-clear
-      // becomes clear. Invisible to the eye, but it collapses the alpha noise
-      // that otherwise dominates the WebP of a leafy layer.
       if (alpha > 242) alpha = 255
       else if (alpha < 14) alpha = 0
       data[i + 3] = alpha
@@ -151,40 +118,73 @@ function keyAndDespill(data, width, height, key, flavour) {
   return box
 }
 
-async function buildLayer(layer) {
+async function buildKeyedLayer(layer) {
   const masterPath = join(repoRoot, layer.master)
-  if (!existsSync(masterPath)) throw new Error(`missing master: ${layer.master}`)
-
   const image = sharp(masterPath, { limitInputPixels: false })
   const { width, height } = await image.metadata()
   const raw = await sharp(masterPath, { limitInputPixels: false }).ensureAlpha().raw().toBuffer()
-
   const key = cornerMedian(raw, width, height)
   const box = keyAndDespill(raw, width, height, key, layer.key)
-  if (!Number.isFinite(box.left)) throw new Error(`keying removed everything in ${layer.master} — check the background sample`)
+  if (!Number.isFinite(box.left)) throw new Error(`keying removed everything in ${layer.master}`)
 
   const pad = 4
   const left = Math.max(0, box.left - pad)
   const top = Math.max(0, box.top - pad)
   const cropWidth = Math.min(width - left, box.right - box.left + 1 + pad * 2)
   const cropHeight = Math.min(height - top, box.bottom - box.top + 1 + pad * 2)
-
   let pipeline = sharp(raw, { raw: { width, height, channels: 4 } }).extract({ left, top, width: cropWidth, height: cropHeight })
   if (layer.rotate180) pipeline = pipeline.rotate(180)
-  pipeline = pipeline
+  return pipeline
     .resize({ width: layer.maxWidth, withoutEnlargement: true })
     .webp({ quality: layer.quality, alphaQuality: layer.alphaQuality, smartSubsample: true, effort: 6 })
+    .toBuffer()
+}
 
-  return pipeline.toBuffer()
+const smooth = (value) => {
+  const t = Math.max(0, Math.min(1, value))
+  return t * t * (3 - 2 * t)
+}
+
+async function buildPlateLayer(layer) {
+  const masterPath = join(repoRoot, layer.master)
+  const { data, info } = await sharp(masterPath, { limitInputPixels: false })
+    .extract(layer.crop)
+    .resize({ width: layer.maxWidth, withoutEnlargement: true })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+
+  const fade = layer.fade ?? {}
+  for (let y = 0; y < info.height; y += 1) {
+    for (let x = 0; x < info.width; x += 1) {
+      let alpha = 1
+      if (fade.top) alpha *= smooth(y / Math.max(1, info.height * fade.top))
+      if (fade.left) alpha *= smooth(x / Math.max(1, info.width * fade.left))
+      if (fade.right) alpha *= smooth((info.width - 1 - x) / Math.max(1, info.width * fade.right))
+      if (fade.bottom) alpha *= smooth((info.height - 1 - y) / Math.max(1, info.height * fade.bottom))
+      const i = (y * info.width + x) * 4
+      data[i + 3] = Math.min(data[i + 3], Math.round(alpha * 255))
+    }
+  }
+
+  return sharp(data, { raw: info })
+    .webp({ quality: layer.quality, alphaQuality: layer.alphaQuality, smartSubsample: true, effort: 6 })
+    .toBuffer()
 }
 
 let failed = false
 let totalBytes = 0
-await mkdir(join(repoRoot, 'assets/img/ornaments/kurinji-vaikarai'), { recursive: true })
+const routeStats = new Map()
 
 for (const layer of LAYERS) {
-  const buffer = await buildLayer(layer)
+  const masterPath = join(repoRoot, layer.master)
+  if (!existsSync(masterPath)) throw new Error(`missing master: ${layer.master}`)
+  const buffer = layer.crop ? await buildPlateLayer(layer) : await buildKeyedLayer(layer)
   const outPath = join(repoRoot, layer.out)
+  const stats = routeStats.get(layer.theme) ?? { layers: 0, bytes: 0 }
+  stats.layers += 1
+  stats.bytes += buffer.length
+  routeStats.set(layer.theme, stats)
   totalBytes += buffer.length
 
   if (check) {
@@ -204,23 +204,34 @@ for (const layer of LAYERS) {
   }
 
   if (buffer.length > ORNAMENT_BUDGET.maxLayerBytes) {
-    console.error(`  ✗ FAIL: ${layer.out} is ${buffer.length} B, over the layer ceiling ${ORNAMENT_BUDGET.maxLayerBytes} B`)
+    console.error(`  ✗ FAIL: ${layer.out} is ${buffer.length} B, over ${ORNAMENT_BUDGET.maxLayerBytes} B`)
     failed = true
   }
 }
 
-if (LAYERS.length > ORNAMENT_BUDGET.layersPerRoute) {
-  console.error(`  ✗ FAIL: ${LAYERS.length} layers on one route, over the ceiling ${ORNAMENT_BUDGET.layersPerRoute}`)
+for (const [theme, stats] of routeStats) {
+  console.log(`  · ${theme}: ${stats.layers} layers, ${Math.round(stats.bytes / 1024)} KB`)
+  if (stats.layers > ORNAMENT_BUDGET.layersPerRoute) {
+    console.error(`  ✗ FAIL: ${theme} has ${stats.layers} layers, over ${ORNAMENT_BUDGET.layersPerRoute}`)
+    failed = true
+  }
+  if (stats.bytes > ORNAMENT_BUDGET.maxRouteBytes) {
+    console.error(`  ✗ FAIL: ${theme} is ${stats.bytes} B, over ${ORNAMENT_BUDGET.maxRouteBytes} B`)
+    failed = true
+  }
+}
+if (routeStats.size !== 6) {
+  console.error(`  ✗ FAIL: expected six route canons, found ${routeStats.size}`)
   failed = true
 }
-if (totalBytes > ORNAMENT_BUDGET.maxRouteBytes) {
-  console.error(`  ✗ FAIL: route total ${totalBytes} B, over the ceiling ${ORNAMENT_BUDGET.maxRouteBytes} B`)
+if (totalBytes > ORNAMENT_BUDGET.maxAllRoutesBytes) {
+  console.error(`  ✗ FAIL: six-route total ${totalBytes} B, over ${ORNAMENT_BUDGET.maxAllRoutesBytes} B`)
   failed = true
 }
 
 console.log(
   failed
     ? '\nornament build drifted or overweight — fix and rerun'
-    : `\n${LAYERS.length} layers, ${Math.round(totalBytes / 1024)} KB on the route (ceiling ${Math.round(ORNAMENT_BUDGET.maxRouteBytes / 1024)} KB)`,
+    : `\n${LAYERS.length} layers across six routes, ${Math.round(totalBytes / 1024)} KB total (ceiling ${Math.round(ORNAMENT_BUDGET.maxAllRoutesBytes / 1024)} KB)`,
 )
 process.exit(failed ? 1 : 0)

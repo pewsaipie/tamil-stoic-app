@@ -188,6 +188,12 @@ const { document } = window
 await waitFor(() => document.querySelector('#daily-couplet') !== null, 8000)
 await waitFor(() => document.body.textContent?.includes('மூன்று பால்கள்') === true, 8000)
 const text = () => document.body.textContent ?? ''
+const checkCanon = async (theme) => {
+  const mounted = await waitFor(() =>
+    document.documentElement.dataset.canon === theme &&
+    document.querySelector(`[data-ornament="${theme}"]`) !== null)
+  check(mounted, `${theme} is the active researched route dressing`)
+}
 
 console.log('today route:')
 check(document.querySelector('#root') !== null, 'the app mounts into #root')
@@ -282,6 +288,7 @@ check(text().includes('சூழ்நிலை'), 'the situation doors render')
 await navigate('#/chapters', () => document.querySelector('input[type="search"]') !== null)
 
 console.log('chapters route:')
+await checkCanon('marutham-vidiyal')
 check(
   document.querySelector('h1')?.textContent?.includes('அத்தியாயங்கள்') === true,
   'the chapters heading renders',
@@ -326,6 +333,7 @@ check(text().includes('சினம்'), 'a theme filter names the theme it app
 const readerReady = () => document.querySelector('nav[aria-label="Kural navigation"]') !== null
 await navigate('#/kural/151', readerReady)
 console.log('reader route:')
+await checkCanon('olai-agal')
 const readerVerse = [...document.querySelectorAll('[data-verse-line]')].map((node) => node.textContent?.trim())
 const kural151 = JSON.parse(corpusJson).kurals.find((k) => k.n === 151)
 check(
@@ -413,6 +421,7 @@ delete window.document.documentElement.dataset.lineSpacing
 /* ---------- Ask Valluvar ---------- */
 await navigate('#/ask', () => document.querySelector('#ask-input') !== null)
 console.log('ask route:')
+await checkCanon('mullai-erpaadu')
 check(document.querySelector('#ask-input') !== null, 'the composer is present')
 const promptChips = [...document.querySelectorAll('button')].filter((button) =>
   (button.textContent ?? '').trim().length > 0 && button.closest('[role="log"]') !== null,
@@ -456,6 +465,7 @@ check(document.body.textContent?.includes('findahelpline.com') === true, 'and fi
 /* ---------- saved ---------- */
 await navigate('#/saved', () => document.querySelector('h1')?.textContent?.includes('Saved') === true)
 console.log('saved route:')
+await checkCanon('palai-nanpagal')
 check(text().includes('stays on this device'), 'the privacy line is present')
 check(text().includes('It will appear here'), 'the empty state renders for a fresh device')
 
@@ -487,9 +497,12 @@ check(
 
 console.log('credits:')
 await navigate('#/credits', () => text().includes('Credits'))
+await checkCanon('natukal')
 check(text().includes('Pope'), 'the credits name the 1886 translation')
 check(text().includes('Parimelalagar') || text().includes('tk120404'), 'the credits name the Tamil source')
 check(text().includes('MIT'), 'the credits state the app licence')
+check(text().includes('Sangam visual canon') && text().includes('evidence and production register'),
+  'the credits expose the archaeological evidence and reconstruction register')
 
 document.dispatchEvent(new window.KeyboardEvent('keydown', { key: '?', bubbles: true }))
 await waitFor(() => text().includes('Keyboard shortcuts') || text().includes('விசைப்பலகை'))

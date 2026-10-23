@@ -200,11 +200,52 @@
   50%      { transform: translate3d(0, -1.5%, 0) skewX(0.4deg); opacity: 0.5; }
 }
 
+/* =============================================================================
+ * Shared route-canon weather
+ * =============================================================================
+ * One restrained movement grammar, with the route deciding which objects it
+ * applies to. Nothing here targets type or an interactive control.
+ * ========================================================================== */
+
+@keyframes canon-root-sway {
+  0%, 100% { transform: rotate(-0.45deg); }
+  50%      { transform: rotate(0.45deg); }
+}
+@keyframes canon-hanging-sway {
+  0%, 100% { transform: translate3d(-0.5px, 0, 0) rotate(-0.35deg); }
+  50%      { transform: translate3d(0.5px, 0, 0) rotate(0.35deg); }
+}
+@keyframes canon-water-breathe {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.82; }
+  50%      { transform: translate3d(0, -1px, 0); opacity: 1; }
+}
+@keyframes canon-lamp-breathe {
+  0%, 100% { opacity: 0.72; }
+  50%      { opacity: 1; }
+}
+@keyframes canon-heat-shimmer {
+  0%, 100% { opacity: 0.14; }
+  50%      { opacity: 0.24; }
+}
+@keyframes canon-dust-drift {
+  0%, 100% { transform: translate3d(-0.5%, 0, 0); opacity: 0.28; }
+  50%      { transform: translate3d(0.8%, -1.5%, 0); opacity: 0.44; }
+}
+
+.anim-canon-root    { animation: canon-root-sway 8s ease-in-out infinite; }
+.anim-canon-hanging { animation: canon-hanging-sway 10s ease-in-out infinite; }
+.anim-canon-water   { animation: canon-water-breathe 12s ease-in-out infinite; }
+.anim-canon-glow    { animation: canon-lamp-breathe 6s ease-in-out infinite; }
+.anim-canon-shimmer { animation: canon-heat-shimmer 12s ease-in-out infinite; }
+.anim-canon-dust    { animation: canon-dust-drift 18s ease-in-out infinite; }
+
 /* ---------- Kill-switches --------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .anim-sky, .anim-glint, .anim-breathe, .anim-twinkle, .anim-mist, .anim-water,
   .anim-ornament-bamboo, .anim-ornament-honey, .anim-ornament-bloom, .anim-ornament-glisten,
+  .anim-canon-root, .anim-canon-hanging, .anim-canon-water, .anim-canon-glow,
+  .anim-canon-shimmer, .anim-canon-dust,
   .door-weather::before, .door-weather::after {
     animation: none !important;
   }
@@ -221,6 +262,12 @@
 [data-motion='reduced'] .anim-ornament-honey,
 [data-motion='reduced'] .anim-ornament-bloom,
 [data-motion='reduced'] .anim-ornament-glisten,
+[data-motion='reduced'] .anim-canon-root,
+[data-motion='reduced'] .anim-canon-hanging,
+[data-motion='reduced'] .anim-canon-water,
+[data-motion='reduced'] .anim-canon-glow,
+[data-motion='reduced'] .anim-canon-shimmer,
+[data-motion='reduced'] .anim-canon-dust,
 [data-motion='reduced'] .door-weather::before,
 [data-motion='reduced'] .door-weather::after {
   animation: none !important;

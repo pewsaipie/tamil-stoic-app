@@ -37,6 +37,7 @@ The complete Thirukkural: **all 1,330 couplets across all 133 chapters**
 - **Search** by kural number (`151`), Tamil (`பொறுத்தல்`), transliteration, or English
   (`patience`) — across couplets, translations, meanings and chapter names, with an
   as-you-type suggestion dropdown and recent searches
+- **Six-route Sangam visual canon** — Kurinji Vaikarai on Home; Marutham Vidiyal for Chapters; Olai under the Agal for the reader; Mullai Erpaadu for Ask; Palai Nanpagal for Saved; and Naṭukal for Credits. Seventeen optimized layers combine researched material culture, literary ecology, route-specific depth and restrained motion. The [evidence and production register](docs/sangam-theme-canon.md) distinguishes archaeological finds, literary references, continuous traditions and artistic reconstruction.
 - **Ancient-theme visual system** — palm-leaf (ola) daily card, wax-seal kural numbers,
   lotus-rosette rules, gopuram-niche book tiles, kolam borders, granite footer band,
   paper grain, and a temple-silhouette hero (see [docs/ui-ux-proposal.md](docs/ui-ux-proposal.md))
