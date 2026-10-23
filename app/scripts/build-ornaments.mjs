@@ -60,6 +60,12 @@ const LAYERS = [
   // Credits — Natukal. The two crops contain no placeholder panel or script.
   { theme: 'natukal', master: 'design/canon-concepts/route-credits-natukal.png', out: 'assets/img/ornaments/natukal/light-shaft.webp', crop: { left: 0, top: 0, width: 290, height: 900 }, fade: { right: 0.35, bottom: 0.25 }, maxWidth: 320, quality: 76, alphaQuality: 88 },
   { theme: 'natukal', master: 'design/canon-concepts/route-credits-natukal.png', out: 'assets/img/ornaments/natukal/stone-pod-beads.webp', crop: { left: 0, top: 900, width: 1086, height: 260 }, fade: { top: 0.1, left: 0.03, right: 0.03 }, maxWidth: 960, quality: 78, alphaQuality: 90 },
+
+  // History — Chola Varalaru: bronze metallurgy, martial arms, trade wealth and Sangam excavations.
+  { theme: 'chola-varalaru', master: 'design/canon-masters/chola-varalaru/chola-bronze.png', out: 'assets/img/ornaments/chola-varalaru/chola-bronze.webp', key: 'cool', keyMode: 'ray', rayHard: 5.5, raySoft: 15, tRange: [0.42, 1.3], maxWidth: 600, quality: 80, alphaQuality: 90 },
+  { theme: 'chola-varalaru', master: 'design/canon-masters/chola-varalaru/chola-weapons.png', out: 'assets/img/ornaments/chola-varalaru/chola-weapons.webp', key: 'cool', keyMode: 'ray', rayHard: 5.5, raySoft: 14, tRange: [0.48, 1.28], maxWidth: 620, quality: 80, alphaQuality: 90 },
+  { theme: 'chola-varalaru', master: 'design/canon-masters/chola-varalaru/chola-wealth.png', out: 'assets/img/ornaments/chola-varalaru/chola-wealth.webp', key: 'warm', keyMode: 'ray-flood', rayHard: 7.5, raySoft: 12.5, tRange: [0.3, 1.08], maxWidth: 640, quality: 80, alphaQuality: 90 },
+  { theme: 'chola-varalaru', master: 'design/canon-masters/chola-varalaru/chola-archaeology.png', out: 'assets/img/ornaments/chola-varalaru/chola-archaeology.webp', key: 'cool', keyMode: 'ray', rayHard: 5.5, raySoft: 13.5, tRange: [0.35, 1.28], maxWidth: 600, quality: 80, alphaQuality: 90 },
 ]
 
 function cornerMedian(data, width, height) {
@@ -118,13 +124,135 @@ function keyAndDespill(data, width, height, key, flavour) {
   return box
 }
 
+function keyAndDespillRay(data, width, height, key, flavour, rayHard, raySoft, [tMin, tMax], exteriorOnly = false) {
+  const [kr, kg, kb] = key
+  const kNorm = Math.hypot(kr, kg, kb) || 1
+  const ur = kr / kNorm
+  const ug = kg / kNorm
+  const ub = kb / kNorm
+  const count = width * height
+  const distArr = new Float32Array(count)
+
+  for (let idx = 0; idx < count; idx += 1) {
+    const i = idx * 4
+    const r = data[i]
+    const g = data[i + 1]
+    const b = data[i + 2]
+    const dot = r * ur + g * ug + b * ub
+    const t = dot / kNorm
+    const pr = r - dot * ur
+    const pg = g - dot * ug
+    const pb = b - dot * ub
+    const perp = Math.hypot(pr, pg, pb)
+    const tPenalty = t < tMin ? (tMin - t) * kNorm * 0.75 : t > tMax ? (t - tMax) * kNorm * 0.85 : 0
+    distArr[idx] = Math.hypot(perp, tPenalty)
+  }
+
+  let reachable = null
+  if (exteriorOnly) {
+    reachable = new Uint8Array(count)
+    const queue = new Int32Array(count)
+    let head = 0
+    let tail = 0
+    const enqueue = (idx) => {
+      if (!reachable[idx] && distArr[idx] < raySoft) {
+        reachable[idx] = 1
+        queue[tail++] = idx
+      }
+    }
+    for (let x = 0; x < width; x += 1) {
+      enqueue(x)
+      enqueue((height - 1) * width + x)
+    }
+    for (let y = 1; y < height - 1; y += 1) {
+      enqueue(y * width)
+      enqueue(y * width + (width - 1))
+    }
+    while (head < tail) {
+      const cur = queue[head++]
+      const cx = cur % width
+      const cy = (cur - cx) / width
+      if (cx > 0) enqueue(cur - 1)
+      if (cx + 1 < width) enqueue(cur + 1)
+      if (cy > 0) enqueue(cur - width)
+      if (cy + 1 < height) enqueue(cur + width)
+    }
+    // Feather 2px around reachable boundary so anti-aliased edge pixels blend smoothly
+    const feathered = new Uint8Array(reachable)
+    for (let pass = 0; pass < 2; pass += 1) {
+      const prev = pass === 0 ? reachable : feathered.slice()
+      for (let y = 1; y < height - 1; y += 1) {
+        for (let x = 1; x < width - 1; x += 1) {
+          const idx = y * width + x
+          if (prev[idx]) continue
+          if (prev[idx - 1] || prev[idx + 1] || prev[idx - width] || prev[idx + width]) {
+            feathered[idx] = 1
+          }
+        }
+      }
+    }
+    reachable = feathered
+  }
+
+  const box = { left: Infinity, top: Infinity, right: 0, bottom: 0 }
+
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const idx = y * width + x
+      const i = idx * 4
+      const r = data[i]
+      const g = data[i + 1]
+      const b = data[i + 2]
+      const distance = reachable && !reachable[idx] ? raySoft + 1 : distArr[idx]
+
+      let alpha = 0
+      if (distance > raySoft) alpha = 255
+      else if (distance > rayHard) alpha = Math.round(((distance - rayHard) / (raySoft - rayHard)) * 255)
+
+      if (alpha < 255) {
+        const keep = alpha / 255
+        if (flavour === 'cool') {
+          data[i + 2] = Math.round(b * (0.3 + 0.7 * keep) + Math.min(r, g) * (0.7 * (1 - keep)))
+        } else {
+          const settle = Math.round(b * (1 - 0.35 * (1 - keep)))
+          data[i] = Math.round(r * (0.55 + 0.45 * keep) + settle * (0.45 * (1 - keep)))
+          data[i + 1] = Math.round(g * (0.6 + 0.4 * keep) + settle * (0.4 * (1 - keep)))
+        }
+      }
+      if (alpha > 242) alpha = 255
+      else if (alpha < 14) alpha = 0
+      data[i + 3] = alpha
+      if (alpha > 10) {
+        if (x < box.left) box.left = x
+        if (x > box.right) box.right = x
+        if (y < box.top) box.top = y
+        if (y > box.bottom) box.bottom = y
+      }
+    }
+  }
+  return box
+}
+
 async function buildKeyedLayer(layer) {
   const masterPath = join(repoRoot, layer.master)
   const image = sharp(masterPath, { limitInputPixels: false })
   const { width, height } = await image.metadata()
   const raw = await sharp(masterPath, { limitInputPixels: false }).ensureAlpha().raw().toBuffer()
   const key = cornerMedian(raw, width, height)
-  const box = keyAndDespill(raw, width, height, key, layer.key)
+  const box =
+    layer.keyMode === 'ray' || layer.keyMode === 'ray-flood'
+      ? keyAndDespillRay(
+          raw,
+          width,
+          height,
+          key,
+          layer.key,
+          layer.rayHard,
+          layer.raySoft,
+          layer.tRange,
+          layer.keyMode === 'ray-flood',
+        )
+      : keyAndDespill(raw, width, height, key, layer.key)
   if (!Number.isFinite(box.left)) throw new Error(`keying removed everything in ${layer.master}`)
 
   const pad = 4
@@ -220,18 +348,18 @@ for (const [theme, stats] of routeStats) {
     failed = true
   }
 }
-if (routeStats.size !== 6) {
-  console.error(`  ✗ FAIL: expected six route canons, found ${routeStats.size}`)
+if (routeStats.size !== 7) {
+  console.error(`  ✗ FAIL: expected seven route canons, found ${routeStats.size}`)
   failed = true
 }
 if (totalBytes > ORNAMENT_BUDGET.maxAllRoutesBytes) {
-  console.error(`  ✗ FAIL: six-route total ${totalBytes} B, over ${ORNAMENT_BUDGET.maxAllRoutesBytes} B`)
+  console.error(`  ✗ FAIL: seven-route total ${totalBytes} B, over ${ORNAMENT_BUDGET.maxAllRoutesBytes} B`)
   failed = true
 }
 
 console.log(
   failed
     ? '\nornament build drifted or overweight — fix and rerun'
-    : `\n${LAYERS.length} layers across six routes, ${Math.round(totalBytes / 1024)} KB total (ceiling ${Math.round(ORNAMENT_BUDGET.maxAllRoutesBytes / 1024)} KB)`,
+    : `\n${LAYERS.length} layers across seven routes, ${Math.round(totalBytes / 1024)} KB total (ceiling ${Math.round(ORNAMENT_BUDGET.maxAllRoutesBytes / 1024)} KB)`,
 )
 process.exit(failed ? 1 : 0)

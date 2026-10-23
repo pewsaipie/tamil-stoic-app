@@ -141,6 +141,7 @@ export const ROUTE_REGISTER: Record<string, MotionRegister> = {
   '/': 'kurinji',
   '/chapters': 'marutham',
   '/saved': 'marutham',
+  '/history': 'marutham',
   '/ask': 'mullai',
   '/credits': 'mullai',
   '/kural/:number': 'kurinji',

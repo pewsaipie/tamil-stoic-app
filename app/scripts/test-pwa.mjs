@@ -75,6 +75,7 @@ const canonAssets = [
   'banyan-bough', 'olai-screen', 'jasmine-lamp',
   'palai-branch', 'kalli-branch', 'cloth-bundle',
   'light-shaft', 'stone-pod-beads',
+  'chola-bronze', 'chola-weapons', 'chola-wealth', 'chola-archaeology',
 ]
 for (const name of canonAssets) {
   const asset = files.find((file) => file.startsWith(name + '-') && file.endsWith('.webp'))

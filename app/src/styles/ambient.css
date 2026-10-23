@@ -231,6 +231,10 @@
   0%, 100% { transform: translate3d(-0.5%, 0, 0); opacity: 0.28; }
   50%      { transform: translate3d(0.8%, -1.5%, 0); opacity: 0.44; }
 }
+@keyframes chola-bronze-sheen {
+  0%, 100% { opacity: 0.88; }
+  50%      { opacity: 1; }
+}
 
 .anim-canon-root    { animation: canon-root-sway 8s ease-in-out infinite; }
 .anim-canon-hanging { animation: canon-hanging-sway 10s ease-in-out infinite; }
@@ -238,6 +242,7 @@
 .anim-canon-glow    { animation: canon-lamp-breathe 6s ease-in-out infinite; }
 .anim-canon-shimmer { animation: canon-heat-shimmer 12s ease-in-out infinite; }
 .anim-canon-dust    { animation: canon-dust-drift 18s ease-in-out infinite; }
+.anim-chola-sheen   { animation: chola-bronze-sheen 9s ease-in-out infinite; }
 
 /* ---------- Kill-switches --------------------------------------------------- */
 
@@ -245,7 +250,7 @@
   .anim-sky, .anim-glint, .anim-breathe, .anim-twinkle, .anim-mist, .anim-water,
   .anim-ornament-bamboo, .anim-ornament-honey, .anim-ornament-bloom, .anim-ornament-glisten,
   .anim-canon-root, .anim-canon-hanging, .anim-canon-water, .anim-canon-glow,
-  .anim-canon-shimmer, .anim-canon-dust,
+  .anim-canon-shimmer, .anim-canon-dust, .anim-chola-sheen,
   .door-weather::before, .door-weather::after {
     animation: none !important;
   }
@@ -268,6 +273,7 @@
 [data-motion='reduced'] .anim-canon-glow,
 [data-motion='reduced'] .anim-canon-shimmer,
 [data-motion='reduced'] .anim-canon-dust,
+[data-motion='reduced'] .anim-chola-sheen,
 [data-motion='reduced'] .door-weather::before,
 [data-motion='reduced'] .door-weather::after {
   animation: none !important;

@@ -5,6 +5,7 @@ import { KuralView } from './views/KuralView'
 import { Chapters } from './views/Chapters'
 import { Saved } from './views/Saved'
 import { Credits } from './views/Credits'
+import { History } from './views/History'
 import { AskValluvar } from './views/AskValluvar'
 import { BottomNav } from './components/layout/BottomNav'
 import { Atmosphere } from './components/ambient/Atmosphere'
@@ -94,6 +95,7 @@ function Room() {
         <Route path="/" element={<Home />} />
         <Route path="/chapters" element={<Chapters />} />
         <Route path="/saved" element={<Saved />} />
+        <Route path="/history" element={<History />} />
         <Route path="/credits" element={<Credits />} />
         <Route path="/ask" element={<AskValluvar />} />
         <Route path="/kural/:number" element={<KuralView />} />

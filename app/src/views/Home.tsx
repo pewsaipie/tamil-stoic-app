@@ -16,6 +16,7 @@ import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
 import { KurinjiVaikarai } from '../components/ornament/KurinjiVaikarai'
 import { BookTiles } from '../components/home/BookTiles'
+import { CholaHistorySection } from '../components/home/CholaHistorySection'
 import { BillaDivider, ZariEdge } from '../components/ambient/ornaments'
 import { SituationDoors } from '../components/home/SituationDoors'
 import { TopBar } from '../components/layout/TopBar'
@@ -205,6 +206,18 @@ export function Home() {
           </section>
         ) : null}
 
+        {/* History of the Cholas subsection */}
+        {corpus ? (
+          <section
+            id="chola-history"
+            aria-labelledby="chola-history-title"
+            className="mt-[var(--space-7)]"
+          >
+            <BillaDivider className="mb-[var(--space-5)]" />
+            <CholaHistorySection corpus={corpus} />
+          </section>
+        ) : null}
+
         {/* Situation doors */}
         {corpus ? (
           <section aria-labelledby="situations-title" className="mt-[var(--space-7)]">
@@ -216,9 +229,15 @@ export function Home() {
               {t('situations.sub', 'Pick the door that fits — or search the whole book.')}
             </p>
             <SituationDoors themes={corpus.themes} />
-            <p className="mt-[var(--space-4)] mb-0">
+            <p className="mt-[var(--space-4)] mb-0 flex flex-wrap items-center gap-y-2">
               <Link to="/chapters" className="text-sm text-accent-text no-underline">
                 {t('search.all', 'Search all 1,330 kurals')} →
+              </Link>
+              <span aria-hidden="true" className="mx-3 text-muted">
+                ·
+              </span>
+              <Link to="/history" className="text-sm text-accent-text no-underline">
+                {t('nav.history', 'History of the Cholas')} →
               </Link>
               <span aria-hidden="true" className="mx-3 text-muted">
                 ·

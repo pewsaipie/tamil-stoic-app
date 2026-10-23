@@ -10,6 +10,7 @@ import {
   BookOpen,
   Bookmark,
   Contrast,
+  Landmark,
   Languages,
   Moon,
   Search,
@@ -94,6 +95,14 @@ export function CommandPalette({ open, onOpenChange, onOpenSettings, onOpenShort
         group: 'Go to',
         icon: <Bookmark size={16} strokeWidth={1.6} />,
         run: go('/saved'),
+      },
+      {
+        id: 'history',
+        label: t('nav.history', 'History of the Cholas'),
+        hint: 'சோழர் வரலாறு',
+        group: 'Go to',
+        icon: <Landmark size={16} strokeWidth={1.6} />,
+        run: go('/history'),
       },
       {
         id: 'search',

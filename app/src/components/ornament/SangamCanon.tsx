@@ -10,10 +10,16 @@ export type CanonTheme =
   | 'mullai-erpaadu'
   | 'palai-nanpagal'
   | 'natukal'
+  | 'chola-varalaru'
 
 interface CanonLayer {
   name: string
-  motion?: 'anim-canon-root' | 'anim-canon-hanging' | 'anim-canon-water' | 'anim-canon-glow'
+  motion?:
+    | 'anim-canon-root'
+    | 'anim-canon-hanging'
+    | 'anim-canon-water'
+    | 'anim-canon-glow'
+    | 'anim-chola-sheen'
 }
 
 const ROUTE_LAYERS: Record<Exclude<CanonTheme, 'kurinji-vaikarai'>, readonly CanonLayer[]> = {
@@ -41,6 +47,12 @@ const ROUTE_LAYERS: Record<Exclude<CanonTheme, 'kurinji-vaikarai'>, readonly Can
     { name: 'natukal-light', motion: 'anim-canon-glow' },
     { name: 'natukal-ground' },
   ],
+  'chola-varalaru': [
+    { name: 'chola-bronze', motion: 'anim-chola-sheen' },
+    { name: 'chola-weapons' },
+    { name: 'chola-archaeology' },
+    { name: 'chola-wealth', motion: 'anim-canon-glow' },
+  ],
 }
 
 const ROUTE_WEATHER = {
@@ -49,6 +61,7 @@ const ROUTE_WEATHER = {
   'mullai-erpaadu': 'anim-canon-glow',
   'palai-nanpagal': 'anim-canon-shimmer',
   natukal: 'anim-canon-dust',
+  'chola-varalaru': 'anim-canon-glow',
 } as const
 
 export function canonForPath(pathname: string): CanonTheme {
@@ -57,6 +70,7 @@ export function canonForPath(pathname: string): CanonTheme {
   if (pathname === '/ask' || pathname.startsWith('/ask/')) return 'mullai-erpaadu'
   if (pathname === '/saved' || pathname.startsWith('/saved/')) return 'palai-nanpagal'
   if (pathname === '/credits' || pathname.startsWith('/credits/')) return 'natukal'
+  if (pathname === '/history' || pathname.startsWith('/history/')) return 'chola-varalaru'
   return 'kurinji-vaikarai'
 }
 
