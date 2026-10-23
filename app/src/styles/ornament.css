@@ -1,0 +1,150 @@
+/* =============================================================================
+ * Ornament layers — the canon dressing (docs/sangam-theme-canon.md)
+ * =============================================================================
+ * Edges and corners only: baked alpha layers composite *around* the content,
+ * never across it. Two rules keep this file honest:
+ *
+ *   1. **No motion here.** Every animated class lives in ambient.css, where
+ *      the kill-switches are, and the motion test can see it. This file is
+ *      layout, art direction and the day/night cascade.
+ *   2. **CSS backgrounds, not <img>.** The cascade arms below each other —
+ *      only the theme the reader actually sees ever fetches bytes.
+ * ========================================================================== */
+
+.ornament-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* above the hero canvas and ambient decors, below .z-content */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Parallax is a *material response* and is capped like one: a single CSS
+   variable pair, a settle under the 400 ms interaction ceiling, and the
+   variables are only ever fed when the verdict says the room may move
+   (see KurinjiVaikarai.tsx — no rAF loops are started here). */
+.ornament-layer {
+  position: absolute;
+  --ornament-depth: 0px;
+  transform: translate3d(
+    calc(var(--ornament-par-x, 0) * var(--ornament-depth)),
+    calc(var(--ornament-par-y, 0) * var(--ornament-depth) * 0.6),
+    0
+  );
+  transition: transform 380ms var(--ease-out);
+  will-change: transform;
+}
+
+.ornament-sway {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/* --- Kurinji Vaikarai (Home) — geometry ------------------------------------
+ * Ratios come from the trimmed WebP, measured by build-ornaments.mjs and
+ * asserted in test-motion. If a layer is re-trimmed, update the ratio here:
+ * a wrong ratio letterboxes the art and bleeds the feathered edge. */
+
+.ornament-layer--bamboo {
+  left: max(-22px, -2vw);
+  top: -11%;
+  height: 118%;
+  aspect-ratio: 432 / 918;
+  --ornament-depth: 7px;
+}
+.ornament-layer--honey {
+  top: -4%;
+  right: max(-14px, -1.5%);
+  height: 54%;
+  aspect-ratio: 498 / 688;
+  --ornament-depth: 8px;
+}
+.ornament-layer--bloom {
+  right: -2%;
+  bottom: -6%;
+  width: min(46vw, 340px);
+  aspect-ratio: 768 / 539;
+  --ornament-depth: 9px;
+}
+
+/* Quiet breathing room on small screens: shrink the two non-anchors rather
+   than crowding the couplet. Bamboo stays — it is the landscape. */
+@media (max-width: 620px) {
+  .ornament-layer--honey { height: 46%; }
+  .ornament-layer--bloom { width: 40vw; opacity: 0.92; }
+}
+
+/* Sway pivots sit where the object attaches in the world: the culms are
+   planted, the comb hangs from its bar, the sprig is cut at the corner. */
+.ornament-sway--bamboo { transform-origin: 44% 100%; background-position: left bottom; }
+.ornament-sway--honey  { transform-origin: 50% -2%;  background-position: right top; }
+.ornament-sway--bloom  { transform-origin: 92% 98%;  background-position: right bottom; }
+
+/* The masters. Fetch-on-match: the day art and the night grade both only load
+   inside their own cascade arm. */
+.ornament-bg--bamboo { background-image: url('../assets/img/ornaments/kurinji-vaikarai/bamboo-left.webp'); }
+.ornament-bg--honey  { background-image: url('../assets/img/ornaments/kurinji-vaikarai/honeycomb.webp'); }
+.ornament-bg--bloom  { background-image: url('../assets/img/ornaments/kurinji-vaikarai/bloom-corner.webp'); }
+
+/* Dawn catching the drip: a screen-blended copy of the comb, masked to the
+   drip zone, whose opacity alone moves (ornament-glisten, 13 s — slow enough
+   to need no exception). */
+.ornament-sheen {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right top;
+  filter: brightness(1.62) saturate(1.12);
+  mix-blend-mode: screen;
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(52% 42% at 50% 74%, black 0%, transparent 72%);
+  mask-image: radial-gradient(52% 42% at 50% 74%, black 0%, transparent 72%);
+}
+
+/* --- Night: natural by day, gently luminous by night (canon §stylization) ---
+ * One master set serves both modes: at night the layers take a cool grade and
+ * an indigo glaze, the same trick the midnight tokens play on the sky. */
+
+.ornament-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[data-theme='night'] .ornament-layer {
+  filter: brightness(0.68) saturate(0.84) contrast(1.05);
+}
+[data-theme='night'] .ornament-stage::after {
+  background: color-mix(in srgb, #142036 34%, transparent);
+  mix-blend-mode: multiply;
+}
+[data-theme='night'] .ornament-layer--bloom,
+[data-theme='night'] .ornament-layer--bamboo {
+  /* the luminous touch: petal and leaf tips keep a little light */
+  filter: brightness(0.78) saturate(0.92) contrast(1.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer {
+    filter: brightness(0.68) saturate(0.84) contrast(1.05);
+  }
+  :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer--bloom,
+  :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer--bamboo {
+    filter: brightness(0.78) saturate(0.92) contrast(1.04);
+  }
+  :root:not([data-theme='day']):not([data-theme='night']) .ornament-stage::after {
+    background: color-mix(in srgb, #142036 34%, transparent);
+    mix-blend-mode: multiply;
+  }
+}
+
+/* The stage itself never prints, never sits under painted colours, and steps
+   out of high contrast with the rest of the decor (ambient.css owns the
+   animated kill-switches; these two belong to the layer as a whole). */
+@media print {
+  .ornament-stage { display: none !important; }
+}

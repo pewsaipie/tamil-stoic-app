@@ -64,6 +64,32 @@ export const FAST_LOOPS: Record<string, string> = {
 export const INTERACTION_MAX_MS = 400
 
 /**
+ * The ornament budget — the canon dressing's own numbers.
+ *
+ * The route dressing (docs/sangam-theme-canon.md) composites a small number of
+ * baked alpha layers at the edges of a screen. These are the ceilings, kept
+ * beside the loop and particle ceilings because the same drift kills all three:
+ * a limitation that lives in one file is a promise, in two is folklore.
+ *
+ * The layers must sit *under* the loop ceiling: the dressing never opens a
+ * second WebGL canvas (LOOP_BUDGET.webgl stays at 1), and its motion is CSS,
+ * registered in ambient.css like everything else. Bytes are enforced by
+ * `scripts/build-ornaments.mjs --check` against the committed WebP under
+ * `assets/img/ornaments/`, so a prettier-but-heavier layer fails CI rather
+ * than shipping.
+ */
+export const ORNAMENT_BUDGET = {
+  /** Full-canvas alpha layers a route's dressing may composite (mist is CSS). */
+  layersPerRoute: 4,
+  /** Heaviest single processed layer, bytes. */
+  maxLayerBytes: 260_000,
+  /** Biggest dressed route's total, bytes (six masters of one look would not fit twice). */
+  maxRouteBytes: 780_000,
+  /** The whole six-route canon ceiling, per docs/sangam-theme-canon.md §4. */
+  maxAllRoutesBytes: 4_000_000,
+} as const
+
+/**
  * The material exceptions — the two movements that are longer than an
  * interaction because the material is.
  *

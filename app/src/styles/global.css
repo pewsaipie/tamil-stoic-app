@@ -5,6 +5,7 @@
 @import "./fonts.css";
 @import "./tokens.css";
 @import "./ambient.css";
+@import "./ornament.css";
 
 /* Bridge the design tokens into Tailwind's utility namespaces.
  * `inline` keeps the utilities referencing the live variable, so switching

@@ -65,6 +65,37 @@
 .anim-water   { animation: water-swell 7s ease-in-out infinite; }
 
 /* =============================================================================
+ * Canon ornament dressing (docs/sangam-theme-canon.md)
+ * =============================================================================
+ * The Home dressing sways on the kurinji beat (6.5 s — see
+ * motion/registers.ts): rotation, not translation, because a plant moves by
+ * leaning at its root. The drip's one quick catch of dawn stays inside a
+ * 13 s loop, opacity-only, so it needs no fast-loop exception.
+ * ========================================================================== */
+
+@keyframes ornament-bamboo-sway {
+  0%, 100% { transform: rotate(-0.55deg); }
+  50%      { transform: rotate(0.55deg); }
+}
+@keyframes ornament-honey-sway {
+  0%, 100% { transform: translateX(-1px) rotate(-0.7deg); }
+  50%      { transform: translateX(1px) rotate(0.7deg); }
+}
+@keyframes ornament-bloom-sway {
+  0%, 100% { transform: rotate(0.6deg); }
+  50%      { transform: rotate(-0.6deg); }
+}
+@keyframes ornament-glisten {
+  0%, 42%, 100% { opacity: 0; }
+  50%           { opacity: 0.55; }
+}
+
+.anim-ornament-bamboo  { animation: ornament-bamboo-sway 6.5s var(--ease-spring) infinite; }
+.anim-ornament-honey   { animation: ornament-honey-sway 13s ease-in-out infinite; }
+.anim-ornament-bloom   { animation: ornament-bloom-sway 6.5s var(--ease-spring) -3.2s infinite; }
+.anim-ornament-glisten { animation: ornament-glisten 13s ease-in-out infinite; }
+
+/* =============================================================================
  * Situation doors — each door carries its own weather
  * =============================================================================
  * The twelve doors are states of a reader, and in the Sangam frame a state is a
@@ -173,6 +204,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .anim-sky, .anim-glint, .anim-breathe, .anim-twinkle, .anim-mist, .anim-water,
+  .anim-ornament-bamboo, .anim-ornament-honey, .anim-ornament-bloom, .anim-ornament-glisten,
   .door-weather::before, .door-weather::after {
     animation: none !important;
   }
@@ -185,6 +217,10 @@
 [data-motion='reduced'] .anim-twinkle,
 [data-motion='reduced'] .anim-mist,
 [data-motion='reduced'] .anim-water,
+[data-motion='reduced'] .anim-ornament-bamboo,
+[data-motion='reduced'] .anim-ornament-honey,
+[data-motion='reduced'] .anim-ornament-bloom,
+[data-motion='reduced'] .anim-ornament-glisten,
 [data-motion='reduced'] .door-weather::before,
 [data-motion='reduced'] .door-weather::after {
   animation: none !important;
@@ -194,6 +230,7 @@
 
 /* High contrast: ornament stays, but pure-decoration layers go. */
 [data-contrast='high'] .ambient-decor,
+[data-contrast='high'] .ornament-stage,
 [data-contrast='high'] .door-weather {
   display: none !important;
 }
@@ -201,6 +238,7 @@
 @media (forced-colors: active) {
   .ambient-canvas,
   .ambient-decor,
+  .ornament-stage,
   .door-weather {
     display: none !important;
   }
