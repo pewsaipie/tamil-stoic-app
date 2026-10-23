@@ -27,6 +27,7 @@ export const TA: Record<string, string> = {
   'header.subtitle': 'திருக்குறள் — திருவள்ளுவரின் குறள்கள்',
   'header.tagline':
     'ஒரு நாளைக்கு ஒரு குறள், எளிய பொருளுடன். அனைத்தும் உங்கள் சாதனத்திலேயே.',
+  'home.ornamentHidden': 'அதிக மாறுபாடு அலங்காரப் படங்களை மறைக்கிறது.',
   'daily.title': 'இன்றைய குறள்',
   'daily.shuffle': 'வேறு ஒன்று',
   'daily.shuffleTitle': 'வேறு ஒரு குறளைக் காட்டு',
@@ -87,6 +88,7 @@ export const TA: Record<string, string> = {
   'settings.layers': 'வாசிப்பு அடுக்குகள்',
   'settings.motion': 'அசைவைக் குறை',
   'settings.contrast': 'அதிக மாறுபாடு',
+  'settings.contrastArtwork': 'முகப்பின் குறிஞ்சி நிலக்காட்சி உட்பட அலங்காரப் படங்களை மறைக்கும்.',
   'settings.size.standard': 'சாதாரணம்',
   'settings.size.large': 'பெரியது',
   'settings.size.xlarge': 'மிகப் பெரியது',

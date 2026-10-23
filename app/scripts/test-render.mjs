@@ -206,6 +206,44 @@ check(
   'and can dismiss it, which hands the page back',
 )
 
+/* ---------- desktop Home's absent art: an explicit contrast choice, not a
+ * missing download. Give the reader a way to discover and change that choice. */
+console.log('Home ornament visibility:')
+check(document.querySelector('[data-ornament="kurinji-vaikarai"]') !== null,
+  'the Home dressing mounts in a normal browser session')
+check(!document.querySelector('header p[role="status"]'),
+  'normal contrast does not show an art-hidden notice')
+document.querySelector('header button[aria-label="Reading settings"]')?.click()
+await waitFor(() => document.querySelector('[role="dialog"]')?.textContent?.includes('Higher contrast'))
+const contrastToggle = [...document.querySelectorAll('[role="dialog"] input[type="checkbox"]')].find(
+  (input) => input.closest('label')?.textContent?.includes('Higher contrast'),
+)
+check(contrastToggle !== undefined, 'Reading settings exposes Higher contrast')
+check(contrastToggle?.closest('label')?.textContent?.includes('Hides decorative art'),
+  'the toggle explains why Home loses its ornaments')
+contrastToggle?.click()
+await waitFor(() => document.documentElement.dataset.contrast === 'high')
+check(document.documentElement.dataset.contrast === 'high', 'the preference applies on desktop')
+document.querySelector('[role="dialog"] button[aria-label="Close reading settings"]')?.click()
+await waitFor(() => document.querySelector('[role="dialog"]') === null)
+const artNotice = [...document.querySelectorAll('header p[role="status"]')].find(
+  (element) => element.textContent?.includes('Higher contrast hides decorative art.'),
+)
+check(artNotice !== undefined, 'Home identifies why its art is hidden')
+artNotice?.querySelector('button')?.click()
+await waitFor(() => document.querySelector('[role="dialog"]') !== null)
+check(document.querySelector('[role="dialog"]')?.textContent?.includes('Hides decorative art'),
+  'the notice opens the relevant Reading settings')
+const restoreContrast = [...document.querySelectorAll('[role="dialog"] input[type="checkbox"]')].find(
+  (input) => input.closest('label')?.textContent?.includes('Higher contrast'),
+)
+restoreContrast?.click()
+await waitFor(() => document.documentElement.dataset.contrast === 'normal')
+document.querySelector('[role="dialog"] button[aria-label="Close reading settings"]')?.click()
+await waitFor(() => document.querySelector('[role="dialog"]') === null)
+check(!document.querySelector('header p[role="status"]'),
+  'turning off Higher contrast removes the notice without a reload')
+
 /* ---------- the daily ritual ---------- */
 console.log('the daily ritual:')
 const opened = await waitFor(() => document.querySelectorAll('[data-verse-line]').length >= 2, 8000)
