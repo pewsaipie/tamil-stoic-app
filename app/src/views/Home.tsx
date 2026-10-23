@@ -14,6 +14,7 @@ import { DailyRitual } from '../components/today/DailyRitual'
 import { SkeletonKuralCard } from '../components/ui/Skeleton'
 import { ThemeSwitcher } from '../components/layout/ThemeSwitcher'
 import { HeroCanvas } from '../components/canvas/HeroCanvas'
+import { KurinjiVaikarai } from '../components/ornament/KurinjiVaikarai'
 import { BookTiles } from '../components/home/BookTiles'
 import { BillaDivider, ZariEdge } from '../components/ambient/ornaments'
 import { SituationDoors } from '../components/home/SituationDoors'
@@ -103,6 +104,11 @@ export function Home() {
             opacity: 0.4,
           }}
         />
+        {/* The canon dressing — Kurinji Vaikarai: bamboo with its parakeet on
+            the left, the dripping honeycomb high right, the kurinji sprig at
+            the corner (docs/sangam-theme-canon.md). Edges only; the couplet
+            below stays the calmest thing on the screen. */}
+        <KurinjiVaikarai />
         <div
           aria-hidden="true"
           className="ambient-decor anim-twinkle absolute inset-0"

@@ -216,6 +216,56 @@ check(
   `the stylesheet's loops are all accounted for (slowest ${Math.max(...loops.map((loop) => loop.seconds))}s)`,
 )
 
+/**
+ * The canon dressing (docs/sangam-theme-canon.md §4) obeys the same ceilings.
+ * The bytes are asserted on the committed WebP itself, so a prettier-but-
+ * heavier layer fails here, not in a reviewer thread; and the dressing's
+ * animated classes are caught by the generic kill-switch sweep above, which
+ * is why they must live in ambient.css like everything else.
+ */
+console.log('\nthe canon dressing:')
+
+const { ORNAMENT_BUDGET } = await import('../src/motion/budget.ts')
+
+check(
+  ORNAMENT_BUDGET.layersPerRoute <= LOOP_BUDGET.perRoute,
+  `the dressing fits under the route's loop ceiling (${ORNAMENT_BUDGET.layersPerRoute} ≤ ${LOOP_BUDGET.perRoute})`,
+)
+
+const ornamentDir = join('..', 'assets', 'img', 'ornaments', 'kurinji-vaikarai')
+const ornamentFiles = readdirSync(ornamentDir).filter((name) => name.endsWith('.webp'))
+const ornamentSizes = ornamentFiles.map((name) => statSync(join(ornamentDir, name)).size)
+const ornamentRouteBytes = ornamentSizes.reduce((sum, size) => sum + size, 0)
+
+check(
+  ornamentFiles.length > 0 && ornamentFiles.length <= ORNAMENT_BUDGET.layersPerRoute,
+  `Home wears ${ornamentFiles.length} layers, inside the budget (${ORNAMENT_BUDGET.layersPerRoute})`,
+)
+check(
+  ornamentSizes.length > 0 && Math.max(...ornamentSizes) <= ORNAMENT_BUDGET.maxLayerBytes,
+  `the heaviest layer is ${Math.round(Math.max(...ornamentSizes) / 1024)} KB, under the ceiling (${Math.round(ORNAMENT_BUDGET.maxLayerBytes / 1024)} KB)`,
+)
+check(
+  ornamentRouteBytes <= ORNAMENT_BUDGET.maxRouteBytes,
+  `the route's whole dressing is ${Math.round(ornamentRouteBytes / 1024)} KB, under the ceiling (${Math.round(ORNAMENT_BUDGET.maxRouteBytes / 1024)} KB)`,
+)
+check(
+  ornamentFiles.length >= 3 && ambient.includes('anim-ornament-'),
+  'and it sways on the kurinji beat, declared in ambient.css with every other loop',
+)
+
+/* The dressing is decor: it must mount inside the hero, named, with its parts
+   hidden from the accessibility tree and from the reader's pointer. */
+const dressing = read('src/components/ornament/KurinjiVaikarai.tsx')
+check(
+  dressing.includes('aria-hidden="true"') && read('src/styles/ornament.css').includes('pointer-events: none'),
+  'the dressing is invisible to screen readers and to the pointer',
+)
+check(
+  read('src/views/Home.tsx').includes('<KurinjiVaikarai />'),
+  'and it is mounted on the route the canon assigns it to',
+)
+
 /* ---------------------------------------------------------------------------
  * 4. The runtime — the grammar, the kill matrix, the ceiling
  *
