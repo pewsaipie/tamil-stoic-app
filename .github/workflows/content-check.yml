@@ -31,6 +31,7 @@ jobs:
       - name: Reader behaviour smoke tests
         run: |
           node scripts/test-app.mjs
+          node scripts/test-desktop-ornament.mjs
           node scripts/test-chapter-filter.mjs
           node scripts/test-companion-features.mjs
           node scripts/test-speech.mjs

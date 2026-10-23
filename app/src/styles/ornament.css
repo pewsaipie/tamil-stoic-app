@@ -14,6 +14,11 @@
 .ornament-stage {
   position: absolute;
   inset: 0;
+  /* On a wide desktop browser the header spans the viewport while its text
+     stops at --content-max. Keep the art beside that text, not marooned at
+     the far edges of a 2K monitor. Mobile remains full width. */
+  width: min(100%, calc(var(--content-max) + 160px));
+  margin-inline: auto;
   z-index: 1; /* above the hero canvas and ambient decors, below .z-content */
   pointer-events: none;
   overflow: hidden;

@@ -2823,3 +2823,111 @@ body[data-color-scheme="dark"] .kural-simple::first-letter {
   font: inherit; float: none; color: inherit; padding: 0; margin: 0;
 }
 body[data-color-scheme="dark"] .daily-card .kural-divider { border-top-color: var(--border-color); }
+
+/* Kurinji Vaikarai — the Home dressing on the dependency-free desktop reader.
+   Use the same canonical alpha WebPs as the React Home. Keep it behind the
+   original pot and text, clipped to the header, not over the daily verse. */
+.site-header > .ornament-stage {
+  position: absolute; /* override the old .site-header > :not(.hero-band) rule */
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ornament-layer {
+  position: absolute;
+  transition: transform 380ms ease-out;
+  transform: translate3d(
+    calc(var(--ornament-par-x, 0) * var(--ornament-depth)),
+    calc(var(--ornament-par-y, 0) * var(--ornament-depth) * 0.6), 0
+  );
+}
+.ornament-layer--bamboo {
+  left: max(-22px, -2vw);
+  top: -11%;
+  height: 118%;
+  aspect-ratio: 432 / 918;
+  --ornament-depth: 7px;
+}
+.ornament-layer--honey {
+  top: -4%;
+  right: max(-14px, -1.5%);
+  height: 54%;
+  aspect-ratio: 498 / 688;
+  --ornament-depth: 8px;
+}
+.ornament-layer--bloom {
+  right: -2%;
+  bottom: -6%;
+  width: min(46vw, 340px);
+  aspect-ratio: 768 / 539;
+  --ornament-depth: 9px;
+}
+@media (max-width: 620px) {
+  .ornament-layer--honey { height: 46%; }
+  .ornament-layer--bloom { width: 40vw; opacity: 0.92; }
+}
+.ornament-sway {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.ornament-sway--bamboo {
+  transform-origin: 44% 100%;
+  background: url('../assets/img/ornaments/kurinji-vaikarai/bamboo-left.webp') left bottom / contain no-repeat;
+  animation: ornament-bamboo-sway 6.5s ease-in-out infinite;
+}
+.ornament-sway--honey {
+  transform-origin: 50% -2%;
+  background: url('../assets/img/ornaments/kurinji-vaikarai/honeycomb.webp') right top / contain no-repeat;
+  animation: ornament-honey-sway 13s ease-in-out infinite;
+}
+.ornament-sway--bloom {
+  transform-origin: 92% 98%;
+  background: url('../assets/img/ornaments/kurinji-vaikarai/bloom-corner.webp') right bottom / contain no-repeat;
+  animation: ornament-bloom-sway 6.5s ease-in-out -3.2s infinite;
+}
+.ornament-sheen {
+  position: absolute;
+  inset: 0;
+  background: url('../assets/img/ornaments/kurinji-vaikarai/honeycomb.webp') right top / contain no-repeat;
+  filter: brightness(1.62) saturate(1.12);
+  mix-blend-mode: screen;
+  opacity: 0;
+  -webkit-mask-image: radial-gradient(52% 42% at 50% 74%, black 0%, transparent 72%);
+  mask-image: radial-gradient(52% 42% at 50% 74%, black 0%, transparent 72%);
+  animation: ornament-glisten 13s ease-in-out infinite;
+}
+@keyframes ornament-bamboo-sway {
+  0%, 100% { transform: rotate(-0.55deg); }
+  50% { transform: rotate(0.55deg); }
+}
+@keyframes ornament-honey-sway {
+  0%, 100% { transform: translateX(-1px) rotate(-0.7deg); }
+  50% { transform: translateX(1px) rotate(0.7deg); }
+}
+@keyframes ornament-bloom-sway {
+  0%, 100% { transform: rotate(0.6deg); }
+  50% { transform: rotate(-0.6deg); }
+}
+@keyframes ornament-glisten {
+  0%, 42%, 100% { opacity: 0; }
+  50% { opacity: 0.55; }
+}
+body[data-color-scheme="dark"] .ornament-layer {
+  filter: brightness(0.68) saturate(0.84) contrast(1.05);
+}
+body[data-color-scheme="dark"] .ornament-layer--bamboo,
+body[data-color-scheme="dark"] .ornament-layer--bloom {
+  filter: brightness(0.78) saturate(0.92) contrast(1.04);
+}
+/* The existing reader-wide motion switch also stops CSS animation; these
+   guards stop pointer response and remove decorative art entirely when needed. */
+body[data-reduce-motion="true"] .ornament-layer { transform: none; transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ornament-layer { transform: none; transition: none; }
+}
+@media (forced-colors: active), print {
+  .site-header > .ornament-stage { display: none; }
+}

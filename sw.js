@@ -5,7 +5,7 @@
  * the reader's device and are never sent through this worker.
  */
 const CACHE_PREFIX = "tamil-stoic-";
-const CACHE_NAME = CACHE_PREFIX + "v7-sangam-clay";
+const CACHE_NAME = CACHE_PREFIX + "v8-kurinji-desktop";
 
 const APP_ASSETS = [
   "./",
@@ -17,19 +17,19 @@ const APP_ASSETS = [
   "./assets/licenses/OFL-1.1.txt",
   "./manifest.webmanifest",
   "./css/styles.css",
-  "./css/styles.css?v=7",
+  "./css/styles.css?v=8",
   "./css/fonts.css",
   "./data/kurals.js",
   "./js/storage.js",
   "./js/app.js",
   "./js/companion.js",
-  // The exact versioned URLs index.html requests (?v=7). Precaching both
-  // shapes means the shell works offline whether it was loaded fresh or
+  // The exact versioned URLs index.html requests. Precaching both shapes
+  // means the shell works offline whether it was loaded fresh or
   // from an older cached copy.
   "./data/kurals.js?v=7",
   "./js/storage.js?v=7",
   "./js/app.js?v=7",
-  "./js/companion.js?v=7",
+  "./js/companion.js?v=8",
   "./assets/icon.svg",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
@@ -38,6 +38,9 @@ const APP_ASSETS = [
   "./assets/img/kolam-strip.svg",
   "./assets/img/hero-temple.svg",
   "./assets/img/sangam-pot.svg",
+  "./assets/img/ornaments/kurinji-vaikarai/bamboo-left.webp",
+  "./assets/img/ornaments/kurinji-vaikarai/honeycomb.webp",
+  "./assets/img/ornaments/kurinji-vaikarai/bloom-corner.webp",
   "./assets/img/ola-texture.jpg",
   "./assets/img/granite-texture.jpg",
   "./assets/fonts/inter-latin-400-normal.woff2",
