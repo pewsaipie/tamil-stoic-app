@@ -222,6 +222,13 @@
   background-size: 170px 230px, 210px 270px, 250px 310px, 190px 250px;
 }
 
+.canon-weather--chola-varalaru {
+  background:
+    radial-gradient(46% 42% at 6% 26%, rgba(196, 145, 68, 0.2), transparent 72%),
+    radial-gradient(44% 38% at 94% 86%, rgba(232, 166, 74, 0.22), transparent 72%),
+    radial-gradient(40% 34% at 92% 16%, rgba(145, 108, 66, 0.14), transparent 70%);
+}
+
 /* Route colour washes change the field, never the measured ink tokens. */
 :root { --canon-line: #a28155; }
 :root[data-canon='marutham-vidiyal'] {
@@ -253,6 +260,12 @@
   --canon-secondary-wash: rgba(75, 58, 42, 0.16);
   --canon-line: #a28155;
   --canon-highlight: rgba(231, 190, 123, 0.17);
+}
+:root[data-canon='chola-varalaru'] {
+  --canon-wash: rgba(186, 132, 56, 0.22);
+  --canon-secondary-wash: rgba(122, 74, 38, 0.15);
+  --canon-line: #b68949;
+  --canon-highlight: rgba(242, 202, 132, 0.2);
 }
 
 body {
@@ -386,6 +399,111 @@ body {
   --ornament-depth: 4px;
 }
 
+/* Chola Varalaru — bronze sculpture & Sangam excavations on the left flank,
+   martial arms & trade wealth framing the right flank around the chronicle. */
+.ornament-layer--chola-bronze {
+  left: -4%;
+  top: 6%;
+  height: min(50vh, 430px);
+  aspect-ratio: 600 / 819;
+  opacity: 0.92;
+  --ornament-depth: 7px;
+}
+.ornament-layer--chola-weapons {
+  right: -3%;
+  top: 5%;
+  height: min(46vh, 395px);
+  aspect-ratio: 620 / 936;
+  opacity: 0.9;
+  --ornament-depth: 8px;
+}
+.ornament-layer--chola-archaeology {
+  left: -2%;
+  bottom: 7%;
+  width: min(34vw, 235px);
+  aspect-ratio: 600 / 648;
+  opacity: 0.88;
+  --ornament-depth: 6px;
+}
+.ornament-layer--chola-wealth {
+  right: -2%;
+  bottom: 7%;
+  width: min(40vw, 295px);
+  aspect-ratio: 640 / 377;
+  opacity: 0.94;
+  --ornament-depth: 9px;
+}
+
+/* Home-subsection Chola stage — hero-local PR #29 framing around the Home
+   subsection card, breaking wider than --content-max on desktop so all four
+   Chola layers frame the reading column without crossing its prose. */
+.chola-home-bleed {
+  position: relative;
+  isolation: isolate;
+}
+@media (min-width: 1024px) {
+  .chola-home-bleed {
+    width: min(calc(100vw - 2rem), calc(var(--content-max) + 460px));
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.ornament-stage--chola-home {
+  width: 100%;
+  border-radius: var(--radius-lg);
+}
+
+.ornament-stage--chola-home .ornament-layer--chola-bronze {
+  left: -14px;
+  top: 14px;
+  height: min(54%, 290px);
+  opacity: 0.9;
+}
+.ornament-stage--chola-home .ornament-layer--chola-weapons {
+  right: -10px;
+  top: 14px;
+  height: min(50%, 268px);
+  opacity: 0.88;
+}
+.ornament-stage--chola-home .ornament-layer--chola-archaeology {
+  left: -6px;
+  bottom: 12px;
+  width: min(30vw, 185px);
+  opacity: 0.88;
+}
+.ornament-stage--chola-home .ornament-layer--chola-wealth {
+  right: -6px;
+  bottom: 12px;
+  width: min(36vw, 230px);
+  opacity: 0.94;
+}
+
+.ornament-stage--chola-home[data-active-pillar='bronzes'] .ornament-layer--chola-bronze,
+.ornament-stage--chola-home[data-active-pillar='weapons'] .ornament-layer--chola-weapons,
+.ornament-stage--chola-home[data-active-pillar='archaeology'] .ornament-layer--chola-archaeology,
+.ornament-stage--chola-home[data-active-pillar='wealth'] .ornament-layer--chola-wealth {
+  opacity: 1;
+}
+
+/* Dedicated museum plaque thumbnail for unobstructed artifact inspection. */
+.chola-artifact-plaque {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+@media print {
+  .chola-artifact-plaque-wrap { display: none !important; }
+}
+[data-contrast='high'] .chola-artifact-plaque-wrap {
+  display: none !important;
+}
+@media (forced-colors: active) {
+  .chola-artifact-plaque-wrap { display: none !important; }
+}
+
 /* The production masters. Only layers mounted by SangamCanon match and fetch. */
 .ornament-bg--marutham-checks { background-image: url('../assets/img/ornaments/marutham-vidiyal/paddy-checks.webp'); }
 .ornament-bg--marutham-paddy { background-image: url('../assets/img/ornaments/marutham-vidiyal/paddy-bund.webp'); }
@@ -401,6 +519,10 @@ body {
 .ornament-bg--palai-bundle { background-image: url('../assets/img/ornaments/palai-nanpagal/cloth-bundle.webp'); }
 .ornament-bg--natukal-light { background-image: url('../assets/img/ornaments/natukal/light-shaft.webp'); }
 .ornament-bg--natukal-ground { background-image: url('../assets/img/ornaments/natukal/stone-pod-beads.webp'); }
+.ornament-bg--chola-bronze { background-image: url('../assets/img/ornaments/chola-varalaru/chola-bronze.webp'); }
+.ornament-bg--chola-weapons { background-image: url('../assets/img/ornaments/chola-varalaru/chola-weapons.webp'); }
+.ornament-bg--chola-wealth { background-image: url('../assets/img/ornaments/chola-varalaru/chola-wealth.webp'); }
+.ornament-bg--chola-archaeology { background-image: url('../assets/img/ornaments/chola-varalaru/chola-archaeology.webp'); }
 
 .ornament-sway--marutham-checks,
 .ornament-sway--marutham-paddy,
@@ -418,16 +540,28 @@ body {
 .ornament-sway--palai-bundle { background-position: right bottom; }
 .ornament-sway--natukal-light { background-position: left top; }
 .ornament-sway--natukal-ground { background-position: center bottom; }
+.ornament-sway--chola-bronze { background-position: left top; transform-origin: 50% 100%; }
+.ornament-sway--chola-weapons { background-position: right top; transform-origin: 50% 50%; }
+.ornament-sway--chola-wealth { background-position: right bottom; }
+.ornament-sway--chola-archaeology { background-position: left bottom; }
 
 /* The flame remains a light source at night instead of being graded away. */
 [data-theme='night'] .ornament-layer--olai-lamp,
-[data-theme='night'] .ornament-layer--mullai-jasmine {
+[data-theme='night'] .ornament-layer--mullai-jasmine,
+[data-theme='night'] .ornament-layer--chola-wealth {
   filter: brightness(1.02) saturate(1.04) contrast(1.02);
+}
+[data-theme='night'] .ornament-layer--chola-bronze {
+  filter: brightness(0.92) saturate(1.04) contrast(1.05);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer--olai-lamp,
-  :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer--mullai-jasmine {
+  :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer--mullai-jasmine,
+  :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer--chola-wealth {
     filter: brightness(1.02) saturate(1.04) contrast(1.02);
+  }
+  :root:not([data-theme='day']):not([data-theme='night']) .ornament-layer--chola-bronze {
+    filter: brightness(0.92) saturate(1.04) contrast(1.05);
   }
 }
 
@@ -447,6 +581,14 @@ body {
   .ornament-layer--palai-bundle { right: -10%; height: 50%; opacity: 0.72; }
   .ornament-layer--natukal-light { opacity: 0.42; }
   .ornament-layer--natukal-ground { left: -25%; width: 150%; }
+  .ornament-layer--chola-bronze { left: -24%; height: 38vh; opacity: 0.62; }
+  .ornament-layer--chola-weapons { right: -24%; height: 35vh; opacity: 0.62; }
+  .ornament-layer--chola-archaeology { left: -16%; bottom: 11%; width: 46vw; opacity: 0.62; }
+  .ornament-layer--chola-wealth { right: -14%; bottom: 11%; width: 52vw; opacity: 0.68; }
+  .ornament-stage--chola-home .ornament-layer--chola-bronze { left: -22%; height: 190px; opacity: 0.34; }
+  .ornament-stage--chola-home .ornament-layer--chola-weapons { right: -22%; height: 180px; opacity: 0.34; }
+  .ornament-stage--chola-home .ornament-layer--chola-archaeology { left: -16%; width: 130px; opacity: 0.32; }
+  .ornament-stage--chola-home .ornament-layer--chola-wealth { right: -14%; width: 155px; opacity: 0.38; }
 }
 
 @media (forced-colors: active) {

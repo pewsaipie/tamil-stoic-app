@@ -178,7 +178,12 @@ async function waitFor(predicate, timeout = 4000) {
 }
 
 const navigate = async (hash, predicate) => {
-  window.location.hash = hash
+  const link = document.querySelector(`a[href="${hash}"]`)
+  if (link) link.click()
+  else {
+    window.location.hash = hash
+    window.dispatchEvent(new window.PopStateEvent('popstate'))
+  }
   await waitFor(predicate)
 }
 const { document } = window
@@ -489,10 +494,33 @@ check(
 )
 
 console.log('home return:')
-await navigate('#/', () => text().includes('பால்கள்') || text().includes('books'))
+await navigate('#/', () => document.querySelector('#daily-couplet') !== null)
 check(
   !text().includes('படித்தவை') && !text().includes('kurals read') && !text().includes(' வாசிப்புப் பயணம்'),
   'returning home does not render a reading journey section',
+)
+check(
+  document.querySelector('#chola-history') !== null &&
+    document.querySelector('[data-ornament="chola-varalaru-home"]') !== null,
+  'Home mounts the dressed Chola History subsection with its PR #29 stage',
+)
+document.querySelector('#chola-tab-weapons')?.click()
+await waitFor(() => document.querySelector('#chola-panel-weapons') !== null)
+check(
+  document.querySelector('#chola-panel-weapons') !== null,
+  'switching Chola subsection tabs on Home reveals the weapons chapter and coupled Kural',
+)
+
+console.log('history:')
+await navigate('#/history', () => text().includes('சோழர் வரலாறு'))
+await checkCanon('chola-varalaru')
+check(
+  text().includes('உத்திரமேரூர்') || text().includes('Uttaramerur'),
+  'the Chola chronicle covers governance and epigraphy alongside Sangam excavations',
+)
+check(
+  document.querySelectorAll('#main [data-verse-line]').length >= 4,
+  'the Chola chronicle pairs its chapters with two-line corpus couplets',
 )
 
 console.log('credits:')
@@ -537,6 +565,8 @@ await navigate('#/', () => text().includes('பால்கள்') || text().in
 await scan('/')
 await navigate('#/credits', () => text().includes('Credits'))
 await scan('/credits')
+await navigate('#/history', () => text().includes('சோழர் வரலாறு'))
+await scan('/history')
 await navigate('#/ask', () => document.querySelector('#ask-input') !== null)
 await scan('/ask')
 

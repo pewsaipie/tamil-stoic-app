@@ -50,6 +50,7 @@ vocabulary the motion grammar and the twelve doors already speak
 | `/ask` | **Mullai Erpaadu** — the teacher's veranda at dusk | mullai · dusk | hanging ola-strip screen stirring, banyan bough + aerial roots, a wall-niche lamp kept low, a jasmine spray (mullai's own flower) | Tolkāppiyam (mullai, erpaadu; *iruttal* — patient waiting — is mullai's uripporuḷ) |
 | `/saved` | **Palai Nanpagal** — the wayfarer's tied bundle | pālai · noon glare | a knotted cloth bundle (muṭiccu) with palm-leaf strips, sparse pālai leaves throwing patterned shade, a kalli (native Euphorbia) branch | Tolkāppiyam (pālai flora, nanpagal); wayfarer imagery of the Akam |
 | `/credits` | **Naṭukal** — the hero-stone in raking light | puram, no hour | rough granite stele top across the bottom edge, chisel strokes (never real script), dust in the light shaft, a dry vāgai pod, carnelian beads | Naṭukal tradition (Puram); Tamil-Brahmi stones (Māṅgulam, Jambai); Kodumānal bead archaeology |
+| `/history` & Home `#chola-history` | **Chola Varalāṟu** — Sangam excavations to Imperial Cholas | puram · marutham chronicle | solid lost-wax Chola Nataraja bronze, Wootz steel *vāḷ*/*vēl* arms & standing-tiger shield, Sangam Black-and-Red Ware / Kilaiyur wharf bricks / amphora / crucible, Uraiyur cloth + pearls + carnelian-beryl beads + square tiger copper & gold *kāsu* coins | ASI Puhar & Uraiyur; TNSDA Kodumānal & Keeladi; Thanjavur/Uttaramerur epigraphy; 9th–13th c. CE *cire perdue* bronzes (explicitly dated by epoch) |
 
 The two interior/puram themes (`/kural/:n`, `/credits`) deliberately take no
 tiṇai: the Kural is famously akam/puram-neutral, and forcing a landscape onto
@@ -180,7 +181,8 @@ layer/route, a missing canon, or a total over 4 MB.
 | Mullai Erpaadu | 3 | 361 KB |
 | Palai Nanpagal | 3 | 204 KB |
 | Naṭukal | 2 | 49 KB |
-| **Total** | **17** | **1,541 KB** |
+| Chola Varalāṟu | 4 | 386 KB |
+| **Total** | **21** | **1,926 KB** |
 
 Only the active route mounts its CSS background layers. `SangamCanon` owns route
 identity and fixed viewport-edge stages; Home keeps its hero-local PR #29 stage.

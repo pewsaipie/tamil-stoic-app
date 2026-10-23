@@ -232,7 +232,7 @@ check(
   `the dressing fits under the route's loop ceiling (${ORNAMENT_BUDGET.layersPerRoute} ≤ ${LOOP_BUDGET.perRoute})`,
 )
 
-const canonThemes = ['kurinji-vaikarai', 'marutham-vidiyal', 'olai-agal', 'mullai-erpaadu', 'palai-nanpagal', 'natukal']
+const canonThemes = ['kurinji-vaikarai', 'marutham-vidiyal', 'olai-agal', 'mullai-erpaadu', 'palai-nanpagal', 'natukal', 'chola-varalaru']
 let allRoutesBytes = 0
 for (const theme of canonThemes) {
   const ornamentDir = join('..', 'assets', 'img', 'ornaments', theme)
@@ -256,20 +256,24 @@ for (const theme of canonThemes) {
 }
 check(
   allRoutesBytes <= ORNAMENT_BUDGET.maxAllRoutesBytes,
-  `all six canons total ${Math.round(allRoutesBytes / 1024)} KB, under the shared ceiling (${Math.round(ORNAMENT_BUDGET.maxAllRoutesBytes / 1024)} KB)`,
+  `all seven canons total ${Math.round(allRoutesBytes / 1024)} KB, under the shared ceiling (${Math.round(ORNAMENT_BUDGET.maxAllRoutesBytes / 1024)} KB)`,
 )
-check(ambient.includes('anim-ornament-') && ambient.includes('anim-canon-'), 'Home and the five route canons share the gated motion grammar')
+check(ambient.includes('anim-ornament-') && ambient.includes('anim-canon-'), 'Home and the six route canons share the gated motion grammar')
 
 /* The dressing is decor: it must mount on its assigned route, named, with its
    parts hidden from the accessibility tree and from the reader's pointer. */
 const dressing = read('src/components/ornament/KurinjiVaikarai.tsx')
+const cholaHomeDressing = read('src/components/home/CholaHistorySection.tsx')
 const routeDressing = read('src/components/ornament/SangamCanon.tsx')
 check(
-  dressing.includes('aria-hidden="true"') && routeDressing.includes('aria-hidden="true"') &&
+  dressing.includes('aria-hidden="true"') &&
+    cholaHomeDressing.includes('aria-hidden="true"') &&
+    routeDressing.includes('aria-hidden="true"') &&
     read('src/styles/ornament.css').includes('pointer-events: none'),
-  'all six dressings are invisible to screen readers and to the pointer',
+  'all seven dressings are invisible to screen readers and to the pointer',
 )
 check(read('src/views/Home.tsx').includes('<KurinjiVaikarai />'), 'Home mounts its hero-local Kurinji dressing')
+check(read('src/views/Home.tsx').includes('<CholaHistorySection'), 'Home mounts the dressed Chola History subsection')
 check(read('src/App.tsx').includes('<SangamCanon />'), 'the application shell mounts the route canon')
 for (const theme of canonThemes.slice(1)) {
   check(routeDressing.includes(`'${theme}'`) && read('src/styles/ornament.css').includes(`canon-weather--${theme}`),

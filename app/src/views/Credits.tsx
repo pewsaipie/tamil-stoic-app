@@ -165,7 +165,14 @@ export function Credits() {
             </li>
           </ul>
           <p className="mt-3 mb-0 text-xs text-muted">
-            No Chola bronze, gopuram or invented inscription is used in the five new route canons.
+            No Chola bronze, gopuram or invented inscription is used in the five pre-300 CE Sangam
+            tiṇai reading routes. On the dedicated Chola History subsection and{' '}
+            <Link className="text-accent-text" to="/history">
+              #/history chronicle
+            </Link>
+            , Sangam excavations (Puhar, Uraiyur, Kodumanal, Keezhadi, Arikamedu) and 9th–13th c. CE
+            Imperial Chola lost-wax bronzes are presented together with explicit period labels and
+            zero invented script.
           </p>
         </GlassCard>
 
